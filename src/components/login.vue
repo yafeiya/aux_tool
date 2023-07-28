@@ -29,7 +29,7 @@
                         content: 'username: ' + username + ' | password: ' + password
                     });
                 }
-                this.$router.push('/database')
+                this.$router.push('/example')
             }
         }
     }
