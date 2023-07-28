@@ -2,7 +2,7 @@
 
   <router-view>
   </router-view>
-
+ 
   <!-- <database /> -->
 </template>
 <script>
@@ -13,7 +13,6 @@
   export default{
     components: {
       'login': login,
-      'database': database,
       'example': example
     }
   }

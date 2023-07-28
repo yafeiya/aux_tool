@@ -1,7 +1,7 @@
 <template>
     <div class="demo-login" :key="login">
       <img src="../assets/图标.png" class="logo-size">
-      <h1>数据驱动辅助工具</h1>
+<!--      <h1>数据驱动辅助工具</h1>-->
       <Login @on-submit="handleSubmit">
           <UserName name="username" />
           <Password name="password" />
@@ -10,6 +10,8 @@
               <a>忘记密码</a>
           </div>
           <Submit value="123"/>
+          <Submit/>
+
           <router-link to="/database">Home</router-link>
       </Login>
     </div>
@@ -36,7 +38,7 @@
   </script>
   <style>
     .logo-size{
-      width: 80px;
+      width: 380px;
       height: 80px;
     }
     .demo-login{
