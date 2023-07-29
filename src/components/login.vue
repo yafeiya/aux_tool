@@ -10,7 +10,7 @@
               <a>忘记密码</a>
           </div>
           <Submit value="123"/>
-          <Submit/>
+          
 
           <router-link to="/database">Home</router-link>
       </Login>
