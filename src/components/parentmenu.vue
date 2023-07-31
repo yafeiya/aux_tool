@@ -1,5 +1,5 @@
 <template>
-  <Menu active-name="numDataBase1-1-火力分配1" theme="dark" width="auto" :open-names="['numDataBase']" @on-select="getMainTable">
+  <Menu :active-name=this.initNowItem theme="dark" width="auto" :open-names="[this.pageMenu[0].name]" @on-select="getNowItem">
     <MenuGroup title="数据集" class="menu-table"></MenuGroup>
     
     <template v-for="item in pageMenu">  
@@ -16,18 +16,31 @@
 <script>
 import childMenu from './childmenu.vue';
 export default {
-        name:'paretMenu',
-		components: {
-		    childMenu
-		},
-        // 将菜单数组传入
-        props: ['pageMenu','pageKind'],
-        methods: {
-            getMainTable(name) {
-                console.info(name)
-            }
+    data() {
+        return {
+            initNowItem: "numDataBase1-1-火力分配1"
+        }
+    },
+    name:'paretMenu',
+    components: {
+        childMenu
+    },
+    // 将菜单数组传入
+    props: ['pageMenu','pageKind'],
+    mounted() {
+        this.initNowItem = this.pageMenu[0].children[0].title
+        this.nowItemInit()
+    },
+    methods: {
+        getNowItem(name) {
+            this.$emit('getNowItem',name);//select事件触发后，自动触发getNowItem事件
+        },
+        nowItemInit() {
+            console.info(this.initNowItem)
+            this.$emit('getNowItem',this.initNowItem);
         }
     }
+}
         
 </script>
 <style>

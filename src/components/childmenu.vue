@@ -11,7 +11,7 @@
                 :parent-item="item" 
             >
             </childMenu>
-            <menu-item v-else :name="item.name + '-' + item.title">
+            <menu-item v-else :name="item.title">
                 <Icon :type="item.icon"/>
                 <span>{{ item.title }}</span>
             </menu-item>
