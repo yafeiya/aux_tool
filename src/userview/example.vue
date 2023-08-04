@@ -1,9 +1,437 @@
+<style>
+.layout{
+  border: 1px solid #d7dde4;
+  background: #f5f7f9;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.layout-home{
+  width: 150px;
+  height: 30px;
+  border-radius: 3px;
+  float: left;
+  position: relative;
+  top: 3px;
+  left: 0px;
+}
+.layout-nav1{
+  width: 620px;
+  margin: 0 auto;
+  margin-right: -80px;
+}
+.dev-run-preview .dev-run-preview-edit{ display: none }
+</style>
 <template>
-    <h1 :key="database">方案实例页面</h1>
-    <form>
-
-    </form>
+  <!-- <Button @click="test">1231</Button> -->
+  <div class="layout">
+    <Layout :style="{marginLeft: '0px'}">
+      <!--头部菜单导航-->
+      <Header>
+        <Menu mode="horizontal" theme="dark" active-name="example" @on-select="toPages">
+          <div class="layout-home" v-color="'white'" style="font-size: 20px;margin-left: -15px;margin-top: -2px">
+            <Button :type="text" size="small" shape="circle" @click="toHome">
+              <Icon type="md-arrow-back" />
+            </Button>
+            |  返回首页
+          </div>
+          <div class="layout-nav1">
+            <MenuItem name="database">
+              <Icon type="ios-navigate"></Icon>
+              数据集
+            </MenuItem>
+            <MenuItem name="modelbase">
+              <Icon type="ios-keypad"></Icon>
+              模型库
+            </MenuItem>
+            <MenuItem name="defineFunction">
+              <Icon type="ios-analytics"></Icon>
+              自定义函数
+            </MenuItem>
+            <MenuItem name="design">
+              <Icon type="ios-paper"></Icon>
+              方案设计
+            </MenuItem>
+            <MenuItem name="example">
+              <Icon type="md-arrow-dropright-circle"></Icon>
+              方案实例
+            </MenuItem>
+          </div>
+        </Menu>
+      </Header>
+      <!--主体内容部分-->
+      <Content :style="{padding: '0 16px 16px'}">
+        <!--=批量处理按钮-->
+        <p style="margin-top: 1%;font-size: 20px">
+          批量处理：
+          <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="updateToState('终止')">终止</Button>
+          <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行')">继续</Button>
+          <Button  type="primary" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">挂起</Button>
+          <Button  type="error" icon="md-trash"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteItem">删除</Button>
+        </p>
+        <div style="margin-top: 1%">
+          <!--表格部分-->
+          <Table border ref="selection" :columns="columns" :data="curItemList" @on-selection-change="selectChange" style="width: auto">
+            <!--根据状态state值显示图标-->
+            <template #zhuangtai="{ row }">
+              <h4 v-if="row.state==='挂起中'">
+                <Icon type="md-pause" />
+                挂起中
+              </h4>
+              <h4 v-if="row.state==='运行中'">
+                <Icon type="md-time" />
+                运行中
+              </h4>
+              <h4 v-if="row.state==='已终止'">
+                <Icon type="md-power" />
+                已终止
+              </h4>
+            </template>
+            <!--时间相关-->
+            <template #time="{row}">
+              <Time :time="row.post_date + ' ' + row.post_time" type="datetime" />
+            </template>
+            <!--表格最右列查看详情-->
+            <template #details="{row, index}">
+              
+              <Button type="info" style="margin-right: 5px;margin-left: -10%" @click="itemInfoBtn(row, index)" v-width=80 >详情</Button>
+              
+              <Modal v-model="isItemInfo" width="800" :loading="true">
+                <template #header>
+                  <p style="color:#4d85ea;text-align:center">
+                    <Icon type="ios-information-circle"></Icon>
+                    <span>案例详情</span>
+                  </p>
+                </template>
+                <Card>
+                  <template #title><strong>案例信息</strong></template>
+              
+                    <Row>
+                      <Col span="8">案例号：{{ curRow.id }}</Col>
+                      <Col span="8">案例名: {{ curRow.example_name }}</Col>
+                      <Col span="8">状态: {{ curRow.state }}</Col>
+                      <Col span="8">级别: {{ curRow.rank }}</Col>
+                      <Col span="8">数据目录: {{ curRow.dataset_url }}</Col>
+                    </Row>
+                
+                </Card>
+                <Card>
+                  <template #title><strong>模型信息</strong></template>
+                  <Row>
+                    <Col span="8">模型名：{{ curRow.model_name }}</Col>
+                    <Col span="8">模型类型: {{ curRow.model_type }}</Col>
+                    <Col span="8">迭代次数: {{ curRow.epoch_num }}</Col>
+                    <Col span="8">损失函数: {{ curRow.loss }}</Col>
+                    <Col span="8">优化器: {{ curRow.optimizer }}</Col>
+                    <Col span="8">衰减因子: {{ curRow.decay }}</Col>
+                    <Col span="8">评价指标: {{ curRow.evalution }}</Col>
+                    <Col span="8">保存位置: {{ curRow.model_url }}</Col>
+                  </Row>
+                </Card>
+                <Card>
+                  <template #title><strong>资源需求</strong></template>
+                  <Row>
+                    <Col span="8">CPU核数：{{ curRow.cpu_num }}</Col>
+                    <Col span="8">GPU算力: {{ curRow.gpu_num }}</Col>
+                    <Col span="8">内存用量: {{ curRow.memory }}</Col>
+                    <Col span="8">启动时间: {{ curRow.start_time }}</Col>
+                    <Col span="8">结束时间:{{ curRow.end_time }}</Col>
+                    <Col span="8">运行时间:{{ curRow.run_time }}</Col>
+                  </Row>
+                </Card>
+                <template #footer>
+                  <Button type="info"  long @click="close">确定</Button>
+                </template>
+              </Modal>
+              
+              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=80 >日志</Button>
+              <Modal v-model="isLogInfo" width="500">
+                <template #header>
+                  <p style="color:#4d85ea;text-align:center">
+                    <Icon type="ios-information-circle"></Icon>
+                    <span>案例日志</span>
+                  </p>
+                </template>
+                <Input  type="textarea" :rows="10" placeholder="这里是日志..." />
+                <template #footer>
+                  <Button type="info"  long @click="close">确定</Button>
+                </template>
+              </Modal>
+              <Button type="info" style="margin-right: -30px" @click="isDataInfo=true" v-width=80 >数据</Button>
+              <Modal v-model="isDataInfo" width="500" style="margin-top: 100px">
+                <template #header>
+                  <p style="color:#4d85ea;text-align:center">
+                    <Icon type="ios-information-circle"></Icon>
+                    <span>案例数据</span>
+                  </p>
+                </template>
+                <p style="text-align:center">
+                  <!--以上传组件代替实现打开本地资源管理器-->
+                  <Upload action="">
+                    <Button icon="ios-albums-outline />" >查看本地数据</Button>
+                  </Upload>
+                </p>
+                <template #footer>
+                  <Button type="info"  long @click="close">确定</Button>
+                </template>
+              </Modal>
+              
+            </template>
+          </Table>
+        </div>
+      </Content>
+      <!--分页组件-->
+      <!-- <h3>{{ this.itemNum }}</h3> -->
+      <Page :total="itemNum" :page-size="pageSize" style="margin-bottom: 1%;text-align: center;" @on-change="updatePage"/>
+    </Layout>
+  </div>
 </template>
 <script>
+import {MenuGroup, Result} from "view-ui-plus";
+import axios from 'axios';
+export default {
+  data() {
+    return {
+      itemNum: 0,
+      pageSize: 7,
+      selections: [],
+      // 当前显示的item集合（分页后）
+      curItemList: [], 
+      isItemInfo: false,
+      isLogInfo: false,
+      isDataInfo: false,
+      // 当前行
+      curRow: {},
+// 表头
+      columns: [
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: '案例号',
+          key: 'id',
+          width: 100,
+          sortable: true,
+          align: 'center'
+        },
+        {
+          title: '案例名',
+          key: 'example_name',
+          align: 'center'
+        },
+        {
+          title: '级别',
+          key: 'rank',
+          sortable: true,
+          align: 'center'
+        },
+        {
+          title: '状态',
+          key: 'state',
+          slot: 'zhuangtai',
+          align: 'center'
+        },
+        {
+          title: 'CPU核数',
+          key: 'cpu_num',
+          align: 'center'
+        },
+        {
+          title: 'GPU个数',
+          key: 'gpu_num',
+          align: 'center'
+        },
+        {
+          title: '提交时间',
+          key: 'submit_time',
+          width: 180,
+          slot: 'time',
+          align: 'center',
+          sortable: true,
+        },
+        {
+          title: '运行时长',
+          key: 'run_time',
+          align: 'center',
+          sortable: true,
+        },
+        {
+          title: '查看',
+          slot: 'details',
+          width: 280,
+          align: 'center'
+        },
+        // {
+        //   title: '实例信息',
+        //   slot: 'exampleInfo',
+        //   width: 280,
+        //   align: 'center'
+        // }
+      ],
+// 表内数据
+      itemList: [],
+      data: [
+        
+      ],
+      jsonBaseUrl: "http://localhost:3000",
+      // pageKind标明当前页的信息（database，modelbase等）
+      pageKind: 'example',
+    }
+  },
+  inject:['reload'],
+  created() {
+    this.getItemInfo()
+  },
+  methods: {
+    itemInfoBtn(row, index) {
+      this.isItemInfo=true;
+      for(var i in this.itemList) {
+        if(row.id == this.itemList[i].id) {
+          this.curRow = this.itemList[i];
+        }
+      }
+      
+    },
+    // 弹窗关闭按钮
+    close () {
+      this.isItemInfo=false;
+      this.isLogInfo=false;
+      this.isDataInfo=false;
+    },
+    toHome() {
+      this.$router.push('/home')
+    },
+   
+    toPages(name) {
+      var targetUrl = "/" + name
+      this.$router.push(targetUrl)
+    },
+    putItemState(toState) {
+      var findUrl = this.jsonBaseUrl + '/' + this.pageKind
+      var putList = []
+      for(var i in this.selections) {
+        for (var j in this.itemList) {
+          // 
+          if(this.selections[i].id == this.itemList[j].id) {
+            if(toState == "挂起"){
+              this.itemList[j].state = "挂起中"
+            } else if(toState == "运行") {
+              this.itemList[j].state = "运行中"
+            } else if(toState == "终止") {
+              this.itemList[j].state = "已终止"
+            }
 
+            var putUrl = findUrl + "/" + this.itemList[j].id
+            var putPromise = new Promise((resolve,reject)=>{
+              axios.put(putUrl, this.itemList[j]).then(response=>{
+                // console.info("in:" + response)
+              })
+            })
+            putList.push(putPromise)
+          
+          }
+        }
+      }
+      Promise.all(putList).then((result) =>{
+        console.info("result: " + result)
+        this.getItemInfo()
+      }).catch((error) => {
+        console.info(error)
+      })  
+    },
+    // tostate param：终止，运行，挂起
+    // state:已终止 挂起中 运行中
+    updateToState(toState) {
+      if(this.selections.length == 0) {
+        this.$Message["error"]({
+          background: true,
+          content: "当前未选中任何对象，请选择需要" + toState + "的对象"
+        });
+      } else {
+        if(toState == "运行" || toState == "挂起") {
+          for(var i in this.selections) {
+            if(this.selections[i].state == "已终止") {
+              this.$Message["error"]({
+                background: true,
+                content: "选中目标中存在终止对象，请修改后操作"
+              });
+              return
+            } 
+          }
+        }
+        this.putItemState(toState)
+      }
+      
+      // this.reload()
+    },
+   
+    deleteItem() {
+      var findUrl = this.jsonBaseUrl + '/' + this.pageKind
+      var deleteList = []
+      for(var i in this.selections) {
+        for (var j in this.itemList) {
+          // 
+          if(this.selections[i].id == this.itemList[j].id) {
+
+            var deleteUrl = findUrl + "/" + this.itemList[j].id
+            var deletePromise = new Promise((resolve,reject)=>{
+              axios.delete(deleteUrl, this.itemList[j]).then(response=>{
+                // console.info("in:" + response)
+              })
+            })
+            deleteList.push(deletePromise)
+          
+          }
+        }
+      }
+      Promise.all(deleteList).then((result) =>{
+        console.info("result: " + result)
+        this.getItemInfo()
+      }).catch((error) => {
+        console.info(error)
+      })
+      this.reload()  
+    },
+    selectChange(selection) {
+      this.selections = selection;
+      console.log('已选中数据', this.selections)
+    },
+    getItemInfo() {
+      var findUrl = this.jsonBaseUrl + "/" + this.pageKind
+      this.itemList = []
+      axios.get(findUrl).then(response => {
+        this.itemList = response.data
+        console.info(this.itemList)
+        this.itemNum = this.itemList.length
+        this.updatePage(1)
+        // for(var i in this.itemList) {
+        //   var example = {}
+        //   example.id = this.itemList[i].id
+        //   example.example_name = this.itemList[i].example_name
+        //   example.rank = this.itemList[i].rank
+        //   example.state = this.itemList[i].state
+        //   example.cpu_num = this.itemList[i].cpu_num
+        //   example.gpu_num = this.itemList[i].gpu_num
+        //   example.submit_time = this.itemList[i].post_date + " " + this.itemList[i].post_time
+        //   example.run_time = this.itemList[i].run_time
+        //   this.data.push(example);
+        // }
+      })
+    },
+    updatePage(page) {
+      console.info(this.itemNum)
+      this.curItemList = []
+      var len = Math.min(this.itemList.length - 1, this.pageSize * page - 1)
+      for(var i = 0 + (page-1) * this.pageSize;i <= len;i++) {
+        this.curItemList.push(this.itemList[i])
+      }
+      console.info(this.curItemList)
+    },
+    test() {
+      this.getItemInfo()
+    }
+  }
+}
 </script>

@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "main": "dist-electron/main.js",
-  "description": " assitant tools of data driven ",
-  "author": {"institution":"CS of Njust",
-              "name":"Prof Xiao"},
+  "description": "Data Driven Auxiliary Tools ",
+  "author": {
+    "institution": "CS of Njust",
+    "name": "Prof Xiao"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build && electron-builder",
@@ -44,7 +46,9 @@
       "dist/**/*",
       "dist-electron/**/*"
     ],
-    "extraFiles": ["./data"],
+    "extraFiles": [
+      "./data"
+    ],
     "directories": {
       "output": "output/"
     }

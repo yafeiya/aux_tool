@@ -1,11 +1,20 @@
 <template>
   <Tabs v-if="pageKind!=='defineFunction'" type="card" class="main-table">
     <TabPane :label = this.labelName1>
-        <!-- {{ pageKind +" " + nowItem + " /my" }} -->
-        <menuCard :view-range="'private'" :page-kind="this.pageKind" :now-item="this.nowItem"/>
+<!--        {{ pageKind +" " + nowItem + " /my " + myCardList.length }}-->
+        <menuCard :view-range="'private'"  :now-item="this.nowItem" :task-type="taskType"
+        :my-card-list="myCardList" :public-card-list="publicCardList"
+        :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
+        :public-card-num="publicCardNum" :public-card-row-num="publicCardRowNum" :public-card-col-num="publicCardColNum"
+        :add-form-item="addFormItem"/>
     </TabPane>
     <TabPane :label = this.labelName2>
-        <menuCard :view-range="'public'" :page-kind="this.pageKind" :now-item="this.nowItem"/>
+<!--        {{ pageKind +" " + nowItem + " /public" + publicCardList.length }}-->
+        <menuCard :view-range="'public'"  :now-item="this.nowItem" :task-type="taskType"
+        :my-card-list="myCardList" :public-card-list="publicCardList"
+        :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
+        :public-card-num="publicCardNum" :public-card-row-num="publicCardRowNum" :public-card-col-num="publicCardColNum"
+        :add-form-item="addFormItem"/>
     </TabPane>
   </Tabs>
   <Tabs v-else type="card" class="main-table">
@@ -16,18 +25,21 @@
 </template>
 <script>
 import menuCard from './menucard.vue';
+import axios from 'axios';
 export default {
-    
+
     data() {
         return {
             // myUrl: null,
             // publicUrl: null
             labelName1: "我的",
             labelName2: "公共",
+            // jsonBaseUrl: "http://localhost:3000",
         }
     },
-    
-    props: ['pageKind', 'nowItem'],
+    inject:['jsonBaseUrl', 'pageKind'],
+    props: ['nowItem', 'taskType', 'myCardList', 'publicCardList', 'myCardNum', 'myCardRowNum', 'myCardColNum',
+            'publicCardNum', 'publicCardRowNum', 'publicCardColNum', 'addFormItem'],
 
     components: {
        menuCard
@@ -45,6 +57,10 @@ export default {
         } else {
             this.labelName1 = "自定义函数"
         }
+        // this.getPageContent()
+    },
+    methods: {
+
     }
 }
 </script>

@@ -1,5 +1,5 @@
-import { app,Menu,BrowserWindow } from 'electron';
-import path from 'path'
+const {app, BrowserWindow,  dialog, Menu} = require('electron')
+const path = require('path')
 
 //auto open json-server
 const jsonServer = require('json-server')
@@ -26,11 +26,12 @@ server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 
+let mainWindow
 //mainwindow
-const createdWindow = () => {
-    const win = new BrowserWindow({
-        width:900,
-        height:600,
+function createWindow() {
+  mainWindow = new BrowserWindow({
+        width:1600,
+        height:900,
         center: true, // 是否出现在屏幕居中的位置
         //  minWidth: 300,     // 最小宽度
         //  minHeight: 500,    // 最小高度
@@ -38,82 +39,51 @@ const createdWindow = () => {
          maxHeight: 1080,    // 最大高度
         //fullscreen: true   //全屏
         frame: true,   	//设置为 false 时可以创建一个无边框窗口
-        
-        webPreferences: {
-            webSecurity: false,
-            //...
-          },
-      
         // icon: path.join(__dirname, './public/icons/girl.ico'),//应用运行时的标题栏图标
         webPreferences: {
             nodeIntegration: true,
             contextIsolation:false,
+            webSecurity: false,
         }
     })
-
+    process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
     if (process.env.VITE_DEV_SERVER_URL) {
-        win.loadURL(process.env.VITE_DEV_SERVER_URL)
+      mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL)
     } else {
-        win.loadFile(path.resolve(__dirname, '../dist/index.html'));
+      mainWindow.loadFile(path.resolve(__dirname, '../dist/index.html'));
     }
 
-    // MenuTool
-    // const menuTemplate = [
-    //   {
-    //     label:"文件", // 菜单名
-    //     submenu:[ // 二级菜单
-    //       //  {
-    //       //   label:'新建',
-    //       //   accelerator:'ctrl+n', // 快捷键
-    //       //   click:()=>{ // 点击事件
-    //       //     console.log("create file")
-    //       //   }
-    //       // },
-    //       {type: 'separator'}, // 分割线
-    //       {
-    //         label:'退出',
-    //           click:()=>{ // 点击事件
-    //           console.log("exit mainwindow")
-                  
-    //         }
-    //       },
-    //       {type: 'separator'}, // 分割线
-    //       // {label:'全屏切换',role:'togglefullscreen'},
-    //       {label: '撤销', role: 'undo'},     
-  
-          
+    mainWindow.on('close', e => {
+      e.preventDefault(); //先阻止一下默认行为，不然直接关了，提示框只会闪一下
+      dialog.showMessageBox({
+          type: 'info',
+          title: '提示',
+          message:'确认退出？',
+          buttons: ['确认', '取消'],   //选择按钮，点击确认则下面的idx为0，取消为1
+          cancelId: 1, //这个的值是如果直接把提示框×掉返回的值，这里设置成和“取消”按钮一样的值，下面的idx也会是1
+      }).then(idx => {
+      //注意上面↑是用的then，网上好多是直接把方法做为showMessageBox的第二个参数，我的测试下不成功
+          console.log(idx)
+          if (idx.response == 1) {
+              console.log('index==1,cancel')
+              e.preventDefault();
+              // mainWindow.minimize();
+          } else {
+              console.log('index==0,close')
+              mainWindow = null
+              app.exit();
+          }
+          })
+      });
 
-    //     ],
-    //   },
-        
-    //   // {
-    //   //   label:"编辑",
-    //   //   submenu:[ 
-    //   //      {
-    //   //       label:'复制', 
-    //   //       role:'copy', // 快捷键与系统冲突时可以使用role属性指定
-    //   //       click:()=>{ 
-    //   //         console.log("copy")
-    //   //       }
-    //   //     },
-    //   //     {
-    //   //       label:'粘贴',
-    //   //       role:'paste',
-    //   //       click:()=>{
-    //   //         console.log("paste")
-    //   //       }
-    //   //     },
-    //   //     {
-    //   //       label:'保存',
-    //   //     }
-    //   //   ],
-    //   // },
-    // ]
-    // const menuBuilder = Menu.buildFromTemplate(menuTemplate)
-    // Menu.setApplicationMenu(menuBuilder)
-
-}
+};
 
 app.whenReady().then(()=>{
-    createdWindow()
+    createWindow()
 })
+
+// app.on('ready', createWindow)
+// app.on('activate', function () {
+//   if (mainWindow === null) createWindow()
+// });
+

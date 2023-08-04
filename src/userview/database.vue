@@ -36,14 +36,19 @@
         <!--//固定侧边菜单-->
         <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
           <!-- pageKind={"database","defineFunction","design","example"} -->
-          <parentMenu :pageMenu="this.menu" :pageKind="this.pageKind" @getNowItem="getNowItem">
+          <parentMenu :pageMenu="this.menu"  @getNowItem="getNowItem">
           </parentMenu>
         </Sider>
         <Layout :style="{marginLeft: '200px'}">
           <!--//上边框菜单栏-->
           <Header>
             <Menu mode="horizontal" theme="dark" active-name="database" @on-select="toPages">
-              <div class="layout-home"><Button @click="toHome" type="default" ghost>跳转首页</Button></div>
+              <div class="layout-home">
+                  <p style="font-size: 20px;color: #ffffff;width: 250px">
+                    <Icon type="md-cog" class="ivu-anim-loop" size="23" />
+                    数据驱动辅助工具
+                  </p>
+              </div>
               <div class="layout-nav1">
                 <MenuItem name="database">
                   <Icon type="ios-navigate"></Icon>
@@ -74,7 +79,12 @@
               <TabPane label="我的数据集">这里是我的数据集火力分配1</TabPane>
               <TabPane label="公共数据集">这里是公共数据集火力分配1</TabPane>
             </Tabs> -->
-            <mainTable :pageKind = "pageKind" :nowItem="nowItem"/>
+            <mainTable :nowItem="nowItem" :task-type="taskType"
+            :my-card-list="myCardList" :public-card-list="publicCardList"
+            :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
+            :public-card-num="publicCardNum" :public-card-row-num="publicCardRowNum" :public-card-col-num="publicCardColNum"
+            :add-form-item="addFormItem"/>
+
           </Content>
         </Layout>
       </Layout>
@@ -85,6 +95,7 @@
 import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -134,10 +145,86 @@ export default {
 						]
 					},
 			],
+      // 增加表单的形式，default为是否需要默认显示 title文本显示，name对应数据库中属性名，itemType对应表单项信息。
+      // default的others写默认文本来源，select和radio形式的写样式信息 input写初始提示语
+      // bigInput,比较大的输入项
+      addFormItemCfg:[
+        {
+          title: '名称',
+          name: 'dataset_name',
+          value: {dataset_name: ''},
+          default: false,
+          itemType: 'input',
+          others:["请输入数据集名称..."]
+        },
+        {
+          title: '级别',
+          name: 'rank',
+          value: {rank: ''},
+          default: false,
+          itemType: 'select',
+          others:[{'value':'1级', 'text': '级别1'},{'value':'2级', 'text': '级别2'},{'value':'3级', 'text': '级别3'}]
+        },
+        {
+          title: '类型',
+          name: 'type',
+          value: {type: ''},
+          default: true,
+          itemType: 'input',
+          others:['taskType']
+        },
+        {
+          title: '任务',
+          name: 'task',
+          value: {task: ''},
+          default: true,
+          itemType: 'input',
+          others:['nowItem']
+        },
+        {
+          title: '字符集',
+          name: 'character_type',
+          value: {character_type: ''},
+          default: false,
+          itemType: 'input',
+          others:["请输入字符集..."]
+        },
+        {
+          title: '表头',
+          name:'header',
+          value: {header: ''},
+          default: false,
+          itemType: 'radio',
+          others:[{'label': '有'}, {'label': '无'}]
+        },
+        {
+          title: '描述',
+          name: 'description',
+          value: {description: ''},
+          default: false,
+          itemType: 'bigInput',
+          others:["相关描述......"]
+        }
+      ],
+      addFormItem: {
+        released: "00",
+        data_path: "",
+      },
         // pageKind标明当前页的信息（database，modelbase等）
+        // taskType表明nowItem父级名字
         // nowItem表明选中的是菜单的哪一项。
       pageKind: 'database',
-      nowItem: null, 
+      taskType: null,
+      nowItem: null,
+      jsonBaseUrl: "http://localhost:3000",
+      myCardList: [],
+      publicCardList: [],
+      myCardNum: 0,
+      myCardRowNum: 0,
+      myCardColNum: 6,
+      publicCardNum: 0,
+      publicCardRowNum: 0,
+      publicCardColNum: 6,
     }
   },
   components: {
@@ -145,17 +232,144 @@ export default {
     parentMenu,
     mainTable,
   },
+  provide(){
+    return {
+      updataPage: this.updataPage,
+      addFormItemCfg: this.addFormItemCfg,
+      pageKind: this.pageKind,
+      // taskType: this.taskType,
+      // nowItem: this.nowItem,
+      jsonBaseUrl: this.jsonBaseUrl,
+
+      // myCardList: this.myCardList,
+      // myCardNum: this.myCardNum,
+      // myCardRowNum: this.myCardRowNum,
+      // myCardColNum: this.myCardColNum,
+
+      // publicCardList: this.publicCardList,
+      // publicCardNum: this.publicCardNum,
+      // publicCardRowNum: this.publicCardRowNum,
+      // publicCardColNum: this.publicCardColNum,
+    }
+  },
+  created() {
+
+  },
   methods: {
+    // 将”00“编号删除
+    deleteZero() {
+      axios.get()
+    },
     toHome() {
       this.$router.push('/home')
     },
-    getNowItem(nowItem) {
-      this.nowItem = nowItem
+    updataPage(actionType) {
+      if(actionType == "delete") {
+        // console.info("this is delete")
+        this.$Message["success"]({
+            background: true,
+            content: "删除成功"
+        });
+      } else if(actionType == "upload") {
+        // console.info("this is delete")
+        this.$Message["success"]({
+            background: true,
+            content: "发布成功"
+        });
+      } else if(actionType == "creat") {
+        this.$Message["success"]({
+            background: true,
+            content: "新建成功"
+        });
+      }
+      this.myCardList= []
+      this.publicCardList=[]
+      this.getPageContent()
+    },
+    getNowItem(name) {
+      // taskType-nowItem
+      var myName = name.split('-')
+      console.info("myName: " + myName)
+      this.nowItem = myName[1]
+      this.taskType = myName[0]
+      console.info(this.nowItem)
+      console.info(this.taskType)
+      this.myCardList= []
+      this.publicCardList=[]
+      this.getPageContent()
+      this.getFormItem()
     },
     toPages(name) {
       var targetUrl = "/" + name
       this.$router.push(targetUrl)
-    }
-  }
+    },
+    getPageContent() {
+            var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType
+            console.info(findUrl)
+            // this.myCardList = Object.keys(this.myCardList).map(key =>this.myCardList[key]);
+            // console.info(typeof(x))
+            // this.myCardList = []
+            // this.publicCardList = []
+            // console.info(findUrl)
+            // console.info("hah2"+ this.myCardColNum)
+            let res =  axios.get(findUrl).then(response => {
+
+                            var cardList = response.data
+                            console.info(cardList)
+                            var length = cardList.length
+                            // this.myCardNum = 0;
+                            // this.publicCardNum = 0;
+                            for(var i = 0; i < length;i++) {
+                                if(cardList[i].released[0] == '1') {
+                                    this.myCardList.push(cardList[i] );
+                                    // this.myCardNum = this.myCardNum + 1
+                                    // console.info(this.myCardList)
+                                }
+                                if(cardList[i].released[1] == '1') {
+                                    this.publicCardList.push(cardList[i]);
+                                    // console.info(this.myCardList)
+                                    // this.publicCardNum = this.publicCardNum + 1;
+                                }
+                                if(cardList[i].released == "00") {
+                                  // console.info(findUrl)
+                                  // console.info(cardList[i])
+                                  // findUrl = findUrl + "&id=" + cardList[i].id
+                                  // console.info(findUrl)
+                                  var findDeleteUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + cardList[i].id
+                                  // console.info(findUrl)
+                                  axios.delete(findDeleteUrl).then(response=>{
+                                    console.info("delete success")
+                                  })
+                                }
+                            }
+                this.myCardNum = this.myCardList.length
+                this.myCardRowNum = Math.ceil((this.myCardNum+1) / this.myCardColNum)
+                this.publicCardNum = this.publicCardList.length
+                this.publicCardRowNum =  Math.ceil(this.publicCardNum / this.publicCardColNum)
+            })
+            // console.info("hah"+ this.myCardColNum)
+            // (async () => {
+            //     this.cardList = (await axios.get(findUrl)).data
+            // })()
+            // console.log(this.cardList);
+    },
+    getFormItem() {
+        for(var index in this.addFormItemCfg) {
+            // console.info(this.addFormItemCfg[index].name)
+            this.addFormItem = {...this.addFormItem, ...this.addFormItemCfg[index].value}
+            if(this.addFormItemCfg[index].default == true) {
+                var name = this.addFormItemCfg[index].name
+                // var len =
+                for(var j in this.addFormItemCfg[index].others) {
+                    if(j != 0) {
+                        this.addFormItem[name] = this.addFormItem[name] + '-'
+                    }
+                    var text = this.addFormItemCfg[index].others[j]
+                    this.addFormItem[name] = this[text]
+                }
+            }
+        }
+    },
+  },
 }
 </script>

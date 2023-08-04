@@ -44,7 +44,14 @@ const routes = [
         component:database,
         meta: {
             title: '数据库信息'
-      }
+        },
+        // children:[
+        //   {
+        //     path: '/火力分配1',
+        //     name: '火力分配1',
+        //     component:database,
+        //   },
+        // ]
     },
     {
         path:'/modelbase',
