@@ -7,6 +7,7 @@ import design from '../userview//design.vue'
 import example from '../userview//example.vue'
 import regist from '../userview//regist.vue'
 import home from '../userview//home.vue'
+import paint from '../userview/flow/index.vue'
 // import List from '../views/List.vue'
 // import Detail from '../views/Detail.vue'
 const routes = [
@@ -44,14 +45,7 @@ const routes = [
         component:database,
         meta: {
             title: '数据库信息'
-        },
-        // children:[
-        //   {
-        //     path: '/火力分配1',
-        //     name: '火力分配1',
-        //     component:database,
-        //   },
-        // ]
+      }
     },
     {
         path:'/modelbase',
@@ -89,6 +83,15 @@ const routes = [
             title: '方案实例'
       }
     },
+    {
+      path:'/index',
+      name:'index',
+      //   component:resolve => require(['../components/database.vue'], resolve),
+      component:paint,
+      meta: {
+          title: '开始设计'
+    }
+  },
     {
         path:'/home',
         name:'home',

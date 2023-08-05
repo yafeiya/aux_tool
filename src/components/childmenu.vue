@@ -1,33 +1,33 @@
 <template>
-    <Submenu :name="parentItem.name">
-        <template #title>
-            <Icon :type="parentItem.icon"/>
-            <span>{{ parentItem.title }}</span>
-        </template>
-        <template v-for="item in parentItem.children">
-            <childMenu
-                v-if="item.children&&item.children.length!==0"
-                :parent-item="item"
-            >
-            </childMenu>
-            <menu-item v-else :name="parentItem.title + '-' + item.title">
-                <Icon :type="item.icon"/>
-                <span>{{ item.title }}</span>
-            </menu-item>
-        </template>
-    </Submenu>
+  <Submenu :name="parentItem.name">
+    <template #title>
+      <Icon :type="parentItem.icon"/>
+      <span>{{ parentItem.title }}</span>
+    </template>
+    <template v-for="item in parentItem.children">
+      <childMenu
+          v-if="item.children&&item.children.length!==0"
+          :parent-item="item"
+      >
+      </childMenu>
+      <menu-item v-else :name="parentItem.title + '-' + item.title">
+        <Icon :type="item.icon"/>
+        <span>{{ item.title }}</span>
+      </menu-item>
+    </template>
+  </Submenu>
 </template>
 
 <script>
-	export default{
-		name:'childMenu',
-		props: {
-			parentItem: {
-				type: Object,
-				default: () => {}
-			}
-		}
-	}
+export default{
+  name:'childMenu',
+  props: {
+    parentItem: {
+      type: Object,
+      default: () => {}
+    }
+  }
+}
 </script>
 
 <style>

@@ -1,85 +1,85 @@
 <template>
-    <div v-if="viewRange === 'private'">
-        <div v-if="myCardNum!=0">
-            <Row v-for="(i,index1) in this.myCardRowNum" :key="index1"  style="background:#eee;padding:20px" :gutter="16" >
-                <Col v-for="(j, index2) in this.getColOfRow(i, this.myCardRowNum, this.myCardColNum, this.myCardNum)" 
-                :key="index2" :span= "Math.ceil(24 / this.myCardColNum)">
-                    <div v-if="i==1&&j==1">
-                        <addCard :view-range="viewRange"  :now-item="nowItem" :task-type="taskType" 
-                        :add-form-item="addFormItem"/>
-                    </div>
-                    <div v-else>
-                        <contentCard :card-info="this.myCardList[ (i-1) * this.myCardColNum + j - 2 ]" :view-range="viewRange" 
-                        :now-item="nowItem" :task-type="taskType"/>
-                    </div>
-                </Col>
-            </Row>
-        </div>
-        <div v-else>
-            <Row style="background:#eee;padding:20px" :gutter="16">
-                <Col :span= "Math.ceil(24 / this.myCardColNum)">
-                    <addCard :view-range="viewRange"  :now-item="nowItem" :task-type="taskType" 
-                    :add-form-item="addFormItem"/>
-                </Col>
-            </Row>
-        </div>
+  <div v-if="viewRange === 'private'">
+    <div v-if="myCardNum!=0">
+      <Row v-for="(i,index1) in this.myCardRowNum" :key="index1"  style="background:#eee;padding:20px" :gutter="16" >
+        <Col v-for="(j, index2) in this.getColOfRow(i, this.myCardRowNum, this.myCardColNum, this.myCardNum)"
+             :key="index2" :span= "Math.ceil(24 / this.myCardColNum)">
+          <div v-if="i==1&&j==1">
+            <addCard :view-range="viewRange"  :now-item="nowItem" :task-type="taskType"
+                     :add-form-item="addFormItem"/>
+          </div>
+          <div v-else>
+            <contentCard :card-info="this.myCardList[ (i-1) * this.myCardColNum + j - 2 ]" :view-range="viewRange"
+                         :now-item="nowItem" :task-type="taskType" :add-form-item="addFormItem" :card-list="myCardList"/>
+          </div>
+        </Col>
+      </Row>
     </div>
     <div v-else>
-        <Row v-for="(i,index1) in this.publicCardRowNum" :key="index1"  style="background:#eee;padding:20px" :gutter="16" >
-            <Col v-for="(j, index2) in this.getColOfRow(i, this.publicCardRowNum, this.publicCardColNum, this.publicCardNum)" 
-            :key="index2" :span= "Math.ceil(24 / this.publicCardColNum)">
-                <contentCard :card-info="this.publicCardList[ (i-1) * this.publicCardColNum + j - 1]" :view-range="viewRange" 
-                 :now-item="nowItem" :task-type="taskType"/>
-            </Col>
-        </Row>
+      <Row style="background:#eee;padding:20px" :gutter="16">
+        <Col :span= "Math.ceil(24 / this.myCardColNum)">
+          <addCard :view-range="viewRange"  :now-item="nowItem" :task-type="taskType"
+                   :add-form-item="addFormItem"/>
+        </Col>
+      </Row>
     </div>
+  </div>
+  <div v-else>
+    <Row v-for="(i,index1) in this.publicCardRowNum" :key="index1"  style="background:#eee;padding:20px" :gutter="16" >
+      <Col v-for="(j, index2) in this.getColOfRow(i, this.publicCardRowNum, this.publicCardColNum, this.publicCardNum)"
+           :key="index2" :span= "Math.ceil(24 / this.publicCardColNum)">
+        <contentCard :card-info="this.publicCardList[ (i-1) * this.publicCardColNum + j - 1]" :view-range="viewRange"
+                     :now-item="nowItem" :task-type="taskType" :add-form-item="addFormItem" :card-list="publicCardList"/>
+      </Col>
+    </Row>
+  </div>
 </template>
 <script>
 import axios from 'axios';
 import addCard from './addcard.vue'
 import contentCard from './contentcard.vue'
 export default {
-    data() {
-        return {
-            // jsonBaseUrl: "http://localhost:3000",
-             // 中间页面卡片列表与数量
-            // myCardList: [],
-            // publicCardList: [],
-            // colnum应该为24的因数
-            // myCardNum: 0,
-            // myCardRowNum: 0,
-            // myCardColNum: 4,
-            // publicCardNum: 0,
-            // publicCardRowNum: 0,
-            // publicCardColNum: 4,
+  data() {
+    return {
+      // jsonBaseUrl: "http://localhost:3000",
+      // 中间页面卡片列表与数量
+      // myCardList: [],
+      // publicCardList: [],
+      // colnum应该为24的因数
+      // myCardNum: 0,
+      // myCardRowNum: 0,
+      // myCardColNum: 4,
+      // publicCardNum: 0,
+      // publicCardRowNum: 0,
+      // publicCardColNum: 4,
+    }
+  },
+  inject:['jsonBaseUrl', 'pageKind'],
+  // nowItem左侧选中条目，pageKind当前页面种类{'database'，'modelbase'，'definFunc'，'design'}，viewRange公共的还是私有的{'private','public'}
+  props: ['nowItem','viewRange','taskType' ,'myCardList', 'publicCardList', 'myCardNum', 'myCardRowNum', 'myCardColNum',
+    'publicCardNum', 'publicCardRowNum', 'publicCardColNum', 'addFormItem'],
+  components:{
+    addCard,
+    contentCard
+  },
+  methods: {
+
+    // 一列的个数不一定等于列数，因为有可能不够，所以得计算
+    // (当前所处行得位置，总行数，总列数，总个数)
+    getColOfRow(nowRow, rowNum, colNum, Num) {
+      if(nowRow == rowNum) {
+        if(this.viewRange == "private") {
+          return (Num - ((rowNum-1) * colNum) + 1)
+        } else {
+          return (Num - ((rowNum-1) * colNum))
         }
-    },
-    inject:['jsonBaseUrl', 'pageKind'],
-    // nowItem左侧选中条目，pageKind当前页面种类{'database'，'modelbase'，'definFunc'，'design'}，viewRange公共的还是私有的{'private','public'}
-    props: ['nowItem','viewRange','taskType' ,'myCardList', 'publicCardList', 'myCardNum', 'myCardRowNum', 'myCardColNum',
-            'publicCardNum', 'publicCardRowNum', 'publicCardColNum', 'addFormItem'],
-    components:{
-        addCard,
-        contentCard
-    },
-    methods: {
-        
-        // 一列的个数不一定等于列数，因为有可能不够，所以得计算
-        // (当前所处行得位置，总行数，总列数，总个数)
-        getColOfRow(nowRow, rowNum, colNum, Num) {
-            if(nowRow == rowNum) {
-                if(this.viewRange == "private") {
-                    return (Num - ((rowNum-1) * colNum) + 1)
-                } else {
-                    return (Num - ((rowNum-1) * colNum))
-                }
-                
-            } else {
-                return colNum
-            }
-        }
-    },
-    
+
+      } else {
+        return colNum
+      }
+    }
+  },
+
 }
 </script>
 

@@ -93,9 +93,9 @@
             </template>
             <!--表格最右列查看详情-->
             <template #details="{row, index}">
-              
+
               <Button type="info" style="margin-right: 5px;margin-left: -10%" @click="itemInfoBtn(row, index)" v-width=80 >详情</Button>
-              
+
               <Modal v-model="isItemInfo" width="800" :loading="true">
                 <template #header>
                   <p style="color:#4d85ea;text-align:center">
@@ -105,15 +105,15 @@
                 </template>
                 <Card>
                   <template #title><strong>案例信息</strong></template>
-              
-                    <Row>
-                      <Col span="8">案例号：{{ curRow.id }}</Col>
-                      <Col span="8">案例名: {{ curRow.example_name }}</Col>
-                      <Col span="8">状态: {{ curRow.state }}</Col>
-                      <Col span="8">级别: {{ curRow.rank }}</Col>
-                      <Col span="8">数据目录: {{ curRow.dataset_url }}</Col>
-                    </Row>
-                
+
+                  <Row>
+                    <Col span="8">案例号：{{ curRow.id }}</Col>
+                    <Col span="8">案例名: {{ curRow.example_name }}</Col>
+                    <Col span="8">状态: {{ curRow.state }}</Col>
+                    <Col span="8">级别: {{ curRow.rank }}</Col>
+                    <Col span="8">数据目录: {{ curRow.dataset_url }}</Col>
+                  </Row>
+
                 </Card>
                 <Card>
                   <template #title><strong>模型信息</strong></template>
@@ -143,7 +143,7 @@
                   <Button type="info"  long @click="close">确定</Button>
                 </template>
               </Modal>
-              
+
               <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=80 >日志</Button>
               <Modal v-model="isLogInfo" width="500">
                 <template #header>
@@ -175,7 +175,7 @@
                   <Button type="info"  long @click="close">确定</Button>
                 </template>
               </Modal>
-              
+
             </template>
           </Table>
         </div>
@@ -196,7 +196,7 @@ export default {
       pageSize: 7,
       selections: [],
       // 当前显示的item集合（分页后）
-      curItemList: [], 
+      curItemList: [],
       isItemInfo: false,
       isLogInfo: false,
       isDataInfo: false,
@@ -273,7 +273,7 @@ export default {
 // 表内数据
       itemList: [],
       data: [
-        
+
       ],
       jsonBaseUrl: "http://localhost:3000",
       // pageKind标明当前页的信息（database，modelbase等）
@@ -292,7 +292,7 @@ export default {
           this.curRow = this.itemList[i];
         }
       }
-      
+
     },
     // 弹窗关闭按钮
     close () {
@@ -303,7 +303,7 @@ export default {
     toHome() {
       this.$router.push('/home')
     },
-   
+
     toPages(name) {
       var targetUrl = "/" + name
       this.$router.push(targetUrl)
@@ -313,7 +313,7 @@ export default {
       var putList = []
       for(var i in this.selections) {
         for (var j in this.itemList) {
-          // 
+          //
           if(this.selections[i].id == this.itemList[j].id) {
             if(toState == "挂起"){
               this.itemList[j].state = "挂起中"
@@ -330,7 +330,7 @@ export default {
               })
             })
             putList.push(putPromise)
-          
+
           }
         }
       }
@@ -339,7 +339,7 @@ export default {
         this.getItemInfo()
       }).catch((error) => {
         console.info(error)
-      })  
+      })
     },
     // tostate param：终止，运行，挂起
     // state:已终止 挂起中 运行中
@@ -358,21 +358,21 @@ export default {
                 content: "选中目标中存在终止对象，请修改后操作"
               });
               return
-            } 
+            }
           }
         }
         this.putItemState(toState)
       }
-      
+
       // this.reload()
     },
-   
+
     deleteItem() {
       var findUrl = this.jsonBaseUrl + '/' + this.pageKind
       var deleteList = []
       for(var i in this.selections) {
         for (var j in this.itemList) {
-          // 
+          //
           if(this.selections[i].id == this.itemList[j].id) {
 
             var deleteUrl = findUrl + "/" + this.itemList[j].id
@@ -382,7 +382,7 @@ export default {
               })
             })
             deleteList.push(deletePromise)
-          
+
           }
         }
       }
@@ -392,7 +392,7 @@ export default {
       }).catch((error) => {
         console.info(error)
       })
-      this.reload()  
+      this.reload()
     },
     selectChange(selection) {
       this.selections = selection;

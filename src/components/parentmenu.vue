@@ -6,10 +6,10 @@
     </Affix>
     <Divider />
 
-<!--    <Affix v-color="'white'" style="font-size: 20px;margin-left: 15%;margin-top: 5%;margin-bottom: -4%;">-->
-<!--      <Button ghost size="large" shape="circle"><Icon type="ios-add-circle-outline" style="font-size: 110%"/> 添加类别</Button>-->
-<!--    </Affix>-->
-<!--    <Divider />-->
+    <!--    <Affix v-color="'white'" style="font-size: 20px;margin-left: 15%;margin-top: 5%;margin-bottom: -4%;">-->
+    <!--      <Button ghost size="large" shape="circle"><Icon type="ios-add-circle-outline" style="font-size: 110%"/> 添加类别</Button>-->
+    <!--    </Affix>-->
+    <!--    <Divider />-->
     <template v-for="item in pageMenu">
       <childMenu v-if="item.children&&item.children.length!==0" :parent-item="item">
       </childMenu>
@@ -23,7 +23,7 @@
     <Affix v-color="'white'" style="font-size: 20px;margin-left: 15%;margin-top: 5%;margin-bottom: -4%;">
       <Button ghost  shape="circle" style="width:80%;margin-left: 0%" >
         <Icon type="ios-add-circle-outline" style="font-size: 110%;margin-left: -6px;"/>
-         添加类别
+        添加类别
       </Button>
     </Affix>
 

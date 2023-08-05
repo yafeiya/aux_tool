@@ -33,11 +33,16 @@ function createWindow() {
         width:1600,
         height:900,
         center: true, // 是否出现在屏幕居中的位置
-        //  minWidth: 300,     // 最小宽度
-        //  minHeight: 500,    // 最小高度
-         maxWidth: 1920,    // 最大宽度
-         maxHeight: 1080,    // 最大高度
+        minWidth: 1366,     // 最小宽度
+        minHeight: 768,    // 最小高度
+         // maxWidth: 1920,    // 最大宽度
+         // maxHeight: 1080,    // 最大高度
         //fullscreen: true   //全屏
+        // titleBarStyle: "hidden",
+        // titleBarOverlay: {
+        //   color: "#fff",
+        //   symbolColor: "black"
+        //  },
         frame: true,   	//设置为 false 时可以创建一个无边框窗口
         // icon: path.join(__dirname, './public/icons/girl.ico'),//应用运行时的标题栏图标
         webPreferences: {
@@ -46,6 +51,7 @@ function createWindow() {
             webSecurity: false,
         }
     })
+
     process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
     if (process.env.VITE_DEV_SERVER_URL) {
       mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL)
@@ -82,8 +88,4 @@ app.whenReady().then(()=>{
     createWindow()
 })
 
-// app.on('ready', createWindow)
-// app.on('activate', function () {
-//   if (mainWindow === null) createWindow()
-// });
 

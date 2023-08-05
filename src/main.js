@@ -1,8 +1,8 @@
+import { createApp } from 'vue'
+import App from './App.vue'
+
 import './assets/main.css'
 
-import { createApp } from 'vue'
-
-import App from './App.vue'
 // import Router from 'vue-router'
 import router from './router'
 
@@ -10,7 +10,6 @@ import ViewUIPlus from 'view-ui-plus'
 import 'view-ui-plus/dist/styles/viewuiplus.css'
 
 import {saveAs} from 'file-saver';
-// import { set } from 'vue'
 
 const app = createApp(App)
 
