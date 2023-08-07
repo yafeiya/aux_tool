@@ -131,12 +131,30 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
     },
     items: [
       {
+        id:'in1',
+        group: 'top',
+      },
+      {
+        id:'in2',
+        group: 'top',
+      },
+      {
+        id:'in3',
         group: 'top',
       },
       {
         group: 'right',
       },
       {
+        id:'out1',
+        group: 'bottom',
+      },
+      {
+        id:'out2',
+        group: 'bottom',
+      },
+      {
+        id:'out3',
         group: 'bottom',
       },
       {

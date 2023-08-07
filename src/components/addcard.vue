@@ -145,7 +145,7 @@ export default {
   methods: {
     initVaild() {
       for(var i in this.addFormItem) {
-        console.info("vaild: "+i)
+        // console.info("vaild: "+i)
         if(i == "released") {
           continue;
         }
@@ -153,7 +153,7 @@ export default {
         var validItem = [{ required: true, message: '该项必填', trigger: 'blur' }]
         this.ruleValidate[i] = validItem
       }
-      console.info(this.ruleValidate)
+      // console.info(this.ruleValidate)
     },
     creatCard (name) {
       //提示成功信息

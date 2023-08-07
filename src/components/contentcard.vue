@@ -136,7 +136,7 @@ export default {
   },
   created() {
     this.cardName = this.cardInfo[this.cardNameFlag]
-    console.info("cardname: " + this.cardName + " " + this.cardNameFlag )
+    // console.info("cardname: " + this.cardName + " " + this.cardNameFlag )
     this.initVaild()
   },
 
@@ -153,14 +153,14 @@ export default {
     },
     initVaild() {
       for(var i in this.cardInfo) {
-        console.info("vaild: "+i)
+        // console.info("vaild: "+i)
         if(i == "released") {
           continue;
         }
         var validItem = [{ required: true, message: '该项必填', trigger: 'blur' }]
         this.ruleValidate[i] = validItem
       }
-      console.info(this.ruleValidate)
+      // console.info(this.ruleValidate)
     },
     editCard (name) {
       //提示取消信息

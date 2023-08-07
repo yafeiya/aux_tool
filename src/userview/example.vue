@@ -89,7 +89,7 @@
             </template>
             <!--时间相关-->
             <template #time="{row}">
-              <Time :time="row.post_date + ' ' + row.post_time" type="datetime" />
+              <Time :time="row.post_time" type="datetime" />
             </template>
             <!--表格最右列查看详情-->
             <template #details="{row, index}">
@@ -134,8 +134,11 @@
                     <Col span="8">CPU核数：{{ curRow.cpu_num }}</Col>
                     <Col span="8">GPU算力: {{ curRow.gpu_num }}</Col>
                     <Col span="8">内存用量: {{ curRow.memory }}</Col>
-                    <Col span="8">启动时间: {{ curRow.start_time }}</Col>
-                    <Col span="8">结束时间:{{ curRow.end_time }}</Col>
+                    <Col span="8">启动时间:<Time :time="curRow.start_time" type="datetime" /></Col>
+                    <Col span="8">结束时间:
+                      <Time v-if="curRow.end_time!='' " :time="curRow.end_time" type="datetime" />
+                      <div v-else> {{ "" }}</div>
+                    </Col>
                     <Col span="8">运行时间:{{ curRow.run_time }}</Col>
                   </Row>
                 </Card>
@@ -192,6 +195,9 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      nowTime: (new Date()).getTime(),
+      runTime: 0,
+      // time2: (new Date()).getTime() - 86400 * 3 * 1000 + 2000,
       itemNum: 0,
       pageSize: 7,
       selections: [],
@@ -283,8 +289,22 @@ export default {
   inject:['reload'],
   created() {
     this.getItemInfo()
+
   },
   methods: {
+    calcTime(newTime, oldTime) {
+      var timeDiff = newTime - oldTime
+      var timeDiff = Math.floor(timeDiff / 1000)
+      var min = Math.floor(timeDiff / 60)
+      var hour = Math.floor(min / 60)
+      var ans = 0;
+      if(hour == 0) {
+        ans = min + "分钟"
+      } else {
+        ans = hour + "小时" + min + "分钟" 
+      }
+      return ans
+    },
     itemInfoBtn(row, index) {
       this.isItemInfo=true;
       for(var i in this.itemList) {
@@ -317,10 +337,16 @@ export default {
           if(this.selections[i].id == this.itemList[j].id) {
             if(toState == "挂起"){
               this.itemList[j].state = "挂起中"
+              this.itemList[j].end_time = this.nowTime
+              this.itemList[j].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
             } else if(toState == "运行") {
               this.itemList[j].state = "运行中"
+              this.itemList[j].end_time = ""
+              this.itemList[j].run_time = this.calcTime(this.nowTime, this.itemList[i].start_time)
             } else if(toState == "终止") {
               this.itemList[j].state = "已终止"
+              this.itemList[j].end_time = this.nowTime
+              this.itemList[j].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
             }
 
             var putUrl = findUrl + "/" + this.itemList[j].id
@@ -361,6 +387,8 @@ export default {
             }
           }
         }
+        
+        
         this.putItemState(toState)
       }
 
@@ -405,19 +433,19 @@ export default {
         this.itemList = response.data
         console.info(this.itemList)
         this.itemNum = this.itemList.length
+        for(var i in this.itemList) {
+          if(this.itemList[i].state == "运行中") {
+            this.itemList[i].run_time = this.calcTime(this.nowTime, this.itemList[i].start_time)
+            console.info(this.itemList[i].run_time)
+            console.info(this.nowTime)
+            console.info(this.itemList[i].start_time)
+            this.itemList[i].end_time = ""
+          } else if(this.itemList[i].state == "挂起中" || this.itemList[i].state == "已终止") {
+            this.itemList[i].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
+          }
+        }
         this.updatePage(1)
-        // for(var i in this.itemList) {
-        //   var example = {}
-        //   example.id = this.itemList[i].id
-        //   example.example_name = this.itemList[i].example_name
-        //   example.rank = this.itemList[i].rank
-        //   example.state = this.itemList[i].state
-        //   example.cpu_num = this.itemList[i].cpu_num
-        //   example.gpu_num = this.itemList[i].gpu_num
-        //   example.submit_time = this.itemList[i].post_date + " " + this.itemList[i].post_time
-        //   example.run_time = this.itemList[i].run_time
-        //   this.data.push(example);
-        // }
+        
       })
     },
     updatePage(page) {

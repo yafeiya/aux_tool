@@ -4,7 +4,7 @@
     <Card :bordered="false" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);width: 28%">
       <template #title><img src="../assets/图标.png" class="logo-size"></template>
       <Login ref="form" @on-submit="handleSubmit">
-        <Email name="mail" />
+        <UserName name="username" />
         <Poptip trigger="focus" placement="right" width="240">
           <Password name="password" :rules="passwordRule" placeholder="至少6位密码，区分大小写" @on-change="handleChangePassword" />
           <template #content>
@@ -93,18 +93,21 @@ export default {
     handleChangePassword (val) {
       this.passwordLen = val.length;
     },
-    handleSubmit (valid, { mail, password }) {
+    handleSubmit (valid, { username, password }) {
       console.log(valid)
       if (valid) {
-        this.$Modal.info({
-          title: '输入的内容如下：',
-          content: 'mail: ' + mail + ' | password: ' + password
-        });
-        var content = {username: mail, password: password}
+        // this.$Modal.info({
+        //   title: '输入的内容如下：',
+        //   content: 'username: ' + username+ ' | password: ' + password
+        // });
+        var content = {username: username, password: password}
         console.log("111")
         axios.post(this.base_url+'/users',content)
             .then(response => {
-              console.log(response);
+              this.$Message["success"]({
+                background: true,
+                content: '注册成功，用户名' + username
+              });
             })
             .catch(error => {
               console.log(error);

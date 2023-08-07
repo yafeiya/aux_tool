@@ -20,7 +20,7 @@
                   <span>{{ item.label }}</span>
               </MenuItem>
               <Submenu
-                  :name="item.label"
+                  :name="item.name"
                   v-for="item in hasChildren()"
                   :key="item.path"
               >
@@ -30,13 +30,13 @@
                   <MenuGroup
                   class="MenuGroup" 
                   :title="item.label"
-                  @mousedown="startDrag"
+                  @mousedown="startDrag($event,item.label)"
                   >
                       <MenuItem 
                       :name="item.name"
                       v-for="(subitem, subIndex) in item.children"
                       :key="subIndex"
-                      @mousedown="startDrag"
+                      @mousedown="startDrag($event,item.label)"
                       >
                           <span>{{ subitem.label }}</span>
                       </MenuItem> 
@@ -68,7 +68,6 @@
   import FlowGraph from './graph';
   import ToolBar from './components/ToolBar/index.vue';
   import ConfigPanel from './components/ConfigPanel/index.vue';
-  
   import { Addon } from '@antv/x6'
 
   
@@ -90,43 +89,14 @@
       const router = useRouter();
       const maingraph = FlowGraph;
       const isReady = ref(false);
-      const initGraph = function () {
-        const graph = FlowGraph.init();
-        isReady.value = true;
-        // const resizeFn = () => {
-        //   const { width, height } = getContainerSize();
-        //   graph.resize(width, height);
-        // };
-        // resizeFn();
-        // window.addEventListener('resize', resizeFn);
-        // return () => {
-        //   window.removeEventListener('resize', resizeFn);
-        // };
-      };
-
-      const startDrag = (e) => {
-      // console.log(e)
-      // console.log(e.target.outerText)
-      const node = maingraph.graph.createNode({
-        shape: 'flow-chart-rect',
-        width: 80,
-        height: 42,
-        label: e.target.outerText,
-      });
-        maingraph.dnd.start(node, e);
-      };
-
-      onMounted(() => {
-          initGraph();
-      });
-
+      let fathername = ""
       const list = [
           {
               path: '/home',
               name: 'home',
               label: '| 返回首页',
               icon: '',
-              url: '/home'
+              url: '/home',
           },
           {
               name: 'dataloading',
@@ -157,19 +127,6 @@
                       icon: '',
                       url: ''
                   }
-              ],
-              parameter:[
-              {
-                      name: 'data_path',
-                      label: '数据路径',
-                 
-                  },
-                {
-                      name: 'head_num',
-                      label: '表头数量',
-                 
-                  },
-
               ]
 
           },
@@ -244,8 +201,8 @@
               url: '',
               children: [
                   {
-                      name: '',
-                      label: '',
+                      name: '模型训练',
+                      label: '模型训练',
                       icon: '',
                       url: ''
                   },
@@ -295,6 +252,69 @@
           },
           
       ];
+
+      const initGraph = function () {
+        const graph = FlowGraph.init();
+        isReady.value = true;
+        // const resizeFn = () => {
+        //   const { width, height } = getContainerSize();
+        //   graph.resize(width, height);
+        // };
+        // resizeFn();
+        // window.addEventListener('resize', resizeFn);
+        // return () => {
+        //   window.removeEventListener('resize', resizeFn);
+        // };
+      };
+
+
+      const startDrag = (e, fatherItem) => {
+        // var a = Object.assign({},fatherItem)
+        // let b = ""
+        // let c = ""
+        // const d = fatherItem
+        // console.log("fatherItem")
+        // console.log(e)
+        // console.log(e.target.outerText)
+        // console.log(a)
+        // console.log(d)
+  
+        // for (const [key, value] of Object.entries(a)) {
+        //     b = b + a[key]
+        //     // console.log(b)
+        // }
+        // c = c+b
+        // console.log(c)
+        const name = savename(fatherItem)
+        // console.log(name)
+        var initNode = {
+          shape: 'flow-chart-rect',
+          width: 80,
+          height: 42,
+          label: e.target.outerText,
+          data:{
+            fatherLabel: name,
+          }
+        } 
+        const node = maingraph.graph.createNode(initNode);
+        maingraph.dnd.start(node, e);
+      };
+
+      onMounted(() => {
+          initGraph();
+      });
+
+      const savename =(a) =>{
+        if (typeof(a) !== "undefined"){
+          fathername = a
+        }else{
+          fathername = fathername
+        }
+        return fathername;
+      }
+
+
+      
       // 编写菜单栏
       const noChildren =() =>{
           return list.filter((item) => !item.children);
@@ -305,13 +325,15 @@
       };
 
       const changeMenu = (item) =>{
-                router.push({
-                    name:item.name,
-                })
-            };
+        console.info(item.name)
+        router.push({
+            name:item.name,
+        })
+      };
 
       return {
         isReady,
+        savename,
         startDrag,
         noChildren,
         hasChildren,

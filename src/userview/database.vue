@@ -313,10 +313,10 @@ export default {
       this.myCardList= []
       this.publicCardList=[]
       var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType
-      console.info(findUrl)
+      // console.info(findUrl)
       axios.get(findUrl).then(response => {
         var cardList = response.data
-        console.info(cardList)
+        // console.info(cardList)
         var length = cardList.length
 
         for(var i = 0; i < length;i++) {
