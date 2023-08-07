@@ -21,7 +21,7 @@
         <Login class="regist-btn" @on-submit="toRegist">
           <Submit>注册</Submit>
         </Login>
-        <router-link to="/home">Home</router-link>
+<!--        <router-link to="/home">Home</router-link>-->
       </Card>
     </div>
   </div>

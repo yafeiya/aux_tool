@@ -37,7 +37,10 @@
     </template>
     <div style="text-align:center;margin-top: -8%">
       <!--预览图 目前图片来自网页-->
-      <img src="../assets/dataset.png">
+      <img v-if="this.pageKind=='database'" src="../assets/dataset.png">
+      <img v-if="this.pageKind=='modelbase'" src="../assets/model.png">
+      <img v-if="this.pageKind=='defineFunction'" src="../assets/function.png">
+      <img v-if="this.pageKind=='design'" src="../assets/design.png">
       <Tooltip content="点击编辑" placement="top">
         <div v-if="this.pageKind == 'design'">
           <a @click="toindex">
@@ -49,7 +52,7 @@
         </div>
         <div v-else>
           <a @click="editBtn = true">
-            <h4 style="margin-top: -5%;color: #054079">
+            <h4 style="margin-top: 8%;color: #054079">
               <Icon type="ios-create" style="font-size: 20px"/>
               {{this.cardName}}
               <Modal v-model="editBtn" title="编辑" :styles="{top: '30px'}"

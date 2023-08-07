@@ -1,6 +1,12 @@
 <template>
   <Tabs class="config" value="1">
     <TabPane label="属性" name="1">
+      <Row class="canshu" align="middle" v-for="item in parameter">
+        <Col :span="8">{{item}}</Col>
+        <Col :span="14">
+          <Input v-model="data.nodecanshu1" style="width: 100%" @change="oncanshu1Change" />
+        </Col>
+      </Row>
       <Row class="canshu" align="middle">
         <Col :span="8">参数1</Col>
         <Col :span="14">
@@ -80,11 +86,48 @@
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
 
+  const list_attribute = [
 
-  
+          {
+              name: 'data_load',
+              label: '数据加载',
+              icon: '',
+              children: [
+                  {
+                      name: 'data_path',
+                      label: '数据路径',
+                      icon: '',
+                      url: ''
+                  },
+                  {
+                      name: 'head_num',
+                      label: '表头数量',
+                      icon: '',
+                      url: ''
+                  },
+                  {
+                      name: 'dataset_num',
+                      label: '数据集大小',
+                      icon: '',
+                      url: ''
+                  },
+                  {
+                      name: 'img_size',
+                      label: '图像分辨率',
+                      icon: '',
+                      url: ''
+                  }
+              ]
+
+          }]
+
   export default defineComponent({
     name: 'Index',
-
+    data() {
+      return {
+        parameter:["参数888","参数881","参数882","参数83"]
+      }
+    },
     setup() {
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
@@ -161,29 +204,29 @@
         curCel?.setData({
           canshu2: val,
         });
-      };  
+      };
 
       const oncanshu3Change = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
           canshu3: val,
         });
-      };  
+      };
 
       const oncanshu4Change = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
           canshu4: val,
         });
-      };  
+      };
 
       const oncanshu5Change = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
           canshu5: val,
         });
-      };  
-  
+      };
+
 
       return {
         globalGridAttr,
@@ -208,7 +251,7 @@
 
 .config{
   width: 300px;
-  text-align: center, 
+  text-align: center
 }
 .canshu{
   margin: 10px;

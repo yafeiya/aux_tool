@@ -157,6 +157,19 @@
                       icon: '',
                       url: ''
                   }
+              ],
+              parameter:[
+              {
+                      name: 'data_path',
+                      label: '数据路径',
+                 
+                  },
+                {
+                      name: 'head_num',
+                      label: '表头数量',
+                 
+                  },
+
               ]
 
           },
@@ -219,6 +232,20 @@
                   {
                       name: 'DQN',
                       label: 'DQN',
+                      icon: '',
+                      url: ''
+                  },
+              ]
+          },
+          {
+              name: 'moudletrain',
+              label: '模型训练',
+              icon: '',
+              url: '',
+              children: [
+                  {
+                      name: '',
+                      label: '',
                       icon: '',
                       url: ''
                   },

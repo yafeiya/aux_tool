@@ -154,7 +154,7 @@ export default {
           default: false,
           itemType: 'input',
           isEditOnly: true,
-          others:["请输入数据集名称..."]
+          others:["请输入模型名称..."]
         },
         {
           title: '级别',

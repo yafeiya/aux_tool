@@ -104,7 +104,7 @@
                   </p>
                 </template>
                 <Card>
-                  <template #title><strong>案例信息</strong></template>
+                  <template #title><strong>任务信息</strong></template>
 
                   <Row>
                     <Col span="8">案例号：{{ curRow.id }}</Col>

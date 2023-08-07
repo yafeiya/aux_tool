@@ -177,7 +177,7 @@ export default {
           others:['taskType']
         },
         {
-          title: '任务',
+          title: '范数',
           name: 'task',
           value: {task: ''},
           default: true,
