@@ -45,11 +45,13 @@
     "appId": "com.njust.casic",
     "productName": "数据驱动辅助工具",
     "copyright": "Copyright © 2023 njust",
+    "icon": "./public/favicon.ico",
     "nsis": {
       "oneClick": false,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
       "shortcutName": "数据驱动辅助工具",
+      
       "deleteAppDataOnUninstall": true,
       "artifactName": "数据驱动辅助工具${version}.${ext}",
       "createDesktopShortcut": true

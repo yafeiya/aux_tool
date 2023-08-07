@@ -35,8 +35,8 @@ function createWindow() {
         center: true, // 是否出现在屏幕居中的位置
         minWidth: 1366,     // 最小宽度
         minHeight: 768,    // 最小高度
-         // maxWidth: 1920,    // 最大宽度
-         // maxHeight: 1080,    // 最大高度
+        maxWidth: 1920,    // 最大宽度
+        maxHeight: 1080,    // 最大高度
         //fullscreen: true   //全屏
         // titleBarStyle: "hidden",
         // titleBarOverlay: {
