@@ -1,6 +1,69 @@
 <template>
   <Tabs class="config" value="1">
     <TabPane label="属性" name="1">
+
+      <Row align="middle" 
+      v-if="globalGridAttr.selflabel === '图片文件夹'"
+      >
+        <Col :span="10">指定图片文件夹</Col>
+        <Col :span="12">
+          <Select
+            style="width: 100%"
+            v-model="data.nodeLabelname "
+            @on-change="onLabelChange"
+          >
+            <Option 
+            v-for="option in selectoptions"
+            :value="option.name"
+            >
+            {{option.name}}
+            </Option>
+          </Select>
+        </Col>
+      </Row>
+
+      <Row align="middle" 
+      v-if="globalGridAttr.selflabel === '数值数据集'"
+      >
+        <Col :span="10">指定数值数据集</Col>
+        <Col :span="12">
+          <Select
+            style="width: 100%"
+            v-model="data.nodeLabelname "
+            @on-change="onLabelChange"
+          >
+            <Option 
+            v-for="option in selectoptions2"
+            :value="option.name"
+            >
+            {{option.name}}
+            </Option>
+          </Select>
+        </Col>
+      </Row>
+
+      <Row align="middle" 
+      v-if="globalGridAttr.selflabel === '图像数据集'"
+      >
+        <Col :span="10">指定图像数据集</Col>
+        <Col :span="12">
+          <Select
+            style="width: 100%"
+            v-model="data.nodeLabelname "
+            @on-change="onLabelChange"
+          >
+            <Option 
+            v-for="option in selectoptions3"
+            :value="option.name"
+            >
+            {{option.name}}
+            </Option>
+          </Select>
+        </Col>
+      </Row>
+
+
+
       <Row class="params" align="middle">
         <Col :span="8">数据路径</Col>
         <Col :span="14">
@@ -93,6 +156,8 @@
         nodeStrokeWidth: '',
         nodeFill: '',
         nodeFontSize: '',
+        nodeLabelname:'',
+        nodeselflabel:''
       })
       watch(
         [() => id.value],
@@ -105,6 +170,8 @@
           data.nodeStrokeWidth = globalGridAttr.nodeStrokeWidth
           data.nodeFill = globalGridAttr.nodeFill
           data.nodeFontSize = globalGridAttr.nodeFontSize
+          data.nodeLabelname = globalGridAttr.nodename 
+          data.nodeselflabel = globalGridAttr.selflabel
           // curCel?.attr('body/stroke', 'red');
         },
         {
@@ -167,7 +234,73 @@
         curCel?.setData({
           imgsize: val,
         });
-      };  
+      }; 
+      
+      const onLabelChange = (value) => {
+        
+        const val = value;
+        globalGridAttr.nodename = val;
+        curCel?.setData({
+          name: val,
+        });
+        // curCel?.attr('text/text', val);
+        // console.log(curCel.data.name)
+      };
+
+      const selectoptions = [
+        {
+          name:'图片文件夹1',
+          father:''
+        },
+        {
+          name:'图片文件夹2',
+          father:''
+        },
+        {
+          name:'图片文件夹3',
+          father:''
+        },
+        
+
+      ]
+
+      const selectoptions2 = [
+        {
+          name:'图像数据集1',
+          father:''
+        },
+        {
+          name:'图像数据集2',
+          father:''
+        },
+        {
+          name:'图像数据集3',
+          father:''
+        },
+        
+
+      ]
+
+      const selectoptions3 = [
+        {
+          name:'数值数据集1',
+          father:''
+        },
+        {
+          name:'数值数据集2',
+          father:''
+        },
+        {
+          name:'数值数据集3',
+          father:''
+        },
+        
+
+      ]
+
+      const getinfo = [
+
+      ]
  
   
 
@@ -183,6 +316,10 @@
         onheadernumChange,
         ondatasetsizeChange,
         onimgsizeChange,
+        selectoptions,
+        selectoptions2,
+        selectoptions3,
+        onLabelChange,
       };
     },
   });

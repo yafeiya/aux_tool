@@ -35,16 +35,16 @@
         </a>
       </div>
     </template>
-    <div style="text-align:center;margin-top: -8%">
+    <div style="text-align:center">
       <!--预览图 目前图片来自网页-->
-      <img v-if="this.pageKind=='database'" src="../assets/dataset.png">
-      <img v-if="this.pageKind=='modelbase'" src="../assets/model.png">
-      <img v-if="this.pageKind=='defineFunction'" src="../assets/function.png">
-      <img v-if="this.pageKind=='design'" src="../assets/design.png">
-      <Tooltip content="点击编辑" placement="top">
+      <img v-if="this.pageKind=='database'" src="../assets/dataset.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+      <img v-if="this.pageKind=='modelbase'" src="../assets/model.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+      <img v-if="this.pageKind=='defineFunction'" src="../assets/function.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+      <img v-if="this.pageKind=='design'" src="../assets/design.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+      <Tooltip content="点击编辑" placement="bottom">
         <div v-if="this.pageKind == 'design'">
           <a @click="toindex">
-            <h4 style="margin-top: -5%;color: #054079">
+            <h4 style="height: 10px; margin-top: 130px;color: #054079">
               <Icon type="ios-create" style="font-size: 20px"/>
               {{this.cardName}}
             </h4>
@@ -52,9 +52,9 @@
         </div>
         <div v-else>
           <a @click="editBtn = true">
-            <h4 style="margin-top: 8%;color: #054079">
+            <h4 style="margin-top: 130px;color: #054079;height: 10%">
               <Icon type="ios-create" style="font-size: 20px"/>
-              {{this.cardName}}
+              {{this.cardInfo[cardNameFlag]}}
               <Modal v-model="editBtn" title="编辑" :styles="{top: '30px'}"
                      @on-ok="editCard('cardInfo')" @on-cancel="cancelInfo">
                 <Form ref="cardInfo" :model="cardInfo" :label-width="80" :rules="ruleValidate">
@@ -121,7 +121,7 @@ export default {
       preview1:false,
       editBtn:false,
       editFormItem: {},
-      cardName: null,
+      // cardName: null,
       ruleValidate: {
         // dataset_name: [
         //   { required: true, message: 'The name cannot be empty', trigger: 'blur' }
@@ -139,7 +139,9 @@ export default {
     // console.info("cardname: " + this.cardName + " " + this.cardNameFlag )
     this.initVaild()
   },
-
+  // updated() {
+  //   this.cardName = this.cardInfo[this.cardNameFlag]
+  // },
   methods: {
     //跳转画布设计
     toindex() {
@@ -164,6 +166,7 @@ export default {
     },
     editCard (name) {
       //提示取消信息
+      var tmpData = this.cardInfo
       this.$refs[name].validate((valid) => {
             if (valid) {
               console.info(this.cardInfo)
@@ -172,14 +175,19 @@ export default {
                 console.info(item)
                 if(item.isEditOnly == true) {
                   console.info("the only is: " + item.title)
-                  for(var i in this.cardList) {
-                    if(this.cardInfo.id !== this.cardList[i].id && this.cardInfo[item.name] == this.cardList[i][item.name]) {
+                  for(var j in this.cardList) {
+                    if(this.cardInfo.id !== this.cardList[j].id && this.cardInfo[item.name] == this.cardList[j][item.name]) {
+
                       this.$Message["error"]({
                         background: true,
                         content: item.title + "与其他项重复，请仔细检查"
                       });
+
+                      // this.cardInfo = tmpData
+
                       this.getPageContent()
                       // this.updataPage("editRepeat")
+                      // console.info("over")
                       return;
                     }
                   }
@@ -213,9 +221,12 @@ export default {
         }
       }
       var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
-      // console.info(findUrl + " contentcard")
+      console.info(findUrl + " contentcard")
+      console.info(this.cardInfo)
       axios.put(findUrl, this.cardInfo).then(response => {
+        // this.cardName = this.cardInfo[this.cardNameFlag]
         this.updataPage("delete")
+        console.info(response.data)
       })
     },
     uploadCard() {

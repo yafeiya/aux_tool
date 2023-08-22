@@ -19,6 +19,10 @@ export function nodeOpt(id: any, globalGridAttr: any) {
     globalGridAttr.nodeheadernum = cell.getData()?.headernum;
     globalGridAttr.nodedatasetsize = cell.getData()?.datasetsize;
     globalGridAttr.nodeimgsize = cell.getData()?.imgsize;
+    globalGridAttr.nodename = cell.getData()?.name;
+    globalGridAttr.selflabel = cell.getData()?.selflabel
+    // console.log(globalGridAttr.selflabel)
+    // console.log(globalGridAttr.nodename)
   }
   return curCel;
 }

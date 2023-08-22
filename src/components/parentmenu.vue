@@ -35,7 +35,7 @@ import childMenu from './childmenu.vue';
 export default {
   data() {
     return {
-      initNowItem: "numDataBase1-1-火力分配1"
+      initNowItem: "numDataBase1-1-任务1"
     }
   },
   name:'parentMenu',

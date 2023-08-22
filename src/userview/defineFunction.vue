@@ -101,7 +101,7 @@ export default {
       menu:[
         {
           name: 'lossFunction',
-          title: '损失函数',
+          title: '训练过程分布',
           icon: 'ios-navigate',
           children:[
             {

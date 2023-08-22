@@ -105,8 +105,8 @@ export default {
           icon: 'ios-navigate',
           children:[
             {
-              name: '红蓝对抗火力分配',
-              title: '红蓝对抗火力分配',
+              name: '领域1',
+              title: '领域1',
               // icon: 'ios-document-outline',
             }
           ]
@@ -117,13 +117,13 @@ export default {
           icon: 'ios-keypad',
           children:[
             {
-              name: '作战意图研判',
-              title: '作战意图研判',
+              name: '领域2',
+              title: '领域2',
               // icon: 'ios-document-outline',
             },
             {
-              name: '战术决策',
-              title: '战术决策',
+              name: '领域3',
+              title: '领域3',
               // icon: 'ios-document-outline',
             },
           ]

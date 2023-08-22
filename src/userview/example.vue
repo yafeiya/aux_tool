@@ -297,6 +297,7 @@ export default {
       var timeDiff = Math.floor(timeDiff / 1000)
       var min = Math.floor(timeDiff / 60)
       var hour = Math.floor(min / 60)
+      min = min % 60
       var ans = 0;
       if(hour == 0) {
         ans = min + "分钟"
@@ -396,6 +397,13 @@ export default {
     },
 
     deleteItem() {
+      if(this.selections.length == 0) {
+        this.$Message["error"]({
+          background: true,
+          content: "当前未选中任何对象，请选择需要删除的对象"
+        });
+        return;
+      }
       var findUrl = this.jsonBaseUrl + '/' + this.pageKind
       var deleteList = []
       for(var i in this.selections) {
@@ -406,7 +414,9 @@ export default {
             var deleteUrl = findUrl + "/" + this.itemList[j].id
             var deletePromise = new Promise((resolve,reject)=>{
               axios.delete(deleteUrl, this.itemList[j]).then(response=>{
-                // console.info("in:" + response)
+                console.info("in:" + response)
+                this.itemList.splice(j, 1)
+                this.getItemInfo()
               })
             })
             deleteList.push(deletePromise)
@@ -416,11 +426,11 @@ export default {
       }
       Promise.all(deleteList).then((result) =>{
         console.info("result: " + result)
-        this.getItemInfo()
+        
       }).catch((error) => {
         console.info(error)
       })
-      this.reload()
+      // this.reload()
     },
     selectChange(selection) {
       this.selections = selection;

@@ -9,8 +9,9 @@
                      :add-form-item="addFormItem"/>
           </div>
           <div v-else>
-            <contentCard :card-info="this.myCardList[ (i-1) * this.myCardColNum + j - 2 ]" :view-range="viewRange"
+            <contentCard :card-info="this.myCardList[ (i-1) * this.myCardColNum + j - 2 ]" :view-range="viewRange" 
                          :now-item="nowItem" :task-type="taskType" :add-form-item="addFormItem" :card-list="myCardList"/>
+                         <!-- :card-name="this.myCardList[ (i-1) * this.myCardColNum + j - 2 ][cardNameFlag]" -->
           </div>
         </Col>
       </Row>
@@ -28,8 +29,9 @@
     <Row v-for="(i,index1) in this.publicCardRowNum" :key="index1"  style="background:#eee;padding:20px" :gutter="16" >
       <Col v-for="(j, index2) in this.getColOfRow(i, this.publicCardRowNum, this.publicCardColNum, this.publicCardNum)"
            :key="index2" :span= "Math.ceil(24 / this.publicCardColNum)">
-        <contentCard :card-info="this.publicCardList[ (i-1) * this.publicCardColNum + j - 1]" :view-range="viewRange"
+        <contentCard :card-info="this.publicCardList[ (i-1) * this.publicCardColNum + j - 1]" :view-range="viewRange" 
                      :now-item="nowItem" :task-type="taskType" :add-form-item="addFormItem" :card-list="publicCardList"/>
+                     <!-- :card-name="this.publicCardList[ (i-1) * this.publicCardColNum + j - 1][cardNameFlag]" -->
       </Col>
     </Row>
   </div>
@@ -41,6 +43,7 @@ import contentCard from './contentcard.vue'
 export default {
   data() {
     return {
+      // cardName: this.,
       // jsonBaseUrl: "http://localhost:3000",
       // 中间页面卡片列表与数量
       // myCardList: [],
@@ -54,7 +57,7 @@ export default {
       // publicCardColNum: 4,
     }
   },
-  inject:['jsonBaseUrl', 'pageKind'],
+  inject:['jsonBaseUrl', 'pageKind','cardNameFlag'],
   // nowItem左侧选中条目，pageKind当前页面种类{'database'，'modelbase'，'definFunc'，'design'}，viewRange公共的还是私有的{'private','public'}
   props: ['nowItem','viewRange','taskType' ,'myCardList', 'publicCardList', 'myCardNum', 'myCardRowNum', 'myCardColNum',
     'publicCardNum', 'publicCardRowNum', 'publicCardColNum', 'addFormItem'],
@@ -62,6 +65,9 @@ export default {
     addCard,
     contentCard
   },
+  mounted() {
+    console.info(this.myCardList)
+  },  
   methods: {
 
     // 一列的个数不一定等于列数，因为有可能不够，所以得计算

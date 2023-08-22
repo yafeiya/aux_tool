@@ -11,36 +11,75 @@
           >
               <MenuItem
               class="backhome"
-              :index="item.path" 
-              v-for="item in noChildren()"
-              :name="item.name"
-              @click="changeMenu(item)"
+              name="backhome"
+              @click="backhome()"
               >   
                   <Icon type="md-arrow-back" />
+                  <span>| 返回首页</span>
+              </MenuItem>
+
+              <MenuItem
+              class=""
+              v-for="item in noChildren()"
+              :name="item.name"
+              @click=""
+              >   
                   <span>{{ item.label }}</span>
               </MenuItem>
+
               <Submenu
                   :name="item.name"
                   v-for="item in hasChildren()"
-                  :key="item.path"
+                  @mousedown.right="startDrag($event,item.label)"
               >
                   <template #title> 
                       <span>{{ item.label }}</span>
                   </template>
-                  <MenuGroup
-                  class="MenuGroup" 
-                  :title="item.label"
-                  @mousedown="startDrag($event,item.label)"
-                  >
+
+                      <!-- <MenuItem
+                      class="secondmenustyle"
+                      :name="item.label"
+                      @mousedown="startDrag($event,item.label)"
+                      >   
+                          <span>{{ item.label }}</span>
+                      </MenuItem> -->
+                  
                       <MenuItem 
-                      :name="item.name"
-                      v-for="(subitem, subIndex) in item.children"
-                      :key="subIndex"
+                      class="secondmenustyle"
+                      :name="subitem.name"
+                      v-for="subitem in nohasChildren(item.children)"
                       @mousedown="startDrag($event,item.label)"
                       >
                           <span>{{ subitem.label }}</span>
                       </MenuItem> 
-                  </MenuGroup>
+
+                      <Submenu
+                          class="secondmenustyle"
+                          :name="subitem.name"
+                          v-for="subitem in stillhasChildren(item.children)"
+                      >
+                          <template #title> 
+                              <span>{{ subitem.label }}</span>
+                          </template>
+<!-- 
+                              <MenuItem
+                              class="thirdmenustyle"
+                              :name="subitem.label"
+                              @mousedown="startDrag($event,item.label)"
+                              >   
+                                  <span>{{ subitem.label }}</span>
+                              </MenuItem> -->
+
+                              <MenuItem
+                              class="thirdmenustyle" 
+                              :name="lastitem.name"
+                              v-for="lastitem in nohasChildren(subitem.children)"
+                              @mousedown="startDrag($event,item.label)"
+                              >
+                                  <span>{{ lastitem.label }}</span>
+                              </MenuItem>   
+                      </Submenu>
+    
               </Submenu>
           </Menu>
       </Sider>
@@ -91,13 +130,13 @@
       const isReady = ref(false);
       let fathername = ""
       const list = [
-          {
-              path: '/home',
-              name: 'home',
-              label: '| 返回首页',
-              icon: '',
-              url: '/home',
-          },
+          // {
+          //     path: '/home',
+          //     name: 'home',
+          //     label: '| 返回首页',
+          //     icon: '',
+          //     url: '/home',
+          // },
           {
               name: 'dataloading',
               label: '数据加载',
@@ -163,34 +202,58 @@
               url: '',
               children: [
                   {
-                      name: 'SVD',
-                      label: 'SVD',
-                      icon: '',
-                      url: ''
+                    name: 'machinelearning',
+                    label: '机器学习',
+                    icon: '',
+                    url: '',
+                    children: [
+                        {
+                          name: 'SVD',
+                          label: 'SVD',
+                          icon: '',
+                          url: ''
+                      },
+                    ]
                   },
                   {
-                      name: 'FCN',
-                      label: 'FCN',
-                      icon: '',
-                      url: ''
+                    name: 'deeplearning',
+                    label: '深度学习',
+                    icon: '',
+                    url: '',
+                    children: [
+                        {
+                          name: 'YOLOv3',
+                          label: 'YOLOv3',
+                          icon: '',
+                          url: ''
+                      },
+                      {
+                          name: 'FCN',
+                          label: 'FCN',
+                          icon: '',
+                          url: ''
+                      },
+                    ]
                   },
                   {
-                      name: 'YOLOv3',
-                      label: 'YOLOv3',
-                      icon: '',
-                      url: ''
-                  },
-                  {
-                      name: 'SAC',
-                      label: 'SAC',
-                      icon: '',
-                      url: ''
-                  },
-                  {
-                      name: 'DQN',
-                      label: 'DQN',
-                      icon: '',
-                      url: ''
+                    name: 'reinforcementlearning',
+                    label: '强化学习',
+                    icon: '',
+                    url: '',
+                    children:[                  
+                      {
+                          name: 'SAC',
+                          label: 'SAC',
+                          icon: '',
+                          url: ''
+                      },
+                      {
+                          name: 'DQN',
+                          label: 'DQN',
+                          icon: '',
+                          url: ''
+                      },
+                    ]
                   },
               ]
           },
@@ -215,8 +278,8 @@
               url: '',
               children: [
                   {
-                      name: '',
-                      label: '',
+                      name: 'batchdeduction',
+                      label: '批量推演',
                       icon: '',
                       url: ''
                   },
@@ -243,8 +306,8 @@
               url: '',
               children: [
                   {
-                      name: '',
-                      label: '',
+                      name: 'UDPmonitor',
+                      label: 'UDP监听',
                       icon: '',
                       url: ''
                   },
@@ -294,6 +357,7 @@
           label: e.target.outerText,
           data:{
             fatherLabel: name,
+            selflabel: e.target.outerText,
           }
         } 
         const node = maingraph.graph.createNode(initNode);
@@ -324,11 +388,19 @@
           return list.filter((item) => item.children);
       };
 
-      const changeMenu = (item) =>{
-        console.info(item.name)
-        router.push({
-            name:item.name,
-        })
+      const stillhasChildren =(thelist) =>{
+          return thelist.filter((item) => item.children);
+      };
+
+      const nohasChildren =(thelist) =>{
+          return thelist.filter((item) => !item.children);
+      };
+
+
+
+
+      const backhome = () =>{
+        router.push("/home")
       };
 
       return {
@@ -337,7 +409,9 @@
         startDrag,
         noChildren,
         hasChildren,
-        changeMenu,
+        backhome,
+        stillhasChildren,
+        nohasChildren,
       };
     },
   });
@@ -348,8 +422,11 @@
   // text-align: center;s
   margin-left: 22px;
 }
-.MenuGroup{
+.secondmenustyle{
   background-color:#eee;
+}
+.thirdmenustyle{
+  background-color:#ddd;
 }
 
 .layout{
