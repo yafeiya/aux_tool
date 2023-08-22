@@ -2,7 +2,6 @@
   "name": "auxtool",
   "version": "1.0.0",
   "private": true,
-  "main": "dist-electron/main.js",
   "description": "Data Driven Auxiliary Tools ",
   "author": {
     "institution": "CS of Njust",
@@ -10,9 +9,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && electron-builder",
+    "build": "vite build",
     "preview": "vite preview",
-    "serve-json": "json-server.cmd --watch data.json"
+    "json": "json-server.cmd --watch data.json"
   },
   "dependencies": {
     "axios": "^1.4.0",
@@ -36,35 +35,6 @@
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "typescript": "4.8.4",
-    "electron": "^25.3.2",
-    "electron-builder": "^24.6.3",
-    "vite": "^4.4.6",
-    "vite-plugin-electron": "^0.12.0"
-  },
-  "build": {
-    "appId": "com.njust.casic",
-    "productName": "数据驱动辅助工具",
-    "copyright": "Copyright © 2023 njust",
-    "icon": "./public/favicon.ico",
-    "nsis": {
-      "oneClick": false,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "shortcutName": "数据驱动辅助工具",
-      
-      "deleteAppDataOnUninstall": true,
-      "artifactName": "数据驱动辅助工具${version}.${ext}",
-      "createDesktopShortcut": true
-    },
-    "files": [
-      "dist/**/*",
-      "dist-electron/**/*"
-    ],
-    "extraFiles": [
-      "./data"
-    ],
-    "directories": {
-      "output": "output/"
-    }
+    "vite": "^4.4.6"
   }
 }
