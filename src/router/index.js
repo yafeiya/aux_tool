@@ -8,6 +8,7 @@ import example from '../userview//example.vue'
 import regist from '../userview//regist.vue'
 import home from '../userview//home.vue'
 import paint from '../userview/flow/index.vue'
+import temp from '../userview/temp.vue'
 // import List from '../views/List.vue'
 // import Detail from '../views/Detail.vue'
 const routes = [
@@ -90,8 +91,17 @@ const routes = [
       component:paint,
       meta: {
           title: '开始设计'
-    }
-  },
+      }
+    },
+    {
+      path:'/temp',
+      name:'temp',
+      //   component:resolve => require(['../components/database.vue'], resolve),
+      component:temp,
+      meta: {
+          title: 'test'
+      }
+    },
     {
         path:'/home',
         name:'home',

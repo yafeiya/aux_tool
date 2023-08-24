@@ -25,6 +25,7 @@
 <template>
   <!-- <Button @click="test">1231</Button> -->
   <div class="layout">
+
     <Layout :style="{marginLeft: '0px'}">
       <!--头部菜单导航-->
       <Header>
@@ -60,8 +61,10 @@
         </Menu>
       </Header>
       <!--主体内容部分-->
+
       <Content :style="{padding: '0 16px 16px'}">
         <!--=批量处理按钮-->
+
         <p style="margin-top: 1%;font-size: 20px">
           批量处理：
           <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="updateToState('终止')">终止</Button>
@@ -69,10 +72,13 @@
           <Button  type="primary" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">挂起</Button>
           <Button  type="error" icon="md-trash"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteItem">删除</Button>
         </p>
+
         <div style="margin-top: 1%">
           <!--表格部分-->
+
           <Table border ref="selection" :columns="columns" :data="curItemList" @on-selection-change="selectChange" style="width: auto">
             <!--根据状态state值显示图标-->
+
             <template #zhuangtai="{ row }">
               <h4 v-if="row.state==='挂起中'">
                 <Icon type="md-pause" />
@@ -92,9 +98,10 @@
               <Time :time="row.post_time" type="datetime" />
             </template>
             <!--表格最右列查看详情-->
+
             <template #details="{row, index}">
 
-              <Button type="info" style="margin-right: 5px;margin-left: -10%" @click="itemInfoBtn(row, index)" v-width=80 >详情</Button>
+              <Button type="info" style="margin-right: 5px;margin-left: -10%" @click="itemInfoBtn(row, index)" v-width=85 >详情</Button>
 
               <Modal v-model="isItemInfo" width="800" :loading="true">
                 <template #header>
@@ -147,20 +154,22 @@
                 </template>
               </Modal>
 
-              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=80 >日志</Button>
-              <Modal v-model="isLogInfo" width="500">
+              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=85 >训练过程</Button>
+              <Modal v-model="isLogInfo" width="1000" style="margin-top: -50px">
                 <template #header>
                   <p style="color:#4d85ea;text-align:center">
                     <Icon type="ios-information-circle"></Icon>
-                    <span>案例日志</span>
+                    <span>训练过程可视化</span>
                   </p>
                 </template>
-                <Input  type="textarea" :rows="10" placeholder="这里是日志..." />
+                <Layout>
+                  <lineChart />
+                </Layout>
                 <template #footer>
                   <Button type="info"  long @click="close">确定</Button>
                 </template>
               </Modal>
-              <Button type="info" style="margin-right: -30px" @click="isDataInfo=true" v-width=80 >数据</Button>
+              <Button type="info" style="margin-right: -30px" @click="isDataInfo=true" v-width=85 >模型评价</Button>
               <Modal v-model="isDataInfo" width="500" style="margin-top: 100px">
                 <template #header>
                   <p style="color:#4d85ea;text-align:center">
@@ -175,13 +184,14 @@
                   </Upload>
                 </p>
                 <template #footer>
-                  <Button type="info"  long @click="close">确定</Button>
+                  <Button type="info"  long @click="close" >确定</Button>
                 </template>
               </Modal>
 
             </template>
           </Table>
         </div>
+
       </Content>
       <!--分页组件-->
       <!-- <h3>{{ this.itemNum }}</h3> -->
@@ -191,7 +201,10 @@
 </template>
 <script>
 import {MenuGroup, Result} from "view-ui-plus";
+import lineChart from '../components/chart/line.vue'
 import axios from 'axios';
+import * as echarts from 'echarts'
+
 export default {
   data() {
     return {
@@ -286,12 +299,15 @@ export default {
       pageKind: 'example',
     }
   },
+  components:{
+    lineChart,
+  },
   inject:['reload'],
   created() {
-    this.getItemInfo()
-
+    this.getItemInfo();
   },
   methods: {
+
     calcTime(newTime, oldTime) {
       var timeDiff = newTime - oldTime
       var timeDiff = Math.floor(timeDiff / 1000)
@@ -302,7 +318,7 @@ export default {
       if(hour == 0) {
         ans = min + "分钟"
       } else {
-        ans = hour + "小时" + min + "分钟" 
+        ans = hour + "小时" + min + "分钟"
       }
       return ans
     },
@@ -388,8 +404,8 @@ export default {
             }
           }
         }
-        
-        
+
+
         this.putItemState(toState)
       }
 
@@ -426,7 +442,7 @@ export default {
       }
       Promise.all(deleteList).then((result) =>{
         console.info("result: " + result)
-        
+
       }).catch((error) => {
         console.info(error)
       })
@@ -455,7 +471,7 @@ export default {
           }
         }
         this.updatePage(1)
-        
+
       })
     },
     updatePage(page) {
@@ -467,9 +483,8 @@ export default {
       }
       console.info(this.curItemList)
     },
-    test() {
-      this.getItemInfo()
-    }
-  }
+  },
+
 }
+
 </script>

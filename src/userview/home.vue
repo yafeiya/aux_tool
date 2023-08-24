@@ -9,7 +9,6 @@
         </p>
         <p style="font-size: 20px;color: #000000;margin-left: 40px;line-height: 50px">
           ·基于Vue.js 3的与iviews组件设计的前端交互解决方案<br/>
-          <!-- ·为中国航天科工二院设计 -->
           ·通用数据驱动建模可视化辅助工具
         </p>
       </div>

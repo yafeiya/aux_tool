@@ -10,11 +10,13 @@ import ViewUIPlus from 'view-ui-plus'
 import 'view-ui-plus/dist/styles/viewuiplus.css'
 
 import {saveAs} from 'file-saver';
-
+import * as echarts from "echarts"
+// Vue.prototype.$echarts = echarts
 const app = createApp(App)
 
 app.use(ViewUIPlus)
     .use(router)
+    .use(echarts)
     .mount('#app')
 
 // export default new Router({

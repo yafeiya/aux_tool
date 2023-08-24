@@ -21,10 +21,49 @@
     </template>
     <!--菜单栏下添加按钮-->
     <Affix v-color="'white'" style="font-size: 20px;margin-left: 15%;margin-top: 5%;margin-bottom: -4%;">
-      <Button ghost  shape="circle" style="width:80%;margin-left: 0%" >
+      <Button ghost  shape="circle" style="width:80%;margin-left: 0%"  @click="addMenu=true" >
         <Icon type="ios-add-circle-outline" style="font-size: 110%;margin-left: -6px;"/>
-        添加类别
+        添加
       </Button>
+      <Modal v-model="addMenu" width="500" style="margin-top: 0px" @on-ok="okInfo">
+        <template #header>
+          <p style="color:#4d85ea;text-align:center">
+            <Icon type="ios-information-circle"></Icon>
+            <span>添加类别</span>
+          </p>
+        </template>
+        <Form ref="menuform" :model="menuform" :label-width="80" :rules="rulemenu" style="width: 400px">
+          <FormItem label="类别名" prop="name">
+            <Input v-model="menuform.name" placeholder="输入类别名称（必填）"></Input>
+          </FormItem>
+
+          <template v-for="(item, index) in menuform.items">
+            <FormItem
+                v-if="item.status"
+                :key="index"
+                :label="'任务 ' + item.index"
+                :prop="'items.' + index + '.value'"
+                :rules="{required: true, message: '任务名不可为空', trigger: 'blur'}">
+              <Row>
+                <Col span="18">
+                  <Input type="text" v-model="item.value" placeholder="输入任务名"></Input>
+                </Col>
+                <Col span="4" offset="1">
+                  <Button @click="handleRemove(index)">Delete</Button>
+                </Col>
+              </Row>
+            </FormItem>
+          </template>
+          <FormItem>
+            <Row>
+              <Col span="12">
+                <Button type="dashed" long @click="handleAdd" icon="md-add">添加子任务</Button>
+              </Col>
+            </Row>
+          </FormItem>
+        </Form>
+
+      </Modal>
     </Affix>
 
   </Menu>
@@ -35,7 +74,24 @@ import childMenu from './childmenu.vue';
 export default {
   data() {
     return {
-      initNowItem: "numDataBase1-1-任务1"
+      index: 1,
+      menuform:{
+        name:"",
+        items: [
+          {
+            value: '',
+            index: 1,
+            status: 1
+          }
+        ]
+      },
+      rulemenu:{
+        name: [
+          { required: true, message: '名称必填', trigger: 'blur' }
+        ],
+      },
+      initNowItem: "numDataBase1-1-任务1",
+      addMenu:false
     }
   },
   name:'parentMenu',
@@ -51,6 +107,21 @@ export default {
     this.nowItemInit()
   },
   methods: {
+    handleAdd () {
+      this.index++;
+      this.menuform.items.push({
+        value: '',
+        index: this.index,
+        status: 1
+      });
+    },
+    handleRemove (index) {
+      this.menuform.items[index].status = 0;
+    },
+
+    okInfo(){
+      this.$Message.info('添加成功');
+    },
     toHome() {
       this.$router.push('/home')
     },
