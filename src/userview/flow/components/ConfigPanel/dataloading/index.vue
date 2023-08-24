@@ -2,27 +2,61 @@
   <Tabs class="config" value="1">
     <TabPane label="属性" name="1">
 
-      <Row align="middle" 
-      v-if="globalGridAttr.selflabel === '图片文件夹'"
+      <div
+      v-for ="item in hasChildren(list)"
       >
-        <Col :span="10">指定图片文件夹</Col>
-        <Col :span="12">
-          <Select
-            style="width: 100%"
-            v-model="data.nodeLabelname "
-            @on-change="onLabelChange"
+        <div
+        v-for ="childrenitem in item.children"
+        >
+        <div v-if="!childrenitem.children">
+          <Row align="middle" 
+          v-if="globalGridAttr.selflabel === childrenitem.label"
           >
-            <Option 
-            v-for="option in selectoptions"
-            :value="option.name"
-            >
-            {{option.name}}
-            </Option>
-          </Select>
-        </Col>
-      </Row>
+            <Col :span="10">指定{{childrenitem.label}}</Col>
+            <Col :span="12">
+              <Select
+                style="width: 100%"
+                v-model="data.nodeLabelname "
+                @on-change="onLabelChange"
+              >
+                <Option 
+                v-for="option in childrenitem.content"
+                :value="option.name"
+                >
+                {{option.name}}
+                </Option>
+              </Select>
+            </Col>
+          </Row>
+        </div>
 
-      <Row align="middle" 
+        <!-- <div v-if="childrenitem.children">
+          <div v-for="subchildrenitem in childrenitem.children">
+            <Row align="middle" 
+            v-if="globalGridAttr.selflabel === subchildrenitem.label"
+            >
+              <Col :span="10">指定{{subchildrenitem.label}}</Col>
+              <Col :span="12">
+                <Select
+                  style="width: 100%"
+                  v-model="data.nodeLabelname "
+                  @on-change="onLabelChange"
+                >
+                  <Option 
+                  v-for="option in subchildrenitem.content"
+                  :value="option.name"
+                  >
+                  {{option.name}}
+                  </Option>
+                </Select>
+              </Col>
+            </Row>
+          </div>
+        </div> -->
+        </div>
+      </div>
+
+      <!-- <Row align="middle" 
       v-if="globalGridAttr.selflabel === '数值数据集'"
       >
         <Col :span="10">指定数值数据集</Col>
@@ -40,27 +74,7 @@
             </Option>
           </Select>
         </Col>
-      </Row>
-
-      <Row align="middle" 
-      v-if="globalGridAttr.selflabel === '图像数据集'"
-      >
-        <Col :span="10">指定图像数据集</Col>
-        <Col :span="12">
-          <Select
-            style="width: 100%"
-            v-model="data.nodeLabelname "
-            @on-change="onLabelChange"
-          >
-            <Option 
-            v-for="option in selectoptions3"
-            :value="option.name"
-            >
-            {{option.name}}
-            </Option>
-          </Select>
-        </Col>
-      </Row>
+      </Row> -->
 
 
 
@@ -137,6 +151,7 @@
   import { defineComponent, inject, watch, reactive} from 'vue';
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
+  import { menulist } from '../../../list'
 
 
   
@@ -147,6 +162,8 @@
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
+      const list = menulist()
+
 
       const data = reactive({
         nodedataurl: '',
@@ -247,62 +264,14 @@
         // console.log(curCel.data.name)
       };
 
-      const selectoptions = [
-        {
-          name:'图片文件夹1',
-          father:''
-        },
-        {
-          name:'图片文件夹2',
-          father:''
-        },
-        {
-          name:'图片文件夹3',
-          father:''
-        },
-        
+      const hasChildren =(thelist) =>{
+          return thelist.filter((item) => item.children);
+      };
 
-      ]
+      const noChildren =(thelist) =>{
+          return thelist.filter((item) => !item.children);
+      };
 
-      const selectoptions2 = [
-        {
-          name:'图像数据集1',
-          father:''
-        },
-        {
-          name:'图像数据集2',
-          father:''
-        },
-        {
-          name:'图像数据集3',
-          father:''
-        },
-        
-
-      ]
-
-      const selectoptions3 = [
-        {
-          name:'数值数据集1',
-          father:''
-        },
-        {
-          name:'数值数据集2',
-          father:''
-        },
-        {
-          name:'数值数据集3',
-          father:''
-        },
-        
-
-      ]
-
-      const getinfo = [
-
-      ]
- 
-  
 
       return {
         globalGridAttr,
@@ -316,10 +285,10 @@
         onheadernumChange,
         ondatasetsizeChange,
         onimgsizeChange,
-        selectoptions,
-        selectoptions2,
-        selectoptions3,
         onLabelChange,
+        list,
+        hasChildren,
+        noChildren,
       };
     },
   });

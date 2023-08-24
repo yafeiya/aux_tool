@@ -15,13 +15,8 @@ export function nodeOpt(id: any, globalGridAttr: any) {
     globalGridAttr.nodeFill = cell.attr('body/fill');
     globalGridAttr.nodeFontSize = cell.attr('text/fontSize');
     globalGridAttr.nodeColor = cell.attr('text/fill');
-    globalGridAttr.nodenetworkdepth = cell.getData()?.networkdepth;
-    globalGridAttr.nodeclassnum = cell.getData()?.classnum;
-    globalGridAttr.nodefuturerewarddiscount = cell.getData()?.futurerewarddiscount;
-    globalGridAttr.nodemodelurl = cell.getData()?.modelurl;
-    globalGridAttr.nodemodeltype = cell.getData()?.modeltype;
-    globalGridAttr.nodename = cell.getData()?.name;
-    globalGridAttr.selflabel = cell.getData()?.selflabel
+    globalGridAttr.nodedownsamplescale = cell.getData()?.downsamplescale;
+    globalGridAttr.nodeaugmentationscale = cell.getData()?.augmentationscale;
   }
   return curCel;
 }

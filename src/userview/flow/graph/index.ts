@@ -1,6 +1,5 @@
 import { Graph, FunctionExt, Shape, Addon } from '@antv/x6';
 import './shape';
-import graphData from './data';
 import axios from 'axios';
 export default class FlowGraph {
   static graph: Graph;

@@ -20,7 +20,7 @@
 
               <MenuItem
               class=""
-              v-for="item in noChildren()"
+              v-for="item in noChildren(list)"
               :name="item.name"
               @click=""
               >   
@@ -29,7 +29,7 @@
 
               <Submenu
                   :name="item.name"
-                  v-for="item in hasChildren()"
+                  v-for="item in hasChildren(list)"
                   @mousedown.right="startDrag($event,item.label)"
               >
                   <template #title> 
@@ -47,7 +47,7 @@
                       <MenuItem 
                       class="secondmenustyle"
                       :name="subitem.name"
-                      v-for="subitem in nohasChildren(item.children)"
+                      v-for="subitem in noChildren(item.children)"
                       @mousedown="startDrag($event,item.label)"
                       >
                           <span>{{ subitem.label }}</span>
@@ -56,7 +56,7 @@
                       <Submenu
                           class="secondmenustyle"
                           :name="subitem.name"
-                          v-for="subitem in stillhasChildren(item.children)"
+                          v-for="subitem in hasChildren(item.children)"
                       >
                           <template #title> 
                               <span>{{ subitem.label }}</span>
@@ -73,7 +73,7 @@
                               <MenuItem
                               class="thirdmenustyle" 
                               :name="lastitem.name"
-                              v-for="lastitem in nohasChildren(subitem.children)"
+                              v-for="lastitem in noChildren(subitem.children)"
                               @mousedown="startDrag($event,item.label)"
                               >
                                   <span>{{ lastitem.label }}</span>
@@ -90,6 +90,7 @@
           <Content  class="graphcontent">
             <div id="container" ></div>
           </Content>
+          
       </Layout>
       <Sider class="rightsider" style= "max-width:300px;width:300px;flex:content" >
         <config-panel v-if="isReady" />
@@ -107,7 +108,7 @@
   import FlowGraph from './graph';
   import ToolBar from './components/ToolBar/index.vue';
   import ConfigPanel from './components/ConfigPanel/index.vue';
-  import { Addon } from '@antv/x6'
+  import { menulist } from './list'
 
   
   // const getContainerSize = () => {
@@ -129,192 +130,7 @@
       const maingraph = FlowGraph;
       const isReady = ref(false);
       let fathername = ""
-      const list = [
-          // {
-          //     path: '/home',
-          //     name: 'home',
-          //     label: '| 返回首页',
-          //     icon: '',
-          //     url: '/home',
-          // },
-          {
-              name: 'dataloading',
-              label: '数据加载',
-              icon: '',
-              children: [
-                  {
-                      name: 'csvdir',
-                      label: 'csv文件',
-                      icon: '',
-                      url: ''
-                  },
-                  {
-                      name: 'imgdir',
-                      label: '图片文件夹',
-                      icon: '',
-                      url: ''
-                  },
-                  {
-                      name: 'numdataset',
-                      label: '数值数据集',
-                      icon: '',
-                      url: ''
-                  },
-                  {
-                      name: 'imgdataset',
-                      label: '图像数据集',
-                      icon: '',
-                      url: ''
-                  }
-              ]
-
-          },
-          {
-              name: 'datapre',
-              label: '数据预处理',
-              icon: '',
-              url: '',
-              children: [
-                  {
-                      name: 'binary',
-                      label: '二值化',
-                      icon: '',
-                      url: ''
-                  },
-                  {
-                      name: 'downsample',
-                      label: '下采样',
-                      icon: '',
-                      url: ''
-                  },
-                  {
-                      name: 'dataaugmentation',
-                      label: '数据扩充',
-                      icon: '',
-                      url: ''
-                  },
-              ]
-          },
-          {
-              name: 'moudles',
-              label: '模型模板',
-              icon: '',
-              url: '',
-              children: [
-                  {
-                    name: 'machinelearning',
-                    label: '机器学习',
-                    icon: '',
-                    url: '',
-                    children: [
-                        {
-                          name: 'SVD',
-                          label: 'SVD',
-                          icon: '',
-                          url: ''
-                      },
-                    ]
-                  },
-                  {
-                    name: 'deeplearning',
-                    label: '深度学习',
-                    icon: '',
-                    url: '',
-                    children: [
-                        {
-                          name: 'YOLOv3',
-                          label: 'YOLOv3',
-                          icon: '',
-                          url: ''
-                      },
-                      {
-                          name: 'FCN',
-                          label: 'FCN',
-                          icon: '',
-                          url: ''
-                      },
-                    ]
-                  },
-                  {
-                    name: 'reinforcementlearning',
-                    label: '强化学习',
-                    icon: '',
-                    url: '',
-                    children:[                  
-                      {
-                          name: 'SAC',
-                          label: 'SAC',
-                          icon: '',
-                          url: ''
-                      },
-                      {
-                          name: 'DQN',
-                          label: 'DQN',
-                          icon: '',
-                          url: ''
-                      },
-                    ]
-                  },
-              ]
-          },
-          {
-              name: 'moudletrain',
-              label: '模型训练',
-              icon: '',
-              url: '',
-              children: [
-                  {
-                      name: '模型训练',
-                      label: '模型训练',
-                      icon: '',
-                      url: ''
-                  },
-              ]
-          },
-          {
-              name: 'moudlepredictive',
-              label: '模型预测',
-              icon: '',
-              url: '',
-              children: [
-                  {
-                      name: 'batchdeduction',
-                      label: '批量推演',
-                      icon: '',
-                      url: ''
-                  },
-              ]
-          },
-          {
-              name: 'resultvisualization',
-              label: '模型结果可视化',
-              icon: '',
-              url: '',
-              children: [
-                  {
-                      name: 'tensorBoard',
-                      label: 'tensorBoard',
-                      icon: '',
-                      url: ''
-                  },
-              ]
-          },
-          {
-              name: 'simulation',
-              label: '仿真交互',
-              icon: '',
-              url: '',
-              children: [
-                  {
-                      name: 'UDPmonitor',
-                      label: 'UDP监听',
-                      icon: '',
-                      url: ''
-                  },
-              ]
-          },
-          
-      ];
+      const list = menulist()
 
       const initGraph = function () {
         const graph = FlowGraph.init();
@@ -376,27 +192,15 @@
         }
         return fathername;
       }
-
-
       
       // 编写菜单栏
-      const noChildren =() =>{
-          return list.filter((item) => !item.children);
-      };
-      // 编写菜单栏
-      const hasChildren =() =>{
-          return list.filter((item) => item.children);
-      };
-
-      const stillhasChildren =(thelist) =>{
-          return thelist.filter((item) => item.children);
-      };
-
-      const nohasChildren =(thelist) =>{
+      const noChildren =(thelist) =>{
           return thelist.filter((item) => !item.children);
       };
-
-
+      // 编写菜单栏
+      const hasChildren =(thelist) =>{
+          return thelist.filter((item) => item.children);
+      };
 
 
       const backhome = () =>{
@@ -404,14 +208,13 @@
       };
 
       return {
+        list,
         isReady,
         savename,
         startDrag,
         noChildren,
         hasChildren,
         backhome,
-        stillhasChildren,
-        nohasChildren,
       };
     },
   });

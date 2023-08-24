@@ -1,6 +1,62 @@
 <template>
   <Tabs class="config" value="1">
     <TabPane label="属性" name="1">
+
+      <div
+      v-for ="item in hasChildren(list)"
+      >
+        <div
+        v-for ="childrenitem in item.children"
+        >
+        <div v-if="!childrenitem.children">
+          <Row align="middle" 
+          v-if="globalGridAttr.selflabel === childrenitem.label"
+          >
+            <Col :span="10">指定{{childrenitem.label}}</Col>
+            <Col :span="12">
+              <Select
+                style="width: 100%"
+                v-model="data.nodeLabelname "
+                @on-change="onLabelChange"
+              >
+                <Option 
+                v-for="option in childrenitem.content"
+                :value="option.name"
+                >
+                {{option.name}}
+                </Option>
+              </Select>
+            </Col>
+          </Row>
+        </div>
+
+        <div v-else-if="childrenitem.children">
+          <div v-for="subchildrenitem in childrenitem.children">
+            <Row align="middle" 
+            v-if="globalGridAttr.selflabel === subchildrenitem.label"
+            >
+              <Col :span="10">指定{{subchildrenitem.label}}</Col>
+              <Col :span="12">
+                <Select
+                  style="width: 100%"
+                  v-model="data.nodeLabelname "
+                  @on-change="onLabelChange"
+                >
+                  <Option 
+                  v-for="option in subchildrenitem.content"
+                  :value="option.name"
+                  >
+                  {{option.name}}
+                  </Option>
+                </Select>
+              </Col>
+            </Row>
+          </div>
+        </div>
+        </div>
+      </div>
+
+
       <Row class="params" align="middle">
         <Col :span="8">网络深度</Col>
         <Col :span="14">
@@ -79,6 +135,7 @@
   import { defineComponent, inject, watch, reactive} from 'vue';
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
+  import { menulist } from '../../../list'
 
 
   
@@ -89,6 +146,8 @@
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
+      const list = menulist()
+
       const data = reactive({
         nodenetworkdepth: '',
         nodeclassnum: '',
@@ -98,6 +157,8 @@
         nodeStrokeWidth: '',
         nodeFill: '',
         nodeFontSize: '',
+        nodeLabelname:'',
+        nodeselflabel:''
       })
       watch(
         [() => id.value],
@@ -111,6 +172,8 @@
           data.nodeStrokeWidth = globalGridAttr.nodeStrokeWidth
           data.nodeFill = globalGridAttr.nodeFill
           data.nodeFontSize = globalGridAttr.nodeFontSize
+          data.nodeLabelname = globalGridAttr.nodename 
+          data.nodeselflabel = globalGridAttr.selflabel
           // curCel?.attr('body/stroke', 'red');
         },
         {
@@ -181,6 +244,28 @@
           modeltype: val,
         });
       };  
+
+      const hasChildren =(thelist) =>{
+          return thelist.filter((item) => item.children);
+      };
+
+      const noChildren =(thelist) =>{
+          return thelist.filter((item) => !item.children);
+      };
+
+      const onLabelChange = (value) => {
+        
+        const val = value;
+        globalGridAttr.nodename = val;
+        curCel?.setData({
+          name: val,
+        });
+        // curCel?.attr('text/text', val);
+        // console.log(curCel.data.name)
+      };
+
+
+
       return {
         globalGridAttr,
         data,
@@ -193,7 +278,11 @@
         onclassnumChange,
         onfuturerewarddiscountChange,
         onmodelurlChange,
-        onmodeltypeChange
+        onmodeltypeChange,
+        list,
+        hasChildren,
+        noChildren,
+        onLabelChange
       };
     },
   });
