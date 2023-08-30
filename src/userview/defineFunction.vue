@@ -106,11 +106,15 @@ export default {
           children:[
             {
               name: 'L1',
-              title: 'L1',
+              title: '动作分布',
               // icon: 'ios-document-outline',
             },{
               name: 'L2',
-              title: 'L2',
+              title: '奖励分布',
+              // icon: 'md-bulb',
+            },{
+              name: 'L3',
+              title: '学习率',
               // icon: 'md-bulb',
             }
           ]
@@ -121,10 +125,20 @@ export default {
           icon: 'ios-keypad',
           children:[
             {
-              name: 'reward',
-              title: 'reward',
+              name: 'compre_metrics',
+              title: '综合指标',
               // icon: 'ios-document-outline',
             },
+            {
+              name: 'model_acc',
+              title: '模型精度',
+              // icon: 'ios-document-outline',
+            },
+            {
+              name: 'model_gener',
+              title: '泛化性',
+              // icon: 'ios-document-outline',
+            }
           ]
         },
       ],

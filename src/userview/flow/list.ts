@@ -154,7 +154,7 @@ export function menulist(){
         },
         {
             name: 'resultvisualization',
-            label: '模型结果可视化',
+            label: '训练过程可视化',
             children: [
                 {
                     name: 'actdistribution',
@@ -185,10 +185,6 @@ export function menulist(){
                 {
                     name: 'generalization',
                     label: '泛化性',
-                },
-                {
-                    name: 'robustness',
-                    label: '鲁棒性',
                 },
                 {
                     name: 'custom',

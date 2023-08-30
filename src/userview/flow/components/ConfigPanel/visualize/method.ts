@@ -17,6 +17,8 @@ export function nodeOpt(id: any, globalGridAttr: any) {
     globalGridAttr.nodeColor = cell.attr('text/fill');
     globalGridAttr.nodedownsamplescale = cell.getData()?.downsamplescale;
     globalGridAttr.nodeaugmentationscale = cell.getData()?.augmentationscale;
+    globalGridAttr.selflabel = cell.getData()?.selflabel
+    globalGridAttr.dataurl = cell.getData()?.dataurl
   }
   return curCel;
 }

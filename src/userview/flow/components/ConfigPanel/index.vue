@@ -51,7 +51,7 @@
           else if(cell.data.fatherLabel=='模型模板'){
             type.value = 'moudles';
           }
-          else if(cell.data.fatherLabel=='模型结果可视化'){
+          else if(cell.data.fatherLabel=='训练过程可视化'){
             type.value = 'visualize';
           }
           else{

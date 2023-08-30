@@ -167,7 +167,8 @@
             if(cells[i].data['fatherLabel'] == '数据加载') {
               this.example.dataset_url = cells[i].data['dataurl']
               this.mustItem[0].flag = true
-            } else if(cells[i].data['fatherLabel'] == '模型模板') {
+            }
+             else if(cells[i].data['fatherLabel'] == '模型模板') {
               this.example.model_name = cells[i].attrs.text.text
               this.example.model_type = cells[i].data['modeltype']
               this.example.model_url = cells[i].data['modelurl']
@@ -197,15 +198,15 @@
       },
       runErrorInfo({mustItem, example}) {
         console.info(example)
-        for(var i in mustItem) {
-          if(mustItem[i].flag == false) {
-            this.$Message["error"]({
-              background: true,
-              content: "缺失必要模块" + mustItem[i].name+"请仔细检查"
-            });
-            return ;
-          }
-        }
+        // for(var i in mustItem) {
+        //   if(mustItem[i].flag == false) {
+        //     this.$Message["error"]({
+        //       background: true,
+        //       content: "缺失必要模块" + mustItem[i].name+"请仔细检查"
+        //     });
+        //     return ;
+        //   }
+        // }
         example.post_date = (new Date()).getTime()
         example.post_time = (new Date()).getTime()
         example.start_time = (new Date()).getTime()

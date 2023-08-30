@@ -13,9 +13,9 @@
           @on-ok="ok"
           >
           <div id="myChart" :style="{width: '1000px', height: '500px'}"></div>
+          
       </Modal>
       <div class="miniChart" id="miniChart" :style="{width: '310px', height: '250px'}"></div>
-        
       </Row>
     </TabPane>
 
@@ -68,6 +68,7 @@
   import { nodeOpt } from './method';
   import * as echarts from 'echarts'
   import { Button } from 'view-ui-plus';
+  import actdatas from "../../../results/actdata.json"
 
   export default defineComponent({
     name: 'Index',
@@ -87,7 +88,6 @@
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
-      let Buttonid = false
 
       const data = reactive({
         nodedownsamplescale: '',
@@ -95,7 +95,8 @@
         nodeStrokeWidth: '',
         nodeFill: '',
         nodeFontSize: '',
-        nodeselflabel:''
+        nodeselflabel:'',
+        nodedataurl:''
       })
       watch(
         [() => id.value],
@@ -107,6 +108,7 @@
           data.nodeFill = globalGridAttr.nodeFill
           data.nodeFontSize = globalGridAttr.nodeFontSize
           data.nodeselflabel = globalGridAttr.selflabel
+          data.nodedataurl = globalGridAttr.dataurl
           initchart(data.nodeselflabel)
         },
         {
@@ -115,15 +117,6 @@
         },
       );
 
-      const changeButton = () => {
-        Buttonid = !Buttonid
-        console.log(Buttonid)
-      }
-
-      const actdata = [
-            ["act1", "act2", "act3", "act4", "act5", "act6", "act7"],
-            [8, 15, 31, 13, 15, 22, 11],
-          ]
       const rewarddata = [
           ["re1", "re2", "re3", "re4", "re5", "re6", "re7"],
           [1, 2, 3, 4, 5, 6, 7],
@@ -134,6 +127,8 @@
         ]  
 
       const initchart = (label) => {
+        let actdata = actdatas["actdata"]
+        console.log(actdata)
         let myChart = echarts.init(document.getElementById("myChart"));
         let miniChart = echarts.init(document.getElementById("miniChart"));
         // 绘制图表
@@ -295,8 +290,7 @@
         onColorChange,
         ondownsamplescaleChange,
         onaugmentationscaleChange,
-        changeButton,
-        Buttonid,
+        initchart,
       };
     },
   });

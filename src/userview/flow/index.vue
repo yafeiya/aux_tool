@@ -170,10 +170,10 @@
           shape: 'flow-chart-rect',
           width: 80,
           height: 42,
-          label: e.target.outerText,
+          label: e.target.textContent,
           data:{
             fatherLabel: name,
-            selflabel: e.target.outerText,
+            selflabel: e.target.textContent,
           }
         } 
         const node = maingraph.graph.createNode(initNode);

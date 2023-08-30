@@ -1,6 +1,23 @@
 <template>
   <Tabs class="config" value="1">
     <TabPane label="属性" name="1">
+      <Row 
+      align="middle" 
+      v-if="globalGridAttr.selflabel === '仿真监听数据'"
+      >
+        <Upload action="//localhost:3000/">
+          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择仿真监听数据</Button>
+        </Upload>
+      </Row>
+
+      <Row 
+      align="middle" 
+      v-if="globalGridAttr.selflabel === '模型日志数据'"
+      >
+        <Upload action="//localhost:3000/">
+          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择模型日志数据</Button>
+        </Upload>
+      </Row>
 
       <div
       v-for ="item in hasChildren(list)"
@@ -10,7 +27,7 @@
         >
         <div v-if="!childrenitem.children">
           <Row align="middle" 
-          v-if="globalGridAttr.selflabel === childrenitem.label"
+          v-if="(globalGridAttr.selflabel === childrenitem.label)&&(globalGridAttr.selflabel != '仿真监听数据')&&(globalGridAttr.selflabel != '模型日志数据')"
           >
             <Col :span="10">指定{{childrenitem.label}}</Col>
             <Col :span="12">
@@ -303,5 +320,10 @@
 .params{
   margin: 10px;
 }
+.view{
+  width: 300px;
+  background-color: #fff;
+  margin-top: 0px;
 
+}
 </style>
