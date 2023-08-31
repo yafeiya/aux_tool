@@ -44,7 +44,7 @@ TODO：后续统一配置文件
    	password := "123456"
    ```
 
-## Build
+## Build & Run
 
 go run main.go
 
