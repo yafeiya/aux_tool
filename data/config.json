@@ -1,0 +1,156 @@
+{
+    "database": [
+        {
+            "name": "numDataBase",
+            "title": "数值数据集",
+            "icon": "ios-navigate",
+            "children":[
+                {
+                    "name": "numDataBase1-1",
+                    "title": "任务1"
+                },
+                {
+                    "name": "numDataBase1-2",
+                    "title": "任务2"
+                }
+            ]
+        },
+        {
+            "name": "imgDataBase",
+            "title": "图像数据集",
+            "icon": "ios-keypad",
+            "children":[
+                {
+                    "name": "imgDataBase1-1",
+                    "title": "目标检测"
+                },
+                {
+                    "name": "imgDataBase1-2",
+                    "title": "目标分类"
+                }
+            ]
+        },
+        {
+            "name": "others",
+            "title": "其他数据集",
+            "icon": "ios-analytics",
+            "children":[
+                {
+                    "name": "",
+                    "title": "待补充"
+                }
+            ]
+        }
+    ],
+    "modelbase":[
+        {
+            "name": "machineLearning",
+            "title": "机器学习",
+            "icon": "ios-navigate",
+            "children":[
+                {
+                    "name": "regression",
+                    "title": "回归"
+                },
+                {
+                    "name": "classification",
+                    "title": "分类"
+                }
+            ]
+        },
+        {
+            "name": "deepLearning",
+            "title": "深度学习",
+            "icon": "ios-keypad",
+            "children":[
+                {
+                    "name": "CNN",
+                    "title": "卷积神经网络"
+                },
+                {
+                    "name": "RNN",
+                    "title": "循环神经网络"
+                }
+            ]
+        },
+        {
+            "name": "reinforcementLearning",
+            "title": "强化学习",
+            "icon":" ios-analytics",
+            "children":[
+                {
+                    "name": "valueIteration",
+                    "title": "值迭代"
+                }
+            ]
+        }
+      ],
+    "defineFunction":[
+        {
+            "name": "lossFunction",
+            "title": "训练过程分布",
+            "icon": "ios-navigate",
+            "children":[
+                {
+                    "name": "L1",
+                    "title": "L1"
+                },
+                {
+                    "name":"L2",
+                    "title":"L2"
+                }
+            ]
+        },
+        {
+            "name": "evalution",
+            "title": "评价指标",
+            "icon": "ios-keypad",
+            "children":[
+                {
+                    "name": "reward",
+                    "title": "reward"
+                }
+            ]
+        }
+    ],
+    "design": [
+        {
+            "name": "A领域",
+            "title": "A领域",
+            "icon": "ios-navigate",
+            "children":[
+                {
+                    "name": "领域1",
+                    "title": "领域1"
+                }
+            ]
+        },
+        {
+            "name": "B领域",
+            "title": "B领域",
+            "icon": "ios-keypad",
+            "children":[
+                {
+                    "name": "领域2",
+                    "title": "领域2"
+                },
+                {
+                    "name": "领域3",
+                    "title": "领域3"
+                }
+            ]
+        },
+        {
+            "name": "C领域",
+            "title": "C领域",
+            "icon": "ios-navigate",
+            "children":[
+                {
+                    "name": "XXXX",
+                    "title": "XXXX"
+                }
+            ]
+        }
+    ]
+
+}

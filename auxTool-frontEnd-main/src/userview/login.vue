@@ -28,13 +28,13 @@
 </template>
 <script>
 import axios from 'axios';
+import { isLogin } from '../api/api.js'
 export default {
   data () {
     return {
       autoLogin: true,
       jsonBaseUrl: "http://localhost:3000",
       username: null,
-
     }
   },
   methods: {
@@ -44,6 +44,10 @@ export default {
         //     title: '输入的内容如下：',
         //     content: 'username: ' + username + ' | password: ' + password
         // });
+        // isLogin(username, password).then(res => {
+        //   var result = res.data
+        //   if()
+        // })
         axios.get(this.jsonBaseUrl + "/users?username="+username).then(response => {
           console.log(response);
           var user = response.data

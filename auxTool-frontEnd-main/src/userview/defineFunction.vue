@@ -34,7 +34,7 @@
     <Layout>
       <Layout>
         <!--//固定侧边菜单-->
-        <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+        <Sider v-if="this.menu.length!= 0" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
           <!-- pageKind={"database","defineFunction","design","example"} -->
           <parentMenu :pageMenu="this.menu" :pageKind="this.pageKind" @getNowItem="getNowItem">
           </parentMenu>
@@ -42,7 +42,7 @@
         <Layout :style="{marginLeft: '200px'}">
           <!--//上边框菜单栏-->
           <Header>
-            <Menu mode="horizontal" theme="dark" active-name="modelbase" @on-select="toPages">
+            <Menu mode="horizontal" theme="dark" active-name="defineFunction" @on-select="toPages">
               <div class="layout-home">
                 <p style="font-size: 20px;color: #ffffff;width: 250px">
                   <Icon type="md-cog" class="ivu-anim-loop" size="23" />
@@ -74,11 +74,6 @@
             </Menu>
           </Header>
           <Content :style="{padding: '0 16px 16px'}">
-            <!--//数据集选项-->
-            <!-- <Tabs type="card" class="main-table">
-              <TabPane label="我的数据集">这里是我的数据集火力分配1</TabPane>
-              <TabPane label="公共数据集">这里是公共数据集火力分配1</TabPane>
-            </Tabs> -->
             <mainTable :nowItem="nowItem" :task-type="taskType"
                        :my-card-list="myCardList" :public-card-list="publicCardList"
                        :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
@@ -95,57 +90,13 @@ import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
 import axios from 'axios';
+import { getMenuInfo } from '../api/api.js'
 export default {
   data() {
     return {
-      menu:[
-        {
-          name: 'machineLearning',
-          title: '机器学习',
-          icon: 'ios-navigate',
-          children:[
-            {
-              name: 'regression',
-              title: '回归',
-              // icon: 'ios-document-outline',
-            },{
-              name: 'classification',
-              title: '分类',
-              // icon: 'md-bulb',
-            }
-          ]
-        },
-        {
-          name: 'deepLearning',
-          title: '深度学习',
-          icon: 'ios-keypad',
-          children:[
-            {
-              name: 'CNN',
-              title: '卷积神经网络',
-              // icon: 'ios-document-outline',
-            },{
-              name: 'RNN',
-              title: '循环神经网络',
-              // icon: 'md-bulb',
-            }
-          ]
-        },
-        {
-          name: 'reinforcementLearning',
-          title: '强化学习',
-          icon: 'ios-analytics',
-          children:[
-            {
-              name: 'valueIteration',
-              title: '值迭代',
-              // icon: 'ios-document-outline',
-            }
-          ]
-        },
-      ],
+      menu:[],
       // pageKind标明当前页的信息（database，modelbase等）
-      // nowItem表明选中的是菜单的哪一项。
+      // menuInfo表明选中的是菜单的哪一项。
       addFormItemCfg:[
         {
           title: '名称',
@@ -154,7 +105,25 @@ export default {
           default: false,
           itemType: 'input',
           isEditOnly: true,
-          others:["请输入模型名称..."]
+          others:["请输入数据集名称..."]
+        },
+        {
+          title: '参数',
+          name: 'params',
+          value: {params: ''},
+          default: false,
+          itemType: 'dynamicInput',
+          isEditOnly: true,
+          others:[['',''],['','']]
+        },
+        {
+          title: '别名',
+          name: 'alias',
+          value: {alias: ''},
+          default: false,
+          itemType: 'input',
+          isEditOnly: true,
+          others:["请输入别名..."]
         },
         {
           title: '级别',
@@ -166,15 +135,6 @@ export default {
           others:[{'value':'1级', 'text': '级别1'},{'value':'2级', 'text': '级别2'},{'value':'3级', 'text': '级别3'}]
         },
         {
-          title: '语言',
-          name: 'lan',
-          value: {lan: ''},
-          default: false,
-          itemType: 'select',
-          isEditOnly: false,
-          others:[{'value':'C++', 'text': 'C++'},{'value':'python', 'text': 'python'},{'value':'java', 'text': 'java'}]
-        },
-        {
           title: '类型',
           name: 'type',
           value: {type: ''},
@@ -184,13 +144,40 @@ export default {
           others:['taskType']
         },
         {
-          title: '任务',
+          title: '范数',
           name: 'task',
           value: {task: ''},
           default: true,
           itemType: 'input',
           isEditOnly: false,
           others:['nowItem']
+        },
+        {
+          title: '函数体',
+          name: 'function_body',
+          value: {function_body: ''},
+          default: false,
+          itemType: 'input',
+          isEditOnly: true,
+          others:["请输入函数体..."]
+        },
+        {
+          title: '语言',
+          name: 'lan',
+          value: {lan: ''},
+          default: false,
+          itemType: 'select',
+          isEditOnly: false,
+          others:[{'value':'C++', 'text': 'C++'},{'value':'Python', 'text': 'Python'},{'value':'Java', 'text': 'Java'}]
+        },
+        {
+          title: '代码',
+          name: 'code',
+          value: {code: ''},
+          default: false,
+          itemType: 'bigInput',
+          isEditOnly: false,
+          others:["输入代码......"]
         },
         {
           title: '描述',
@@ -201,15 +188,7 @@ export default {
           isEditOnly: false,
           others:["相关描述......"]
         },
-        {
-          title: '代码',
-          name: 'code',
-          value: {code: ''},
-          default: false,
-          itemType: 'bigInput',
-          isEditOnly: false,
-          others:["输入代码......"]
-        }
+
       ],
       addFormItem: {
         released: "00",
@@ -220,7 +199,7 @@ export default {
       // nowItem表明选中的是菜单的哪一项。
       // cardNameFlag用来标识作为卡片名称的属性
       cardNameFlag: "dataset_name",
-      pageKind: 'modelbase',
+      pageKind: 'defineFunction',
       taskType: null,
       nowItem: null,
       jsonBaseUrl: "http://localhost:3000",
@@ -234,10 +213,11 @@ export default {
       publicCardColNum: 6,
     }
   },
-  components: {
-    MenuGroup,
-    parentMenu,
-    mainTable,
+  beforeCreate(){
+    getMenuInfo("defineFunction").then(res => {
+      this.menu = res.data
+      console.info(this.menu)
+    })
   },
   provide(){
     return {
@@ -259,6 +239,11 @@ export default {
       // publicCardRowNum: this.publicCardRowNum,
       // publicCardColNum: this.publicCardColNum,
     }
+  },
+  components: {
+    MenuGroup,
+    parentMenu,
+    mainTable,
   },
   methods: {
     toHome() {
