@@ -63,3 +63,9 @@ npm run json  # TODO后续删除
 npm run dev
 
 ```
+
+## Reference
+
+[gorm](https://gorm.io/docs/)
+
+[View UI Plus](https://www.iviewui.com/view-ui-plus/guide/introduce)
