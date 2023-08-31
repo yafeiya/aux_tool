@@ -46,12 +46,20 @@ TODO：后续统一配置文件
 
 ## Build & Run
 
+```
+# 开启后端服务器
 go run main.go
 
+# 进入前端目录
 cd ./auxTool-frontEnd-main
 
+# 安装前端依赖
 npm install
 
+# 开启json虚拟后端
 npm run json  # TODO后续删除
 
+# 开启前端服务 (./前端代码目录)
 npm run dev
+
+```
