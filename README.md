@@ -10,9 +10,9 @@ Vue3+vite+JavaScript+View UI Plus+Go+MySql
 
 ## Install
 
-node [20.4.6](https://nodejs.cn/download/)
+node: [20.4.6](https://nodejs.cn/download/)
 
-go [1.20](https://go.dev/dl/).*
+go: [1.20](https://go.dev/dl/).*
 
 mySQL: [5.7.43](https://dev.mysql.com/downloads/installer/)
 
