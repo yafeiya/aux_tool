@@ -25,23 +25,21 @@ git clone https://github.com/yafeiya/aux_tool.git
 TODO：后续统一配置文件
 
 ```
-# 1.1 前端暴露ip地址，供局域网内访问本web应用
+# 1.1 前端暴露ip地址，供局域网内访问本web应用（# 可选项：部署时用，现可用localhost:5173）
 # 操作路径 ./auxTool-frontEnd-main/vite.config.js  
 server:{
-     host:'192.168.1.110'  # 本机服务器所在ip
+     host:'192.168.1.110'  # 前端所在ip
    }
 # 1.2 前端配置发送数据请求的目标地址（后端地址）
 # 操作路径 ./auxTool-frontEnd-main/src/api/myAios.js
 const baseUrl = 'http://192.168.0.103:2345' # 后端ip地址，端口默认2345
 ```
 
-
 ```
 # 2.1 后端暴露ip地址，供前端请求数据
 # 操作路径 ./main.go
 err := engine.Run("192.168.0.103:2345")' # 后端ip地址，端口默认2345
 ```
-
 
 ```
 # 3.1 数据库链接
