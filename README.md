@@ -22,34 +22,28 @@ git clone https://github.com/yafeiya/aux_tool.git
 
 ## Configurarion
 
-TODO：后续统一配置文件
+```
+# 1.前端
+# 操作路径 ./auxTool-frontEnd-main/url_config.ys  
+  const url_dict =
+  {
+    // 局域网内暴露本机地址
+    "frontEndUrl":'192.168.0.103',  // 可选项：部署时用，开发时用localhost:5173
+
+    // 向后端发送请求的地址+端口
+    "backEndUrl": 'http://192.168.0.103:8080'  // 必填
+}  
+# 2. 后端
+# 操作路径 ./congfig/application.yml
+# 后端服务
+server:
+  host:             //不填，默认自动获取本机地址
+ 
+# SQL数据库
+datasource:    // # 在3016局域网内可默认，否则依据本机mysql设置
 
 ```
-# 1.1 前端暴露ip地址，供局域网内访问本web应用（# 可选项：部署时用，现可用localhost:5173）
-# 操作路径 ./auxTool-frontEnd-main/vite.config.js  
-server:{
-     host:'192.168.1.110'  # 前端所在ip
-   }
-# 1.2 前端配置发送数据请求的目标地址（后端地址）
-# 操作路径 ./auxTool-frontEnd-main/src/api/myAios.js
-const baseUrl = 'http://192.168.0.103:2345' # 后端ip地址，端口默认2345
-```
 
-```
-# 2.1 后端暴露ip地址，供前端请求数据
-# 操作路径 ./main.go
-err := engine.Run("192.168.0.103:2345")' # 后端ip地址，端口默认2345
-```
-
-```
-# 3.1 数据库链接
-# 操作路径 ./common/databaseInit.go
-	host := "192.168.0.102"  # 在3016局域网内可默认，否则依据本机mysql设置
-	port := "3306"
-	database := "auxtool"
-	username := "root"
-	password := "123456"
-```
 
 ## Build & Run
 
