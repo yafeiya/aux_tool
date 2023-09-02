@@ -40,14 +40,15 @@ func main() {
 	engine.GET("/getPageMenu", controller.GetPageMenu)
 	engine.POST("/addPageMenuItem", controller.AddPageMenuItem)
 	engine.POST("/postRegist", controller.Register)
+	engine.POST("/login", controller.Login)
+	engine.POST("/register", controller.Register)
 	host := viper.GetString("server.host")
 	port := viper.GetString("server.port")
 	if len(port) != 0 {
 		panic(engine.Run(host + ":" + port))
 	}
 	err := engine.Run()
-	engine.POST("/login", controller.Login)
-	engine.POST("/register", controller.Register)
+	
 	if err != nil {
 		panic(err)
 	}
