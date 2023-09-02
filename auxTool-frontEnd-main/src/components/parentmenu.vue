@@ -71,9 +71,6 @@
 </template>
 <script>
 import childMenu from './childmenu.vue';
-// import axios from "axios";
-import qs from "qs";
-import { addMenuItem } from '../api/api.js'
 export default {
   data() {
     return {
@@ -123,25 +120,7 @@ export default {
     },
 
     okInfo(){
-      console.info(this.menuform.name)
-      var len = this.menuform.items.length
-      for(var i = 0;i < len;i++) {
-        console.info(this.menuform.items)
-      }
-      var data = {
-        pageKind: this.pageKind,
-        menuItemName: this.menuform.name,
-        menuItemList: JSON.stringify(this.menuform.items),
-      }
-      data = qs.stringify(data)
-      addMenuItem(data).then(res => {
-        console.info("menu post success")
-      })
-      // axios.post(url,data).then(res => {
-      //   console.info("menu post success")
-      // })
-      
-      // this.$Message.info('添加成功');
+      this.$Message.info('添加成功');
     },
     toHome() {
       this.$router.push('/home')

@@ -34,7 +34,7 @@
     <Layout>
       <Layout>
         <!--//固定侧边菜单-->
-        <Sider v-if="this.menu.length!= 0" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+        <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
           <!-- pageKind={"database","defineFunction","design","example"} -->
           <parentMenu :pageMenu="this.menu" :pageKind="this.pageKind" @getNowItem="getNowItem">
           </parentMenu>
@@ -74,6 +74,11 @@
             </Menu>
           </Header>
           <Content :style="{padding: '0 16px 16px'}">
+            <!--//数据集选项-->
+            <!-- <Tabs type="card" class="main-table">
+              <TabPane label="我的数据集">这里是我的数据集火力分配1</TabPane>
+              <TabPane label="公共数据集">这里是公共数据集火力分配1</TabPane>
+            </Tabs> -->
             <mainTable :nowItem="nowItem" :task-type="taskType"
                        :my-card-list="myCardList" :public-card-list="publicCardList"
                        :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
@@ -90,11 +95,53 @@ import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
 import axios from 'axios';
-import { getMenuInfo } from '../api/api.js'
 export default {
   data() {
     return {
-      menu:[],
+      menu:[
+        {
+          name: 'lossFunction',
+          title: '训练过程分布',
+          icon: 'ios-navigate',
+          children:[
+            {
+              name: 'L1',
+              title: '动作分布',
+              // icon: 'ios-document-outline',
+            },{
+              name: 'L2',
+              title: '奖励分布',
+              // icon: 'md-bulb',
+            },{
+              name: 'L3',
+              title: '学习率',
+              // icon: 'md-bulb',
+            }
+          ]
+        },
+        {
+          name: 'evalution',
+          title: '评价指标',
+          icon: 'ios-keypad',
+          children:[
+            {
+              name: 'compre_metrics',
+              title: '综合指标',
+              // icon: 'ios-document-outline',
+            },
+            {
+              name: 'model_acc',
+              title: '模型精度',
+              // icon: 'ios-document-outline',
+            },
+            {
+              name: 'model_gener',
+              title: '泛化性',
+              // icon: 'ios-document-outline',
+            }
+          ]
+        },
+      ],
       // pageKind标明当前页的信息（database，modelbase等）
       // menuInfo表明选中的是菜单的哪一项。
       addFormItemCfg:[
@@ -212,12 +259,6 @@ export default {
       publicCardRowNum: 0,
       publicCardColNum: 6,
     }
-  },
-  beforeCreate(){
-    getMenuInfo("defineFunction").then(res => {
-      this.menu = res.data
-      console.info(this.menu)
-    })
   },
   provide(){
     return {

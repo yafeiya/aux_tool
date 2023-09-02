@@ -1,99 +1,125 @@
-
 <template>
-  <div id = "main" ></div>
-
+  <Table :columns="columns" :data="data" border height="500"></Table>
 </template>
- 
 <script>
-import * as echarts from 'echarts';
 export default {
-  data() {
+  data () {
     return {
-      pic_x:[],
-      pic_y1:[],
-      pic_y2:[],
-    }
-  },
-  methods:{
-    fullCloseRandom(n, m) {
-      var result = Math.random()*(m+1-n)+n;
-      while(result>m) {
-          result = Math.random()*(m+1-n)+n;
-      }
-      return result;
-    }
-  },
-  mounted(){
-    for(var i = 1;i <= 1000;i++) {
-      this.pic_x.push(i)
-      var res1 = Math.sqrt(i) + this.fullCloseRandom(-1, 1)
-      var res2 = 0.5 * (Math.sqrt(i) + this.fullCloseRandom(-1, 1))
-      this.pic_y1.push(res1)
-      this.pic_y2.push(res2)
-    }
-    let option = {
-      title: {
-        text: '数据可视化'
-      },
-      legend: {
-        data: ['y1', 'y2']
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        data: this.pic_x
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
+      columns: [
         {
-        // data: [820, 932, 901, 934, 1290, 1330, 1320],
-        name: 'y1',
-        symbol: 'none', //去掉折线上面的小圆点
-        data: this.pic_y1,
-        type: 'line',
-        // areaStyle: {}
+          title: 'Name',
+          key: 'name',
+          align: 'center',
+          width: 200,
+          fixed: 'left',
+          filters: [
+            {
+              label: 'Joe',
+              value: 1
+            },
+            {
+              label: 'John',
+              value: 2
+            }
+          ],
+          filterMultiple: false,
+          filterMethod (value, row) {
+            if (value === 1) {
+              return row.name === 'Joe';
+            } else if (value === 2) {
+              return row.name === 'John Brown';
+            }
+          }
         },
         {
-        // data: [820, 932, 901, 934, 1290, 1330, 1320],
-        name: 'y2',
-        symbol: 'none', //去掉折线上面的小圆点
-        data: this.pic_y2,
-        type: 'line',
-        // areaStyle: {}
+          title: 'Other',
+          align: 'center',
+          children: [
+            {
+              title: 'Age',
+              key: 'age',
+              align: 'center',
+              width: 200,
+              sortable: true
+            },
+            {
+              title: 'Address',
+              align: 'center',
+              children: [
+                {
+                  title: 'Street',
+                  key: 'street',
+                  align: 'center',
+                  width: 200
+                },
+                {
+                  title: 'Block',
+                  align: 'center',
+                  children: [
+                    {
+                      title: 'Building',
+                      key: 'building',
+                      align: 'center',
+                      width: 200,
+                      sortable: true
+                    },
+                    {
+                      title: 'Door No.',
+                      key: 'door',
+                      align: 'center',
+                      width: 200
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
+        {
+          title: 'Company',
+          align: 'center',
+          children: [
+            {
+              title: 'Company Address',
+              key: 'caddress',
+              align: 'center',
+              width: 200
+            },
+            {
+              title: 'Company Name',
+              key: 'cname',
+              align: 'center',
+              width: 200
+            }
+          ]
+        },
+        {
+          title: 'Gender',
+          key: 'gender',
+          align: 'center',
+          width: 200,
+          fixed: 'right'
+        }
       ],
-      grid:{
-        height: 'auto',
-      }
-};
-    console.info("11")
-    // 传递一个dom元素
-    let psgTimeCharts = echarts.init(document.getElementById("main"))
-    console.info("122")
-    //传入一个配置项
-    psgTimeCharts.setOption(option)
-    console.info("333")
-    // var charDom = document.getElementById('operationAlarm');
-    // var myChart = echarts.init(charDom)
-    // operationAlarmOption && myChart.setOption(operationAlarmOption);
+      data: []
+    }
+  },
+  mounted () {
+    const data = [];
+    for (let i = 0; i < 20; i++) {
+      data.push({
+        key: i,
+        name: 'John Brown',
+        age: i + 1,
+        street: 'Lake Park',
+        building: 'C',
+        door: 2035,
+        caddress: 'Lake Street 42',
+        cname: 'SoftLake Co',
+        gender: 'M',
+      });
+    }
+    this.data = data;
   }
 }
 </script>
- 
-<style scoped>
-  #main {
-    width: 600px;
-    height:400px;
-    margin: auto;
-    margin-top: 100px
-  }
-</style>

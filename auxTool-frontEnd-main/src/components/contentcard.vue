@@ -3,7 +3,68 @@
     <!-- {{ console.info(this.cardInfo.dataset_name) + " " + console.info(this.viewRange)}} -->
     <template #title>
       <div style="text-align: center">
-        <a @click="modal_intro1 = true">
+        <a @click="modal_intro1 = true" v-if="this.pageKind=='database'">
+          <Icon type="ios-help-circle-outline" />管理
+          <Modal
+              v-model="modal_intro1"
+              width="1000"
+              style="margin-top: -50px">
+            <p style="margin-top: 1%;font-size: 20px;text-align: center;" >
+              <Space :size="15">
+                <Input style="width: 500px" search enter-button="Search" placeholder="搜索数据集..."  />
+                <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="input=true">导入</Button>
+                <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行')">导出</Button>
+                <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">删除</Button>
+              </Space>
+            </p>
+            <Modal
+                v-model="input"
+                title="导入数据集"
+                @on-ok="ok"
+                @on-cancel="cancel">
+
+              <Form ref="inputFormItem" :model="inputFormItem" :label-width="80" :rules="ruleValidate">
+                <FormItem label="名称" prop="name">
+                  <Input v-model="inputFormItem.name" placeholder="自动获取"></Input>
+                </FormItem>
+                <FormItem label="级别">
+                  <Select v-model="inputFormItem.level" style="width:300px" >
+                    <Option v-for="item in inputFormItem.level_list" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                  </Select>
+                </FormItem>
+                <FormItem label="类型" prop="type">
+                  <Input v-model="inputFormItem.type" placeholder="自动获取" disabled="True"></Input>
+                </FormItem>
+                <FormItem label="任务" prop="task">
+                  <Input v-model="inputFormItem.task" placeholder="自动获取" disabled="True"></Input>
+                </FormItem>
+                <FormItem label="表头">
+                  <RadioGroup v-model="biaotou">
+                    <Radio label="有">
+                      <span>有</span>
+                    </Radio>
+                    <Radio label="无">
+                      <span>无</span>
+                    </Radio>
+                  </RadioGroup>
+                </FormItem>
+
+                <Upload  multiple action="" style="margin-left: 80px">
+                  <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button> 支持CSV格式，一次性上传多个文件
+                </Upload>
+
+              </Form>
+
+            </Modal>
+            <Table border ref="selection" :columns="columns" :data="data" style="width: auto">
+              <template #preview="{row, index }">
+                <Button type="primary" v-width=90 style="margin-left: -5px" @click="show(index)">查看</Button>
+              </template>
+            </Table>
+
+          </Modal>
+        </a>
+        <a @click="modal_intro1 = true" v-else>
           <Icon type="ios-help-circle-outline" />简介
           <Modal
               v-model="modal_intro1"
@@ -33,6 +94,8 @@
             <p style="white-space: pre-wrap">{{'        确定发布到公共数据集？'}}</p>
           </Modal>
         </a>
+
+
       </div>
     </template>
     <div style="text-align:center">
@@ -108,12 +171,121 @@
 <script>
 import axios from 'axios';
 import dynamicInput from "@/components/dynamicinput.vue";
-import {MenuGroup} from "view-ui-plus";
+import {FormItem, MenuGroup} from "view-ui-plus";
 import parentMenu from "@/components/parentmenu.vue";
 import mainTable from "@/components/maintable.vue";
+import lineChart from "@/components/chart/line.vue";
 export default {
   data() {
     return {
+      input: false,
+      inputFormItem: {
+        name: '',
+        type: '',
+        level:'',
+        task:'',
+        biaotou:'',
+        level_list:[
+          {
+            value: "等级1",
+            label:"等级1"
+          },
+          {
+            value: "等级2",
+            label:"等级2"
+          },
+          {
+            value: "等级3",
+            label:"等级3"
+          }
+        ],
+      },
+      columns: [
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: '数据名',
+          key: 'name',
+          align: 'center'
+        },
+        {
+          title: '级别',
+          key: 'level',
+          align: 'center',
+          sortable: true
+        },
+        {
+          title: '所属任务',
+          key: 'task',
+          align: 'center'
+        },
+        {
+          title: '导入时间',
+          key: 'input_time',
+          align: 'center',
+          sortable: true
+        },
+        {
+          title: '统计信息',
+          children:[
+            {
+              title: '表头数量',
+              key: 'header_num',
+              align: 'center',
+              sortable: true
+            },
+            {
+              title: '数据长度',
+              key: 'data_len',
+              align: 'center',
+              sortable: true
+            },
+            {
+              title: '数据类型',
+              key: 'data_type',
+              align: 'center',
+            },
+          ],
+          align: 'center'
+        },
+        {
+          title: '预览',
+          slot: 'preview',
+          align: 'center',
+        },
+      ],
+      data: [
+        {
+          name: '动作表',
+          level: 1,
+          task: "目标检测",
+          input_time: "2023-9-1",
+          header_num: 10,
+          data_len: 10,
+          data_type: "int",
+        },
+        {
+          name: '状态表',
+          level: 1,
+          task: "目标检测",
+          input_time: "2023-9-2",
+          header_num: 12,
+          data_len: 13,
+          data_type: "char",
+        },
+        {
+          name: '结果表',
+          level: 1,
+          task: "目标检测",
+          input_time: "2023-9-3",
+          header_num: 15,
+          data_len: 16,
+          data_type: "string",
+        },
+      ],
       // jsonBaseUrl: "http://localhost:3000",
       modal_intro1:false,//卡片2的介绍、发布、删除与预览
       modal_delete1:false,
@@ -132,6 +304,8 @@ export default {
   props:['cardInfo','viewRange', 'nowItem','taskType','addFormItem', 'cardList'],
   inject:['reload' ,'updataPage','jsonBaseUrl', 'pageKind','addFormItemCfg','getPageContent','cardNameFlag'],
   components: {
+    FormItem,
+    lineChart,
     dynamicInput,
   },
   created() {

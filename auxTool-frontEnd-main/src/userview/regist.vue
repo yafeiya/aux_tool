@@ -30,8 +30,6 @@
 </template>
 <script>
 import axios from 'axios';
-import { postRegist } from '../api/api';
-import qs from "qs";
 export default {
   data () {
     const validatePassCheck = (rule, value, callback) => {
@@ -103,20 +101,18 @@ export default {
         //   content: 'username: ' + username+ ' | password: ' + password
         // });
         var content = {username: username, password: password}
-        
-        var data = qs.stringify(content)
-        console.info("hah")
-        postRegist(data).then(res => {
-          
-          if(res.code == 200) {
-            this.$Message["success"]({
+        console.log("111")
+        axios.post(this.base_url+'/users',content)
+            .then(response => {
+              this.$Message["success"]({
                 background: true,
-                content: '注册成功，用户名' + res.data.user.username
-            });
-          }
-        }).catch(error=>{
-          console.log(error);
-        })
+                content: '注册成功，用户名' + username
+              });
+            })
+            .catch(error => {
+              console.log(error);
+            })
+        console.log("111")
       }
     }
   }

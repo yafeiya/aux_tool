@@ -34,7 +34,7 @@
     <Layout>
       <Layout>
         <!--//固定侧边菜单-->
-        <Sider v-if="this.menu.length!= 0" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+        <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
           <!-- pageKind={"database","defineFunction","design","example"} -->
           <parentMenu :pageMenu="this.menu"  @getNowItem="getNowItem">
           </parentMenu>
@@ -74,6 +74,11 @@
             </Menu>
           </Header>
           <Content :style="{padding: '0 16px 16px'}">
+            <!--//数据集选项-->
+            <!-- <Tabs type="card" class="main-table">
+              <TabPane label="我的数据集">这里是我的数据集火力分配1</TabPane>
+              <TabPane label="公共数据集">这里是公共数据集火力分配1</TabPane>
+            </Tabs> -->
             <mainTable :nowItem="nowItem" :task-type="taskType"
                        :my-card-list="myCardList" :public-card-list="publicCardList"
                        :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
@@ -90,11 +95,56 @@ import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
 import axios from 'axios';
-import { getMenuInfo } from '../api/api.js'
 export default {
   data() {
     return {
-      menu:[],
+      menu:[
+        {
+          name: 'numDataBase',
+          title: '数值数据集',
+          icon: 'ios-navigate',
+          children:[
+            {
+              name: 'numDataBase1-1',
+              title: '任务1',
+              // icon: 'ios-document-outline',
+            },
+            {
+              name: 'numDataBase1-2',
+              title: '任务2',
+              // icon: 'md-bulb',
+            }
+          ]
+        },
+        {
+          name: 'imgDataBase',
+          title: '图像数据集',
+          icon: 'ios-keypad',
+          children:[
+            {
+              name: 'imgDataBase1-1',
+              title: '目标检测',
+              // icon: 'ios-document-outline',
+            },{
+              name: 'imgDataBase1-2',
+              title: '目标分类',
+              // icon: 'md-bulb',
+            }
+          ]
+        },
+        {
+          name: 'others',
+          title: '其他数据集',
+          icon: 'ios-analytics',
+          children:[
+            {
+              name: '',
+              title: '待补充',
+              // icon: 'ios-document-outline',
+            }
+          ]
+        },
+      ],
       // 增加表单的形式，default为是否需要默认显示 title文本显示，name对应数据库中属性名，itemType对应表单项信息。
       // default的others写默认文本来源，select和radio形式的写样式信息 input写初始提示语
       // bigInput,比较大的输入项
@@ -186,12 +236,6 @@ export default {
       publicCardRowNum: 0,
       publicCardColNum: 6,
     }
-  },
-  beforeCreate(){
-    getMenuInfo("database").then(res => {
-      this.menu = res.data
-      console.info(this.menu)
-    })
   },
   components: {
     MenuGroup,
