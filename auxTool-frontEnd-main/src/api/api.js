@@ -27,4 +27,11 @@ export const isLogin = (username,password) => {
     }
   })
 }
+export const postRegist = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/postRegist',
+    data: data
+  })
+}
 
