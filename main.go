@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	_ "fmt"
 
 	// "reflect"
 	"backEnd/common"
@@ -15,10 +16,25 @@ import (
 func main() {
 	common.InitConfig()
 	db := common.InitDB()
-	// db.Create(&model.User{Id: 1, UserName: "123", PassWord: "1234"})
-	var user model.User
-	db.First(&user)
-	fmt.Println(user)
+
+	//test
+	name := "sk"
+	pwd := "111"
+	user := model.User{
+		UserName: name,
+		PassWord: pwd,
+	}
+	// 判重处理
+	db.Where("UserName = ?", name).First(&user)
+	if user.Id != 0 {
+		fmt.Println("该用户已存在")
+	} else {
+		// 新增该注册用户
+		db.Create(&user)
+	}
+
+
+
 	engine := gin.Default()
 	engine.Use(common.CORS())
 	engine.GET("/getPageMenu", controller.GetPageMenu)
@@ -30,6 +46,8 @@ func main() {
 		panic(engine.Run(host + ":" + port))
 	}
 	err := engine.Run()
+	engine.POST("/login", controller.Login)
+	engine.POST("/register", controller.Register)
 	if err != nil {
 		panic(err)
 	}

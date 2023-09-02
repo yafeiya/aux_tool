@@ -17,21 +17,19 @@ export const addMenuItem = (data) => {
     data: data
   })
 }
-export const isLogin = (username,password) => {
-  return myAxios({
-    method: 'GET',
-    url: '/login',
-    params: {
-      username: username,
-      password: password
-    }
-  })
-}
-export const postRegist = (data) => {
+
+export const isLogin = (data) => {
   return myAxios({
     method: 'POST',
-    url: '/postRegist',
+    url: '/login',
     data: data
   })
 }
 
+export const isRegister = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/register',
+    data: data
+  })
+}
