@@ -107,7 +107,7 @@ export default {
           this.result = res.msg
           console.info(res)
           if(res.data.msg == "The username already exists"){
-            this.$Message["success"]({
+            this.$Message["error"]({
               background: true,
               content: "该用户名已存在"
             });

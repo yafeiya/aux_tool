@@ -51,14 +51,14 @@ export default {
           this.result = res.msg
           console.info(res)
           if(res.data.msg == "The username does not exist"){
-            this.$Message["success"]({
+            this.$Message["error"]({
               background: true,
               content: "用户名不存在"
             });
             console.info("The username does not exist")
           }else if(res.data.msg == "Password error"){
             console.info("Password error")
-            this.$Message["success"]({
+            this.$Message["error"]({
               background: true,
               content: "密码错误"
             });
