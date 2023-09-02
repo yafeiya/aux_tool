@@ -30,6 +30,8 @@
 </template>
 <script>
 import axios from 'axios';
+import { isRegister } from '../api/api';
+import qs from "qs";
 export default {
   data () {
     const validatePassCheck = (rule, value, callback) => {
@@ -96,23 +98,28 @@ export default {
     handleSubmit (valid, { username, password }) {
       console.log(valid)
       if (valid) {
-        // this.$Modal.info({
-        //   title: '输入的内容如下：',
-        //   content: 'username: ' + username+ ' | password: ' + password
-        // });
-        var content = {username: username, password: password}
-        console.log("111")
-        axios.post(this.base_url+'/users',content)
-            .then(response => {
-              this.$Message["success"]({
-                background: true,
-                content: '注册成功，用户名' + username
-              });
-            })
-            .catch(error => {
-              console.log(error);
-            })
-        console.log("111")
+        var data = {
+          name: username,
+          pwd: password
+        }
+        data = qs.stringify(data)
+        isRegister(data).then(res => {
+          this.result = res.msg
+          console.info(res)
+          if(res.data.msg == "The username already exists"){
+            this.$Message["success"]({
+              background: true,
+              content: "该用户名已存在"
+            });
+            console.info("The username already exists")
+          }else{
+            this.$Message["success"]({
+              background: true,
+              content: "注册成功"
+            });
+            this.$router.push('/')
+          }
+        })
       }
     }
   }

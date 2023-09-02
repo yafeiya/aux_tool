@@ -28,63 +28,51 @@
 </template>
 <script>
 import axios from 'axios';
+import { isLogin } from '../api/api.js'
+import qs from "qs";
 export default {
   data () {
     return {
       autoLogin: true,
       jsonBaseUrl: "http://localhost:3000",
       username: null,
-
     }
   },
   methods: {
+
     handleSubmit (valid, { username, password }) {
       if (valid) {
-        // this.$Modal.info({
-        //     title: '输入的内容如下：',
-        //     content: 'username: ' + username + ' | password: ' + password
-        // });
-        axios.get(this.jsonBaseUrl + "/users?username="+username).then(response => {
-          console.log(response);
-          var user = response.data
-          if(user.length === 0) {
-            this.$Message["error"]({
+        var data = {
+          name: username,
+          pwd: password
+        }
+        data = qs.stringify(data)
+        isLogin(data).then(res => {
+          this.result = res.msg
+          console.info(res)
+          if(res.data.msg == "The username does not exist"){
+            this.$Message["success"]({
               background: true,
-              content: '登录失败，此用户名不存在'
+              content: "用户名不存在"
             });
-            console.info("username is null")
-          } else {
-            var valPassword = user[0].password
-            if(valPassword === password) {
-              this.$Message["success"]({
-                background: true,
-                content: '登录成功，用户'+username
-              });
-              this.$router.push('/home?username=' + username)
-            } else {
-              this.$Message["error"]({
-                background: true,
-                content: '登录失败，密码错误，请仔细检查'
-              });
-              console.info("密码错误，登录失败")
-            }
+            console.info("The username does not exist")
+          }else if(res.data.msg == "Password error"){
+            console.info("Password error")
+            this.$Message["success"]({
+              background: true,
+              content: "密码错误"
+            });
+          }else{
+            this.$router.push('/home')
           }
-          var target = 123
-
-          // users
         })
-            .catch(error => {
-              console.log(error);
-            })
-        // console.info(users)
-        // console.log(users)
-        // this.$router.push('/database')
       }
 
     },
     toRegist(valid) {
       this.$router.push('/regist')
-    }
+    },
+
   }
 }
 </script>
