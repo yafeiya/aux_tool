@@ -3,9 +3,9 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-import { frontEndUrl } from './url'
+import { EndUrl } from './url_config'
+const frontEndUrl  = EndUrl().frontEndUrl
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
@@ -16,7 +16,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  // server:{
-  //   host: frontEndUrl
-  // }
+  server:{
+   // host: '192.168.0.103'
+    host: frontEndUrl
+  }
 })
