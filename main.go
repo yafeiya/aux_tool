@@ -39,7 +39,7 @@ func main() {
 	engine.Use(common.CORS())
 	engine.GET("/getPageMenu", controller.GetPageMenu)
 	engine.POST("/addPageMenuItem", controller.AddPageMenuItem)
-	engine.POST("/postRegist", controller.PostRegist)
+	engine.POST("/postRegist", controller.Register)
 	host := viper.GetString("server.host")
 	port := viper.GetString("server.port")
 	if len(port) != 0 {
