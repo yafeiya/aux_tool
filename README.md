@@ -58,6 +58,30 @@ npm run dev
 
 ```
 
+## SQL
+
+```
+# 初次部署时，mySQL配置
+# 开启mySQL
+mysql -u root -p
+
+# 创建数据库
+CREATE DATABASE auxtool
+    DEFAULT CHARACTER SET = 'utf8mb4';
+
+# 创建用户表
+use auxtool;
+create table user
+(
+Id INT(11) not null auto_increment PRIMARY KEY comment '主键' ,
+UserName VARCHAR(15),
+PassWord VARCHAR(15)
+);
+
+# 注册用户
+
+```
+
 ## Reference
 
 [gorm](https://gorm.io/docs/)
