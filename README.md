@@ -68,7 +68,15 @@ mysql -u root -p
 # 创建数据库
 CREATE DATABASE auxtool
     DEFAULT CHARACTER SET = 'utf8mb4';
+## 1. sql文件创建
+# 导入数据库
+use auxtool;
+source /xx/xxxx.sql;
 
+# 导出数据库
+mysqldump -u root -p auxtool > /xx/xxxx.sql;
+
+## 2. sql语句创建
 # 创建用户表
 use auxtool;
 create table user
