@@ -6,7 +6,7 @@ auxTool是一款前后端分离的数据驱动建模辅助工具
 
 **Tech Stack:**
 
-Vue3+vite+JavaScript+View UI Plus+Go+MySql
+Vue3+vite+JavaScript+View UI Plus+Gin+MySql
 
 ## Install
 
