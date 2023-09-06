@@ -58,7 +58,7 @@ npm run dev
 
 ```
 
-## MySQL部署
+## MySQL
 
 ```
 # 初次开发时，部署数据库
