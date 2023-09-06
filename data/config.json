@@ -16,21 +16,6 @@
             ]
         },
         {
-            "name": "imgDataBase",
-            "title": "图像数据集",
-            "icon": "ios-keypad",
-            "children":[
-                {
-                    "name": "imgDataBase1-1",
-                    "title": "目标检测"
-                },
-                {
-                    "name": "imgDataBase1-2",
-                    "title": "目标分类"
-                }
-            ]
-        },
-        {
             "name": "others",
             "title": "其他数据集",
             "icon": "ios-analytics",
@@ -55,6 +40,10 @@
                 {
                     "name": "classification",
                     "title": "分类"
+                },
+                {
+                    "name": "optimization",
+                    "title": "优化"
                 }
             ]
         },
@@ -81,6 +70,10 @@
                 {
                     "name": "valueIteration",
                     "title": "值迭代"
+                },
+                {
+                    "name": "strategy_learning",
+                    "title": "策略学习"
                 }
             ]
         }
@@ -92,12 +85,16 @@
             "icon": "ios-navigate",
             "children":[
                 {
-                    "name": "L1",
-                    "title": "L1"
+                    "name": "action_distribution",
+                    "title": "动作分布"
                 },
                 {
-                    "name":"L2",
-                    "title":"L2"
+                    "name":"learning_rate",
+                    "title":"学习率"
+                },
+                {
+                    "name":"reward_distribution",
+                    "title":"奖励分布"
                 }
             ]
         },
@@ -107,8 +104,20 @@
             "icon": "ios-keypad",
             "children":[
                 {
-                    "name": "reward",
-                    "title": "reward"
+                    "name": "comprehensive",
+                    "title": "综合评价指标"
+                },
+                {
+                    "name": "generalization",
+                    "title": "泛化性"
+                },
+                {
+                    "name": "model_accuracy",
+                    "title": "模型精度"
+                },
+                {
+                    "name": "portability",
+                    "title": "自定义指标"
                 }
             ]
         }

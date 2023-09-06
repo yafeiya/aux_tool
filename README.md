@@ -90,6 +90,16 @@ PassWord VARCHAR(15)
 
 ```
 
+## Note
+
+```
+# 允许其他ip访问mysql
+use mysql;
+select Host, User,Password from user;
+update user set Host='%' where User='root';
+flush privileges;
+```
+
 ## Reference
 
 [gorm](https://gorm.io/docs/)
