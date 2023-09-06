@@ -53,47 +53,36 @@ npm install
 # 开启json虚拟后端
 npm run json  # TODO后续删除
 
-# 开启前端服务 (./前端代码目录)
+# 开启前端服务 (./auxTool-frontEnd-main)
 npm run dev
 
 ```
 
-## SQL
+## MySQL部署
 
 ```
-# 初次部署时，mySQL配置
+# 初次开发时，部署数据库
 # 开启mySQL
 mysql -u root -p
 
 # 创建数据库
 CREATE DATABASE auxtool
-    DEFAULT CHARACTER SET = 'utf8mb4';
-## 1. sql文件创建
+    DEFAULT CHARACTER SET = 'utf8';
+use auxtool
+
 # 导入数据库
 use auxtool;
 source /xx/xxxx.sql;
+exit;
 
-# 导出数据库
-mysqldump -u root -p auxtool > /xx/xxxx.sql;
-
-## 2. sql语句创建
-# 创建用户表
-use auxtool;
-create table user
-(
-Id INT(11) not null auto_increment PRIMARY KEY comment '主键' ,
-UserName VARCHAR(15),
-PassWord VARCHAR(15)
-);
-
-# 注册用户
-
+# 导出数据库（可选）
+mysqldump -u root -p --default-character-set=utf8 auxtool > xx.sql
 ```
 
 ## Note
 
 ```
-# 允许其他ip访问mysql
+# 1. 允许其他ip访问mysql
 use mysql;
 select Host, User,Password from user;
 update user set Host='%' where User='root';
