@@ -6,6 +6,7 @@ import (
 	"backEnd/model"
 	"fmt"
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,10 +31,11 @@ func Register(ctx *gin.Context) {
 		// 新增该注册用户
 		db.Create(&user)
 		response.Success(ctx, gin.H{"user": user}, "register success")
+		response.Success(ctx, nil, "register success")
 	}
 }
 
-//登录
+// 登录
 func Login(ctx *gin.Context) {
 	db := common.InitDB()
 	// 与前端约定好字符串
@@ -50,13 +52,12 @@ func Login(ctx *gin.Context) {
 	} else {
 		fmt.Println("找到了匹配的记录")
 		fmt.Println("username：" + user.UserName + "  password:" + user.PassWord)
-		if user.PassWord != pwd{
+		if user.PassWord != pwd {
 			fmt.Println("密码错误")
 			response.Response(ctx, http.StatusOK, 404, nil, "Password error")
-		}else{
+		} else {
 			fmt.Println("密码正确")
+			response.Response(ctx, http.StatusOK, 200, gin.H{"user": user}, "login success")
 		}
 	}
-	
 }
-
