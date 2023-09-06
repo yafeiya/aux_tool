@@ -34,7 +34,7 @@
     <Layout>
       <Layout>
         <!--//固定侧边菜单-->
-        <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+        <Sider v-if="this.menu.length!= 0" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
           <!-- pageKind={"database","defineFunction","design","example"} -->
           <parentMenu :pageMenu="this.menu" :pageKind="this.pageKind" @getNowItem="getNowItem">
           </parentMenu>
@@ -74,11 +74,6 @@
             </Menu>
           </Header>
           <Content :style="{padding: '0 16px 16px'}">
-            <!--//数据集选项-->
-            <!-- <Tabs type="card" class="main-table">
-              <TabPane label="我的数据集">这里是我的数据集火力分配1</TabPane>
-              <TabPane label="公共数据集">这里是公共数据集火力分配1</TabPane>
-            </Tabs> -->
             <mainTable :nowItem="nowItem" :task-type="taskType"
                        :my-card-list="myCardList" :public-card-list="publicCardList"
                        :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
@@ -95,6 +90,7 @@ import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
 import axios from "axios";
+import { getMenuInfo } from '../api/api.js'
 export default {
   data() {
     return {
@@ -212,6 +208,12 @@ export default {
       publicCardRowNum: 0,
       publicCardColNum: 6,
     }
+  },
+  beforeCreate(){
+    getMenuInfo("design").then(res => {
+      this.menu = res.data
+      console.info(this.menu)
+    })
   },
   components: {
     MenuGroup,
