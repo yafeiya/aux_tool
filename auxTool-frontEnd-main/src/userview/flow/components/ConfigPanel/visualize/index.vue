@@ -15,7 +15,7 @@
           <div id="myChart" :style="{width: '1000px', height: '500px'}"></div>
           
       </Modal>
-      <div class="miniChart" id="miniChart" :style="{width: '310px', height: '250px'}"></div>
+      <Button class="view" @click="sendMoneytoYe">缩略图显示</Button>
       </Row>
     </TabPane>
 
@@ -63,19 +63,20 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, watch, reactive, onMounted } from 'vue';
+  import { defineComponent, inject, watch, reactive} from 'vue';
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
   import * as echarts from 'echarts'
+  import 'echarts-gl'
   import { Button } from 'view-ui-plus';
-  import actdatas from "../../../results/actdata.json"
+  import datas from "../../../results/data.json"
 
   export default defineComponent({
     name: 'Index',
 
     data () {
             return {
-                modal: false
+                modal: false,
             }
         },
     methods: {
@@ -88,6 +89,15 @@
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
+      
+      // 向画布页面（祖父）传递预览图参数
+      const changepreview: any = inject('changepreview')
+      const preview: any = inject('grandpreview')
+      const sendMoneytoYe = function() {
+        preview.value = !preview.value
+        changepreview(preview.value)
+      }
+
 
       const data = reactive({
         nodedownsamplescale: '',
@@ -96,7 +106,7 @@
         nodeFill: '',
         nodeFontSize: '',
         nodeselflabel:'',
-        nodedataurl:''
+        nodedataurl:'',
       })
       watch(
         [() => id.value],
@@ -117,118 +127,170 @@
         },
       );
 
-      const rewarddata = [
-          ["re1", "re2", "re3", "re4", "re5", "re6", "re7"],
-          [1, 2, 3, 4, 5, 6, 7],
-        ]
-      const lrdata = [
-          ["lr1", "lr2", "lr3", "lr4", "lr5", "lr6", "lr7"],
-          [0.1, 0.1, 0.1, 0.1, 0.01, 0.01, 0.01],
-        ]  
 
       const initchart = (label) => {
-        let actdata = actdatas["actdata"]
-        console.log(actdata)
+        clearHander()
+        let actdata = datas["actions"]
+        let rewarddata = datas["reward"]
+        let lrdata = datas["learning_rate"]
+        let count:any = []  //统计轮数
+
+        // let actx:any = ["AIR1","AIR2","AIR3","AIR4"] //act图x坐标飞机种类
+        // const acty= ["MSL1","MSL2","MSL3","MSL4","MSL5","MSL6","MSL7"]  //act图y坐标导弹种类
+        const x = 4;  //飞机种类数
+        const  y = 7; //导弹种类数
+        let maxnum = 0
+        let MSLnum = new Array(x); // MSL记录数据
+        let MSLdata:any = []
+
+        for (var i = 0; i < x; i++) {
+          MSLnum[i] = new Array(y); // 创建二维数组
+        }
+        // console.log(MSLnum)
+        //初始为0
+        for (var q = 0; q < x; q++) {
+          for (var p = 0; p < y; p++) {
+            MSLnum[q][p]=0
+          }
+        }
+        // console.log(MSLnum)
+        //统计发射数目  
+        var turn = 0
+        let msi:any
+        while(lrdata[turn]){
+          count.push(turn)
+          for (var j=0;j<x;j++){
+            msi = actdata[turn][j][1]-1;//序号-1
+            MSLnum[j][msi]++
+          }
+          turn++
+        }
+        //转换成最终坐标
+        for (var n = 0; n < x; n++) {
+          for (var m = 0; m < y; m++) {
+            if(MSLnum[n][m]>maxnum){maxnum = MSLnum[n][m]}
+            MSLdata.push([n,m,MSLnum[n][m]])
+          }
+        }
+        // console.log(count)
+        // console.log(MSLnum)
         let myChart = echarts.init(document.getElementById("myChart"));
         let miniChart = echarts.init(document.getElementById("miniChart"));
         // 绘制图表
         const nodelabel = label
 
-        if( nodelabel == '动作分布'){
-          myChart.setOption({
+
+        //定义act图表参数
+        var option1 = {
+            // title: {
+            //         text: '3D堆叠柱状图',
+            //         x: 'center'
+            //     },
+              xAxis3D: {
+                  type: 'category',
+                  // axisLine:{
+                  //     lineStyle:{
+                  //         color:'black',
+                  //         width:2
+                  //     }
+                  // },
+              },
+              yAxis3D: {
+                  type: 'category',
+                  // axisLine:{
+                  //     lineStyle:{
+                  //       width:1,
+                  //       color:'black',
+                  //     }
+                  // },
+              },
+              zAxis3D: {
+                  type: 'value',
+                  // axisLine:{
+                  //     lineStyle:{
+                  //         color:'black',
+                  //         width:1
+                  //     }
+                  // },
+              },
+              grid3D: {
+                  viewControl: {//可以控制整个柱状图场景旋转平移等，自行代数数据试试
+                      // alpha: 0, 
+                      // beta: 0,
+                      // minAlpha: 0,//x轴旋转
+                      // maxAlpha: 0,
+                      // minBeta: 0,//y轴旋转
+                      // maxBeta: 0,
+                      projection: 'orthographic'//正交投影
+                  }
+              },
+              visualMap: {
+                  calculable: true,
+                  max: maxnum,
+                  // dimension: 'Life Expectancy',
+                  inRange: {
+                      color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                  }
+              },
+              dataset: {
+                  source: MSLdata
+              },
+              series: [{
+                  type: 'bar3D',
+                  barSize: 10,//柱子大小
+                  encode: {
+                    // 维度的名字默认就是表头的属性名
+                    x: 'Airplane',
+                    y: 'Missile',
+                    z: 'Num',
+                    tooltip: [0, 1, 2, 3, 4]
+                  }
+              }]
+          };
+
+        //定义reward图表参数
+        var option2={
             xAxis: {
-              data: actdata[0]
+              data: count
             },
             yAxis:{},
             series: [
               {
                 name: "y轴",
                 type: "line",
-                data: actdata[1]
+                data: rewarddata
               }
             ]
-          });
+          }
+
+        //定义lr图表参数
+        var option3={
+            xAxis: {
+              data: count
+            },
+            yAxis:{},
+            series: [
+              {
+                name: "y轴",
+                type: "line",
+                data: lrdata
+              }
+            ]
+          }
+
+        if( nodelabel == '动作分布'){
+          myChart.setOption(option1);
+          miniChart.setOption(option1);
         }
 
         else if( nodelabel == '奖励分布'){
-          myChart.setOption({
-            xAxis: {
-              data: rewarddata[0]
-            },
-            yAxis:{},
-            series: [
-              {
-                name: "y轴",
-                type: "line",
-                data: rewarddata[1]
-              }
-            ]
-          }); 
+          myChart.setOption(option2); 
+          miniChart.setOption(option2);
         }
 
         else if( nodelabel == '学习率'){
-          myChart.setOption({
-            xAxis: {
-              data: lrdata[0]
-            },
-            yAxis:{},
-            series: [
-              {
-                name: "y轴",
-                type: "line",
-                data: lrdata[1]
-              }
-            ]
-          }); 
-        }
-
-
-        if( nodelabel == '动作分布'){
-          miniChart.setOption({
-            xAxis: {
-              data: actdata[0]
-            },
-            yAxis:{},
-            series: [
-              {
-                name: "y轴",
-                type: "line",
-                data: actdata[1]
-              }
-            ]
-          });
-        }
-
-        else if( nodelabel == '奖励分布'){
-          miniChart.setOption({
-            xAxis: {
-              data: rewarddata[0]
-            },
-            yAxis:{},
-            series: [
-              {
-                name: "y轴",
-                type: "line",
-                data: rewarddata[1]
-              }
-            ]
-          }); 
-        }
-
-        else if( nodelabel == '学习率'){
-          miniChart.setOption({
-            xAxis: {
-              data: lrdata[0]
-            },
-            yAxis:{},
-            series: [
-              {
-                name: "y轴",
-                type: "line",
-                data: lrdata[1]
-              }
-            ]
-          }); 
+          myChart.setOption(option3); 
+          miniChart.setOption(option3);
         }
         
         window.onresize = function () { // 自适应大小
@@ -237,6 +299,13 @@
         };
       
       }
+
+      const clearHander = () => {
+        let myChart = echarts.init(document.getElementById("myChart"));
+        let miniChart = echarts.init(document.getElementById("miniChart"));
+        myChart.clear() 
+        miniChart.clear()
+    }
 
       const onStrokeChange = (e: any) => {
         const val = e.target.value;
@@ -280,6 +349,7 @@
         });
       };  
 
+
       return {
         globalGridAttr,
         data,
@@ -291,6 +361,7 @@
         ondownsamplescaleChange,
         onaugmentationscaleChange,
         initchart,
+        sendMoneytoYe,
       };
     },
   });

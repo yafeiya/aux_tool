@@ -30,7 +30,7 @@
               <Submenu
                   :name="item.name"
                   v-for="item in hasChildren(list)"
-                  @mousedown.right="startDrag($event,item.label)"
+                  @mousedown.right="startDrag($event,item.label,item.label)"
               >
                   <template #title> 
                       <span>{{ item.label }}</span>
@@ -48,7 +48,7 @@
                       class="secondmenustyle"
                       :name="subitem.name"
                       v-for="subitem in noChildren(item.children)"
-                      @mousedown="startDrag($event,item.label)"
+                      @mousedown="startDrag($event,item.label,subitem.label)"
                       >
                           <span>{{ subitem.label }}</span>
                       </MenuItem> 
@@ -74,7 +74,7 @@
                               class="thirdmenustyle" 
                               :name="lastitem.name"
                               v-for="lastitem in noChildren(subitem.children)"
-                              @mousedown="startDrag($event,item.label)"
+                              @mousedown="startDrag($event,item.label,lastitem.label)"
                               >
                                   <span>{{ lastitem.label }}</span>
                               </MenuItem>   
@@ -86,13 +86,35 @@
       <Layout>
           <Header class="graphheader">
             <tool-bar v-if="isReady" />
+            
           </Header>
-          <Content  class="graphcontent">
-            <div id="container" ></div>
-          </Content>
           
+          <Content  
+          class="graphcontent"
+          :class="{ active: grandpreview }"
+          >
+            <div 
+            id="container" 
+            >
+          
+          </div> 
+          </Content>
+          <transition name="move-down">
+            <Card
+                class="preview"
+                v-show="grandpreview" id="miniChart" 
+                :style="{
+                  width: '1500px', 
+                  height: '300px', 
+                }"
+                :bordered="false"
+                >
+            </Card>
+          </transition>
       </Layout>
-      <Sider class="rightsider" style= "max-width:300px;width:300px;flex:content" >
+      <Sider 
+      class="rightsider" 
+      style= "max-width:300px;width:300px;flex:content;" >
         <config-panel v-if="isReady" />
       </Sider>
     </Layout>
@@ -100,7 +122,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue';
+  import { defineComponent, ref, onMounted, provide, reactive} from 'vue';
   import { useRouter } from 'vue-router';
   import './reset/reset.less';
   import './reset/global.css';
@@ -109,6 +131,10 @@
   import ToolBar from './components/ToolBar/index.vue';
   import ConfigPanel from './components/ConfigPanel/index.vue';
   import { menulist } from './list'
+  import * as echarts from 'echarts'
+  import datas from "./results/data.json"
+
+
 
   
   // const getContainerSize = () => {
@@ -124,13 +150,31 @@
       ConfigPanel,
     },
 
-
     setup() {
       const router = useRouter();
       const maingraph = FlowGraph;
       const isReady = ref(false);
       let fathername = ""
+      let selfItem = ""
+      const heightnum = ref(1050)
       const list = menulist()
+
+      const grandpreview = ref(false)
+      const changepreview = function(value1) {
+        grandpreview.value = value1
+
+        if(!grandpreview.value) {
+          heightnum.value = 1050
+        }else 
+        {heightnum.value = 750}
+        console.log(grandpreview.value)
+
+        console.log(heightnum.value)
+      }
+      provide('changepreview', changepreview)
+      provide('grandpreview', grandpreview)
+
+
 
       const initGraph = function () {
         const graph = FlowGraph.init();
@@ -147,7 +191,7 @@
       };
 
 
-      const startDrag = (e, fatherItem) => {
+      const startDrag = (e, fatherItem,selfItem) => {
         // var a = Object.assign({},fatherItem)
         // let b = ""
         // let c = ""
@@ -164,16 +208,17 @@
         // }
         // c = c+b
         // console.log(c)
-        const name = savename(fatherItem)
+        const fathername = savefathername(fatherItem)
+        const selfname = saveselfname(selfItem)
         // console.log(name)
         var initNode = {
           shape: 'flow-chart-rect',
           width: 80,
           height: 42,
-          label: e.target.textContent,
+          label: selfname,
           data:{
-            fatherLabel: name,
-            selflabel: e.target.textContent,
+            fatherLabel: fathername,
+            selflabel: selfname,
           }
         } 
         const node = maingraph.graph.createNode(initNode);
@@ -181,10 +226,22 @@
       };
 
       onMounted(() => {
-          initGraph();
+        initGraph();
       });
 
-      const savename =(a) =>{
+      // watch(
+      //   [() => heightnum.value],
+      //   () => {
+      //     // graph.resize(1600,height.value);
+      //   },
+      //   {
+      //     immediate: false,
+      //     deep: false,
+      //   },
+      // );
+      
+
+      const savefathername =(a) =>{
         if (typeof(a) !== "undefined"){
           fathername = a
         }else{
@@ -193,6 +250,14 @@
         return fathername;
       }
       
+      const saveselfname =(a) =>{
+        if (typeof(a) !== "undefined"){
+          selfItem = a
+        }else{
+          selfItem = selfItem
+        }
+        return selfItem;
+      }
       // 编写菜单栏
       const noChildren =(thelist) =>{
           return thelist.filter((item) => !item.children);
@@ -210,11 +275,13 @@
       return {
         list,
         isReady,
-        savename,
         startDrag,
         noChildren,
         hasChildren,
         backhome,
+        changepreview, 
+        grandpreview,
+        heightnum,
       };
     },
   });
@@ -235,8 +302,9 @@
 .layout{
   height: 100%;
   .leftsider{
-    height: 1100px;
+    
     background-color: #fff;
+    z-index: 3;
   }
   .graphheader{
     height: 40px;
@@ -244,10 +312,21 @@
     }
   .graphcontent{
     height: 1060px;
+    background-color: #fff;
+  }
+  .active{
+    height: 760px;
+    background-color: #fff;
+  }
+  .preview{
+    
+    align-items: center;
+    background-color: #fff;
+    z-index: 2;
   }
   .rightsider{
-    height: 1100px;
     background-color: #fff;
+    z-index: 3;
   }
 }
 </style>

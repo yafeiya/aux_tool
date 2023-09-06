@@ -51,19 +51,19 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
     {
       tagName: 'foreignObject',
       selector: 'fo',
-      children: [
-        {
-          ns: Dom.ns.xhtml,
-          tagName: 'body',
-          selector: 'foBody',
-          children: [
-            {
-              tagName: 'div',
-              selector: 'edit-text',
-            },
-          ],
-        },
-      ],
+      // children: [
+      //   {
+      //     ns: Dom.ns.xhtml,
+      //     tagName: 'body',
+      //     selector: 'foBody',
+      //     children: [
+      //       {
+      //         tagName: 'div',
+      //         selector: 'edit-text',
+      //       },
+      //     ],
+      //   },
+      // ],
     },
   ],
   ports: {
@@ -72,10 +72,10 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
         position: 'top',
         attrs: {
           circle: {
-            r: 3,
+            r: 9,
             magnet: true,
             stroke: '#5F95FF',
-            strokeWidth: 1,
+            strokeWidth: 2,
             fill: '#fff',
             style: {
               visibility: 'hidden',
@@ -87,10 +87,10 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
         position: 'right',
         attrs: {
           circle: {
-            r: 3,
+            r: 9,
             magnet: true,
             stroke: '#5F95FF',
-            strokeWidth: 1,
+            strokeWidth: 2,
             fill: '#fff',
             style: {
               visibility: 'hidden',
@@ -102,10 +102,10 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
         position: 'bottom',
         attrs: {
           circle: {
-            r: 3,
+            r: 9,
             magnet: true,
             stroke: '#5F95FF',
-            strokeWidth: 1,
+            strokeWidth: 2,
             fill: '#fff',
             style: {
               visibility: 'hidden',
@@ -117,10 +117,10 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
         position: 'left',
         attrs: {
           circle: {
-            r: 3,
+            r: 9,
             magnet: true,
             stroke: '#5F95FF',
-            strokeWidth: 1,
+            strokeWidth: 2,
             fill: '#fff',
             style: {
               visibility: 'hidden',
@@ -134,27 +134,12 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
         id:'in1',
         group: 'top',
       },
-      {
-        id:'in2',
-        group: 'top',
-      },
-      {
-        id:'in3',
-        group: 'top',
-      },
+
       {
         group: 'right',
       },
       {
         id:'out1',
-        group: 'bottom',
-      },
-      {
-        id:'out2',
-        group: 'bottom',
-      },
-      {
-        id:'out3',
         group: 'bottom',
       },
       {

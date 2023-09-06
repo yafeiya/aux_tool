@@ -5,9 +5,9 @@ server:
   
 # 数据库
 datasource:
-  host: 192.168.0.103
+  host: 192.168.0.108
   port: 3306
   database: auxtool
   username: root
-  password: 98764321
+  password: 123456
   charset: utf8mb4

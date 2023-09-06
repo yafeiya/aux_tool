@@ -9,7 +9,7 @@ export default class FlowGraph {
     this.graph = new Graph({
       container: document.getElementById('container')!,
       width: 1600,
-      height: 1050,
+      height: 1060,
       grid: {
         size: 10,
         visible: true,
@@ -26,7 +26,11 @@ export default class FlowGraph {
           },
         ],
       },
-      panning: true,
+      // 设置画布拖拽
+      panning: {
+        enabled: true,
+        modifiers: 'shift',
+      },
       snapline: true,
       history: true,
       // scroller: {
@@ -53,6 +57,7 @@ export default class FlowGraph {
         anchor: 'center',
         connectionPoint: 'anchor',
         allowBlank: false,
+        allowMulti: 'withPort',
         highlight: true,
         snap: true,
         createEdge() {
@@ -67,9 +72,8 @@ export default class FlowGraph {
                 },
               },
             },
-            router: {
-              name: 'manhattan',
-            },
+            router: 'manhattan',
+            connector: 'rounded',
           });
         },
         validateConnection({ sourceView, targetView, sourceMagnet, targetMagnet }) {
