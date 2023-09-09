@@ -133,10 +133,8 @@
   import { menulist } from './list'
   import * as echarts from 'echarts'
   import datas from "./results/data.json"
+  import {getMenuInfo} from '../../api/api.js'
 
-
-
-  
   // const getContainerSize = () => {
   //   return {
   //     width: document.body.offsetWidth - 590,
@@ -149,7 +147,6 @@
       ToolBar,
       ConfigPanel,
     },
-
     setup() {
       const router = useRouter();
       const maingraph = FlowGraph;
@@ -157,6 +154,11 @@
       let fathername = ""
       let selfItem = ""
       const heightnum = ref(1050)
+
+      const getInTheatersData = async () => {
+      const res = await getMenuInfo("database");
+      console.info("88888888888888888",res )};
+
       const list = menulist()
 
       const grandpreview = ref(false)
@@ -227,6 +229,7 @@
 
       onMounted(() => {
         initGraph();
+        // getInTheatersData();
       });
 
       // watch(
