@@ -3,7 +3,7 @@
     <Layout>
       <Sider class="leftsider" hide-trigger>
         <Menu
-          class="menu" 
+          class="menu"
           width="200px"
           background-color="#545c64"
           text-color="#ffffff"
@@ -13,7 +13,7 @@
               class="backhome"
               name="backhome"
               @click="backhome()"
-              >   
+              >
                   <Icon type="md-arrow-back" />
                   <span>| 返回首页</span>
               </MenuItem>
@@ -23,7 +23,7 @@
               v-for="item in noChildren(list)"
               :name="item.name"
               @click=""
-              >   
+              >
                   <span>{{ item.label }}</span>
               </MenuItem>
 
@@ -32,7 +32,7 @@
                   v-for="item in hasChildren(list)"
                   @mousedown.right="startDrag($event,item.label,item.label)"
               >
-                  <template #title> 
+                  <template #title>
                       <span>{{ item.label }}</span>
                   </template>
 
@@ -40,80 +40,118 @@
                       class="secondmenustyle"
                       :name="item.label"
                       @mousedown="startDrag($event,item.label)"
-                      >   
+                      >
                           <span>{{ item.label }}</span>
                       </MenuItem> -->
-                  
-                      <MenuItem 
+
+                      <MenuItem
                       class="secondmenustyle"
                       :name="subitem.name"
                       v-for="subitem in noChildren(item.children)"
                       @mousedown="startDrag($event,item.label,subitem.label)"
                       >
                           <span>{{ subitem.label }}</span>
-                      </MenuItem> 
+                      </MenuItem>
 
                       <Submenu
                           class="secondmenustyle"
                           :name="subitem.name"
                           v-for="subitem in hasChildren(item.children)"
                       >
-                          <template #title> 
+                          <template #title>
                               <span>{{ subitem.label }}</span>
                           </template>
-<!-- 
+<!--
                               <MenuItem
                               class="thirdmenustyle"
                               :name="subitem.label"
                               @mousedown="startDrag($event,item.label)"
-                              >   
+                              >
                                   <span>{{ subitem.label }}</span>
                               </MenuItem> -->
 
                               <MenuItem
-                              class="thirdmenustyle" 
+                              class="thirdmenustyle"
                               :name="lastitem.name"
                               v-for="lastitem in noChildren(subitem.children)"
                               @mousedown="startDrag($event,item.label,lastitem.label)"
                               >
                                   <span>{{ lastitem.label }}</span>
-                              </MenuItem>   
+                              </MenuItem>
                       </Submenu>
-    
+
               </Submenu>
+          <MenuItem
+              class="editmenu"
+              name="editmenu"
+              @click="editMenu=true"
+          >
+            <Icon type="ios-add-circle-outline" />
+            <span>组件编辑</span>
+            <Modal v-model="editMenu" width="400" style="margin-top: 0px">
+              <template #header>
+                <p style="color:#4d85ea;text-align:center">
+                  <Icon type="ios-information-circle"></Icon>
+                  <span>编辑类别</span>
+                </p>
+              </template>
+              <Form ref="menuform" :model="menuform" :label-width="80" :rules="rulemenu" style="width: 400px">
+                <FormItem label="一级菜单" prop="fartherMenu">
+                  <Input v-model="menuform.fartherMenu" placeholder="输入一级菜单名称（必填）" style="width: 250px"></Input>
+                </FormItem>
+                <FormItem label="二级菜单" prop="childreMenu">
+                  <Input v-model="menuform.childreMenu" placeholder="输入二级菜单名称" style="width: 250px"></Input>
+                </FormItem>
+                <FormItem label="三级菜单" prop="childreMenu">
+                  <Input v-model="menuform.childreMenu" placeholder="输入三级菜单名称" style="width: 250px"></Input>
+                </FormItem>
+                <FormItem>
+                  <Row>
+                    <Col span="8">
+                      <Button type="default" long @click="" icon="md-add" style="margin-left: 10px">添加</Button>
+                    </Col>
+                    <Col span="8">
+                      <Button type="default" long @click="" icon="md-add" style="margin-left: 30px">删除</Button>
+                    </Col>
+                  </Row>
+                </FormItem>
+              </Form>
+
+            </Modal>
+          </MenuItem>
           </Menu>
       </Sider>
       <Layout>
           <Header class="graphheader">
             <tool-bar v-if="isReady" />
-            
+
           </Header>
-          
-          <Content  
+
+          <Content
           class="graphcontent"
           :class="{ active: grandpreview }"
           >
-            <div 
-            id="container" 
+            <div
+            id="container"
             >
-          
-          </div> 
+
+          </div>
           </Content>
           <transition name="move-down">
             <Card
                 class="preview"
-                v-show="grandpreview" id="miniChart" 
+                v-show="grandpreview" id="miniChart"
                 :style="{
-                  width: '1500px', 
-                  height: '300px', 
+                  width: '1500px',
+                  height: '300px',
                 }"
                 :bordered="false"
                 >
             </Card>
           </transition>
       </Layout>
-      <Sider 
-      class="rightsider" 
+      <Sider
+      class="rightsider"
       style= "max-width:300px;width:300px;flex:content;" >
         <config-panel v-if="isReady" />
       </Sider>
@@ -142,12 +180,26 @@
   //   };
   // };
   export default defineComponent({
+
     name: 'Index',
     components: {
       ToolBar,
       ConfigPanel,
     },
+
     setup() {
+
+      const menuform={
+        fartherMenu:"",
+        childreMenu:""
+      };
+
+      const rulemenu={
+        fartherMenu: [
+          { required: true, message: '名称必填', trigger: 'blur' }
+        ],
+      };
+
       const router = useRouter();
       const maingraph = FlowGraph;
       const isReady = ref(false);
@@ -167,7 +219,7 @@
 
         if(!grandpreview.value) {
           heightnum.value = 1050
-        }else 
+        }else
         {heightnum.value = 750}
         console.log(grandpreview.value)
 
@@ -181,35 +233,12 @@
       const initGraph = function () {
         const graph = FlowGraph.init();
         isReady.value = true;
-        // const resizeFn = () => {
-        //   const { width, height } = getContainerSize();
-        //   graph.resize(width, height);
-        // };
-        // resizeFn();
-        // window.addEventListener('resize', resizeFn);
-        // return () => {
-        //   window.removeEventListener('resize', resizeFn);
-        // };
+
       };
 
 
       const startDrag = (e, fatherItem,selfItem) => {
-        // var a = Object.assign({},fatherItem)
-        // let b = ""
-        // let c = ""
-        // const d = fatherItem
-        // console.log("fatherItem")
-        // console.log(e)
-        // console.log(e.target.outerText)
-        // console.log(a)
-        // console.log(d)
-  
-        // for (const [key, value] of Object.entries(a)) {
-        //     b = b + a[key]
-        //     // console.log(b)
-        // }
-        // c = c+b
-        // console.log(c)
+
         const fathername = savefathername(fatherItem)
         const selfname = saveselfname(selfItem)
         // console.log(name)
@@ -222,7 +251,7 @@
             fatherLabel: fathername,
             selflabel: selfname,
           }
-        } 
+        }
         const node = maingraph.graph.createNode(initNode);
         maingraph.dnd.start(node, e);
       };
@@ -242,7 +271,7 @@
       //     deep: false,
       //   },
       // );
-      
+
 
       const savefathername =(a) =>{
         if (typeof(a) !== "undefined"){
@@ -252,7 +281,7 @@
         }
         return fathername;
       }
-      
+
       const saveselfname =(a) =>{
         if (typeof(a) !== "undefined"){
           selfItem = a
@@ -270,7 +299,7 @@
           return thelist.filter((item) => item.children);
       };
 
-
+      const editMenu = ref(false);
       const backhome = () =>{
         router.push("/home")
       };
@@ -278,11 +307,14 @@
       return {
         list,
         isReady,
+        menuform,
+        rulemenu,
         startDrag,
         noChildren,
         hasChildren,
+        editMenu,
         backhome,
-        changepreview, 
+        changepreview,
         grandpreview,
         heightnum,
       };
@@ -291,6 +323,10 @@
 </script>
 
 <style lang="less" scoped>
+.editmenu{
+  // text-align: center;s
+  margin-left: 22px;
+}
 .backhome{
   // text-align: center;s
   margin-left: 22px;
@@ -305,7 +341,7 @@
 .layout{
   height: 100%;
   .leftsider{
-    
+
     background-color: #fff;
     z-index: 3;
   }
@@ -322,7 +358,7 @@
     background-color: #fff;
   }
   .preview{
-    
+
     align-items: center;
     background-color: #fff;
     z-index: 2;
