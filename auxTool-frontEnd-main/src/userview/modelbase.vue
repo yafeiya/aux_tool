@@ -89,19 +89,20 @@
 import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
-import axios from 'axios';
-import { getMenuInfo } from '../api/api.js'
+import { getMenuInfo,getCard } from '../api/api.js'
 export default {
   data() {
     return {
       menu:[],
       // pageKind标明当前页的信息（database，modelbase等）
       // nowItem表明选中的是菜单的哪一项。
+      // bigInput,比较大的输入项
+      // isEditOnly 标志编辑时，修改选项是否是唯一的
       addFormItemCfg:[
         {
           title: '名称',
-          name: 'dataset_name',
-          value: {dataset_name: ''},
+          name: 'Dataset_name',
+          value: {Dataset_name: ''},
           default: false,
           itemType: 'input',
           isEditOnly: true,
@@ -109,8 +110,8 @@ export default {
         },
         {
           title: '级别',
-          name: 'rank',
-          value: {rank: ''},
+          name: 'Rank',
+          value: {Rank: ''},
           default: false,
           itemType: 'select',
           isEditOnly: false,
@@ -118,8 +119,8 @@ export default {
         },
         {
           title: '语言',
-          name: 'lan',
-          value: {lan: ''},
+          name: 'Lan',
+          value: {Lan: ''},
           default: false,
           itemType: 'select',
           isEditOnly: false,
@@ -127,8 +128,8 @@ export default {
         },
         {
           title: '类型',
-          name: 'type',
-          value: {type: ''},
+          name: 'Type',
+          value: {Type: ''},
           default: true,
           itemType: 'input',
           isEditOnly: false,
@@ -136,8 +137,8 @@ export default {
         },
         {
           title: '任务',
-          name: 'task',
-          value: {task: ''},
+          name: 'Task',
+          value: {Task: ''},
           default: true,
           itemType: 'input',
           isEditOnly: false,
@@ -145,8 +146,8 @@ export default {
         },
         {
           title: '描述',
-          name: 'description',
-          value: {description: ''},
+          name: 'Description',
+          value: {Description: ''},
           default: false,
           itemType: 'bigInput',
           isEditOnly: false,
@@ -154,8 +155,8 @@ export default {
         },
         {
           title: '代码',
-          name: 'code',
-          value: {code: ''},
+          name: 'Code',
+          value: {Code: ''},
           default: false,
           itemType: 'bigInput',
           isEditOnly: false,
@@ -163,18 +164,17 @@ export default {
         }
       ],
       addFormItem: {
-        released: "00",
-        data_path: "",
+        Released: "00",
+        Data_path: "",
       },
       // pageKind标明当前页的信息（database，modelbase等）
       // taskType表明nowItem父级名字
       // nowItem表明选中的是菜单的哪一项。
       // cardNameFlag用来标识作为卡片名称的属性
-      cardNameFlag: "dataset_name",
+      cardNameFlag: "Dataset_name",
       pageKind: 'modelbase',
       taskType: null,
       nowItem: null,
-      jsonBaseUrl: "http://localhost:3000",
       myCardList: [],
       publicCardList: [],
       myCardNum: 0,
@@ -201,20 +201,9 @@ export default {
       updataPage: this.updataPage,
       addFormItemCfg: this.addFormItemCfg,
       pageKind: this.pageKind,
-      // taskType: this.taskType,
-      // nowItem: this.nowItem,
-      jsonBaseUrl: this.jsonBaseUrl,
       getPageContent: this.getPageContent,
       cardNameFlag: this.cardNameFlag,
-      // myCardList: this.myCardList,
-      // myCardNum: this.myCardNum,
-      // myCardRowNum: this.myCardRowNum,
-      // myCardColNum: this.myCardColNum,
 
-      // publicCardList: this.publicCardList,
-      // publicCardNum: this.publicCardNum,
-      // publicCardRowNum: this.publicCardRowNum,
-      // publicCardColNum: this.publicCardColNum,
     }
   },
   methods: {
@@ -250,13 +239,11 @@ export default {
       this.getPageContent()
     },
     getNowItem(name) {
-      // taskType-nowItem
       var myName = name.split('-')
       this.nowItem = myName[1]
       this.taskType = myName[0]
       console.info(this.nowItem)
       console.info(this.taskType)
-
       this.getPageContent()
       this.getFormItem()
     },
@@ -267,28 +254,28 @@ export default {
     getPageContent() {
       this.myCardList= []
       this.publicCardList=[]
-      var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType
-      console.info(findUrl)
-      axios.get(findUrl).then(response => {
-        var cardList = response.data
-        console.info(cardList)
+      let data = {
+        pageKind: this.pageKind,
+        task: this.nowItem,
+        Type: this.taskType,
+      }
+    getCard(data).then(response => {
+        var cardList = response.data.data.modelbase
+        console.info("model+++",cardList)
         var length = cardList.length
-
         for(var i = 0; i < length;i++) {
-          if(cardList[i].released[0] == '1') {
+          if(cardList[i].Released[0] == '1') {
             this.myCardList.push(cardList[i] );
           }
-          if(cardList[i].released[1] == '1') {
+          if(cardList[i].Released[1] == '1') {
             this.publicCardList.push(cardList[i]);
           }
-          if(cardList[i].released == "00") {
-            var findDeleteUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + cardList[i].id
-            // console.info(findUrl)
-            axios.delete(findDeleteUrl).then(response=>{
-              console.info("delete success")
-            })
+          if(cardList[i].Released == "00") {
+            // TODO:删除模型 
+              console.info("delete success")  
           }
         }
+        
         this.myCardNum = this.myCardList.length
         this.myCardRowNum = Math.ceil((this.myCardNum+1) / this.myCardColNum)
         this.publicCardNum = this.publicCardList.length

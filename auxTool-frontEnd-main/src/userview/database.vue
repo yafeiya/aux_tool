@@ -78,7 +78,8 @@
                        :my-card-list="myCardList" :public-card-list="publicCardList"
                        :my-card-num="myCardNum" :my-card-row-num="myCardRowNum" :my-card-col-num="myCardColNum"
                        :public-card-num="publicCardNum" :public-card-row-num="publicCardRowNum" :public-card-col-num="publicCardColNum"
-                       :add-form-item="addFormItem"/>
+                       :add-form-item="addFormItem"
+                       />
           </Content>
         </Layout>
       </Layout>
@@ -89,8 +90,7 @@
 import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
-import axios from 'axios';
-import { getMenuInfo } from '../api/api.js'
+import { getMenuInfo,getCard } from '../api/api.js'
 export default {
   data() {
     return {
@@ -102,8 +102,8 @@ export default {
       addFormItemCfg:[
         {
           title: '名称',
-          name: 'dataset_name',
-          value: {dataset_name: ''},
+          name: 'Dataset_name',
+          value: {Dataset_name: ''},
           default: false,
           itemType: 'input',
           isEditOnly: true,
@@ -111,8 +111,8 @@ export default {
         },
         {
           title: '级别',
-          name: 'rank',
-          value: {rank: ''},
+          name: 'Rank',
+          value: {Rank: ''},
           default: false,
           itemType: 'select',
           isEditOnly: false,
@@ -120,8 +120,8 @@ export default {
         },
         {
           title: '类型',
-          name: 'type',
-          value: {type: ''},
+          name: 'Type',
+          value: {Type: ''},
           default: true,
           itemType: 'input',
           isEditOnly: false,
@@ -129,8 +129,8 @@ export default {
         },
         {
           title: '任务',
-          name: 'task',
-          value: {task: ''},
+          name: 'Task',
+          value: {Task: ''},
           default: true,
           itemType: 'input',
           isEditOnly: false,
@@ -138,8 +138,8 @@ export default {
         },
         {
           title: '字符集',
-          name: 'character_type',
-          value: {character_type: ''},
+          name: 'Character_type',
+          value: {Character_type: ''},
           default: false,
           itemType: 'input',
           isEditOnly: false,
@@ -147,8 +147,8 @@ export default {
         },
         {
           title: '表头',
-          name:'header',
-          value: {header: ''},
+          name:'Header',
+          value: {Header: ''},
           default: false,
           itemType: 'radio',
           isEditOnly: false,
@@ -156,8 +156,8 @@ export default {
         },
         {
           title: '描述',
-          name: 'description',
-          value: {description: ''},
+          name: 'Description',
+          value: {Description: ''},
           default: false,
           itemType: 'bigInput',
           isEditOnly: false,
@@ -165,18 +165,17 @@ export default {
         }
       ],
       addFormItem: {
-        released: "00",
-        data_path: "",
+        Released: "00",
+        Data_path: "",
       },
       // pageKind标明当前页的信息（database，modelbase等）
       // taskType表明nowItem父级名字
       // nowItem表明选中的是菜单的哪一项。
       // cardNameFlag用来标识作为卡片名称的属性
-      cardNameFlag: "dataset_name",
+      cardNameFlag: "Dataset_name",
       pageKind: 'database',
       taskType: null,
       nowItem: null,
-      jsonBaseUrl: "http://localhost:3000",
       myCardList: [],
       publicCardList: [],
       myCardNum: 0,
@@ -203,20 +202,8 @@ export default {
       updataPage: this.updataPage,
       addFormItemCfg: this.addFormItemCfg,
       pageKind: this.pageKind,
-      // taskType: this.taskType,
-      // nowItem: this.nowItem,
-      jsonBaseUrl: this.jsonBaseUrl,
       getPageContent: this.getPageContent,
       cardNameFlag: this.cardNameFlag,
-      // myCardList: this.myCardList,
-      // myCardNum: this.myCardNum,
-      // myCardRowNum: this.myCardRowNum,
-      // myCardColNum: this.myCardColNum,
-
-      // publicCardList: this.publicCardList,
-      // publicCardNum: this.publicCardNum,
-      // publicCardRowNum: this.publicCardRowNum,
-      // publicCardColNum: this.publicCardColNum,
     }
   },
   methods: {
@@ -247,19 +234,16 @@ export default {
           content: "编辑成功"
         });
       }
-      // console.info("更新页面成功")
       this.myCardList= []
       this.publicCardList=[]
       this.getPageContent()
     },
     getNowItem(name) {
-      // taskType-nowItem
       var myName = name.split('-')
       this.nowItem = myName[1]
       this.taskType = myName[0]
       console.info(this.nowItem)
       console.info(this.taskType)
-
       this.getPageContent()
       this.getFormItem()
     },
@@ -270,28 +254,28 @@ export default {
     getPageContent() {
       this.myCardList= []
       this.publicCardList=[]
-      var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType
-      console.info(findUrl)
-      axios.get(findUrl).then(response => {
-        var cardList = response.data
-        console.info(cardList)
+      let data = {
+        pageKind: this.pageKind,
+        task: this.nowItem,
+        Type: this.taskType,
+      }
+      getCard(data).then(response => {
+        var cardList = response.data.data.database
+        console.info('database--cardlist:',cardList)
         var length = cardList.length
-
         for(var i = 0; i < length;i++) {
-          if(cardList[i].released[0] == '1') {
+          if(cardList[i].Released[0] == '1') {
             this.myCardList.push(cardList[i] );
           }
-          if(cardList[i].released[1] == '1') {
+          if(cardList[i].Released[1] == '1') {
             this.publicCardList.push(cardList[i]);
           }
-          if(cardList[i].released == "00") {
-            var findDeleteUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + cardList[i].id
-            // console.info(findUrl)
-            axios.delete(findDeleteUrl).then(response=>{
+          if(cardList[i].Released == "00") {
+            // TODO： 删除数据集
               console.info("delete success")
-            })
           }
         }
+        console.info('database--mycardlist:',this.myCardList)
         this.myCardNum = this.myCardList.length
         this.myCardRowNum = Math.ceil((this.myCardNum+1) / this.myCardColNum)
         this.publicCardNum = this.publicCardList.length

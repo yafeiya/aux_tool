@@ -51,19 +51,19 @@ export const FlowChartRect = Graph.registerNode('flow-chart-rect', {
     {
       tagName: 'foreignObject',
       selector: 'fo',
-      // children: [
-      //   {
-      //     ns: Dom.ns.xhtml,
-      //     tagName: 'body',
-      //     selector: 'foBody',
-      //     children: [
-      //       {
-      //         tagName: 'div',
-      //         selector: 'edit-text',
-      //       },
-      //     ],
-      //   },
-      // ],
+      children: [
+        {
+          ns: Dom.ns.xhtml,
+          tagName: 'body',
+          selector: 'foBody',
+          children: [
+            {
+              tagName: 'div',
+              selector: 'edit-text',
+            },
+          ],
+        },
+      ],
     },
   ],
   ports: {

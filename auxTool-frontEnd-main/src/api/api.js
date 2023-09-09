@@ -33,3 +33,20 @@ export const isRegister = (data) => {
     data: data
   })
 }
+
+export const getCard = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getCard',
+    params:data
+  })
+}
+
+export const sendMenu = (data) => {
+  //这里是添加菜单的接口
+  return myAxios({
+    method: 'POST',
+    url: '/sendmenu',
+    data: data
+  })
+}

@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"backEnd/utils"
 	"backEnd/common"
 	"backEnd/common/response"
 	"backEnd/model"
+	"backEnd/utils"
 	"fmt"
 	"net/http"
 
@@ -21,7 +21,7 @@ func GetPageMenu(ctx *gin.Context) {
 		return
 	}
 	menuList, err := utils.LoadJson("./data/config.json")
-	
+
 	if !err {
 		fmt.Println("加载文件失败")
 		return
@@ -147,32 +147,35 @@ func DeleteCard(ctx *gin.Context) {
 // 参数：前端传来的参数pageKind、task、type、dataset_name。
 // 返回：卡片列表,即database的model列表databases
 func GetCard(ctx *gin.Context) {
-	db := common.InitDB()
 
-	pageKind := ctx.PostForm("pageKind")
-	fmt.Println(pageKind)
-	task := ctx.PostForm("task")
+	db := common.InitDB()
+	pageKind := ctx.Query("pageKind")
+
+	fmt.Println("1111111111111111111", pageKind)
+	task := ctx.Query("task")
 	fmt.Println(task)
-	Type := ctx.PostForm("Type")
+	Type := ctx.Query("Type")
 	fmt.Println(Type)
-	dataset_name := ctx.PostForm("dataset_name")
-	fmt.Println(dataset_name)
 
 	if pageKind == "database" {
-		database := model.Database{}
-		db.Where("Task = ? and Type = ? and Dataset_name = ?", task, Type, dataset_name).First(&database)
-		if database.Id == 0 {
+		database := []model.Database{}
+		//fmt.Println("wwwww", database)
+
+		db.Where("Task = ? and Type = ?", task, Type).Find(&database)
+		fmt.Println("666666666", database)
+		if len(database) == 0 {
 			fmt.Println("未找到记录")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
 		} else {
-			fmt.Println(database)
+			//fmt.Println(database)
+			//fmt.Println("wwwww")
 			response.Success(ctx, gin.H{"database": database}, "success")
 		}
 	}
 	if pageKind == "modelbase" {
-		modelbase := model.Modelbase{}
-		db.Where("Task = ? and Type = ? and Dataset_name = ?", task, Type, dataset_name).First(&modelbase)
-		if modelbase.Id == 0 {
+		modelbase := []model.Modelbase{}
+		db.Where("Task = ? and Type = ? ", task, Type).Find(&modelbase)
+		if len(modelbase) == 0 {
 			fmt.Println("未找到记录")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
 		} else {

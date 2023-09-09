@@ -100,8 +100,8 @@ export default {
       addFormItemCfg:[
         {
           title: '名称',
-          name: 'dataset_name',
-          value: {dataset_name: ''},
+          name: 'Dataset_name',
+          value: {Dataset_name: ''},
           default: false,
           itemType: 'input',
           isEditOnly: true,
@@ -109,8 +109,8 @@ export default {
         },
         {
           title: '参数',
-          name: 'params',
-          value: {params: ''},
+          name: 'Params',
+          value: {Params: ''},
           default: false,
           itemType: 'dynamicInput',
           isEditOnly: true,
@@ -118,8 +118,8 @@ export default {
         },
         {
           title: '别名',
-          name: 'alias',
-          value: {alias: ''},
+          name: 'Alias',
+          value: {Alias: ''},
           default: false,
           itemType: 'input',
           isEditOnly: true,
@@ -127,8 +127,8 @@ export default {
         },
         {
           title: '级别',
-          name: 'rank',
-          value: {rank: ''},
+          name: 'Rank',
+          value: {Rank: ''},
           default: false,
           itemType: 'select',
           isEditOnly: false,
@@ -136,8 +136,8 @@ export default {
         },
         {
           title: '类型',
-          name: 'type',
-          value: {type: ''},
+          name: 'Type',
+          value: {Type: ''},
           default: true,
           itemType: 'input',
           isEditOnly: false,
@@ -145,8 +145,8 @@ export default {
         },
         {
           title: '范数',
-          name: 'task',
-          value: {task: ''},
+          name: 'Task',
+          value: {Task: ''},
           default: true,
           itemType: 'input',
           isEditOnly: false,
@@ -154,8 +154,8 @@ export default {
         },
         {
           title: '函数体',
-          name: 'function_body',
-          value: {function_body: ''},
+          name: 'Function_body',
+          value: {Function_body: ''},
           default: false,
           itemType: 'input',
           isEditOnly: true,
@@ -163,8 +163,8 @@ export default {
         },
         {
           title: '语言',
-          name: 'lan',
-          value: {lan: ''},
+          name: 'Lan',
+          value: {Lan: ''},
           default: false,
           itemType: 'select',
           isEditOnly: false,
@@ -172,8 +172,8 @@ export default {
         },
         {
           title: '代码',
-          name: 'code',
-          value: {code: ''},
+          name: 'Code',
+          value: {Code: ''},
           default: false,
           itemType: 'bigInput',
           isEditOnly: false,
@@ -181,8 +181,8 @@ export default {
         },
         {
           title: '描述',
-          name: 'description',
-          value: {description: ''},
+          name: 'Description',
+          value: {Description: ''},
           default: false,
           itemType: 'bigInput',
           isEditOnly: false,
@@ -191,14 +191,14 @@ export default {
 
       ],
       addFormItem: {
-        released: "00",
-        data_path: "",
+        Released: "00",
+        Data_path: "",
       },
       // pageKind标明当前页的信息（database，modelbase等）
       // taskType表明nowItem父级名字
       // nowItem表明选中的是菜单的哪一项。
       // cardNameFlag用来标识作为卡片名称的属性
-      cardNameFlag: "dataset_name",
+      cardNameFlag: "Dataset_name",
       pageKind: 'defineFunction',
       taskType: null,
       nowItem: null,
@@ -303,13 +303,13 @@ export default {
         var length = cardList.length
 
         for(var i = 0; i < length;i++) {
-          if(cardList[i].released[0] == '1') {
+          if(cardList[i].Released[0] == '1') {
             this.myCardList.push(cardList[i] );
           }
-          if(cardList[i].released[1] == '1') {
+          if(cardList[i].Released[1] == '1') {
             this.publicCardList.push(cardList[i]);
           }
-          if(cardList[i].released == "00") {
+          if(cardList[i].Released == "00") {
             var findDeleteUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + cardList[i].id
             // console.info(findUrl)
             axios.delete(findDeleteUrl).then(response=>{

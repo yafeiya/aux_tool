@@ -1,11 +1,11 @@
 # 后端服务
 server:
-  host:
+  host: localhost
   port: 8080
-  
+
 # 数据库
 datasource:
-  host: 192.168.0.108
+  host: localhost
   port: 3306
   database: auxtool
   username: root

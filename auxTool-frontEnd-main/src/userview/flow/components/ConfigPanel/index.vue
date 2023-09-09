@@ -40,7 +40,7 @@
           type.value = 'grid';
         });
         graph.on('cell:click', ({ cell }) => {
-          
+          if(cell.shape=='flow-chart-rect'){
           id.value = cell.id;
           if(cell.data.fatherLabel=='数据加载'){
             type.value = 'dataloading';
@@ -57,6 +57,8 @@
           else{
             type.value = 'grid';
           }
+          }
+          
         });
       };
       boundEvent();
