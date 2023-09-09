@@ -1,4 +1,10 @@
 <style>
+#Charts{
+  width: 400px;
+  height:200px;
+  border: 1px solid red;
+  margin: auto;
+}
 .layout{
   border: 1px solid #d7dde4;
   background: #f5f7f9;
@@ -23,6 +29,7 @@
 .dev-run-preview .dev-run-preview-edit{ display: none }
 </style>
 <template>
+
   <!-- <Button @click="test">1231</Button> -->
   <div class="layout">
 
@@ -63,8 +70,9 @@
       <!--主体内容部分-->
 
       <Content :style="{padding: '0 16px 16px'}">
-        <!--=批量处理按钮-->
 
+
+        <!--=批量处理按钮-->
         <p style="margin-top: 1%;font-size: 20px">
           批量处理：
           <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="updateToState('终止')">终止</Button>
@@ -154,7 +162,9 @@
                 </template>
               </Modal>
 
-              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=85 >训练过程</Button>
+
+              <Button type="info" style="margin-right: 5px" @click="LogInfo(row)" v-width=85 >训练过程</Button>
+<!--              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=85 >训练过程</Button>-->
               <Modal v-model="isLogInfo" width="1000" style="margin-top: -50px">
                 <template #header>
                   <p style="color:#4d85ea;text-align:center">
@@ -162,9 +172,26 @@
                     <span>训练过程可视化</span>
                   </p>
                 </template>
-                <Layout>
-                  <lineChart />
-                </Layout>
+
+                <Row>
+                  <Col span="12">
+                    <div id="Charts" ref="Echarts1" ></div>
+                  </Col>
+                  <Col span="12">
+                    <div id="Charts" ref="Echarts2"></div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span="12">
+                    <div id="Charts" ref="Echarts3" ></div>
+                  </Col>
+                  <Col span="12">
+                    <div id="Charts" ref="Echarts4"></div>
+                  </Col>
+                </Row>
+<!--                <div id="Charts" ref="Echarts" ></div>-->
+
+
                 <template #footer>
                   <Button type="info"  long @click="close">确定</Button>
                 </template>
@@ -204,8 +231,10 @@ import {MenuGroup, Result} from "view-ui-plus";
 import lineChart from '../components/chart/line.vue'
 import axios from 'axios';
 import * as echarts from 'echarts'
+import chartData from "./chartdata.json"
 
 export default {
+
   data() {
     return {
       nowTime: (new Date()).getTime(),
@@ -221,6 +250,8 @@ export default {
       isDataInfo: false,
       // 当前行
       curRow: {},
+      chartId: "",
+      // chartxyz:{},
 // 表头
       columns: [
         {
@@ -303,10 +334,131 @@ export default {
     lineChart,
   },
   inject:['reload'],
+
   created() {
     this.getItemInfo();
+
   },
   methods: {
+    getcharts(chartxyz){
+      let psgTimeCharts1 = echarts.init(this.$refs.Echarts1)
+      let psgTimeCharts2 = echarts.init(this.$refs.Echarts2)
+      let psgTimeCharts3 = echarts.init(this.$refs.Echarts3)
+      let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
+      let option1 = {
+      title: {
+        text: '数据可视化'
+      },
+      tooltip: {},
+      grid: {
+        left: '3%',
+        height: 'auto',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        data: chartxyz["reward"],
+      },
+      yAxis: {
+      },
+      series: [
+        {
+          name: 'y1',
+          symbol: 'none', //去掉折线上面的小圆点
+          data: chartxyz["reward"],
+          type: 'line',
+          // areaStyle: {}
+        },
+      ],
+    };
+      let option2 = {
+        title: {
+          text: '数据可视化'
+        },
+        tooltip: {},
+        grid: {
+          left: '3%',
+          height: 'auto',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          data: chartxyz["learning_rate"],
+        },
+        yAxis: {
+        },
+        series: [
+          {
+            name: 'y1',
+            symbol: 'none', //去掉折线上面的小圆点
+            data: chartxyz["learning_rate"],
+            type: 'line',
+            // areaStyle: {}
+          },
+        ],
+      };
+      let option3 = {
+        title: {
+          text: '数据可视化'
+        },
+        tooltip: {},
+        grid: {
+          left: '3%',
+          height: 'auto',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          data: chartxyz["loss"],
+        },
+        yAxis: {
+        },
+        series: [
+          {
+            name: 'y1',
+            symbol: 'none', //去掉折线上面的小圆点
+            data: chartxyz["loss"],
+            type: 'line',
+            // areaStyle: {}
+          },
+        ],
+      };
+      let option4 = {
+        title: {
+          text: '数据可视化'
+        },
+        tooltip: {},
+        grid: {
+          left: '3%',
+          height: 'auto',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          data: chartxyz["Accuracy"],
+        },
+        yAxis: {
+        },
+        series: [
+          {
+            name: 'y1',
+            symbol: 'none', //去掉折线上面的小圆点
+            data: chartxyz["Accuracy"],
+            type: 'line',
+            // areaStyle: {}
+          },
+        ],
+      };
+      psgTimeCharts1.setOption(option1)
+      psgTimeCharts2.setOption(option2)
+      psgTimeCharts3.setOption(option3)
+      psgTimeCharts4.setOption(option4)
+    console.info("1111111111",option1)
+  },
 
     calcTime(newTime, oldTime) {
       var timeDiff = newTime - oldTime
@@ -328,6 +480,21 @@ export default {
         if(row.id == this.itemList[i].id) {
           this.curRow = this.itemList[i];
         }
+      }
+
+    },
+    LogInfo(row) {
+      this.isLogInfo=true;
+
+      for(var i in this.itemList) {
+        if(row.id == this.itemList[i].id) {
+          this.chartId = chartData["chart"][i]["exampleId"];
+          var chartxyz=chartData["chart"][this.chartId]
+          console.info("this.chartId:",this.chartId)
+          console.info("chartxyz:",chartxyz)
+          this.getcharts(chartxyz)
+        }
+
       }
 
     },
@@ -484,7 +651,9 @@ export default {
       console.info(this.curItemList)
     },
   },
+  mounted(){
 
+  },
 }
 
 </script>

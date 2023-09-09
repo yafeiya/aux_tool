@@ -11,7 +11,7 @@
               style="margin-top: -50px">
             <p style="margin-top: 1%;font-size: 20px;text-align: center;" >
               <Space :size="15">
-                <Input style="width: 500px" search enter-button="Search" placeholder="搜索数据集..."  />
+                <Input style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
                 <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="input=true">导入</Button>
                 <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行')">导出</Button>
                 <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">删除</Button>
@@ -49,16 +49,16 @@
                   </RadioGroup>
                 </FormItem>
 
-                <Upload  multiple action="" style="margin-left: 80px">
+                <Upload  multiple action="http://127.0.0.1:8080/upload" style="margin-left: 80px" method="POST">
                   <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button> 支持CSV格式，一次性上传多个文件
                 </Upload>
 
               </Form>
 
             </Modal>
-            <Table border ref="selection" :columns="columns" :data="data" style="width: auto">
+            <Table border  :columns="columns" :data="tabledata" style="width: auto">
               <template #preview="{row, index }">
-                <Button type="primary" v-width=90 style="margin-left: -5px" @click="show(index)">查看</Button>
+                <Button type="primary" v-width=90 style="margin-left: -5px" @click="show(index)">下载</Button>
               </template>
             </Table>
 
@@ -257,7 +257,7 @@ export default {
           align: 'center',
         },
       ],
-      data: [
+      tabledata: [
         {
           name: '动作表',
           level: 1,
@@ -286,6 +286,7 @@ export default {
           data_type: "string",
         },
       ],
+      searchdata:[],
       // jsonBaseUrl: "http://localhost:3000",
       modal_intro1:false,//卡片2的介绍、发布、删除与预览
       modal_delete1:false,
@@ -295,9 +296,6 @@ export default {
       editFormItem: {},
       // cardName: null,
       ruleValidate: {
-        // dataset_name: [
-        //   { required: true, message: 'The name cannot be empty', trigger: 'blur' }
-        // ],
       },
     }
   },
@@ -308,15 +306,24 @@ export default {
     lineChart,
     dynamicInput,
   },
+
   created() {
+    console.info("contentcard--carddecripyion: " +  this.cardInfo.description)
     this.cardName = this.cardInfo[this.cardNameFlag]
-    // console.info("cardname: " + this.cardName + " " + this.cardNameFlag )
+    console.info("contentcard--cardname: " + this.cardName)
     this.initVaild()
   },
   // updated() {
   //   this.cardName = this.cardInfo[this.cardNameFlag]
   // },
   methods: {
+    handleSearch(){
+      this.searchdata = this.tabledata.filter(item => {
+        return item.label.includes(this.searchText)
+      })
+    },
+
+
     //跳转画布设计
     toindex() {
       console.info()
@@ -421,12 +428,8 @@ export default {
       }
     },
   },
-  watch:{
-    // cardInfo(newCardList, oldCardList) {
-    //     console.info(newCardList)
-    //     console.info(oldCardList)
-    // }
-  },
+
+
 }
 
 </script>
