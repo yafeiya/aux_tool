@@ -20,11 +20,13 @@
           </template>
         </Poptip>
         <Password name="passwordConfirm" :rules="passwordConfirmRule" placeholder="确认密码" />
+        <Password name="inviteConfirm" :rules="inviteConfirmRule" placeholder="注册邀请码" />
         <Submit>注册</Submit>
         <Login class="regist-btn" @on-submit="toLogin">
           <Submit>返回</Submit>
         </Login>
       </Login>
+
     </Card>
   </div>
 </template>
@@ -37,6 +39,14 @@ export default {
     const validatePassCheck = (rule, value, callback) => {
       if (value !== this.$refs.form.formValidate.password) {
         callback(new Error('两次输入的密码不匹配！'));
+      } else {
+        callback();
+      }
+    };
+    //邀请码的判断
+    const invitePassCheck = (rule, value, callback) => {
+      if (value !== "123456") {
+        callback(new Error('邀请码无效！'));
       } else {
         callback();
       }
@@ -56,6 +66,12 @@ export default {
           required: true, message: '确认密码不能为空！', trigger: 'change'
         },
         { validator: validatePassCheck, trigger: 'change' }
+      ],
+      inviteConfirmRule: [
+        {
+          required: true, message: '邀请码不正确！', trigger: 'change'
+        },
+        { validator: invitePassCheck, trigger: 'change' }
       ],
       // 密码长度，在密码强度提示时作为判断依据
       passwordLen: 0,
