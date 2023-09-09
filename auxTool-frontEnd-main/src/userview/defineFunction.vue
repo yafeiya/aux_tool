@@ -198,7 +198,7 @@ export default {
       // taskType表明nowItem父级名字
       // nowItem表明选中的是菜单的哪一项。
       // cardNameFlag用来标识作为卡片名称的属性
-      cardNameFlag: "Dataset_name",
+      cardNameFlag: "dataset_name",
       pageKind: 'defineFunction',
       taskType: null,
       nowItem: null,
@@ -303,13 +303,13 @@ export default {
         var length = cardList.length
 
         for(var i = 0; i < length;i++) {
-          if(cardList[i].Released[0] == '1') {
+          if(cardList[i].released[0] == '1') {
             this.myCardList.push(cardList[i] );
           }
-          if(cardList[i].Released[1] == '1') {
+          if(cardList[i].released[1] == '1') {
             this.publicCardList.push(cardList[i]);
           }
-          if(cardList[i].Released == "00") {
+          if(cardList[i].released == "00") {
             var findDeleteUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + cardList[i].id
             // console.info(findUrl)
             axios.delete(findDeleteUrl).then(response=>{
