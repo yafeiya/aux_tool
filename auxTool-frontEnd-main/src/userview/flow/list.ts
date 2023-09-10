@@ -1,5 +1,7 @@
+import {secondsSetterName} from "echarts/types/src/util/time";
+
 export function menulist(){
-    const list = [
+    let list = [
         // {
         //     path: '/home',
         //     name: 'home',
@@ -15,31 +17,31 @@ export function menulist(){
                     name: 'csvdir',
                     label: 'csv文件',
                     content:[
-                    {
-                        name:'csv文件1',
-                    },
-                    {
-                        name:'csv文件2',
+                        {
+                            name:'csv文件1',
+                        },
+                        {
+                            name:'csv文件2',
 
-                    },
-                    {
-                        name:'csv文件3',
-                    },
+                        },
+                        {
+                            name:'csv文件3',
+                        },
                     ]
                 },
                 {
                     name: 'imgdataset',
                     label: '数值数据集',
                     content:[
-                    {
-                        name:'数值数据集1',
-                    },
-                    {
-                        name:'数值数据集2',
-                    },
-                    {
-                        name:'数值数据集3',
-                    },
+                        {
+                            name:'数值数据集1',
+                        },
+                        {
+                            name:'数值数据集2',
+                        },
+                        {
+                            name:'数值数据集3',
+                        },
                     ]
                 },
                 {
@@ -72,73 +74,73 @@ export function menulist(){
             label: '模型模板',
             children: [
                 {
-                name: 'machinelearning',
-                label: '机器学习',
-                children: [
-                    {
-                        name: 'regression',
-                        label: '回归',
-                        content:[
-                            {
-                                name:'回归1',
-                            },
-                            {
-                                name:'回归2',
-                            },
-                            {
-                                name:'回归3',
-                            },
+                    name: 'machinelearning',
+                    label: '机器学习',
+                    children: [
+                        {
+                            name: 'regression',
+                            label: '回归',
+                            content:[
+                                {
+                                    name:'回归1',
+                                },
+                                {
+                                    name:'回归2',
+                                },
+                                {
+                                    name:'回归3',
+                                },
                             ]
-                    },
-                    {
-                        name: 'classification',
-                        label: '分类',
-                        content:[
-                            {
-                                name:'分类1',
-                            },
-                            {
-                                name:'分类2',
-                            },
+                        },
+                        {
+                            name: 'classification',
+                            label: '分类',
+                            content:[
+                                {
+                                    name:'分类1',
+                                },
+                                {
+                                    name:'分类2',
+                                },
                             ]
-                    },
-                ]
+                        },
+                    ]
                 },
                 {
-                name: 'deeplearning',
-                label: '深度学习',
-                children: [
-                    {
-                        name: 'CNN',
-                        label: '卷积神经网络',
-                        content:[
-                            {
-                                name:'卷积神经网络1',
-                            },
-                            {
-                                name:'卷积神经网络2',
-                            },
+                    name: 'deeplearning',
+                    label: '深度学习',
+                    children: [
+                        {
+                            name: 'CNN',
+                            label: '卷积神经网络',
+                            content:[
+                                {
+                                    name:'卷积神经网络1',
+                                },
+                                {
+                                    name:'卷积神经网络2',
+                                },
                             ]
-                    },
-                    {
-                        name: 'RNN',
-                        label: '循环神经网络',
-                    },
-                ]
+                        },
+                        {
+                            name: 'RNN',
+                            label: '循环神经网络',
+                        },
+                    ]
                 },
                 {
-                name: 'reinforcementlearning',
-                label: '强化学习',
-                children:[                  
-                    {
-                        name: 'SAC',
-                        label: '值迭代',
-                    },
-                    {
-                        name: 'DQN',
-                        label: '策略学习',
-                    },
-                ]
+                    name: 'reinforcementlearning',
+                    label: '强化学习',
+                    children:[
+                        {
+                            name: 'SAC',
+                            label: '值迭代',
+                        },
+                        {
+                            name: 'DQN',
+                            label: '策略学习',
+                        },
+                    ]
                 },
             ]
         },

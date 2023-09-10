@@ -17,7 +17,44 @@
                   <Icon type="md-arrow-back" />
                   <span>| 返回首页</span>
               </MenuItem>
+          <Space>
+            <a @click="clearMenu" style="margin-left: 30px" >
+              <Icon type="ios-arrow-dropup" />   收起
+            </a>
+            <a @click="editMenu=true">
+              <Icon type="ios-add-circle-outline" style="margin-left: 30px"/>   管理
+            </a>
+          <Modal v-model="editMenu" width="400" style="margin-top: 0px">
+            <template #header>
+              <p style="color:#4d85ea;text-align:center">
+                <Icon type="ios-information-circle"></Icon>
+                <span>编辑类别</span>
+              </p>
+            </template>
+            <Form ref="menuform" :model="menuform" :label-width="80" :rules="rulemenu" style="width: 400px">
+              <FormItem label="一级菜单" prop="fartherMenu">
+                <Input v-model="menuform.fartherMenu" placeholder="输入一级菜单名称（必填）" style="width: 250px"></Input>
+              </FormItem>
+              <FormItem label="二级菜单" prop="childreMenu">
+                <Input v-model="menuform.childreMenu" placeholder="输入二级菜单名称" style="width: 250px"></Input>
+              </FormItem>
+              <FormItem label="三级菜单" prop="childreMenu">
+                <Input v-model="menuform.childreMenu" placeholder="输入三级菜单名称" style="width: 250px"></Input>
+              </FormItem>
+              <FormItem>
+                <Row>
+                  <Col span="8">
+                    <Button type="default" long @click="" icon="md-add" style="margin-left: 10px">添加</Button>
+                  </Col>
+                  <Col span="8">
+                    <Button type="default" long @click="" icon="md-add" style="margin-left: 30px">删除</Button>
+                  </Col>
+                </Row>
+              </FormItem>
+            </Form>
 
+          </Modal>
+          </Space>
               <MenuItem
               class=""
               v-for="item in noChildren(list)"
@@ -36,14 +73,6 @@
                       <span>{{ item.label }}</span>
                   </template>
 
-                      <!-- <MenuItem
-                      class="secondmenustyle"
-                      :name="item.label"
-                      @mousedown="startDrag($event,item.label)"
-                      >
-                          <span>{{ item.label }}</span>
-                      </MenuItem> -->
-
                       <MenuItem
                       class="secondmenustyle"
                       :name="subitem.name"
@@ -61,14 +90,6 @@
                           <template #title>
                               <span>{{ subitem.label }}</span>
                           </template>
-<!--
-                              <MenuItem
-                              class="thirdmenustyle"
-                              :name="subitem.label"
-                              @mousedown="startDrag($event,item.label)"
-                              >
-                                  <span>{{ subitem.label }}</span>
-                              </MenuItem> -->
 
                               <MenuItem
                               class="thirdmenustyle"
@@ -81,44 +102,7 @@
                       </Submenu>
 
               </Submenu>
-          <MenuItem
-              class="editmenu"
-              name="editmenu"
-              @click="editMenu=true"
-          >
-            <Icon type="ios-add-circle-outline" />
-            <span>组件编辑</span>
-            <Modal v-model="editMenu" width="400" style="margin-top: 0px">
-              <template #header>
-                <p style="color:#4d85ea;text-align:center">
-                  <Icon type="ios-information-circle"></Icon>
-                  <span>编辑类别</span>
-                </p>
-              </template>
-              <Form ref="menuform" :model="menuform" :label-width="80" :rules="rulemenu" style="width: 400px">
-                <FormItem label="一级菜单" prop="fartherMenu">
-                  <Input v-model="menuform.fartherMenu" placeholder="输入一级菜单名称（必填）" style="width: 250px"></Input>
-                </FormItem>
-                <FormItem label="二级菜单" prop="childreMenu">
-                  <Input v-model="menuform.childreMenu" placeholder="输入二级菜单名称" style="width: 250px"></Input>
-                </FormItem>
-                <FormItem label="三级菜单" prop="childreMenu">
-                  <Input v-model="menuform.childreMenu" placeholder="输入三级菜单名称" style="width: 250px"></Input>
-                </FormItem>
-                <FormItem>
-                  <Row>
-                    <Col span="8">
-                      <Button type="default" long @click="" icon="md-add" style="margin-left: 10px">添加</Button>
-                    </Col>
-                    <Col span="8">
-                      <Button type="default" long @click="" icon="md-add" style="margin-left: 30px">删除</Button>
-                    </Col>
-                  </Row>
-                </FormItem>
-              </Form>
 
-            </Modal>
-          </MenuItem>
           </Menu>
       </Sider>
       <Layout>
@@ -173,6 +157,7 @@
   import datas from "./results/data.json"
   import {getMenuInfo} from '../../api/api.js'
 
+
   // const getContainerSize = () => {
   //   return {
   //     width: document.body.offsetWidth - 590,
@@ -191,7 +176,7 @@
 
       const menuform={
         fartherMenu:"",
-        childreMenu:""
+        childreMenu:"",
       };
 
       const rulemenu={
@@ -211,7 +196,12 @@
       const res = await getMenuInfo("database");
       console.info("88888888888888888",res )};
 
-      const list = menulist()
+     let list = ref(menulist())
+      function clearMenu(){
+        list.value=[]
+        setTimeout(() => {
+          list.value=menulist()}, 1);
+      }
 
       const grandpreview = ref(false)
       const changepreview = function(value1) {
@@ -261,18 +251,6 @@
         // getInTheatersData();
       });
 
-      // watch(
-      //   [() => heightnum.value],
-      //   () => {
-      //     // graph.resize(1600,height.value);
-      //   },
-      //   {
-      //     immediate: false,
-      //     deep: false,
-      //   },
-      // );
-
-
       const savefathername =(a) =>{
         if (typeof(a) !== "undefined"){
           fathername = a
@@ -313,6 +291,7 @@
         noChildren,
         hasChildren,
         editMenu,
+        clearMenu,
         backhome,
         changepreview,
         grandpreview,

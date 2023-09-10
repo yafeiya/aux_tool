@@ -49,7 +49,7 @@
                   </RadioGroup>
                 </FormItem>
 
-                <Upload  multiple action="http://127.0.0.1:8080/upload" style="margin-left: 80px" method="POST">
+                <Upload  multiple :action="this.uploadUrl" style="margin-left: 80px" method="POST">
                   <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button> 支持CSV格式，一次性上传多个文件
                 </Upload>
 
@@ -175,9 +175,11 @@ import {FormItem, MenuGroup} from "view-ui-plus";
 import parentMenu from "@/components/parentmenu.vue";
 import mainTable from "@/components/maintable.vue";
 import lineChart from "@/components/chart/line.vue";
+import { EndUrl } from '../../url_config'
 export default {
   data() {
     return {
+      uploadUrl:EndUrl().backEndUrl+'/upload',
       input: false,
       inputFormItem: {
         name: '',
