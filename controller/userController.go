@@ -30,6 +30,7 @@ func Register(ctx *gin.Context) {
 	} else {
 		// 新增该注册用户
 		db.Create(&user)
+		response.Success(ctx, gin.H{"user": user}, "register success")
 		response.Success(ctx, nil, "register success")
 	}
 }
