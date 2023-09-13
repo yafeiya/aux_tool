@@ -8,6 +8,8 @@ import (
 	"backEnd/controller"
 	"backEnd/model"
 	"fmt"
+	"net/http"
+	// "encoding/csv"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"os"
@@ -16,21 +18,12 @@ import (
 func main() {
 	common.InitConfig()
 
+	Task := "任务1"
+	Dataset_name := "波士顿房价数据"
+	Type := "数值数据集"
+	Table_name := "动作表"
+
 	db := common.InitDB()
-	// 与前端约定好字符串
-	// id := 1
-	pageKind := "database"
-	released := "11"
-	dataset_name := "11"
-	Type := "11"
-	rank := "11"
-	character_type := "11"
-	header := "11"
-	data_path := "11"
-	description := "11"
-	task := "11"
-	code := "......"
-	lan := "Java"
 
 	if pageKind == "database" {
 		database := model.Database{
@@ -75,6 +68,12 @@ func main() {
 			// 新增卡片
 			db.Create(&modelbase)
 		}
+	datatable := []model.Datatable{}
+	result := db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, Table_name).Delete(&datatable)
+	if result.RowsAffected == 0 {
+		fmt.Println("删除失败")
+	} else {
+		fmt.Println("删除成功")
 	}
 
 	engine := gin.Default()
