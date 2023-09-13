@@ -8,7 +8,7 @@ import (
 	"backEnd/controller"
 	"backEnd/model"
 	"fmt"
-	"net/http"
+	// "net/http"
 	// "encoding/csv"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -25,49 +25,6 @@ func main() {
 
 	db := common.InitDB()
 
-	if pageKind == "database" {
-		database := model.Database{
-			Released:       released,
-			Dataset_name:   dataset_name,
-			Type:           Type,
-			Rank:           rank,
-			Character_type: character_type,
-			Header:         header,
-			Data_path:      data_path,
-			Description:    description,
-			Task:           task,
-		}
-		// 判重处理
-		//pageKind、task、type、dataset_name
-		db.Where("Task = ? and Type = ? and Dataset_name = ?", task, Type, dataset_name).First(&database)
-		if database.Id != 0 {
-			fmt.Println("该卡片已存在")
-		} else {
-			// 新增卡片
-			db.Create(&database)
-		}
-	}
-	if pageKind == "modelbase" {
-		modelbase := model.Modelbase{
-			Released:     released,
-			Dataset_name: dataset_name,
-			Type:         Type,
-			Rank:         rank,
-			Lan:          lan,
-			Data_path:    data_path,
-			Description:  description,
-			Code:         code,
-			Task:         task,
-		}
-		// 判重处理
-		//pageKind、task、type、dataset_name
-		db.Where("Task = ? and Type = ? and Dataset_name = ?", task, Type, dataset_name).First(&modelbase)
-		if modelbase.Id != 0 {
-			fmt.Println("该卡片已存在")
-		} else {
-			// 新增卡片
-			db.Create(&modelbase)
-		}
 	datatable := []model.Datatable{}
 	result := db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, Table_name).Delete(&datatable)
 	if result.RowsAffected == 0 {
@@ -85,7 +42,9 @@ func main() {
 		Task := "task"
 		Database_name := "database_name"
 		Type := "type"
-
+		// fmt.Println("2222",ctx.Request.Header)
+		// fmt.Println("2222",ctx.Request.Host)
+		// etc
 		file, _ := ctx.FormFile("file")
 		fmt.Println(file.Filename)
 
