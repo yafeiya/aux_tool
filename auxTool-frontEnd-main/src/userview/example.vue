@@ -1,9 +1,10 @@
 <style>
 #Charts{
-  width: 400px;
-  height:200px;
-  border: 1px solid red;
+  width: 500px;
+  height:250px;
+  border: 1px solid #729ce3;
   margin: auto;
+  margin-top: 10px;
 }
 .layout{
   border: 1px solid #d7dde4;
@@ -165,7 +166,7 @@
 
               <Button type="info" style="margin-right: 5px" @click="LogInfo(row)" v-width=85 >训练过程</Button>
 <!--              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=85 >训练过程</Button>-->
-              <Modal v-model="isLogInfo" width="1000" style="margin-top: -50px">
+              <Modal v-model="isLogInfo" width="1200" style="margin-top: -80px">
                 <template #header>
                   <p style="color:#4d85ea;text-align:center">
                     <Icon type="ios-information-circle"></Icon>
@@ -189,11 +190,37 @@
                     <div id="Charts" ref="Echarts4"></div>
                   </Col>
                 </Row>
-<!--                <div id="Charts" ref="Echarts" ></div>-->
-
 
                 <template #footer>
-                  <Button type="info"  long @click="close">确定</Button>
+                  <Space :size="50">
+                    <Button type="info"  long @click="previewImage=true" v-width="100" >方案预览</Button>
+                    <Button type="info"  long @click="isproxyInfo=true" v-width="100" style="margin-right: 460px">指标介绍</Button>
+                  </Space>
+                </template>
+              </Modal>
+              <ImagePreview v-model="previewImage" :preview-list="urlList" />
+              <Modal v-model="isproxyInfo" width="700" style="margin-top: -10px">
+                <template #header>
+                  <p style="color:#4d85ea;text-align:center">
+                    <Icon type="ios-information-circle"></Icon>
+                    <span>指标介绍</span>
+                  </p>
+                </template>
+                <Card>
+                  <template #title><strong>学习率 (learning-rate)</strong></template>
+                  学习率决定了在模型训练过程中每一步参数更新的幅度，如果学习率设置得过小，模型训练会变得非常缓慢，甚至可能在达到最优值之前就停止更新了。相反，如果学习率设置得过大，可能会导致在损失函数空间中来回跳动，甚至可能使得损失不断增大，从而无法收敛到最优解
+                </Card>
+                <Card>
+                  <template #title><strong>回报率 (reward)</strong></template>
+                  在强化学习中，奖励（Reward）是一个用于评价智能体在环境中行动的反馈信号。奖励通常是一个标量值，用来表示某个特定时刻智能体的行动的好坏程度。奖励的目的是引导智能体学习如何在环境中选择行动以达到特定的目标。
+                </Card>
+                <Card>
+                  <template #title><strong>网络损失 (loss)</strong></template>
+                  损失函数是在机器学习和深度学习中用来度量模型预测输出与实际标签之间差异的一种函数，损失函数接受模型的预测输出和真实标签作为输入，并计算一个数值来表示它们之间的差异。该数值越小，表示模型的预测越接近实际标签，也就是模型的性能越好。
+                </Card>
+
+                <template #footer>
+                  <Button type="info"  long @click="isproxyInfo=false" >确定</Button>
                 </template>
               </Modal>
               <Button type="info" style="margin-right: -30px" @click="isDataInfo=true" v-width=85 >模型评价</Button>
@@ -232,11 +259,15 @@ import lineChart from '../components/chart/line.vue'
 import axios from 'axios';
 import * as echarts from 'echarts'
 import chartData from "./chartdata.json"
+import datas from "@/userview/flow/results/data.json";
 
 export default {
 
   data() {
     return {
+      previewImage:false,
+      urlList: ["",],
+      isproxyInfo:false,
       nowTime: (new Date()).getTime(),
       runTime: 0,
       // time2: (new Date()).getTime() - 86400 * 3 * 1000 + 2000,
@@ -345,101 +376,162 @@ export default {
       let psgTimeCharts2 = echarts.init(this.$refs.Echarts2)
       let psgTimeCharts3 = echarts.init(this.$refs.Echarts3)
       let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
-      let option1 = {
-      title: {
-        text: '数据可视化'
-      },
-      tooltip: {},
-      grid: {
-        left: '3%',
-        height: 'auto',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: {
-        data: chartxyz["reward"],
-      },
-      yAxis: {
-      },
-      series: [
-        {
-          name: 'y1',
-          symbol: 'none', //去掉折线上面的小圆点
-          data: chartxyz["reward"],
-          type: 'line',
-          // areaStyle: {}
-        },
-      ],
-    };
-      let option2 = {
+
+
+      let actdata = chartxyz["actions"]
+      let rewarddata = chartxyz["reward"]
+      let lrdata = chartxyz["learning_rate"]
+      let count=[]  //统计轮数
+      const x = 4;  //飞机种类数
+      const  y = 7; //导弹种类数
+      let maxnum = 0
+      let MSLnum = new Array(x); // MSL记录数据
+      let MSLdata=[]
+
+      for (var i = 0; i < x; i++) {
+        MSLnum[i] = new Array(y); // 创建二维数组
+      }
+      // console.log(MSLnum)
+      //初始为0
+      for (var q = 0; q < x; q++) {
+        for (var p = 0; p < y; p++) {
+          MSLnum[q][p]=0
+        }
+      }
+      // console.log(MSLnum)
+      //统计发射数目
+      var turn = 0
+      let msi=0
+      while(lrdata[turn]){
+        count.push(turn)
+        for (var j=0;j<x;j++){
+          msi = actdata[turn][j][1]-1;//序号-1
+          MSLnum[j][msi]++
+        }
+        turn++
+      }
+      //转换成最终坐标
+      for (var n = 0; n < x; n++) {
+        for (var m = 0; m < y; m++) {
+          if(MSLnum[n][m]>maxnum){maxnum = MSLnum[n][m]}
+          MSLdata.push([n,m,MSLnum[n][m]])
+        }
+      }
+
+      var option1 = {
         title: {
-          text: '数据可视化'
+                text: '火力分配',
+                x: 'left'
+            },
+        xAxis3D: {
+          type: 'category',
         },
-        tooltip: {},
-        grid: {
-          left: '3%',
-          height: 'auto',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
+        yAxis3D: {
+          type: 'category',
         },
-        xAxis: {
-          data: chartxyz["learning_rate"],
+        zAxis3D: {
+          type: 'value',
         },
-        yAxis: {
+        grid3D: {
+          viewControl: {//可以控制整个柱状图场景旋转平移等，自行代数数据试试
+            projection: 'orthographic'//正交投影
+          }
         },
-        series: [
-          {
-            name: 'y1',
-            symbol: 'none', //去掉折线上面的小圆点
-            data: chartxyz["learning_rate"],
-            type: 'line',
-            // areaStyle: {}
-          },
-        ],
+        visualMap: {
+          calculable: true,
+          max: maxnum,
+          // dimension: 'Life Expectancy',
+          inRange: {
+            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+          }
+        },
+        dataset: {
+          source: MSLdata
+        },
+        series: [{
+          type: 'bar3D',
+          barSize: 10,//柱子大小
+          encode: {
+            // 维度的名字默认就是表头的属性名
+            x: 'Airplane',
+            y: 'Missile',
+            z: 'Num',
+            tooltip: [0, 1, 2, 3, 4]
+          }
+        }]
       };
-      let option3 = {
+      var option2={
         title: {
-          text: '数据可视化'
+          text: '奖励曲线'
         },
-        tooltip: {},
+        legend: {
+          data: ['reward'],
+          x:'right',      //可设定图例在左、右、居中
+        },
+        xAxis: {
+          data: count
+        },
         grid: {
-          left: '3%',
+          left: '5%',
           height: 'auto',
-          right: '4%',
-          bottom: '3%',
+          right: '5%',
+          bottom: '5%',
+          containLabel: true
+        },
+        yAxis:{},
+        series: [
+          {
+            name: "y轴",
+            type: "line",
+            data: rewarddata
+          }
+        ]
+      };
+      var option3={
+        title: {
+          text: '学习率曲线'
+        },
+        legend: {
+          data: ['learning rate'],
+          x:'right',      //可设定图例在左、右、居中
+        },
+        grid: {
+          left: '5%',
+          height: 'auto',
+          right: '5%',
+          bottom: '5%',
           containLabel: true
         },
         xAxis: {
-          data: chartxyz["loss"],
+          data: count
         },
-        yAxis: {
-        },
+        yAxis:{},
         series: [
           {
-            name: 'y1',
-            symbol: 'none', //去掉折线上面的小圆点
-            data: chartxyz["loss"],
-            type: 'line',
-            // areaStyle: {}
-          },
-        ],
+            name: "y轴",
+            type: "line",
+            data: lrdata
+          }
+        ]
       };
       let option4 = {
         title: {
-          text: '数据可视化'
+          text: '准确率曲线'
+        },
+        legend: {
+          data: ['acc'],
+          x:'right',      //可设定图例在左、右、居中
         },
         tooltip: {},
         grid: {
-          left: '3%',
+          left: '5%',
           height: 'auto',
-          right: '4%',
-          bottom: '3%',
+          right: '5%',
+          bottom: '5%',
           containLabel: true
         },
         xAxis: {
-          data: chartxyz["Accuracy"],
+          data: count
         },
         yAxis: {
         },
@@ -503,6 +595,7 @@ export default {
       this.isItemInfo=false;
       this.isLogInfo=false;
       this.isDataInfo=false;
+      this.isproxyInfo=false;
     },
     toHome() {
       this.$router.push('/home')

@@ -12,7 +12,7 @@
             <p style="margin-top: 1%;font-size: 20px;text-align: center;" >
               <Space :size="15">
                 <Input style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
-                <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="input=true">导入</Button>
+                <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
                 <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行')">导出</Button>
                 <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">删除</Button>
               </Space>
@@ -20,7 +20,7 @@
             <Modal
                 v-model="input"
                 title="导入数据集"
-                @on-ok="ok"
+                @on-ok="inputok"
                 @on-cancel="cancel">
 
               <Form ref="inputFormItem" :model="inputFormItem" :label-width="80" :rules="ruleValidate">
@@ -64,6 +64,25 @@
 
           </Modal>
         </a>
+        <a @click="modal_intro1 = true" v-else-if="this.pageKind=='modelbase'">
+          <Icon type="ios-help-circle-outline" />管理
+          <Modal
+              v-model="modal_intro1"
+              width="500"
+              title="上传与下载"
+              style="margin-top: -50px">
+            <Space :size="15">
+              <Upload  multiple :action="this.uploadUrl" style="margin-left: 80px" method="POST">
+                  <Button icon="ios-cloud-upload-outline" style="margin-left: 40px">点击上传</Button>
+              </Upload>
+                  <Button icon="ios-cloud-download-outline" style="margin-left: 10px;margin-bottom: 8px" @click="downloadModel">点击下载</Button>
+            </Space>
+
+          </Modal>
+        </a>
+        <a @click="toindex" v-else-if="this.pageKind=='design'">
+          <Icon type="ios-help-circle-outline" />设计
+        </a>
         <a @click="modal_intro1 = true" v-else>
           <Icon type="ios-help-circle-outline" />简介
           <Modal
@@ -105,15 +124,15 @@
       <img v-if="this.pageKind=='defineFunction'" src="../assets/function.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
       <img v-if="this.pageKind=='design'" src="../assets/design.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
       <Tooltip content="点击编辑" placement="bottom">
-        <div v-if="this.pageKind == 'design'">
-          <a @click="toindex">
-            <h4 style="height: 10px; margin-top: 130px;color: #054079">
-              <Icon type="ios-create" style="font-size: 20px"/>
-              {{this.cardName}}
-            </h4>
-          </a>
-        </div>
-        <div v-else>
+<!--        <div v-if="this.pageKind == 'design'">-->
+<!--          <a @click="toindex">-->
+<!--            <h4 style="margin-top: 130px;color: #054079;height: 10%">-->
+<!--              <Icon type="ios-create" style="font-size: 20px"/>-->
+<!--              {{this.cardName}}-->
+<!--            </h4>-->
+<!--          </a>-->
+<!--        </div>-->
+        <div>
           <a @click="editBtn = true">
             <h4 style="margin-top: 130px;color: #054079;height: 10%">
               <Icon type="ios-create" style="font-size: 20px"/>
@@ -324,7 +343,14 @@ export default {
         return item.label.includes(this.searchText)
       })
     },
-
+    inputDatabase(){
+        this.input=true
+        this.inputFormItem.type=this.taskType
+        this.inputFormItem.task=this.nowItem
+    },
+    inputok(){
+      console.info("1111111111111")
+    },
 
     //跳转画布设计
     toindex() {

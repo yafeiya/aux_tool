@@ -152,8 +152,12 @@ export default {
 
         var validItem = [{ required: true, message: '该项必填', trigger: 'blur' }]
         this.ruleValidate[i] = validItem
+        console.info("rule222222",this.ruleValidate)
+        if(this.pageKind=="defineFunction"){
+          this.ruleValidate['Params']=[{}]
+          console.info("rule333333333333",this.ruleValidate['Params'])
+        }
       }
-      // console.info(this.ruleValidate)
     },
     creatCard (name) {
       //提示成功信息
