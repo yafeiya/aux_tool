@@ -20,39 +20,33 @@
             <Modal
                 v-model="input"
                 title="导入数据集"
-                @on-ok="inputok"
+                @on-ok="ok"
                 @on-cancel="cancel">
 
-              <Form ref="inputFormItem" :model="inputFormItem" :label-width="80" :rules="ruleValidate">
-                <FormItem label="名称" prop="name">
-                  <Input v-model="inputFormItem.name" placeholder="自动获取"></Input>
-                </FormItem>
-                <FormItem label="级别">
-                  <Select v-model="inputFormItem.level" style="width:300px" >
-                    <Option v-for="item in inputFormItem.level_list" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                  </Select>
-                </FormItem>
+              <Form :model="formItem" :label-width="80" >
+                <!-- <FormItem label="名称" prop="name">
+                  <Input v-model="formItem.input" placeholder="自动获取"></Input>
+                </FormItem> -->
+                <FormItem label="文件名称" prop="name">
+                 <Input v-model="formItem.name"></Input>
+              </FormItem>
                 <FormItem label="类型" prop="type">
-                  <Input v-model="inputFormItem.type" placeholder="自动获取" disabled="True"></Input>
+                  <Input v-model="formItem.type" placeholder="自动获取" disabled="True"></Input>
                 </FormItem>
                 <FormItem label="任务" prop="task">
-                  <Input v-model="inputFormItem.task" placeholder="自动获取" disabled="True"></Input>
-                </FormItem>
-                <FormItem label="表头">
-                  <RadioGroup v-model="biaotou">
-                    <Radio label="有">
-                      <span>有</span>
-                    </Radio>
-                    <Radio label="无">
-                      <span>无</span>
-                    </Radio>
-                  </RadioGroup>
+                  <Input v-model="formItem.task" placeholder="自动获取" disabled="True"></Input>
                 </FormItem>
 
-                <Upload  multiple :action="this.uploadUrl" style="margin-left: 80px" method="POST">
-                  <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button> 支持CSV格式，一次性上传多个文件
+                <Upload  ref="upload" accept=".csv" :format="csv" :before-upload="handleUpload" :action="this.uploadUrl"
+                 :data="formItem" :auto-upload="true"  style="margin-left: 80px" 
+                 :on-format-error="uploaderror"
+                 method="POST">
+                  
+                  <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button> 
                 </Upload>
-
+                <FormItem>
+                <Button type="primary" @click="upload">提交</Button>
+                </FormItem>
               </Form>
 
             </Modal>
@@ -200,6 +194,14 @@ export default {
     return {
       uploadUrl:EndUrl().backEndUrl+'/upload',
       input: false,
+      formItem: {
+                  name: '',
+                  type: '',
+                  task: ''
+              },
+              file: null,
+              loadingStatus: false,
+        
       inputFormItem: {
         name: '',
         type: '',
@@ -438,6 +440,29 @@ export default {
         console.info(response.data)
       })
     },
+    uploaderror(){
+      this.$Message.error('文件类型不支持')
+    },
+    handleUpload (file) {
+              this.file = file;
+              this.formItem.name = this.cardInfo["Dataset_name"]
+              this.formItem.task=this.taskType
+              this.formItem.type=this.nowItem
+              return false;
+          },
+    upload () {
+              this.loadingStatus = true;
+              setTimeout(() => {
+                  // 重点 赋值
+                  this.$refs.upload.data,'name',this.formItem.name
+                  this.$refs.upload.data,'type',this.formItem.type
+                  this.$refs.upload.data,'task',this.formItem.task
+                  this.$refs.upload.post(this.file)
+                  this.file = null;
+                  this.loadingStatus = false;
+                  this.$Message.success(this.file,'上传成功')
+              }, 1500);
+      },
     uploadCard() {
       if(this.viewRange == "private") {
         if(this.cardInfo.released === "11") {
