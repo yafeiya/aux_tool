@@ -10,6 +10,7 @@ type Datatable struct {
 	Data_len         	uint `gorm:"column:Data_len"`
 	Data_type      		string `gorm:"column:Data_type"`
 	Csv_path			string `gorm:"column:Csv_path"`
+	Time				string `gorm:"column:Time"`
 }
 
 func (Datatable) TableName() string {

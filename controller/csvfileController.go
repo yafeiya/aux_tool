@@ -133,7 +133,7 @@ func DeleteTable(ctx *gin.Context) {
 }
 
 // 添加csv表
-func CreateTable(Task string, Type string, Dataset_name string, numColumns int, numRows int, Types []string, csv_name string, csv_path string)(string) {
+func CreateTable(Task string, Type string, Dataset_name string, numColumns int, numRows int, Types []string, csv_name string, csv_path string,time string)(string) {
 	db := common.InitDB()
 	types := ""
 	for _, columnType := range Types {
@@ -148,6 +148,7 @@ func CreateTable(Task string, Type string, Dataset_name string, numColumns int, 
 		Data_len:       uint(numColumns),
 		Data_type:      types,
 		Csv_path:		csv_path,
+		Time:			time,
 	}
 	// 判重处理
 	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, csv_name).First(&datatable)

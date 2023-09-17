@@ -18,9 +18,10 @@ func UploadFile(ctx *gin.Context) {
 		Task := ctx.PostForm("task")
 		Type  := ctx.PostForm("type")
 		Dataset_name := ctx.PostForm("name")
+		time := ctx.PostForm("time")
 		file, _ := ctx.FormFile("file")
 		fmt.Println(file.Filename)
-		fmt.Println(Dataset_name,Task,Type)
+		fmt.Println(Dataset_name,Task,Type,time)
 
 		// 要创建的文件夹的路径
 		folderPath := "./" + Type + "/" + Task + "/" + Dataset_name 
@@ -37,7 +38,7 @@ func UploadFile(ctx *gin.Context) {
 
 		// 读取csv文件信息，获取行数、列数、数据类型
 		numColumns, numRows, Types := GetCSVInfo(dst)
-		result := CreateTable(Task, Type, Dataset_name, numColumns, numRows, Types, file.Filename, dst)
+		result := CreateTable(Task, Type, Dataset_name, numColumns, numRows, Types, file.Filename, dst, time)
 		if(result == "success"){
 			response.Success(ctx, nil, "success")
 		}else{

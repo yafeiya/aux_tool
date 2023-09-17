@@ -195,7 +195,8 @@ export default {
       formItem: {
                   name: '',
                   type: '',
-                  task: ''
+                  task: '',
+                  time:(new Date()).getTime()
               },
               file: null,
               loadingStatus: false,
@@ -459,9 +460,10 @@ export default {
     },
     handleUpload (file) {
               this.file = file;
-              this.formItem.name = this.cardInfo["Dataset_name"]
+              this.formItem.name=this.cardInfo["Dataset_name"]
               this.formItem.task=this.taskType
               this.formItem.type=this.nowItem
+              this.formItem.time=(new Date()).getTime()
               return false;
           },
     upload () {
@@ -471,6 +473,7 @@ export default {
                   this.$refs.upload.data,'name',this.formItem.name
                   this.$refs.upload.data,'type',this.formItem.type
                   this.$refs.upload.data,'task',this.formItem.task
+                  this.$refs.upload.data,'time',this.formItem.time
                   this.$refs.upload.post(this.file)
                   this.file = null;
                   this.loadingStatus = false;
