@@ -38,9 +38,6 @@ func UploadFile(ctx *gin.Context) {
 		// 读取csv文件信息，获取行数、列数、数据类型
 		numColumns, numRows, Types := GetCSVInfo(dst)
 		result := CreateTable(Task, Type, Dataset_name, numColumns, numRows, Types, file.Filename, dst)
-		
-		fmt.Println("创建文件夹失败222222222222:", result)
-
 		if(result == "success"){
 			response.Success(ctx, nil, "success")
 		}else{

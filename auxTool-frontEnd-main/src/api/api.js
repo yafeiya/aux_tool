@@ -50,3 +50,11 @@ export const sendMenu = (data) => {
     data: data
   })
 }
+
+export const getCsvData = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getCsv',
+    params:data
+  })
+}

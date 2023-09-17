@@ -35,50 +35,9 @@ func main() {
 
 	engine := gin.Default()
 	engine.Use(common.CORS())
-
-	// engine.POST("/upload", func(ctx *gin.Context) {
-
-	// 	// 单文件
-	// 	Task := "task"
-	// 	Database_name := "database_name"
-	// 	Type := "type"
-		
-	// 	pageName1 := ctx.PostForm("name")
-	// 	pageName2 := ctx.PostForm("task")
-	// 	pageName3 := ctx.PostForm("type")
-	// 	fmt.Println("12211111112",pageName1)
-	// 	fmt.Println("22211111112",pageName2)
-	// 	fmt.Println("32211111112",pageName3)
-	// 	// fmt.Println("2222",ctx.Request.Host)
-	// 	// etc
-	// 	file, _ := ctx.FormFile("file")
-	// 	fmt.Println(file.Filename)
-
-	// 	// 要创建的文件夹的路径
-	// 	folderPath := "./" + Type + "/" + Task + "/" + Database_name + "/"
-
-	// 	if _, err := os.Stat(folderPath); os.IsNotExist(err) {
-	// 		os.Mkdir(folderPath, 0755)
-	// 	}
-
-	// 	dst := folderPath + file.Filename
-	// 	// 上传文件至指定的完整文件路径
-	// 	ctx.SaveUploadedFile(file, dst)
-
-	// 	response.Success(ctx, nil, "success")
-
-	// 	//// 单文件
-	// 	//file, _ := c.FormFile("file")
-	// 	//log.Println(file.Filename)
-	// 	//
-	// 	//dst := "./" + file.Filename
-	// 	//// 上传文件至指定的完整文件路径
-	// 	//c.SaveUploadedFile(file, dst)
-	// 	//
-	// 	//c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
-	// })
 	engine.POST("/upload", controller.UploadFile)
 	engine.GET("/getPageMenu", controller.GetPageMenu)
+	engine.GET("/getCsv", controller.GetCsvData)
 	engine.GET("/getCard", controller.GetCard)
 	engine.POST("/addPageMenuItem", controller.AddPageMenuItem)
 	engine.POST("/login", controller.Login)

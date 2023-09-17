@@ -284,7 +284,6 @@ export default {
     },
     getFormItem() {
       for(var index in this.addFormItemCfg) {
-        // console.info(this.addFormItemCfg[index].name)
         this.addFormItem = {...this.addFormItem, ...this.addFormItemCfg[index].value}
         if(this.addFormItemCfg[index].default == true) {
           var name = this.addFormItemCfg[index].name

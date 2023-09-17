@@ -3,7 +3,7 @@
     <!-- {{ console.info(this.cardInfo.dataset_name) + " " + console.info(this.viewRange)}} -->
     <template #title>
       <div style="text-align: center">
-        <a @click="modal_intro1 = true" v-if="this.pageKind=='database'">
+        <a @click="modal" v-if="this.pageKind=='database'">
           <Icon type="ios-help-circle-outline" />管理
           <Modal
               v-model="modal_intro1"
@@ -24,9 +24,6 @@
                 @on-cancel="cancel">
 
               <Form :model="formItem" :label-width="80" >
-                <!-- <FormItem label="名称" prop="name">
-                  <Input v-model="formItem.input" placeholder="自动获取"></Input>
-                </FormItem> -->
                 <FormItem label="文件名称" prop="name">
                  <Input v-model="formItem.name"></Input>
               </FormItem>
@@ -189,6 +186,7 @@ import parentMenu from "@/components/parentmenu.vue";
 import mainTable from "@/components/maintable.vue";
 import lineChart from "@/components/chart/line.vue";
 import { EndUrl } from '../../url_config'
+import {getCsvData } from "../api/api.js"
 export default {
   data() {
     return {
@@ -353,6 +351,22 @@ export default {
     inputok(){
       console.info("1111111111111")
     },
+    modal(){
+      this.modal_intro1 = true
+      // todo 获取base
+      let data = {
+        Dataset_name: this.cardInfo["Dataset_name"],
+        task: this.nowItem,
+        Type: this.taskType,
+      }
+      getCsvData(data).then(response => {
+
+        var csvdataList = response.data.data.datatables
+        console.info('表头数量:',csvdataList[0].Header_num)
+        console.info('长度:',csvdataList[0].Data_len)
+        console.info('类型:',csvdataList[0].Data_type)
+      })
+    },
 
     //跳转画布设计
     toindex() {
@@ -461,7 +475,7 @@ export default {
                   this.file = null;
                   this.loadingStatus = false;
                   this.$Message.success(this.file,'上传成功')
-              }, 1500);
+              }, 150);
       },
     uploadCard() {
       if(this.viewRange == "private") {
