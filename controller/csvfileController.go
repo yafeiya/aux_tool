@@ -94,14 +94,14 @@ func GetCSVInfo(csv_path string)(int, int, []string) {
 // 获取某数据集的csv表
 func GetTable(ctx *gin.Context) {
 	// 参数
-	Task := ctx.Query("任务1")
-	Database_name := ctx.Query("波士顿房价数据集")
-	Type := ctx.Query("数值数据集")
+	Task := ctx.Query("Task")
+	Dataset_name := ctx.Query("Dataset_name")
+	Type := ctx.Query("Type")
 
 	db := common.InitDB()
 
 	datatables := []model.Datatable{}
-	db.Where("Task = ? and Type = ? and Dataset_name = ?", Task, Type, Database_name).Find(&datatables)
+	db.Where("Task = ? and Type = ? and Dataset_name = ?", Task, Type, Dataset_name).Find(&datatables)
 	if len(datatables) == 0 {
 		fmt.Println("卡片")
 		response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
@@ -133,7 +133,7 @@ func DeleteTable(ctx *gin.Context) {
 }
 
 // 添加csv表
-func CreateTable(Task string, Type string, Dataset_name string, numColumns int, numRows int, Types []string, csv_name string)(string) {
+func CreateTable(Task string, Type string, Dataset_name string, numColumns int, numRows int, Types []string, csv_name string, csv_path string)(string) {
 	db := common.InitDB()
 	types := ""
 	for _, columnType := range Types {
@@ -147,6 +147,7 @@ func CreateTable(Task string, Type string, Dataset_name string, numColumns int, 
 		Header_num: 	uint(numRows),
 		Data_len:       uint(numColumns),
 		Data_type:      types,
+		Csv_path:		csv_path,
 	}
 	// 判重处理
 	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, csv_name).First(&datatable)

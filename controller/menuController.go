@@ -1,13 +1,13 @@
 package controller
 
 import (
+	"encoding/json"
 	"backEnd/common"
 	"backEnd/common/response"
 	"backEnd/model"
-	"backEnd/utils"
 	"fmt"
 	"net/http"
-
+	"backEnd/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,7 +21,7 @@ func GetPageMenu(ctx *gin.Context) {
 		return
 	}
 	menuList, err := utils.LoadJson("./data/config.json")
-
+	
 	if !err {
 		fmt.Println("加载文件失败")
 		return
@@ -29,18 +29,37 @@ func GetPageMenu(ctx *gin.Context) {
 	menu := menuList[pageName]
 	fmt.Println(menu)
 	ctx.JSON(http.StatusOK, menu)
-
 }
 
 // 增加左侧菜单栏的选项
 func AddPageMenuItem(ctx *gin.Context) {
-	pageName := ctx.PostForm("pageKind")
-	menuItemName := ctx.PostForm("menuItemName")
-	menuItemList := ctx.PostForm("menuItemList")
-	fmt.Println("pageName: " + pageName)
-	fmt.Println("menuItemName: " + menuItemName)
-	fmt.Println(menuItemList)
-	// fmt.Println(tmp)
+	pageKind := ctx.PostForm("pageKind")
+	name := ctx.PostForm("name")
+	title := ctx.PostForm("title")
+	icon := ctx.PostForm("icon")
+	childrenlist := ctx.PostForm("childrenlist")
+	// 在实际应用中，你需要将 childrenList 解析为切片，这里假设它是一个 JSON 字符串
+	var children []model.Children
+	if err := json.Unmarshal([]byte(childrenlist), &children); err != nil {
+		ctx.JSON(400, gin.H{"error": "Invalid childrenlist format"})
+		return
+	}
+	fmt.Println("pageKind: " + pageKind)
+
+	filename := "./data/config.json"
+
+	// 创建新的模型实例
+	newData := model.DataMenu{
+		Name:  name,
+		Title: title,
+		Icon:  icon,
+		Children: children,
+	}
+
+	er := model.AddMenu(pageKind, filename, newData)
+	if er != nil {
+		fmt.Println(er)
+	}
 }
 
 // TODO:获取当前界面卡片列表
@@ -82,30 +101,6 @@ func GetMenuList(ctx *gin.Context) {
 			response.Success(ctx, gin.H{"databases": modelbases}, "success")
 		}
 	}
-	/* 多级目录json文件形式未放到数据库中
-		if(pageKind == "defineFunction"){
-			databases := []model.Database{}
-			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-			if(len(databases) == 0){
-				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-			}else{
-				fmt.Println(databases)
-				response.Success(ctx, gin.H{"databases": databases}, "success")
-			}
-		}
-	    if(pageKind == "design"){
-			databases := []model.Database{}
-			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-			if(len(databases) == 0){
-				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-			}else{
-				fmt.Println(databases)
-				response.Success(ctx, gin.H{"databases": databases}, "success")
-			}
-		}
-	*/
 }
 
 // TODO:删除指定卡片
@@ -147,35 +142,32 @@ func DeleteCard(ctx *gin.Context) {
 // 参数：前端传来的参数pageKind、task、type、dataset_name。
 // 返回：卡片列表,即database的model列表databases
 func GetCard(ctx *gin.Context) {
-
 	db := common.InitDB()
-	pageKind := ctx.Query("pageKind")
 
-	fmt.Println("1111111111111111111", pageKind)
-	task := ctx.Query("task")
+	pageKind := ctx.PostForm("pageKind")
+	fmt.Println(pageKind)
+	task := ctx.PostForm("task")
 	fmt.Println(task)
-	Type := ctx.Query("Type")
+	Type := ctx.PostForm("Type")
 	fmt.Println(Type)
+	dataset_name := ctx.PostForm("dataset_name")
+	fmt.Println(dataset_name)
 
 	if pageKind == "database" {
-		database := []model.Database{}
-		//fmt.Println("wwwww", database)
-
-		db.Where("Task = ? and Type = ?", task, Type).Find(&database)
-		fmt.Println("666666666", database)
-		if len(database) == 0 {
+		database := model.Database{}
+		db.Where("Task = ? and Type = ? and Dataset_name = ?", task, Type, dataset_name).First(&database)
+		if database.Id == 0 {
 			fmt.Println("未找到记录")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
 		} else {
-			//fmt.Println(database)
-			//fmt.Println("wwwww")
+			fmt.Println(database)
 			response.Success(ctx, gin.H{"database": database}, "success")
 		}
 	}
 	if pageKind == "modelbase" {
-		modelbase := []model.Modelbase{}
-		db.Where("Task = ? and Type = ? ", task, Type).Find(&modelbase)
-		if len(modelbase) == 0 {
+		modelbase := model.Modelbase{}
+		db.Where("Task = ? and Type = ? and Dataset_name = ?", task, Type, dataset_name).First(&modelbase)
+		if modelbase.Id == 0 {
 			fmt.Println("未找到记录")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
 		} else {
@@ -187,7 +179,6 @@ func GetCard(ctx *gin.Context) {
 
 /*
 	TODO:添加指定卡片
-
 参数：前端传来的参数:
 
 	release
