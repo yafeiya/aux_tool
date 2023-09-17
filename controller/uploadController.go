@@ -2,13 +2,11 @@ package controller
 
 import (
 	"backEnd/common/response"
-	"backEnd/model"
+	// // "backEnd/model"
 	"fmt"
-	"net/http"
+	// "net/http"
 	"os"
 	"github.com/gin-gonic/gin"
-	"backEnd/common"
-	// "io"
 )
 
 // 上传文件
@@ -36,7 +34,7 @@ func UploadFile(ctx *gin.Context) {
 
 		// 读取csv文件信息，获取行数、列数、数据类型
 		numColumns, numRows, Types := GetCSVInfo(folderPath + file.Filename)
-		result := CreateTable(Task, Type, Dataset_name, numColumns, numRows, Types, file.Filename, dst)
+		result := CreateTable(Task, Type, Dataset_name, numColumns, numRows, Types, file.Filename)
 		if(result == "success"){
 			response.Success(ctx, nil, "success")
 		}else{
@@ -46,43 +44,10 @@ func UploadFile(ctx *gin.Context) {
 
 // 下载文件
 func DownloadFile(ctx *gin.Context) {
-	db := common.InitDB()
 	// 路径参数
-	Task := ctx.PostForm("Task")
-	Dataset_name := ctx.PostForm("dataset_name")
-	Type := ctx.PostForm("Type")
-	Table_name := ctx.PostForm("csvName")
-	fmt.Println(Task)
-	fmt.Println(Dataset_name)
-	fmt.Println(Type)
-	fmt.Println(Table_name)
-	datatables := []model.Datatable{}
+	// Task := ctx.Query("task")
+	// Database_name := ctx.Query("database_name")
+	// Type := ctx.Query("type")
 
-	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?",Task, Type, Dataset_name, Table_name).Find(&datatables)
-	if len(datatables) == 0 {
-		fmt.Println("没找到")
-		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-	} else {
-		filePath := datatables[0].Csv_path
-		fmt.Println(filePath)
-		response.Response(ctx, http.StatusOK, 404, gin.H{"url": filePath}, filePath)
-		// file, err := os.Open(filePath)
-		// if err != nil {
-		// 	ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Could not open CSV file"})
-		// 	return
-		// }
-		// defer file.Close()
-	
-		// // 设置HTTP响应头，指定文件类型和文件名
-		// ctx.Header("Content-Type", "text/csv")
-		// ctx.Header("Content-Disposition", "attachment; filename=" + filePath)
-	
-		// // 将文件内容拷贝到HTTP响应主体中
-		// _, err = io.Copy(ctx.Writer, file)
-		// if err != nil {
-		// 	ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Could not copy file to response"})
-		// 	return
-		// }
-	}
 
 }
