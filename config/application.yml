@@ -1,6 +1,6 @@
 # 后端服务
 server:
-  host: localhost
+  host: 
   port: 8080
 
 # 数据库

@@ -1,20 +1,21 @@
 package controller
 
 import (
-	"backEnd/model"
-	"net/http"
 	"backEnd/common"
 	"backEnd/common/response"
-	"github.com/gin-gonic/gin"
+	"backEnd/model"
+	"encoding/csv"
+	"fmt"
+	"net/http"
 	"os"
 	"strconv"
-	"fmt"
 	"unicode/utf8"
-	"encoding/csv"
+
+	"github.com/gin-gonic/gin"
 )
 
 // 获取csv文件属性
-func GetCSVInfo(csv_path string)(int, int, []string) {
+func GetCSVInfo(csv_path string) (int, int, []string) {
 	// 打开CSV文件
 	file, error := os.Open(csv_path)
 	if error != nil {
@@ -64,18 +65,18 @@ func GetCSVInfo(csv_path string)(int, int, []string) {
 		columnTypes[columnIndex] = columnType
 	}
 
-    // 创建一个映射来保存不重复的字符串元素
-    uniqueStrings := make(map[string]bool)
+	// 创建一个映射来保存不重复的字符串元素
+	uniqueStrings := make(map[string]bool)
 
-    // 将元素添加到映射中
-    for _, element := range columnTypes {
-        uniqueStrings[element] = true
-    }
+	// 将元素添加到映射中
+	for _, element := range columnTypes {
+		uniqueStrings[element] = true
+	}
 
 	var Types []string
 	for uniqueElement := range uniqueStrings {
 		Types = append(Types, uniqueElement)
-    }
+	}
 
 	// // 输出列数
 	// fmt.Printf("CSV文件有 %d 列\n", numColumns)
@@ -133,22 +134,22 @@ func DeleteTable(ctx *gin.Context) {
 }
 
 // 添加csv表
-func CreateTable(Task string, Type string, Dataset_name string, numColumns int, numRows int, Types []string, csv_name string, csv_path string,time string)(string) {
+func CreateTable(Task string, Type string, Dataset_name string, numColumns int, numRows int, Types []string, csv_name string, csv_path string, time string) string {
 	db := common.InitDB()
 	types := ""
 	for _, columnType := range Types {
 		types = types + columnType
 	}
 	datatable := model.Datatable{
-		Type:       	Type,
-		Task:   		Task,
-		Dataset_name:   Dataset_name,
-		Table_name:     csv_name,
-		Header_num: 	uint(numRows),
-		Data_len:       uint(numColumns),
-		Data_type:      types,
-		Csv_path:		csv_path,
-		Time:			time,
+		Type:         Type,
+		Task:         Task,
+		Dataset_name: Dataset_name,
+		Table_name:   csv_name,
+		Header_num:   uint(numColumns),
+		Data_len:     uint(numRows),
+		Data_type:    types,
+		Csv_path:     csv_path,
+		Time:         time,
 	}
 	// 判重处理
 	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, csv_name).First(&datatable)
@@ -169,7 +170,7 @@ func CreateTable(Task string, Type string, Dataset_name string, numColumns int, 
 
 func GetCsvData(ctx *gin.Context) {
 	Dataset_name := ctx.Query("Dataset_name")
-	fmt.Println("需要查询的数据集名称：",Dataset_name)
+	fmt.Println("需要查询的数据集名称：", Dataset_name)
 
 	db := common.InitDB()
 
