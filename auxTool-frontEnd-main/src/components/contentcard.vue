@@ -20,7 +20,7 @@
             <Modal
                 v-model="input"
                 title="导入数据集"
-                @on-ok="ok"
+                @on-ok="Refresh_table"
                 @on-cancel="cancel">
 
               <Form :model="formItem" :label-width="80" >
@@ -35,11 +35,11 @@
                 </FormItem>
 
                 <Upload  ref="upload" accept=".csv" :format="csv" :before-upload="handleUpload" :action="this.uploadUrl"
-                 :data="formItem" :auto-upload="true"  style="margin-left: 80px" 
+                 :data="formItem" :auto-upload="true"  style="margin-left: 80px"
                  :on-format-error="uploaderror"
                  method="POST">
-                  
-                  <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button> 
+
+                  <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button>
                 </Upload>
                 <FormItem>
                 <Button type="primary" @click="upload">提交</Button>
@@ -50,6 +50,9 @@
             <Table border  :columns="columns" :data="tabledata" style="width: auto">
               <template #preview="{row, index }">
                 <Button type="primary" v-width=90 style="margin-left: -5px" @click="show(index)">下载</Button>
+              </template>
+              <template #inputTime="{row, index }">
+                <Time :time="row.Time - 60 * 3 * 1000" />
               </template>
             </Table>
 
@@ -200,7 +203,7 @@ export default {
               },
               file: null,
               loadingStatus: false,
-        
+
       inputFormItem: {
         name: '',
         type: '',
@@ -222,6 +225,7 @@ export default {
           }
         ],
       },
+      //表头
       columns: [
         {
           type: 'selection',
@@ -229,25 +233,25 @@ export default {
           align: 'center'
         },
         {
-          title: '数据名',
-          key: 'name',
+          title: '数据集名',
+          key: 'Dataset_name',
           align: 'center'
         },
         {
-          title: '级别',
-          key: 'level',
-          align: 'center',
-          sortable: true
+          title: '文件名',
+          key: 'Table_name',
+          align: 'center'
         },
         {
           title: '所属任务',
-          key: 'task',
+          key: 'Task',
           align: 'center'
         },
         {
           title: '导入时间',
-          key: 'input_time',
+          key: 'Time',
           align: 'center',
+          slot: 'inputTime',
           sortable: true
         },
         {
@@ -255,19 +259,19 @@ export default {
           children:[
             {
               title: '表头数量',
-              key: 'header_num',
+              key: 'Header_num',
               align: 'center',
               sortable: true
             },
             {
               title: '数据长度',
-              key: 'data_len',
+              key: 'Data_len',
               align: 'center',
               sortable: true
             },
             {
               title: '数据类型',
-              key: 'data_type',
+              key: 'Data_type',
               align: 'center',
             },
           ],
@@ -279,35 +283,7 @@ export default {
           align: 'center',
         },
       ],
-      tabledata: [
-        {
-          name: '动作表',
-          level: 1,
-          task: "目标检测",
-          input_time: "2023-9-1",
-          header_num: 10,
-          data_len: 10,
-          data_type: "int",
-        },
-        {
-          name: '状态表',
-          level: 1,
-          task: "目标检测",
-          input_time: "2023-9-2",
-          header_num: 12,
-          data_len: 13,
-          data_type: "char",
-        },
-        {
-          name: '结果表',
-          level: 1,
-          task: "目标检测",
-          input_time: "2023-9-3",
-          header_num: 15,
-          data_len: 16,
-          data_type: "string",
-        },
-      ],
+      tabledata: [],
       searchdata:[],
       // jsonBaseUrl: "http://localhost:3000",
       modal_intro1:false,//卡片2的介绍、发布、删除与预览
@@ -339,6 +315,10 @@ export default {
   //   this.cardName = this.cardInfo[this.cardNameFlag]
   // },
   methods: {
+    Refresh_table(){
+      this.modal()
+      console.info("刷新成功",this.tabledata)
+    },
     handleSearch(){
       this.searchdata = this.tabledata.filter(item => {
         return item.label.includes(this.searchText)
@@ -361,11 +341,13 @@ export default {
         Type: this.taskType,
       }
       getCsvData(data).then(response => {
-
         var csvdataList = response.data.data.datatables
-        console.info('表头数量:',csvdataList[0].Header_num)
-        console.info('长度:',csvdataList[0].Data_len)
-        console.info('类型:',csvdataList[0].Data_type)
+        this.tabledata=[]
+        var i=0
+        for(i;i<csvdataList.length;i++){
+          this.tabledata.push(response.data.data.datatables[i])
+        }
+
       })
     },
 
@@ -461,8 +443,8 @@ export default {
     handleUpload (file) {
               this.file = file;
               this.formItem.name=this.cardInfo["Dataset_name"]
-              this.formItem.task=this.taskType
-              this.formItem.type=this.nowItem
+              this.formItem.task=this.nowItem
+              this.formItem.type=this.taskType
               this.formItem.time=(new Date()).getTime()
               return false;
           },
