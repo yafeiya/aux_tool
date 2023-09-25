@@ -33,17 +33,16 @@
                 <FormItem label="任务" prop="task">
                   <Input v-model="formItem.task" placeholder="自动获取" disabled="True"></Input>
                 </FormItem>
-
+                <Space :size="100">
                 <Upload  ref="upload" accept=".csv" :format="csv" :before-upload="handleUpload" :action="this.uploadUrl"
                  :data="formItem" :auto-upload="true"  style="margin-left: 80px"
                  :on-format-error="uploaderror"
                  method="POST">
 
-                  <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button>
+                  <Button icon="ios-cloud-upload-outline" style="margin-left: 40px">上传数据集</Button>
                 </Upload>
-                <FormItem>
-                <Button type="primary" @click="upload">提交</Button>
-                </FormItem>
+                      <Button type="primary" style="margin-left: 10px;margin-bottom: 8px" @click="upload">提交</Button>              
+                </Space>
               </Form>
 
             </Modal>
