@@ -32,43 +32,23 @@
             <span>编辑类别</span>
           </p>
         </template>
-        <Form ref="menuform" :model="menuform" :label-width="80" :rules="rulemenu" style="width: 400px">
+        <Form ref="menuform" :model="menuform" :label-width="100" :rules="rulemenu" style="width: 400px">
           <FormItem label="一级菜单" prop="fartherMenu">
-            <Input v-model="menuform.fartherMenu" placeholder="输入一级菜单名称（必填）" style="width: 250px"></Input>
+            <Input v-model="menuform.fartherMenu" placeholder="(必填)" style="width: 250px"></Input>
           </FormItem>
           <FormItem label="二级菜单" prop="childreMenu">
-            <Input v-model="menuform.childreMenu" placeholder="输入二级菜单名称" style="width: 250px"></Input>
+            <Input v-model="menuform.childreMenu" placeholder="(选填)该项为空时默认删除整个父菜单" style="width: 250px"></Input>
           </FormItem>
 
-<!--          <template v-for="(item, index) in menuform.items">-->
-<!--            <FormItem-->
-<!--                v-if="item.status"-->
-<!--                :key="index"-->
-<!--                :label="'任务 ' + item.index"-->
-<!--                :prop="'items.' + index + '.value'"-->
-<!--                :rules="{required: true, message: '任务名不可为空', trigger: 'blur'}">-->
-<!--              <Row>-->
-<!--                <Col span="18">-->
-<!--                  <Input type="text" v-model="item.value" placeholder="输入任务名"></Input>-->
-<!--                </Col>-->
-<!--                <Col span="4" offset="1">-->
-<!--                  <Button @click="handleRemove(index)">Delete</Button>-->
-<!--                </Col>-->
-<!--              </Row>-->
-<!--            </FormItem>-->
-<!--          </template>-->
           <FormItem>
-            <Row>
-              <Col span="8">
-                <Button type="default" long @click="handleMenu(menuform.fartherMenu,menuform.childreMenu,true)" icon="md-add" style="margin-left: 10px">添加</Button>
-              </Col>
-              <Col span="8">
-                <Button type="default" long @click="handleMenu(menuform.fartherMenu,menuform.childreMenu,false)" icon="md-add" style="margin-left: 30px">删除</Button>
-              </Col>
-            </Row>
           </FormItem>
         </Form>
-
+        <template #footer>
+          <Space :size="50">
+            <Button type="default" long @click="handleMenuAdd(menuform.fartherMenu,menuform.childreMenu)" icon="md-add" style="margin-left: 10px">添加</Button>
+            <Button type="default" long @click="handleMenuDelete(menuform.fartherMenu,menuform.childreMenu,false)" icon="md-add" style="margin-left: 10px">删除</Button>
+          </Space>
+        </template>
       </Modal>
     </Affix>
 
@@ -77,8 +57,8 @@
 </template>
 <script>
 import childMenu from './childmenu.vue';
-import {sendMenu} from "../api/api.js";
-// import axios from "axios";
+import {addPageMenuItem, getCsvData, getMenuInfo,deletePageMenuItem} from "../api/api.js";
+
 import qs from "qs";
 import {addMenuItem, isLogin} from '../api/api.js'
 export default {
@@ -93,6 +73,9 @@ export default {
         fartherMenu: [
           { required: true, message: '名称必填', trigger: 'blur' }
         ],
+        // childreMenu: [
+        //   { required: true, message: '名称必填', trigger: 'blur' }
+        // ],
       },
       initNowItem: "numDataBase1-1-任务1",
       addMenu:false
@@ -111,20 +94,93 @@ export default {
     this.nowItemInit()
   },
   methods: {
-
-    handleMenu (fatherMenu, childrenMenu,flag) {
+    handleMenuAdd(fatherMenu, childrenMenu){
       var data = {
         //菜单的添加与删除
-        FatherMenu: fatherMenu,
-        ChildrenMenu: childrenMenu,
-        Add_or_Del:flag
+        pageKind: this.pageKind,
+        title: fatherMenu,
+        icon: "ios-navigate",
+        children_title: childrenMenu,
       }
-      data = qs.stringify(data)
-      sendMenu(data).then(res => {
-            console.info(res)
-        // TODO:需要刷新页面或者菜单
-    })
+      console.info("!!!!!!!!!!!!!11111",data)
+      addPageMenuItem(data).then(response => {
+        console.info("!111111111",response.data.msg)
+        if(response.data.msg=="children_title=null"){
+          this.$Message["error"]({
+            background: true,
+            content: "子菜单不能为空"
+          });
+        }
+        else if(response.data.msg=="title=null"){
+          this.$Message["error"]({
+            background: true,
+            content: "父菜单不能为空"
+          });
+        }
+        else{
+          this.$Message["success"]({
+            background: true,
+            content: "修改成功"
+          });
+        }
+        setTimeout(() => {
+          getMenuInfo(this.pageKind).then(res => {
+          })
+          location.reload();
+        }, 500);
+        this.addMenu=false
+      })
     },
+    handleMenuDelete(fatherMenu, childrenMenu){
+      var data = {
+        //菜单的添加与删除
+        pageKind: this.pageKind,
+        title: fatherMenu,
+        icon: "ios-navigate",
+        children_title: childrenMenu,
+      }
+      console.info("!!!!!!!!!!!!!2222222",data)
+      deletePageMenuItem(data).then(response => {
+        console.info("!222222",response.data.msg)
+        if(response.data.msg=="children_title=null"){
+          this.$Message["error"]({
+            background: true,
+            content: "子菜单不能为空"
+          });
+        }
+        else if(response.data.msg=="title=null"){
+          this.$Message["error"]({
+            background: true,
+            content: "父菜单不能为空"
+          });
+        }
+        else{
+          this.$Message["success"]({
+            background: true,
+            content: "修改成功"
+          });
+        }
+        setTimeout(() => {
+          getMenuInfo(this.pageKind).then(res => {
+          })
+          location.reload();
+        }, 500);
+        this.addMenu=false
+      })
+    },
+    // handleMenu (fatherMenu, childrenMenu,flag) {
+    //   var data = {
+    //     //菜单的添加与删除
+    //     FatherMenu: fatherMenu,
+    //     ChildrenMenu: childrenMenu,
+    //     Add_or_Del:flag
+    //   }
+    //   data = qs.stringify(data)
+    //   sendMenu(data).then(res => {
+    //         console.info(res)
+    //     // TODO:需要刷新页面或者菜单
+    // })
+    // },
 
     toHome() {
       this.$router.push('/home')

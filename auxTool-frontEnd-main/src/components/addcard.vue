@@ -99,6 +99,7 @@
 <script>
 import axios from 'axios';
 import dynamicInput from './dynamicinput.vue'
+import {updataCard,createCard} from "@/api/api";
 
 
 export default {
@@ -160,44 +161,71 @@ export default {
       }
     },
     creatCard (name) {
+
       //提示成功信息
       // console.info("createdCard: " + this.addFormItem.task)
       // var form = this.addFormItem
       this.$refs[name].validate((valid) => {
         if (valid) {
-          var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType + "&dataset_name=" + this.addFormItem.dataset_name + "&cell=" + null
-          console.info(findUrl)
-          axios.get(findUrl).then(response=>{
-            var myCardList = response.data
-            console.info(myCardList.length == 0)
-            var newCard = this.addFormItem
-            if(myCardList.length == 0) {
-              // console.info("10")
-              newCard.released = "10";
-              // newCard.dataset_name = this.addFormItem.name
-              // newCard.type =
-              console.info("10")
-              axios.post(findUrl, newCard).then(response=>{
-                console.info(response)
-                this.updataPage("creat")
-              })
-            } else {
-              // newCard = myCardList
-              if(myCardList[0].released == "00") {
-                newCard.released = "10"
-                axios.post(findUrl, newCard).then(response=>{
-                  console.info(response)
-                  this.updataPage("creat")
-                })
-              } else {
-                this.$Message["error"]({
-                  background: true,
-                  content: "该名称已存在，请仔细检查"
-                });
-              }
-            }
 
-            console.info(newCard)
+          var data = {
+            lan: this.addFormItem["Lan"],
+            id: this.addFormItem["Id"],
+            pageKind: this.pageKind,
+            dataset_name: this.addFormItem["Dataset_name"],
+            task: this.nowItem,
+            type: this.taskType,
+            rank: this.addFormItem["Rank"],
+            character_type: this.addFormItem["Character_type"],
+            header: this.addFormItem["Header"],
+            description: this.addFormItem["Description"],
+            code: this.addFormItem["Code"],
+            released:"11"
+          }
+          console.info('22222222222222222222222data:',data)
+          // var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType + "&dataset_name=" + this.addFormItem.dataset_name + "&cell=" + null
+          // console.info(findUrl)
+          createCard(data).then(response => {
+            if(response.data.msg=="fail"){
+              this.$Message["error"]({
+                background: true,
+                content: "该名称已存在，请仔细检查"
+              });
+            }
+            else{
+              this.updataPage("creat")
+              // console.info("11111111111",response)
+            }
+            // var myCardList = response.data
+            // console.info(myCardList.length == 0)
+            // var newCard = this.addFormItem
+            // if(myCardList.length == 0) {
+            //   // console.info("10")
+            //   newCard.released = "10";
+            //   // newCard.dataset_name = this.addFormItem.name
+            //   // newCard.type =
+            //   console.info("10")
+            //   axios.post(findUrl, newCard).then(response=>{
+            //     console.info(response)
+            //     this.updataPage("creat")
+            //   })
+            // }
+            // else {
+            //   // newCard = myCardList
+            //   if(myCardList[0].released == "00") {
+            //     newCard.released = "10"
+            //     axios.post(findUrl, newCard).then(response=>{
+            //       console.info(response)
+            //       this.updataPage("creat")
+            //     })
+            //   } else {
+            //     this.$Message["error"]({
+            //       background: true,
+            //       content: "该名称已存在，请仔细检查"
+            //     });
+            //   }
+            // }
+            // console.info(newCard)
           })
         } else {
           this.$Message.error('添加失败，请检查必填项！');

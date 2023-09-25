@@ -7,7 +7,7 @@
           <Icon type="ios-help-circle-outline" />管理
           <Modal
               v-model="modal_intro1"
-              width="1000"
+              width="1200"
               style="margin-top: -50px">
             <p style="margin-top: 1%;font-size: 20px;text-align: center;" >
               <Space :size="15">
@@ -49,7 +49,7 @@
             </Modal>
             <Table border  :columns="columns" :data="tabledata" style="width: auto">
               <template #preview="{row, index }">
-                <Button type="primary" v-width=90 style="margin-left: -5px" @click="show(index)">下载</Button>
+                <Button type="primary" v-width=90 style="margin-left: -5px" @click="downloadCsv(row)">下载</Button>
               </template>
               <template #inputTime="{row, index }">
                 <Time :time="row.Time - 60 * 3 * 1000" />
@@ -189,7 +189,8 @@ import parentMenu from "@/components/parentmenu.vue";
 import mainTable from "@/components/maintable.vue";
 import lineChart from "@/components/chart/line.vue";
 import { EndUrl } from '../../url_config'
-import {getCsvData } from "../api/api.js"
+import {getCsvData, updataCard, deleteCard, getCard,downloadCsvFile} from "../api/api.js"
+import qs from "qs";
 export default {
   data() {
     return {
@@ -245,6 +246,11 @@ export default {
         {
           title: '所属任务',
           key: 'Task',
+          align: 'center'
+        },
+        {
+          title: '所属类型',
+          key: 'Type',
           align: 'center'
         },
         {
@@ -306,9 +312,7 @@ export default {
   },
 
   created() {
-    console.info("contentcard--carddecripyion: " +  this.cardInfo.description)
     this.cardName = this.cardInfo[this.cardNameFlag]
-    console.info("contentcard--cardname: " + this.cardName)
     this.initVaild()
   },
   // updated() {
@@ -374,10 +378,11 @@ export default {
     },
     editCard (name) {
       //提示取消信息
+      console.info("11111111111111111this.cardInfo",this.cardInfo)
       var tmpData = this.cardInfo
+      // console.info("pppppppppppppppppppppppthis.pageKind",this.pageKind)
       this.$refs[name].validate((valid) => {
             if (valid) {
-              console.info(this.cardInfo)
               for(var i in this.addFormItemCfg) {
                 var item = this.addFormItemCfg[i]
                 console.info(item)
@@ -401,10 +406,26 @@ export default {
                   }
                 }
               }
-              var putUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
-              axios.put(putUrl, this.cardInfo).then(res=>{
-                this.cardName = this.cardInfo[this.cardNameFlag]
+              var data = {
+                lan: this.cardInfo["Lan"],
+                id: this.cardInfo["Id"],
+                pageKind: this.pageKind,
+                dataset_name: this.cardInfo["Dataset_name"],
+                task: this.nowItem,
+                type: this.taskType,
+                rank: this.cardInfo["Rank"],
+                character_type: this.cardInfo["Character_type"],
+                header: this.cardInfo["Header"],
+                description: this.cardInfo["Description"],
+                code: this.cardInfo["Code"],
+
+              }
+              console.info('22222222222222222222222database--data:',data)
+              // console.info('database--data:',data)
+              // var putUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
+              updataCard(data).then(res => {
                 this.updataPage("edit")
+                console.info('44444444526262database--data:',res)
               })
               // this.$Message.info('编辑成功');
             }
@@ -428,13 +449,15 @@ export default {
           this.cardInfo.released = "10"
         }
       }
-      var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
-      console.info(findUrl + " contentcard")
-      console.info(this.cardInfo)
-      axios.put(findUrl, this.cardInfo).then(response => {
+
+      var data = {
+        id: this.cardInfo["Id"],
+        pageKind: this.pageKind,
+      }
+      deleteCard(data).then(res => {
         // this.cardName = this.cardInfo[this.cardNameFlag]
         this.updataPage("delete")
-        console.info(response.data)
+        console.info("resresresres",res)
       })
     },
     uploaderror(){
@@ -462,6 +485,39 @@ export default {
                   this.$Message.success(this.file,'上传成功')
               }, 150);
       },
+    downloadCsv(row){
+      let data = {
+        task: row.Task,
+        dataset_name: row.Dataset_name,
+        type: row.Type,
+        table_name: row.Table_name
+      }
+      console.info("TTTTTTTTTTTTTTTdata:",data)
+      data = qs.stringify(data)
+      downloadCsvFile(data).then(response => {
+        console.info("下载URL: ", response.data.data.url)
+        const a = document.createElement('a');
+        a.href = response.data.data.url;
+        a.target = '_blank'; // 在新标签页中打开文件
+        var urlurl = response.data.data.url;
+        console.log(urlurl);
+        var pos = urlurl.lastIndexOf('/');
+        console.log(pos);	
+        var fileName = urlurl.substr(pos+1);
+        console.log(fileName);
+        var filePath = urlurl.substr(0,pos);
+        console.log(filePath);
+
+        a.download = fileName; // 可以自定义文件名
+        document.body.appendChild(a);
+
+        // 模拟用户点击链接以触发下载
+        a.click();
+        // 清除虚拟<a>标签
+        document.body.removeChild(a);
+      })
+
+    },
     uploadCard() {
       if(this.viewRange == "private") {
         if(this.cardInfo.released === "11") {

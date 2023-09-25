@@ -6,7 +6,7 @@ type Modelbase struct {
 	Dataset_name string `gorm:"column:Dataset_name"`
 	Type         string `gorm:"column:Type"`
 	Rank         string `gorm:"column:Rank"`
-	Lan          string `gorm:"column:Character_type"`
+	Lan          string `gorm:"column:Lan"`
 	Data_path    string `gorm:"column:Data_path"`
 	Description  string `gorm:"column:Description"`
 	Code         string `gorm:"column:Code"`

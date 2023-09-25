@@ -1,125 +1,41 @@
 <template>
-  <Table :columns="columns" :data="data" border height="500"></Table>
+  <Button type="info" @click="download">下载测试</Button>
+  <div>
+    {{ chartcsvmsg }}
+  </div>
 </template>
+
 <script>
-export default {
-  data () {
-    return {
-      columns: [
-        {
-          title: 'Name',
-          key: 'name',
-          align: 'center',
-          width: 200,
-          fixed: 'left',
-          filters: [
-            {
-              label: 'Joe',
-              value: 1
-            },
-            {
-              label: 'John',
-              value: 2
-            }
-          ],
-          filterMultiple: false,
-          filterMethod (value, row) {
-            if (value === 1) {
-              return row.name === 'Joe';
-            } else if (value === 2) {
-              return row.name === 'John Brown';
-            }
-          }
-        },
-        {
-          title: 'Other',
-          align: 'center',
-          children: [
-            {
-              title: 'Age',
-              key: 'age',
-              align: 'center',
-              width: 200,
-              sortable: true
-            },
-            {
-              title: 'Address',
-              align: 'center',
-              children: [
-                {
-                  title: 'Street',
-                  key: 'street',
-                  align: 'center',
-                  width: 200
-                },
-                {
-                  title: 'Block',
-                  align: 'center',
-                  children: [
-                    {
-                      title: 'Building',
-                      key: 'building',
-                      align: 'center',
-                      width: 200,
-                      sortable: true
-                    },
-                    {
-                      title: 'Door No.',
-                      key: 'door',
-                      align: 'center',
-                      width: 200
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          title: 'Company',
-          align: 'center',
-          children: [
-            {
-              title: 'Company Address',
-              key: 'caddress',
-              align: 'center',
-              width: 200
-            },
-            {
-              title: 'Company Name',
-              key: 'cname',
-              align: 'center',
-              width: 200
-            }
-          ]
-        },
-        {
-          title: 'Gender',
-          key: 'gender',
-          align: 'center',
-          width: 200,
-          fixed: 'right'
-        }
-      ],
-      data: []
+import {downloadCsvFile} from '../api/api.js'
+import qs from "qs";
+export default{
+  methods:{
+    download(){
+      //模拟下载时，往后端传的数据
+      var csvData = {
+        dataset_name: "波士顿房价数据集",
+        csvName: "动作表",
+        Type: "数值数据集",
+        Task: "任务1"
+      }
+      csvData = qs.stringify(csvData)
+      downloadCsvFile(csvData).then(res => {
+        console.info("下载URL: ", res.data.data.url)
+        // 创建一个虚拟的<a>标签
+        const a = document.createElement('a');
+        a.href = res.data.data.url;
+        a.target = '_blank'; // 在新标签页中打开文件
+        a.download = 'file.csv'; // 可以自定义文件名
+        document.body.appendChild(a);
+
+        // 模拟用户点击链接以触发下载
+        a.click();
+
+        // 清除虚拟<a>标签
+        document.body.removeChild(a);
+      })
+      // window.location.href = res.data.data.url
     }
-  },
-  mounted () {
-    const data = [];
-    for (let i = 0; i < 20; i++) {
-      data.push({
-        key: i,
-        name: 'John Brown',
-        age: i + 1,
-        street: 'Lake Park',
-        building: 'C',
-        door: 2035,
-        caddress: 'Lake Street 42',
-        cname: 'SoftLake Co',
-        gender: 'M',
-      });
-    }
-    this.data = data;
   }
 }
 </script>

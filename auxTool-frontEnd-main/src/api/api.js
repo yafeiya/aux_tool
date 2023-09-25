@@ -58,3 +58,50 @@ export const getCsvData = (data) => {
     params:data
   })
 }
+
+export const updataCard = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/updataCard',
+    params:data
+  })
+}
+
+export const createCard = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/createCard',
+    params:data
+  })
+}
+
+export const deleteCard = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/deleteCard',
+    params:data
+  })
+}
+
+export const addPageMenuItem = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/addPageMenuItem',
+    params:data
+  })
+}
+export const deletePageMenuItem = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/deletePageMenuItem',
+    params:data
+  })
+}
+export const downloadCsvFile = (data) => {
+  //这里是下载的接口
+  return myAxios({
+    method: "POST",
+    url: "/downloadCsvFile",
+    data: data
+  })
+}

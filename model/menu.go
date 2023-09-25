@@ -1,28 +1,28 @@
 package model
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"encoding/json"
 )
 
 type DataMenu struct {
-	Name            string   	`json:"name"`
-	Title       	string 	 	`json:"title"`
-	Icon   			string 		`json:"icon"`
-	Children        []Children 	`json:"children"`
+	Name     string     `json:"name"`
+	Title    string     `json:"title"`
+	Icon     string     `json:"icon"`
+	Children []Children `json:"children"`
 }
 
 type Children struct {
-	Name            string  `json:"name"`
-	Title       	string 	`json:"title"`
+	Name  string `json:"name"`
+	Title string `json:"title"`
 }
 
 type DataFile struct {
-	Database  []DataMenu `json:"database"`
-	Modelbase []DataMenu `json:"modelbase"`
+	Database       []DataMenu `json:"database"`
+	Modelbase      []DataMenu `json:"modelbase"`
 	DefineFunction []DataMenu `json:"defineFunction"`
-	Design []DataMenu `json:"design"`
+	Design         []DataMenu `json:"design"`
 }
 
 func readDataFile(filename string) (*DataFile, error) {
@@ -42,28 +42,7 @@ func readDataFile(filename string) (*DataFile, error) {
 	return &data, nil
 }
 
-func AddMenu(pageKind string, filename string, newData DataMenu) error {
-	data, err := readDataFile(filename)
-	if err != nil {
-		return err
-	}
-
-	// 根据 pageKind 添加新的数据对象
-	switch pageKind {
-	case "database":
-		data.Database = append(data.Database, newData)
-	case "modelbase":
-		data.Modelbase = append(data.Modelbase, newData)
-	case "defineFunction":
-		data.DefineFunction = append(data.DefineFunction, newData)
-	case "design":
-		data.Design = append(data.Design, newData)
-	default:
-		return fmt.Errorf("Invalid pageKind: %s", pageKind)
-	}
-
-
-	// 将更新后的数据写回文件
+func writeDataFile(filename string, data *DataFile) error {
 	dataJSON, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {
 		return err
@@ -75,4 +54,129 @@ func AddMenu(pageKind string, filename string, newData DataMenu) error {
 	}
 
 	return nil
+}
+
+func AddMenu(pageKind string, filename string, parentTitle string, childTitle string) string {
+	config, err := readDataFile(filename)
+	if err != nil {
+		return "无法读取配置文件"
+	}
+
+	// 查找要添加的页面类型
+	var page *[]DataMenu
+	switch pageKind {
+	case "database":
+		page = &config.Database
+	case "modelbase":
+		page = &config.Modelbase
+	case "defineFunction":
+		page = &config.DefineFunction
+	case "design":
+		page = &config.Design
+	default:
+		return "无效的页面类型"
+	}
+
+	// 检查父菜单是否存在
+	parentExists := false
+	for i, menu := range *page {
+		if menu.Title == parentTitle {
+			// 父菜单已存在，检查子菜单是否重复
+			for _, child := range menu.Children {
+				if child.Title == childTitle {
+					return "子菜单已存在"
+				}
+			}
+			// 子菜单不重复，添加子菜单
+			(*page)[i].Children = append((*page)[i].Children, Children{Name: childTitle, Title: childTitle})
+			parentExists = true
+			break
+		}
+	}
+
+	// 如果父菜单不存在，添加新的父菜单和子菜单
+	if !parentExists {
+		newParent := DataMenu{
+			Name:  parentTitle,
+			Title: parentTitle,
+			Icon:  "ios-navigate",
+			Children: []Children{
+				{Name: childTitle, Title: childTitle},
+			},
+		}
+		*page = append(*page, newParent)
+	}
+
+	// 将更新后的配置写入文件
+	if err := writeDataFile(filename, config); err != nil {
+		return "fail"
+	}
+	return "success"
+
+}
+
+func DeleteChildFromDataFile(filename string, pageKind string, parentTitle string, childTitle string) string {
+	config, err := readDataFile(filename)
+	if err != nil {
+		return "无法读取配置文件"
+	}
+
+	// 查找要删除的页面类型
+	var page *[]DataMenu
+	switch pageKind {
+	case "database":
+		page = &config.Database
+	case "modelbase":
+		page = &config.Modelbase
+	case "defineFunction":
+		page = &config.DefineFunction
+	case "design":
+		page = &config.Design
+	default:
+		return "无效的页面类型"
+	}
+
+	// 查找父菜单的索引
+	parentIndex := -1
+	for i, menu := range *page {
+		if menu.Title == parentTitle {
+			parentIndex = i
+			break
+		}
+	}
+
+	// 如果父菜单不存在，返回错误
+	if parentIndex == -1 {
+		return "父菜单不存在"
+	}
+
+	// 如果子菜单为空字符串，删除整个父菜单以及下面的所有子菜单
+	if childTitle == "" {
+		*page = append((*page)[:parentIndex], (*page)[parentIndex+1:]...)
+	} else {
+		// 否则，查找子菜单的索引
+		childIndex := -1
+		for i, child := range (*page)[parentIndex].Children {
+			if child.Title == childTitle {
+				childIndex = i
+				break
+			}
+		}
+
+		// 如果子菜单不存在，返回错误
+		if childIndex == -1 {
+			return "子菜单不存在"
+		}
+
+		// 删除指定子菜单
+		(*page)[parentIndex].Children = append((*page)[parentIndex].Children[:childIndex], (*page)[parentIndex].Children[childIndex+1:]...)
+	}
+
+	// 将更新后的配置写入文件
+	if err := writeDataFile(filename, config); err != nil {
+		return "无法写入配置文件"
+	}
+
+	return "success"
+
 }

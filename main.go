@@ -6,8 +6,6 @@ import (
 	"backEnd/common"
 	// "backEnd/common/response"
 	"backEnd/controller"
-	"backEnd/model"
-	"fmt"
 	// "net/http"
 	// "encoding/csv"
 	"github.com/gin-gonic/gin"
@@ -18,28 +16,18 @@ import (
 func main() {
 	common.InitConfig()
 
-	Task := "任务1"
-	Dataset_name := "波士顿房价数据"
-	Type := "数值数据集"
-	Table_name := "动作表"
-
-	db := common.InitDB()
-
-	datatable := []model.Datatable{}
-	result := db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, Table_name).Delete(&datatable)
-	if result.RowsAffected == 0 {
-		fmt.Println("删除失败")
-	} else {
-		fmt.Println("删除成功")
-	}
-
 	engine := gin.Default()
 	engine.Use(common.CORS())
-	engine.POST("/upload", controller.UploadFile)
+	engine.POST("/upload", controller.UploadCsvFile)
 	engine.GET("/getPageMenu", controller.GetPageMenu)
 	engine.GET("/getCsv", controller.GetCsvData)
+	engine.GET("/updataCard", controller.UpdataCard)
+	engine.GET("/createCard", controller.CreateCard)
+	engine.GET("/deleteCard", controller.DeleteCard)
 	engine.GET("/getCard", controller.GetCard)
-	engine.POST("/addPageMenuItem", controller.AddPageMenuItem)
+	engine.GET("/addPageMenuItem", controller.AddPageMenuItem)
+	engine.GET("/deletePageMenuItem", controller.DeletePageMenuItem)
+	engine.POST("/downloadCsvFile", controller.DownloadCsvFile)
 	engine.POST("/login", controller.Login)
 	engine.POST("/register", controller.Register)
 	host := viper.GetString("server.host")

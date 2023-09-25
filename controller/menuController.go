@@ -15,7 +15,7 @@ import (
 func GetPageMenu(ctx *gin.Context) {
 	// 与前端约定好字符串
 	pageName := ctx.Query("pageKind")
-	fmt.Println(pageName)
+	fmt.Println("pagename111111111111111:", pageName)
 	if len(pageName) == 0 {
 		ctx.String(http.StatusBadRequest, "未得到页面名称，无法返回菜单配置")
 		return
@@ -34,13 +34,26 @@ func GetPageMenu(ctx *gin.Context) {
 
 // 增加左侧菜单栏的选项
 func AddPageMenuItem(ctx *gin.Context) {
-	pageName := ctx.PostForm("pageKind")
-	menuItemName := ctx.PostForm("menuItemName")
-	menuItemList := ctx.PostForm("menuItemList")
-	fmt.Println("pageName: " + pageName)
-	fmt.Println("menuItemName: " + menuItemName)
-	fmt.Println(menuItemList)
-	// fmt.Println(tmp)
+	fmt.Println("AddPageMenuItem")
+	pageKind := ctx.Query("pageKind")
+	title := ctx.Query("title")
+	children_title := ctx.Query("children_title")
+
+	if title == "" {
+		response.Success(ctx, nil, "title=null")
+		return
+	}
+	if children_title == "" {
+		response.Success(ctx, nil, "children_title=null")
+		return
+	}
+	filename := "./data/config.json"
+	result := model.AddMenu(pageKind, filename, title, children_title)
+	if result != "success" {
+		fmt.Println(result)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	}
+	response.Success(ctx, nil, "success")
 }
 
 // TODO:获取当前界面卡片列表
@@ -50,62 +63,77 @@ task：
 type：
 */
 // 返回：pageKind的卡片列表
-func GetMenuList(ctx *gin.Context) {
-	db := common.InitDB()
-	// 与前端约定好字符串
-	pageKind := ctx.PostForm("pageKind")
-	fmt.Println(pageKind)
-	task := ctx.PostForm("task")
-	fmt.Println(task)
-	Type := ctx.PostForm("type")
-	fmt.Println(Type)
+//func GetMenuList(ctx *gin.Context) {
+//	db := common.InitDB()
+//	// 与前端约定好字符串
+//	pageKind := ctx.PostForm("pageKind")
+//	fmt.Println(pageKind)
+//	task := ctx.PostForm("task")
+//	fmt.Println(task)
+//	Type := ctx.PostForm("type")
+//	fmt.Println(Type)
+//
+//	if pageKind == "database" {
+//		databases := []model.Database{}
+//		db.Where("Task = ? and Type = ?", task, Type).Find(&databases)
+//		if len(databases) == 0 {
+//			fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
+//			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
+//		} else {
+//			fmt.Println(databases)
+//			response.Success(ctx, gin.H{"databases": databases}, "success")
+//		}
+//	}
+//	if pageKind == "modelbase" {
+//		modelbases := []model.Modelbase{}
+//		db.Where("Task = ? and Type = ?", task, Type).Find(&modelbases)
+//		if len(modelbases) == 0 {
+//			fmt.Println("没找到task=" + task + "并且type=" + Type + "的模型卡片")
+//			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
+//		} else {
+//			fmt.Println(modelbases)
+//			response.Success(ctx, gin.H{"databases": modelbases}, "success")
+//		}
+//	}
+//	/* 多级目录json文件形式未放到数据库中
+//		if(pageKind == "defineFunction"){
+//			databases := []model.Database{}
+//			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
+//			if(len(databases) == 0){
+//				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
+//				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
+//			}else{
+//				fmt.Println(databases)
+//				response.Success(ctx, gin.H{"databases": databases}, "success")
+//			}
+//		}
+//	    if(pageKind == "design"){
+//			databases := []model.Database{}
+//			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
+//			if(len(databases) == 0){
+//				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
+//				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
+//			}else{
+//				fmt.Println(databases)
+//				response.Success(ctx, gin.H{"databases": databases}, "success")
+//			}
+//		}
+//	*/
+//}
 
-	if pageKind == "database" {
-		databases := []model.Database{}
-		db.Where("Task = ? and Type = ?", task, Type).Find(&databases)
-		if len(databases) == 0 {
-			fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-		} else {
-			fmt.Println(databases)
-			response.Success(ctx, gin.H{"databases": databases}, "success")
-		}
+func DeletePageMenuItem(ctx *gin.Context) {
+	fmt.Println("DeletePageMenuItem")
+	pageKind := ctx.Query("pageKind")
+	title := ctx.Query("title")
+	children_title := ctx.Query("children_title")
+	filename := "./data/config.json"
+
+	result := model.DeleteChildFromDataFile(filename, pageKind, title, children_title)
+	if result != "success" {
+		fmt.Println(result)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
 	}
-	if pageKind == "modelbase" {
-		modelbases := []model.Modelbase{}
-		db.Where("Task = ? and Type = ?", task, Type).Find(&modelbases)
-		if len(modelbases) == 0 {
-			fmt.Println("没找到task=" + task + "并且type=" + Type + "的模型卡片")
-			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-		} else {
-			fmt.Println(modelbases)
-			response.Success(ctx, gin.H{"databases": modelbases}, "success")
-		}
-	}
-	/* 多级目录json文件形式未放到数据库中
-		if(pageKind == "defineFunction"){
-			databases := []model.Database{}
-			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-			if(len(databases) == 0){
-				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-			}else{
-				fmt.Println(databases)
-				response.Success(ctx, gin.H{"databases": databases}, "success")
-			}
-		}
-	    if(pageKind == "design"){
-			databases := []model.Database{}
-			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-			if(len(databases) == 0){
-				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-			}else{
-				fmt.Println(databases)
-				response.Success(ctx, gin.H{"databases": databases}, "success")
-			}
-		}
-	*/
+	response.Success(ctx, nil, "success")
 }
 
 // TODO:删除指定卡片
@@ -113,12 +141,10 @@ func GetMenuList(ctx *gin.Context) {
 // 返回：卡片列表,即database的model列表databases
 func DeleteCard(ctx *gin.Context) {
 	db := common.InitDB()
-
-	pageKind := ctx.PostForm("pageKind")
+	pageKind := ctx.Query("pageKind")
 	fmt.Println(pageKind)
-	id := ctx.PostForm("id")
+	id := ctx.Query("id")
 	fmt.Println(id)
-
 	if pageKind == "database" {
 		database := []model.Database{}
 		result := db.Where("Id = ?", id).Delete(&database)
@@ -143,7 +169,6 @@ func DeleteCard(ctx *gin.Context) {
 	}
 }
 
-// TODO:获取指定卡片
 // 参数：前端传来的参数pageKind、task、type、dataset_name。
 // 返回：卡片列表,即database的model列表databases
 func GetCard(ctx *gin.Context) {
@@ -162,7 +187,7 @@ func GetCard(ctx *gin.Context) {
 		//fmt.Println("wwwww", database)
 
 		db.Where("Task = ? and Type = ?", task, Type).Find(&database)
-		fmt.Println("666666666", database)
+		//fmt.Println("666666666", database)
 		if len(database) == 0 {
 			fmt.Println("未找到记录")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
@@ -204,26 +229,26 @@ func GetCard(ctx *gin.Context) {
 */
 func CreateCard(ctx *gin.Context) {
 	db := common.InitDB()
-	pageKind := ctx.PostForm("pageKind")
+	pageKind := ctx.Query("pageKind")
 	fmt.Println(pageKind)
 	if pageKind == "database" {
-		released := ctx.PostForm("released")
+		released := ctx.Query("released")
 		fmt.Println(released)
-		dataset_name := ctx.PostForm("dataset_name")
+		dataset_name := ctx.Query("dataset_name")
 		fmt.Println(dataset_name)
-		Type := ctx.PostForm("type")
+		Type := ctx.Query("type")
 		fmt.Println(Type)
-		rank := ctx.PostForm("rank")
+		rank := ctx.Query("rank")
 		fmt.Println(rank)
-		character_type := ctx.PostForm("character_type")
+		character_type := ctx.Query("character_type")
 		fmt.Println(character_type)
-		header := ctx.PostForm("header")
+		header := ctx.Query("header")
 		fmt.Println(header)
-		data_path := ctx.PostForm("data_path")
-		fmt.Println(data_path)
-		description := ctx.PostForm("description")
+		// data_path := ctx.PostForm("data_path")
+		// fmt.Println(data_path)
+		description := ctx.Query("description")
 		fmt.Println(description)
-		task := ctx.PostForm("task")
+		task := ctx.Query("task")
 		fmt.Println(task)
 		database := model.Database{
 			Released:       released,
@@ -232,7 +257,7 @@ func CreateCard(ctx *gin.Context) {
 			Rank:           rank,
 			Character_type: character_type,
 			Header:         header,
-			Data_path:      data_path,
+			Data_path:      "./" + task + "/" + Type + "/" + dataset_name + "/",
 			Description:    description,
 			Task:           task,
 		}
@@ -241,7 +266,7 @@ func CreateCard(ctx *gin.Context) {
 		db.Where("Task = ? and Type = ? and Dataset_name = ?", task, Type, dataset_name).First(&database)
 		if database.Id != 0 {
 			fmt.Println("该卡片已存在")
-			response.Response(ctx, http.StatusOK, 404, nil, "The card already exists")
+			response.Response(ctx, http.StatusOK, 404, nil, "fail")
 		} else {
 			// 新增卡片
 			db.Create(&database)
@@ -249,23 +274,23 @@ func CreateCard(ctx *gin.Context) {
 		}
 	}
 	if pageKind == "modelbase" {
-		released := ctx.PostForm("released")
+		released := ctx.Query("released")
 		fmt.Println(released)
-		dataset_name := ctx.PostForm("dataset_name")
+		dataset_name := ctx.Query("dataset_name")
 		fmt.Println(dataset_name)
-		Type := ctx.PostForm("type")
+		Type := ctx.Query("type")
 		fmt.Println(Type)
-		rank := ctx.PostForm("rank")
+		rank := ctx.Query("rank")
 		fmt.Println(rank)
-		lan := ctx.PostForm("lan")
+		lan := ctx.Query("lan")
 		fmt.Println(lan)
-		data_path := ctx.PostForm("data_path")
-		fmt.Println(data_path)
-		description := ctx.PostForm("description")
+		// data_path := ctx.PostForm("data_path")
+		// fmt.Println(data_path)
+		description := ctx.Query("description")
 		fmt.Println(description)
-		code := ctx.PostForm("code")
+		code := ctx.Query("code")
 		fmt.Println(code)
-		task := ctx.PostForm("task")
+		task := ctx.Query("task")
 		fmt.Println(task)
 		modelbase := model.Modelbase{
 			Released:     released,
@@ -273,7 +298,7 @@ func CreateCard(ctx *gin.Context) {
 			Type:         Type,
 			Rank:         rank,
 			Lan:          lan,
-			Data_path:    data_path,
+			Data_path:    "./" + task + "/" + Type + "/" + dataset_name + "/",
 			Description:  description,
 			Code:         code,
 			Task:         task,
@@ -297,4 +322,105 @@ func CreateCard(ctx *gin.Context) {
 // 返回：卡片列表,即database的model列表databases
 func UpdataCard(ctx *gin.Context) {
 
+	db := common.InitDB()
+	pageKind := ctx.Query("pageKind")
+	fmt.Println(pageKind)
+	//cardInfo := ctx.Query("cardInfo")
+	//fmt.Println("111111111111111cardinfo", cardInfo, "22222222222222222222")
+	if pageKind == "database" {
+		//released := ctx.PostForm("released")
+		//fmt.Println(released)
+		Id := ctx.Query("id")
+		fmt.Println(Id)
+		dataset_name := ctx.Query("dataset_name")
+		fmt.Println(dataset_name)
+		Type := ctx.Query("type")
+		fmt.Println(Type)
+		rank := ctx.Query("rank")
+		fmt.Println(rank)
+		character_type := ctx.Query("character_type")
+		fmt.Println(character_type)
+		header := ctx.Query("header")
+		fmt.Println(header)
+		// data_path := ctx.PostForm("data_path")
+		// fmt.Println(data_path)
+		description := ctx.Query("description")
+		fmt.Println(description)
+		task := ctx.Query("task")
+		fmt.Println(task)
+
+		var database model.Database
+
+		// 判重处理
+		//pageKind、task、type、dataset_name
+		db.Where("Id = ?", Id).First(&database)
+		if database.Id != 0 {
+			fmt.Println("该卡片存在")
+			//database.Released = released
+			database.Dataset_name = dataset_name
+			database.Type = Type
+			database.Rank = rank
+			database.Data_path = "./" + task + "/" + Type + "/" + dataset_name + "/"
+			database.Description = description
+			database.Character_type = character_type
+			database.Task = task
+			database.Header = header
+			er := db.Save(&database).Error
+			if er != nil {
+				fmt.Println("无法保存更新后的记录")
+			}
+			fmt.Println("uo")
+			response.Success(ctx, nil, "success")
+			//response.Response(ctx, http.StatusOK, 404, nil, "success")
+		} else {
+			fmt.Println("uo2222222222222222222222222222")
+			response.Success(ctx, nil, "fail")
+		}
+	}
+	if pageKind == "modelbase" {
+		//released := ctx.PostForm("released")
+		//fmt.Println(released)
+		Id := ctx.Query("id")
+		fmt.Println(Id)
+		dataset_name := ctx.Query("dataset_name")
+		fmt.Println(dataset_name)
+		Type := ctx.Query("type")
+		fmt.Println(Type)
+		rank := ctx.Query("rank")
+		fmt.Println(rank)
+		lan := ctx.Query("lan")
+		fmt.Println(lan)
+		description := ctx.Query("description")
+		fmt.Println(description)
+		code := ctx.Query("code")
+		fmt.Println(code)
+		task := ctx.Query("task")
+		fmt.Println(task)
+		var modelbase model.Modelbase
+
+		// 判重处理
+		//pageKind、task、type、dataset_name
+		db.Where("Id = ?", Id).First(&modelbase)
+		if modelbase.Id != 0 {
+			fmt.Println("该卡片存在")
+			//modelbase.Released = released
+			modelbase.Dataset_name = dataset_name
+			modelbase.Type = Type
+			modelbase.Rank = rank
+			modelbase.Lan = lan
+			modelbase.Data_path = "./" + task + "/" + Type + "/" + dataset_name + "/"
+			modelbase.Description = description
+			modelbase.Code = code
+			modelbase.Task = task
+			er := db.Save(&modelbase).Error
+			if er != nil {
+				fmt.Println("无法保存更新后的记录")
+			}
+			fmt.Println("uo")
+			response.Success(ctx, nil, "success")
+			//response.Response(ctx, http.StatusOK, 404, nil, "success")
+		} else {
+			response.Success(ctx, nil, "fail")
+		}
+	}
 }
