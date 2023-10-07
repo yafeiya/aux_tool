@@ -189,6 +189,7 @@ import mainTable from "@/components/maintable.vue";
 import lineChart from "@/components/chart/line.vue";
 import { EndUrl } from '../../url_config'
 import {getCsvData, updataCard, deleteCard, getCard,downloadCsvFile} from "../api/api.js"
+import {getCsvData, updataCard, deleteCard,deleteDesignCard, getCard,downloadCsvFile,updateDesignCard} from "../api/api.js"
 import qs from "qs";
 export default {
   data() {
@@ -422,9 +423,13 @@ export default {
               console.info('22222222222222222222222database--data:',data)
               // console.info('database--data:',data)
               // var putUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
-              updataCard(data).then(res => {
+              // updataCard(data).then(res => {
+              //   this.updataPage("edit")
+              //   console.info('44444444526262database--data:',res)
+              // })
+              updateDesignCard(data).then(res => {
+                console.info('222222222222222222222222222we--data:',res)
                 this.updataPage("edit")
-                console.info('44444444526262database--data:',res)
               })
               // this.$Message.info('编辑成功');
             }
@@ -454,6 +459,11 @@ export default {
         pageKind: this.pageKind,
       }
       deleteCard(data).then(res => {
+        // this.cardName = this.cardInfo[this.cardNameFlag]
+        this.updataPage("delete")
+        console.info("resresresres",res)
+      })
+      deleteDesignCard(data).then(res => {
         // this.cardName = this.cardInfo[this.cardNameFlag]
         this.updataPage("delete")
         console.info("resresresres",res)

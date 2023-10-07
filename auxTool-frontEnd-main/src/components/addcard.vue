@@ -100,6 +100,7 @@
 import axios from 'axios';
 import dynamicInput from './dynamicinput.vue'
 import {updataCard,createCard} from "@/api/api";
+import {updataCard, createCard, addDesignCard} from "@/api/api";
 
 
 export default {
@@ -226,6 +227,20 @@ export default {
             //   }
             // }
             // console.info(newCard)
+          })
+          //这是后两个页面的新建卡片
+          addDesignCard(data).then(response => {
+            // console.info('22222222222222222222222data:',data)
+            if(response.data.msg=="fail"){
+              this.$Message["error"]({
+                background: true,
+                content: "该名称已存在，请仔细检查"
+              });
+            }
+            else{
+              this.updataPage("creat")
+              // console.info("11111111111",response)
+            }
           })
         } else {
           this.$Message.error('添加失败，请检查必填项！');

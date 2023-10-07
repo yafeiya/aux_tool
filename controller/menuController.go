@@ -6,9 +6,9 @@ import (
 	"backEnd/model"
 	"backEnd/utils"
 	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 )
 
 // 每个页面刚加载时获取左侧菜单信息
@@ -55,71 +55,6 @@ func AddPageMenuItem(ctx *gin.Context) {
 	}
 	response.Success(ctx, nil, "success")
 }
-
-// TODO:获取当前界面卡片列表
-/* 参数：前端传来的参数pageKind、task和type。
-pageKind:页面类型，字符串分别为database、modelbase
-task：
-type：
-*/
-// 返回：pageKind的卡片列表
-//func GetMenuList(ctx *gin.Context) {
-//	db := common.InitDB()
-//	// 与前端约定好字符串
-//	pageKind := ctx.PostForm("pageKind")
-//	fmt.Println(pageKind)
-//	task := ctx.PostForm("task")
-//	fmt.Println(task)
-//	Type := ctx.PostForm("type")
-//	fmt.Println(Type)
-//
-//	if pageKind == "database" {
-//		databases := []model.Database{}
-//		db.Where("Task = ? and Type = ?", task, Type).Find(&databases)
-//		if len(databases) == 0 {
-//			fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-//			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//		} else {
-//			fmt.Println(databases)
-//			response.Success(ctx, gin.H{"databases": databases}, "success")
-//		}
-//	}
-//	if pageKind == "modelbase" {
-//		modelbases := []model.Modelbase{}
-//		db.Where("Task = ? and Type = ?", task, Type).Find(&modelbases)
-//		if len(modelbases) == 0 {
-//			fmt.Println("没找到task=" + task + "并且type=" + Type + "的模型卡片")
-//			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//		} else {
-//			fmt.Println(modelbases)
-//			response.Success(ctx, gin.H{"databases": modelbases}, "success")
-//		}
-//	}
-//	/* 多级目录json文件形式未放到数据库中
-//		if(pageKind == "defineFunction"){
-//			databases := []model.Database{}
-//			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-//			if(len(databases) == 0){
-//				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-//				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//			}else{
-//				fmt.Println(databases)
-//				response.Success(ctx, gin.H{"databases": databases}, "success")
-//			}
-//		}
-//	    if(pageKind == "design"){
-//			databases := []model.Database{}
-//			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-//			if(len(databases) == 0){
-//				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-//				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//			}else{
-//				fmt.Println(databases)
-//				response.Success(ctx, gin.H{"databases": databases}, "success")
-//			}
-//		}
-//	*/
-//}
 
 func DeletePageMenuItem(ctx *gin.Context) {
 	fmt.Println("DeletePageMenuItem")
@@ -423,4 +358,66 @@ func UpdataCard(ctx *gin.Context) {
 			response.Success(ctx, nil, "fail")
 		}
 	}
+}
+
+// 添加Design卡片
+func AddDesignCard(ctx *gin.Context) {
+	fmt.Println("AddDesignCard")
+	released := ctx.Query("released")
+	dataset_name := ctx.Query("dataset_name")
+	ttype := ctx.Query("type")
+	rank := ctx.Query("rank")
+	description := ctx.Query("description")
+	task := ctx.Query("task")
+
+	// 添加新设计
+	err := model.AddDesign(released, dataset_name, ttype, rank, description, task)
+	if err != nil {
+		fmt.Println("Failed to add design")
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, nil, "success")
+}
+
+func GetDesignCards(ctx *gin.Context) {
+	fmt.Println("GetDesignCards")
+	ttype := ctx.Query("type")
+	task := ctx.Query("task")
+	designs, err := model.GetDesigns(task, ttype)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+
+	response.Success(ctx, gin.H{"designs": designs}, "success")
+}
+
+func UpdateDesignCard(ctx *gin.Context) {
+
+	id, _ := strconv.Atoi(ctx.Query("id"))
+	dataset_name := ctx.Query("dataset_name")
+	rank := ctx.Query("rank")
+	description := ctx.Query("description")
+	fmt.Println("description", description)
+	err := model.UpdateDesign(id, dataset_name, rank, description)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+
+	response.Success(ctx, nil, "success")
+}
+
+// 删除design卡片
+func DeleteDesignCard(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Query("id"))
+
+	err := model.DeleteDesign(id)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+
+	response.Success(ctx, nil, "success")
 }

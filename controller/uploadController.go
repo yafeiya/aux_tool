@@ -39,7 +39,7 @@ func UploadCsvFile(ctx *gin.Context) {
 	}
 
 	dst := folderPath + "/" + file.Filename
-	dst_sql := "http://49.234.4.144:5173/" + Type + "/" + Task + "/" + Dataset_name + "/" + file.Filename
+	dst_sql := "http://127.0.0.1:5173/" + Type + "/" + Task + "/" + Dataset_name + "/" + file.Filename
 	// 上传文件至指定的完整文件路径
 	ctx.SaveUploadedFile(file, dst)
 
