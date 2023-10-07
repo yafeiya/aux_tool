@@ -45,48 +45,6 @@
               <dynamicInput :params-form="item.others"/>
             </div>
           </FormItem>
-          <!--          <Upload multiple type="drag" action=" ">-->
-          <!--            <div style="padding: 5px 0">-->
-          <!--              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>-->
-          <!--              <p>点击或拖拽上传</p>-->
-          <!--            </div>-->
-          <!--          </Upload>-->
-          <!-- <FormItem label="任务">
-              <Input v-model="addFormItem.task" placeholder="请输入任务..." disabled="True"></Input>
-          </FormItem>
-          <FormItem label="字符集">
-              <Input v-model="addFormItem.character_type" placeholder="请输入字符集..."></Input>
-          </FormItem>
-          <FormItem label="级别">
-              <Select v-model="addFormItem.rank">
-              <Option value="beijing">级别1</Option>
-              <Option value="shanghai">级别2</Option>
-              <Option value="shenzhen">级别3</Option>
-              </Select>
-          </FormItem>
-          <FormItem label="类型">
-              <Select v-model="addFormItem.type">
-              <Option value="beijing">数值数据集</Option>
-              <Option value="shanghai">图像数据集</Option>
-              <Option value="shenzhen">文本数据集</Option>
-              <Option value="shenzhen">其他</Option>
-              </Select>
-          </FormItem>
-          <FormItem label="有无表头">
-              <RadioGroup v-model="addFormItem.header">
-              <Radio label="有"></Radio>
-              <Radio label="无"></Radio>
-              </RadioGroup>
-          </FormItem>
-          <FormItem label="描述">
-              <Input v-model="addFormItem.description" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="相关描述......"></Input>
-          </FormItem>
-          <Upload multiple type="drag" action="  ">
-              <div style="padding: 5px 0">
-              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-              <p>点击或拖拽上传</p>
-              </div>
-          </Upload> -->
         </Form>
       </Modal>
 
@@ -99,7 +57,7 @@
 <script>
 import axios from 'axios';
 import dynamicInput from './dynamicinput.vue'
-import {updataCard,createCard} from "@/api/api";
+import {updataCard, createCard, addDesignCard} from "@/api/api";
 
 
 export default {
@@ -150,13 +108,10 @@ export default {
         if(i == "released") {
           continue;
         }
-
         var validItem = [{ required: true, message: '该项必填', trigger: 'blur' }]
         this.ruleValidate[i] = validItem
-        console.info("rule222222",this.ruleValidate)
         if(this.pageKind=="defineFunction"){
           this.ruleValidate['Params']=[{}]
-          console.info("rule333333333333",this.ruleValidate['Params'])
         }
       }
     },
@@ -180,11 +135,9 @@ export default {
             header: this.addFormItem["Header"],
             description: this.addFormItem["Description"],
             code: this.addFormItem["Code"],
-            released:"11"
+            released:"11",
           }
-          console.info('22222222222222222222222data:',data)
-          // var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType + "&dataset_name=" + this.addFormItem.dataset_name + "&cell=" + null
-          // console.info(findUrl)
+          //这是前两个页面的新建卡片
           createCard(data).then(response => {
             if(response.data.msg=="fail"){
               this.$Message["error"]({
@@ -196,36 +149,20 @@ export default {
               this.updataPage("creat")
               // console.info("11111111111",response)
             }
-            // var myCardList = response.data
-            // console.info(myCardList.length == 0)
-            // var newCard = this.addFormItem
-            // if(myCardList.length == 0) {
-            //   // console.info("10")
-            //   newCard.released = "10";
-            //   // newCard.dataset_name = this.addFormItem.name
-            //   // newCard.type =
-            //   console.info("10")
-            //   axios.post(findUrl, newCard).then(response=>{
-            //     console.info(response)
-            //     this.updataPage("creat")
-            //   })
-            // }
-            // else {
-            //   // newCard = myCardList
-            //   if(myCardList[0].released == "00") {
-            //     newCard.released = "10"
-            //     axios.post(findUrl, newCard).then(response=>{
-            //       console.info(response)
-            //       this.updataPage("creat")
-            //     })
-            //   } else {
-            //     this.$Message["error"]({
-            //       background: true,
-            //       content: "该名称已存在，请仔细检查"
-            //     });
-            //   }
-            // }
-            // console.info(newCard)
+          })
+          //这是后两个页面的新建卡片
+          addDesignCard(data).then(response => {
+            // console.info('22222222222222222222222data:',data)
+            if(response.data.msg=="fail"){
+              this.$Message["error"]({
+                background: true,
+                content: "该名称已存在，请仔细检查"
+              });
+            }
+            else{
+              this.updataPage("creat")
+              // console.info("11111111111",response)
+            }
           })
         } else {
           this.$Message.error('添加失败，请检查必填项！');

@@ -11,7 +11,7 @@
               style="margin-top: -50px">
             <p style="margin-top: 1%;font-size: 20px;text-align: center;" >
               <Space :size="15">
-                <Input style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
+                <Input v-model="searchCsv" style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
                 <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
                 <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行')">导出</Button>
                 <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">删除</Button>
@@ -33,16 +33,17 @@
                 <FormItem label="任务" prop="task">
                   <Input v-model="formItem.task" placeholder="自动获取" disabled="True"></Input>
                 </FormItem>
-                <Space :size="100">
+
                 <Upload  ref="upload" accept=".csv" :format="csv" :before-upload="handleUpload" :action="this.uploadUrl"
                  :data="formItem" :auto-upload="true"  style="margin-left: 80px"
                  :on-format-error="uploaderror"
                  method="POST">
 
-                  <Button icon="ios-cloud-upload-outline" style="margin-left: 40px">上传数据集</Button>
+                  <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button>
                 </Upload>
-                      <Button type="primary" style="margin-left: 10px;margin-bottom: 8px" @click="upload">提交</Button>              
-                </Space>
+                <FormItem>
+                <Button type="primary" @click="upload">提交</Button>
+                </FormItem>
               </Form>
 
             </Modal>
@@ -188,7 +189,7 @@ import parentMenu from "@/components/parentmenu.vue";
 import mainTable from "@/components/maintable.vue";
 import lineChart from "@/components/chart/line.vue";
 import { EndUrl } from '../../url_config'
-import {getCsvData, updataCard, deleteCard, getCard,downloadCsvFile} from "../api/api.js"
+import {getCsvData, updataCard, deleteCard,deleteDesignCard, getCard,downloadCsvFile,updateDesignCard} from "../api/api.js"
 import qs from "qs";
 export default {
   data() {
@@ -288,6 +289,7 @@ export default {
           align: 'center',
         },
       ],
+      searchCsv:[],
       tabledata: [],
       searchdata:[],
       // jsonBaseUrl: "http://localhost:3000",
@@ -323,9 +325,10 @@ export default {
       console.info("刷新成功",this.tabledata)
     },
     handleSearch(){
-      this.searchdata = this.tabledata.filter(item => {
-        return item.label.includes(this.searchText)
-      })
+      console.info("ssssssssssssearchcsv",this.searchCsv)
+      // this.searchdata = this.tabledata.filter(item => {
+      //   return item.label.includes(this.searchText)
+      // })
     },
     inputDatabase(){
         this.input=true
@@ -407,7 +410,7 @@ export default {
               }
               var data = {
                 lan: this.cardInfo["Lan"],
-                id: this.cardInfo["Id"],
+                id: this.cardInfo["id"],
                 pageKind: this.pageKind,
                 dataset_name: this.cardInfo["Dataset_name"],
                 task: this.nowItem,
@@ -419,12 +422,15 @@ export default {
                 code: this.cardInfo["Code"],
 
               }
-              console.info('22222222222222222222222database--data:',data)
               // console.info('database--data:',data)
               // var putUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
-              updataCard(data).then(res => {
+              // updataCard(data).then(res => {
+              //   this.updataPage("edit")
+              //   console.info('44444444526262database--data:',res)
+              // })
+              updateDesignCard(data).then(res => {
+                console.info('222222222222222222222222222we--data:',res)
                 this.updataPage("edit")
-                console.info('44444444526262database--data:',res)
               })
               // this.$Message.info('编辑成功');
             }
@@ -454,6 +460,11 @@ export default {
         pageKind: this.pageKind,
       }
       deleteCard(data).then(res => {
+        // this.cardName = this.cardInfo[this.cardNameFlag]
+        this.updataPage("delete")
+        console.info("resresresres",res)
+      })
+      deleteDesignCard(data).then(res => {
         // this.cardName = this.cardInfo[this.cardNameFlag]
         this.updataPage("delete")
         console.info("resresresres",res)
@@ -501,7 +512,7 @@ export default {
         var urlurl = response.data.data.url;
         console.log(urlurl);
         var pos = urlurl.lastIndexOf('/');
-        console.log(pos);	
+        console.log(pos);
         var fileName = urlurl.substr(pos+1);
         console.log(fileName);
         var filePath = urlurl.substr(0,pos);
