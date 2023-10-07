@@ -42,14 +42,6 @@ export const getCard = (data) => {
   })
 }
 
-export const getDesignCards = (data) => {
-  return myAxios({
-    method: 'GET',
-    url: '/getDesignCards',
-    params:data
-  })
-}
-
 export const sendMenu = (data) => {
   //这里是添加菜单的接口
   return myAxios({
@@ -75,14 +67,6 @@ export const updataCard = (data) => {
   })
 }
 
-export const updateDesignCard = (data) => {
-  return myAxios({
-    method: 'GET',
-    url: '/updateDesignCard',
-    params:data
-  })
-}
-
 export const createCard = (data) => {
   return myAxios({
     method: 'GET',
@@ -95,13 +79,6 @@ export const deleteCard = (data) => {
   return myAxios({
     method: 'GET',
     url: '/deleteCard',
-    params:data
-  })
-}
-export const deleteDesignCard = (data) => {
-  return myAxios({
-    method: 'GET',
-    url: '/deleteDesignCard',
     params:data
   })
 }
@@ -128,12 +105,3 @@ export const downloadCsvFile = (data) => {
     data: data
   })
 }
-
-export const addDesignCard = (data) => {
-  return myAxios({
-    method: "GET",
-    url: "/addDesignCard",
-    params: data
-  })
-}
-
