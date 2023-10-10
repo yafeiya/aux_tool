@@ -355,13 +355,17 @@ export default {
       console.info("1111111111111")
     },
 	outPutXml(){
+      //TODO：改为当前卡片数据集名+xml  选中的csvlist
       let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
       const data = {path : csv_path_array +""}
       
       sendXmlInfo(data).then(res => {
-        console.info("send xml success",data)
-
-        // TODO:res判断后端返回操作成功
+        const blob = new Blob([res.data])
+        const a = document.createElement('a') 
+        a.download = "波士顿房价数据集0.xml"  //TODO：改为当前卡片数据集名+xml
+        a.href = window.URL.createObjectURL(blob)
+        a.click()
+        a.remove()
         this.$Message.success('导出成功')
       })
     },
@@ -650,7 +654,6 @@ export default {
         a.href = response.data.data.url;
         a.target = '_blank'; // 在新标签页中打开文件
         var urlurl = response.data.data.url;
-        console.log(urlurl);
         var pos = urlurl.lastIndexOf('/');
         console.log(pos);
         var fileName = urlurl.substr(pos+1);
