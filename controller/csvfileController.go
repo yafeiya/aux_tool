@@ -12,7 +12,7 @@ import (
 	"unicode/utf8"
 	"encoding/xml"
 	"strings"
-	"reflect"
+	// "reflect"
 	"io/ioutil"
 	"github.com/gin-gonic/gin"
 )
@@ -211,7 +211,7 @@ func GetCsvData(ctx *gin.Context) {
 func OutPutXml(ctx *gin.Context){
 	CsvPath := ctx.Query("path")
 	// CsvPath := ctx.Params.ByName("path")
-	fmt.Println("接收到的参数类型：", reflect.TypeOf(CsvPath))
+	// fmt.Println("接收到的参数类型：", reflect.TypeOf(CsvPath))
 	CsvPathList:= strings.Split(CsvPath, ",")
 	tmplist:= strings.Split(CsvPathList[0],"/")
 	DatabaseName:=tmplist[len(tmplist)-2]
@@ -264,13 +264,11 @@ func OutPutXml(ctx *gin.Context){
 	b, _ := xml.MarshalIndent(XmlData, "", "	")
 	b = append([]byte(xml.Header), b...)
 
-	folderPath := "./auxTool-frontEnd-main/xml"
-	xmlPath := folderPath +"/"+ DatabaseName +".xml"
-	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
+	xmlPath := "./auxTool-frontEnd-main/xml/"+ DatabaseName +".xml"
+	err := ioutil.WriteFile(xmlPath,b,0666)
 	if err != nil {
-		fmt.Println("创建文件夹失败:", err)
+		fmt.Println("后端xml文件写入失败:", err)
 	}
-	ioutil.WriteFile(xmlPath, b, 0666)
 	ctx.File(xmlPath)
 	fmt.Println("已输出xml")
 }

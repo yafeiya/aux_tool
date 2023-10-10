@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database databasename="1">
+	<table tablename="000.csv">
+		<header>
+			<name>policy_loss</name>
+			<type>float</type>
+			<precise>9</precise>
+			<remark>损失函数</remark>
+		</header>
+		<header>
+			<name>q1_loss</name>
+			<type>float</type>
+			<precise>9</precise>
+			<remark>损失函数</remark>
+		</header>
+		<header>
+			<name>q2_loss</name>
+			<type>float</type>
+			<precise>9</precise>
+			<remark>损失函数</remark>
+		</header>
+		<header>
+			<name>alpha_loss</name>
+			<type>float</type>
+			<precise>9</precise>
+			<remark>损失函数</remark>
+		</header>
+	</table>
+</database>

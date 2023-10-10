@@ -361,14 +361,14 @@ export default {
       var temp=this.selections[i].Type+"/"+this.selections[i].Task+"/"+this.selections[i].Dataset_name+"/"+this.selections[i].Table_name
       csv_path_array.push(temp)
     }
-    console.info("cccccccccccccccccccc",this.selections)
+    console.info("cccccccccccccccccccc",csv_path_array)
     // let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
       const data = {path : csv_path_array +""}
       
       sendXmlInfo(data).then(res => {
         const blob = new Blob([res.data])
         const a = document.createElement('a') 
-        a.download = "波士顿房价数据集0.xml"  //TODO：改为当前卡片数据集名+xml
+        a.download = this.cardInfo["Dataset_name"] + ".xml"  //TODO：改为当前卡片数据集名+xml
         a.href = window.URL.createObjectURL(blob)
         a.click()
         a.remove()
