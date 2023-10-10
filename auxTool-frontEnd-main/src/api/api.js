@@ -138,33 +138,9 @@ export const addDesignCard = (data) => {
 }
 
 export const sendXmlInfo = (data) => {
-export const addDefinefunctionCard = (data) => {
   return myAxios({
     method: "POST",
     url: "/xmlinfo",
-    method: "GET",
-    url: "/addDefinefunctionCard",
-    params: data
-  })
-}
-export const getDefinefunctionCards = (data) => {
-  return myAxios({
-    method: "GET",
-    url: "/getDefinefunctionCards",
-    params: data
-  })
-}
-export const updateDefinefunctionCard = (data) => {
-  return myAxios({
-    method: "GET",
-    url: "/updateDefinefunctionCard",
-    params: data
-  })
-}
-export const deleteDefinefunctionCard = (data) => {
-  return myAxios({
-    method: "GET",
-    url: "/deleteDefinefunctionCard",
     params: data
   })
 }
