@@ -90,7 +90,7 @@ import {MenuGroup} from "view-ui-plus";
 import parentMenu from '../components/parentmenu.vue';
 import mainTable from '../components/maintable.vue';
 import axios from 'axios';
-import { getMenuInfo } from '../api/api.js'
+import {getMenuInfo, getDefinefunctionCards, getCard} from '../api/api.js'
 export default {
   data() {
     return {
@@ -113,7 +113,7 @@ export default {
           value: {Params: ''},
           default: false,
           itemType: 'dynamicInput',
-          isEditOnly: true,
+          isEditOnly: false,
           others:[['',''],['','']]
         },
         {
@@ -122,7 +122,7 @@ export default {
           value: {Alias: ''},
           default: false,
           itemType: 'input',
-          isEditOnly: true,
+          isEditOnly: false,
           others:["请输入别名..."]
         },
         {
@@ -158,7 +158,7 @@ export default {
           value: {Function_body: ''},
           default: false,
           itemType: 'input',
-          isEditOnly: true,
+          isEditOnly: false,
           others:["请输入函数体..."]
         },
         {
@@ -198,7 +198,7 @@ export default {
       // taskType表明nowItem父级名字
       // nowItem表明选中的是菜单的哪一项。
       // cardNameFlag用来标识作为卡片名称的属性
-      cardNameFlag: "dataset_name",
+      cardNameFlag: "Dataset_name",
       pageKind: 'defineFunction',
       taskType: null,
       nowItem: null,
@@ -229,15 +229,7 @@ export default {
       jsonBaseUrl: this.jsonBaseUrl,
       getPageContent: this.getPageContent,
       cardNameFlag: this.cardNameFlag,
-      // myCardList: this.myCardList,
-      // myCardNum: this.myCardNum,
-      // myCardRowNum: this.myCardRowNum,
-      // myCardColNum: this.myCardColNum,
 
-      // publicCardList: this.publicCardList,
-      // publicCardNum: this.publicCardNum,
-      // publicCardRowNum: this.publicCardRowNum,
-      // publicCardColNum: this.publicCardColNum,
     }
   },
   components: {
@@ -295,21 +287,25 @@ export default {
     getPageContent() {
       this.myCardList= []
       this.publicCardList=[]
-      var findUrl = this.jsonBaseUrl + "/" + this.pageKind + "?task=" + this.nowItem + "&type=" + this.taskType
-      console.info(findUrl)
-      axios.get(findUrl).then(response => {
-        var cardList = response.data
+      let data = {
+        pageKind: this.pageKind,
+        task: this.nowItem,
+        Type: this.taskType,
+      }
+      getDefinefunctionCards(data).then(response =>{
+        console.info('design111111111111111111:',response)
+        var cardList = response.data.data.definefunctions
         console.info(cardList)
         var length = cardList.length
 
         for(var i = 0; i < length;i++) {
-          if(cardList[i].released[0] == '1') {
+          if(cardList[i].Released[0] == '1') {
             this.myCardList.push(cardList[i] );
           }
-          if(cardList[i].released[1] == '1') {
+          if(cardList[i].Released[1] == '1') {
             this.publicCardList.push(cardList[i]);
           }
-          if(cardList[i].released == "00") {
+          if(cardList[i].Released == "00") {
             var findDeleteUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + cardList[i].id
             // console.info(findUrl)
             axios.delete(findDeleteUrl).then(response=>{

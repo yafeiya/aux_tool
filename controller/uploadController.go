@@ -24,14 +24,17 @@ func UploadCsvFile(ctx *gin.Context) {
 
 	Task := ctx.PostForm("task")
 	Type := ctx.PostForm("type")
+	Id := ctx.PostForm("id")
 	Dataset_name := ctx.PostForm("name")
 	time := ctx.PostForm("time")
 	file, _ := ctx.FormFile("file")
 	fmt.Println(file.Filename)
+	fmt.Println("ID", Id)
 	fmt.Println(Dataset_name, Task, Type, time)
 
 	// 要创建的文件夹的路径
-	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Dataset_name
+	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
+	fmt.Println("111111111111111111", folderPath)
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
@@ -39,13 +42,13 @@ func UploadCsvFile(ctx *gin.Context) {
 	}
 
 	dst := folderPath + "/" + file.Filename
-	dst_sql := "http://49.234.4.144:5173/" + Type + "/" + Task + "/" + Dataset_name + "/" + file.Filename
+	dst_sql := "http://127.0.0.1:5173/" + Type + "/" + Task + "/" + Id + "/" + file.Filename
 	// 上传文件至指定的完整文件路径
 	ctx.SaveUploadedFile(file, dst)
 
 	// 读取csv文件信息，获取行数、列数、数据类型
 	numColumns, numRows, Types := GetCSVInfo(dst)
-	result := CreateTable(Task, Type, Dataset_name, numColumns, numRows, Types, file.Filename, dst_sql, time)
+	result := CreateTable(Task, Type, Id, numColumns, numRows, Types, file.Filename, dst_sql, time)
 	if result == "success" {
 		response.Success(ctx, nil, "success")
 	} else {
@@ -111,23 +114,6 @@ func DownloadCsvFile(ctx *gin.Context) {
 		filePath := datatables[0].Csv_path
 		fmt.Println(filePath)
 		response.Response(ctx, http.StatusOK, 404, gin.H{"url": filePath}, filePath)
-		// file, err := os.Open(filePath)
-		//		// if err != nil {
-		//		// 	ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Could not open CSV file"})
-		//		// 	return
-		//		// }
-		//		// defer file.Close()
-		//
-		//		// // 设置HTTP响应头，指定文件类型和文件名
-		//		// ctx.Header("Content-Type", "text/csv")
-		//		// ctx.Header("Content-Disposition", "attachment; filename=" + filePath)
-		//
-		//		// // 将文件内容拷贝到HTTP响应主体中
-		//		// _, err = io.Copy(ctx.Writer, file)
-		//		// if err != nil {
-		//		// 	ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Could not copy file to response"})
-		//		// 	return
-		//		// }
 	}
 
 }

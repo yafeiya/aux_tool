@@ -37,14 +37,18 @@ export default {
       index: 1,
       formDynamic: {
         items:[
-
         ],
       }
     }
   },
-  props: ['paramsForm'],
+
+  props: ['paramsForm','addFormItem'],
   mounted() {
     this.initFormDynamic()
+  },
+  beforeUpdate() {
+    this.addFormItem['params']=this.formDynamic.items
+    console.info("this.addFormItem['params']",this.addFormItem['params'])
   },
   methods: {
     initFormDynamic() {
@@ -59,13 +63,13 @@ export default {
     },
 
     handleAdd () {
-      console.info(this.formDynamic)
       this.index++;
       this.formDynamic.items.push({
-        value: '',
+        value: {},
         index: this.index,
         status: 1
       });
+      console.info("this.formDynamicthis.formDynamic",this.formDynamic)
     },
     handleRemove (index) {
       this.formDynamic.items[index].status = 0;

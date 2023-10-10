@@ -11,6 +11,7 @@ type Modelbase struct {
 	Description  string `gorm:"column:Description"`
 	Code         string `gorm:"column:Code"`
 	Task         string `gorm:"column:Task"`
+	Image_path   string `gorm:"column:Image_path"`
 }
 
 func (Modelbase) TableName() string {

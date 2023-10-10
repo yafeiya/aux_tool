@@ -39,14 +39,13 @@
           <FormItem label="二级菜单" prop="childreMenu">
             <Input v-model="menuform.childreMenu" placeholder="(选填)该项为空时默认删除整个父菜单" style="width: 250px"></Input>
           </FormItem>
-
           <FormItem>
           </FormItem>
         </Form>
-        <template #footer>
-          <Space :size="50">
-            <Button type="default" long @click="handleMenuAdd(menuform.fartherMenu,menuform.childreMenu)" icon="md-add" style="margin-left: 10px">添加</Button>
-            <Button type="default" long @click="handleMenuDelete(menuform.fartherMenu,menuform.childreMenu,false)" icon="md-add" style="margin-left: 10px">删除</Button>
+        <template #footer >
+          <Space :size="30">
+            <Button type="default"  @click="handleMenuAdd(menuform.fartherMenu,menuform.childreMenu)"  icon="md-add">添加</Button>
+            <Button type="default"  @click="handleMenuDelete(menuform.fartherMenu,menuform.childreMenu,false)" icon="ios-trash-outline"  style="margin-right: 80px" >删除</Button>
           </Space>
         </template>
       </Modal>

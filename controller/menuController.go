@@ -6,9 +6,10 @@ import (
 	"backEnd/model"
 	"backEnd/utils"
 	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
+	"strings"
 )
 
 // 每个页面刚加载时获取左侧菜单信息
@@ -55,71 +56,6 @@ func AddPageMenuItem(ctx *gin.Context) {
 	}
 	response.Success(ctx, nil, "success")
 }
-
-// TODO:获取当前界面卡片列表
-/* 参数：前端传来的参数pageKind、task和type。
-pageKind:页面类型，字符串分别为database、modelbase
-task：
-type：
-*/
-// 返回：pageKind的卡片列表
-//func GetMenuList(ctx *gin.Context) {
-//	db := common.InitDB()
-//	// 与前端约定好字符串
-//	pageKind := ctx.PostForm("pageKind")
-//	fmt.Println(pageKind)
-//	task := ctx.PostForm("task")
-//	fmt.Println(task)
-//	Type := ctx.PostForm("type")
-//	fmt.Println(Type)
-//
-//	if pageKind == "database" {
-//		databases := []model.Database{}
-//		db.Where("Task = ? and Type = ?", task, Type).Find(&databases)
-//		if len(databases) == 0 {
-//			fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-//			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//		} else {
-//			fmt.Println(databases)
-//			response.Success(ctx, gin.H{"databases": databases}, "success")
-//		}
-//	}
-//	if pageKind == "modelbase" {
-//		modelbases := []model.Modelbase{}
-//		db.Where("Task = ? and Type = ?", task, Type).Find(&modelbases)
-//		if len(modelbases) == 0 {
-//			fmt.Println("没找到task=" + task + "并且type=" + Type + "的模型卡片")
-//			response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//		} else {
-//			fmt.Println(modelbases)
-//			response.Success(ctx, gin.H{"databases": modelbases}, "success")
-//		}
-//	}
-//	/* 多级目录json文件形式未放到数据库中
-//		if(pageKind == "defineFunction"){
-//			databases := []model.Database{}
-//			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-//			if(len(databases) == 0){
-//				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-//				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//			}else{
-//				fmt.Println(databases)
-//				response.Success(ctx, gin.H{"databases": databases}, "success")
-//			}
-//		}
-//	    if(pageKind == "design"){
-//			databases := []model.Database{}
-//			db.Where("Task = ? and Type = ?", task, Type).First(&databases)
-//			if(len(databases) == 0){
-//				fmt.Println("没找到task=" + task + "并且type=" + Type + "的数据集卡片")
-//				response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
-//			}else{
-//				fmt.Println(databases)
-//				response.Success(ctx, gin.H{"databases": databases}, "success")
-//			}
-//		}
-//	*/
-//}
 
 func DeletePageMenuItem(ctx *gin.Context) {
 	fmt.Println("DeletePageMenuItem")
@@ -298,7 +234,6 @@ func CreateCard(ctx *gin.Context) {
 			Type:         Type,
 			Rank:         rank,
 			Lan:          lan,
-			Data_path:    "./" + task + "/" + Type + "/" + dataset_name + "/",
 			Description:  description,
 			Code:         code,
 			Task:         task,
@@ -408,7 +343,6 @@ func UpdataCard(ctx *gin.Context) {
 			modelbase.Type = Type
 			modelbase.Rank = rank
 			modelbase.Lan = lan
-			modelbase.Data_path = "./" + task + "/" + Type + "/" + dataset_name + "/"
 			modelbase.Description = description
 			modelbase.Code = code
 			modelbase.Task = task
@@ -423,4 +357,190 @@ func UpdataCard(ctx *gin.Context) {
 			response.Success(ctx, nil, "fail")
 		}
 	}
+}
+
+// 添加Design卡片
+func AddDesignCard(ctx *gin.Context) {
+	fmt.Println("AddDesignCard")
+	released := ctx.Query("released")
+	dataset_name := ctx.Query("dataset_name")
+	ttype := ctx.Query("type")
+	rank := ctx.Query("rank")
+	description := ctx.Query("description")
+	task := ctx.Query("task")
+
+	// 添加新设计
+	err := model.AddDesign(released, dataset_name, ttype, rank, description, task)
+	if err != nil {
+		fmt.Println("Failed to add design")
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, nil, "success")
+}
+
+func GetDesignCards(ctx *gin.Context) {
+	fmt.Println("GetDesignCards")
+	ttype := ctx.Query("type")
+	task := ctx.Query("task")
+	designs, err := model.GetDesigns(task, ttype)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+
+	response.Success(ctx, gin.H{"designs": designs}, "success")
+}
+
+func UpdateDesignCard(ctx *gin.Context) {
+
+	id, _ := strconv.Atoi(ctx.Query("id"))
+	dataset_name := ctx.Query("dataset_name")
+	rank := ctx.Query("rank")
+	description := ctx.Query("description")
+	fmt.Println("description", description)
+	err := model.UpdateDesign(id, dataset_name, rank, description)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+
+	response.Success(ctx, nil, "success")
+}
+
+// 删除design卡片
+func DeleteDesignCard(ctx *gin.Context) {
+	fmt.Println("11111111111111111111delete")
+	id, _ := strconv.Atoi(ctx.Query("id"))
+	fmt.Println("id:", id)
+
+	err := model.DeleteDesign(id)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, nil, "success")
+}
+
+// 添加Definefunction卡片
+func AddDefinefunctionCard(ctx *gin.Context) {
+	fmt.Println("AddDefinefunctionCard")
+	released := ctx.Query("released")
+	dataset_name := ctx.Query("dataset_name")
+	alias := ctx.Query("alias")
+	ttype := ctx.Query("type")
+	rank := ctx.Query("rank")
+	paramsStr := ctx.Query("params")
+
+	fmt.Println("params", paramsStr)
+	// 解析 params 字段
+	params, er := parseParams(paramsStr)
+	if er != nil {
+		fmt.Println("Invalid params format")
+		return
+	}
+
+	function_body := ctx.Query("function_body")
+	lan := ctx.Query("lan")
+	code := ctx.Query("code")
+	description := ctx.Query("description")
+	task := ctx.Query("task")
+
+	// 添加新设计
+	err := model.AddDefinefunction(released, dataset_name, alias, ttype, rank, params, function_body, lan, code, description, task)
+	if err != nil {
+		fmt.Println("Failed to add definefunction")
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, nil, "success")
+}
+
+func GetDefinefunctionCards(ctx *gin.Context) {
+	fmt.Println("GetDefinefunctionCards")
+	ttype := ctx.Query("type")
+	task := ctx.Query("task")
+	definefunctions, err := model.GetDefinefunctions(task, ttype)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+
+	response.Success(ctx, gin.H{"definefunctions": definefunctions}, "success")
+}
+
+func UpdateDefinefunctionCard(ctx *gin.Context) {
+	fmt.Println("UpdateDefinefunctionCard")
+
+	id, _ := strconv.Atoi(ctx.Query("id"))
+	dataset_name := ctx.Query("dataset_name")
+	alias := ctx.Query("alias")
+	rank := ctx.Query("rank")
+	paramsStr := ctx.Query("params")
+
+	// 解析 params 字段
+	params, er := parseParams(paramsStr)
+	if er != nil {
+		fmt.Println("Invalid params format")
+		return
+	}
+
+	function_body := ctx.Query("function_body")
+	lan := ctx.Query("lan")
+	code := ctx.Query("code")
+	description := ctx.Query("description")
+
+	err := model.UpdateDefinefunction(id, dataset_name, alias, rank, params, function_body, lan, code, description)
+	if err != nil {
+		fmt.Println(err)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+
+	response.Success(ctx, nil, "success")
+}
+
+// 删除Definefunction卡片
+func DeleteDefinefunctionCard(ctx *gin.Context) {
+	fmt.Println("DeleteDefinefunctionCard")
+	id, _ := strconv.Atoi(ctx.Query("id"))
+	fmt.Println("id:", id)
+
+	err := model.DeleteDefinefunction(id)
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, nil, "success")
+}
+
+// 解析 params 字段的函数
+func parseParams(paramsStr string) ([][]float64, error) {
+	// 以 "|" 分割参数组
+	paramGroups := strings.Split(paramsStr, "|")
+
+	var params [][]float64
+
+	for _, group := range paramGroups {
+		// 以 "," 分割参数
+		paramParts := strings.Split(group, ",")
+		if len(paramParts) != 2 {
+			return nil, fmt.Errorf("parseParams error")
+		}
+
+		// 将字符串转换为 float64
+		param1, err := strconv.ParseFloat(paramParts[0], 64)
+		if err != nil {
+			return nil, fmt.Errorf("parseParams error")
+		}
+
+		param2, err := strconv.ParseFloat(paramParts[1], 64)
+		if err != nil {
+			return nil, fmt.Errorf("parseParams error")
+		}
+
+		params = append(params, []float64{param1, param2})
+	}
+
+	return params, nil
 }

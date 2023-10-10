@@ -42,7 +42,8 @@
             </div>
 
             <div v-if="item.itemType == 'dynamicInput'">
-              <dynamicInput :params-form="item.others"/>
+              <dynamicInput :params-form="item.others"
+                            :add-form-item="addFormItem"/>
             </div>
           </FormItem>
         </Form>
@@ -57,7 +58,7 @@
 <script>
 import axios from 'axios';
 import dynamicInput from './dynamicinput.vue'
-import {updataCard, createCard, addDesignCard} from "@/api/api";
+import {updataCard, createCard, addDesignCard, addDefinefunctionCard} from "@/api/api";
 
 
 export default {
@@ -121,8 +122,8 @@ export default {
       // console.info("createdCard: " + this.addFormItem.task)
       // var form = this.addFormItem
       this.$refs[name].validate((valid) => {
+        console.info("this.addFormItemthis.addFormItemthis.addFormItem",this.addFormItem)
         if (valid) {
-
           var data = {
             lan: this.addFormItem["Lan"],
             id: this.addFormItem["Id"],
@@ -136,34 +137,72 @@ export default {
             description: this.addFormItem["Description"],
             code: this.addFormItem["Code"],
             released:"11",
+            alias:this.addFormItem["Alias"],
+            function_body:this.addFormItem["Function_body"],
+            params:''
+          }
+          if(data.pageKind=="defineFunction"){
+            for(var i in this.addFormItem["params"]){
+              data.params+=this.addFormItem["params"][i].value[0]
+              data.params+=','
+              data.params+=this.addFormItem["params"][i].value[1]
+              if(i==this.addFormItem["params"].length-1){
+                break
+              }
+              else
+                data.params+='|'
+            }
+          }
+          console.info("dddddddddddddaat",data)
+          if(data.pageKind=="database"||data.pageKind=="modelbase"){
+            createCard(data).then(response => {
+              if(response.data.msg=="fail"){
+                this.$Message["error"]({
+                  background: true,
+                  content: "该名称已存在，请仔细检查"
+                });
+              }
+              else{
+                this.updataPage("creat")
+                // console.info("11111111111",response)
+              }
+            })
           }
           //这是前两个页面的新建卡片
-          createCard(data).then(response => {
-            if(response.data.msg=="fail"){
-              this.$Message["error"]({
-                background: true,
-                content: "该名称已存在，请仔细检查"
-              });
-            }
-            else{
-              this.updataPage("creat")
-              // console.info("11111111111",response)
-            }
-          })
+         else{
+           if(data.pageKind=="design"){
+             addDesignCard(data).then(response => {
+               // console.info('22222222222222222222222data:',data)
+               if(response.data.msg=="fail"){
+                 this.$Message["error"]({
+                   background: true,
+                   content: "该名称已存在，请仔细检查"
+                 });
+               }
+               else{
+                 this.updataPage("creat")
+                 // console.info("11111111111",response)
+               }
+             })
+           }
+           else{
+             addDefinefunctionCard(data).then(response => {
+               // console.info('22222222222222222222222data:',data)
+               if(response.data.msg=="fail"){
+                 this.$Message["error"]({
+                   background: true,
+                   content: "该名称已存在，请仔细检查"
+                 });
+               }
+               else{
+                 this.updataPage("creat")
+                 // console.info("11111111111",response)
+               }
+             })
+           }
+          }
           //这是后两个页面的新建卡片
-          addDesignCard(data).then(response => {
-            // console.info('22222222222222222222222data:',data)
-            if(response.data.msg=="fail"){
-              this.$Message["error"]({
-                background: true,
-                content: "该名称已存在，请仔细检查"
-              });
-            }
-            else{
-              this.updataPage("creat")
-              // console.info("11111111111",response)
-            }
-          })
+
         } else {
           this.$Message.error('添加失败，请检查必填项！');
         }

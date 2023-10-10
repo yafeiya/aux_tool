@@ -10,11 +10,11 @@ import (
 	"os"
 	"strconv"
 	"unicode/utf8"
-	"github.com/gin-gonic/gin"
 	"encoding/xml"
 	"strings"
 	"reflect"
 	"io/ioutil"
+	"github.com/gin-gonic/gin"
 )
 type Header struct {
 	XMLName xml.Name   `xml:"header"`
@@ -192,13 +192,13 @@ func CreateTable(Task string, Type string, Dataset_name string, numColumns int, 
 // 获取表信息
 
 func GetCsvData(ctx *gin.Context) {
-	Dataset_name := ctx.Query("Dataset_name")
-	fmt.Println("需要查询的数据集名称：", Dataset_name)
+	Dataset_id := ctx.Query("id")
+	fmt.Println("需要查询的数据集名称：", Dataset_id)
 
 	db := common.InitDB()
 
 	datatables := []model.Datatable{}
-	db.Where("Dataset_name = ?", Dataset_name).Find(&datatables)
+	db.Where("Dataset_name = ?", Dataset_id).Find(&datatables)
 	if len(datatables) == 0 {
 		fmt.Println("未找到数据集下的csv文件")
 		response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
@@ -208,7 +208,6 @@ func GetCsvData(ctx *gin.Context) {
 	}
 
 }
-
 func OutPutXml(ctx *gin.Context){
 	CsvPath := ctx.Query("path")
 	// CsvPath := ctx.Params.ByName("path")

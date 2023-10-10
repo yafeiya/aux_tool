@@ -128,7 +128,22 @@ export const downloadCsvFile = (data) => {
     data: data
   })
 }
-
+export const downloadModelFile = (data) => {
+  //这里是下载的接口
+  return myAxios({
+    method: "POST",
+    url: "/downloadModelFile",
+    data: data
+  })
+}
+export const getModelImage = (data) => {
+  //这里是下载的接口
+  return myAxios({
+    method: "POST",
+    url: "/getModelImage",
+    data: data
+  })
+}
 export const addDesignCard = (data) => {
   return myAxios({
     method: "GET",
@@ -137,6 +152,48 @@ export const addDesignCard = (data) => {
   })
 }
 
+export const addDefinefunctionCard = (data) => {
+  return myAxios({
+    method: "GET",
+    url: "/addDefinefunctionCard",
+    params: data
+  })
+}
+export const getDefinefunctionCards = (data) => {
+  return myAxios({
+    method: "GET",
+    url: "/getDefinefunctionCards",
+    params: data
+  })
+}
+export const updateDefinefunctionCard = (data) => {
+  return myAxios({
+    method: "GET",
+    url: "/updateDefinefunctionCard",
+    params: data
+  })
+}
+export const deleteDefinefunctionCard = (data) => {
+  return myAxios({
+    method: "GET",
+    url: "/deleteDefinefunctionCard",
+    params: data
+  })
+}
+export const uploadModelFile = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadModelFile',
+    data: data
+  })
+}
+export const uploadModelPNGFile = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadModelPNGFile',
+    data: data
+  })
+}
 export const sendXmlInfo = (data) => {
   return myAxios({
     method: "POST",
@@ -144,4 +201,3 @@ export const sendXmlInfo = (data) => {
     params: data
   })
 }
-
