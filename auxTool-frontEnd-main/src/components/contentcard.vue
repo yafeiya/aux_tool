@@ -13,8 +13,8 @@
               <Space :size="15">
                 <Input v-model="searchCsv" style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
                 <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
-                <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行')">导出</Button>
-                <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">删除</Button>
+                <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="outPutXml">导出</Button>
+                <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState1('挂起')">删除</Button>
               </Space>
             </p>
             <Modal
@@ -189,7 +189,7 @@ import parentMenu from "@/components/parentmenu.vue";
 import mainTable from "@/components/maintable.vue";
 import lineChart from "@/components/chart/line.vue";
 import { EndUrl } from '../../url_config'
-import {getCsvData, updataCard, deleteCard,deleteDesignCard, getCard,downloadCsvFile,updateDesignCard} from "../api/api.js"
+import {getCsvData, updataCard,sendXmlInfo, deleteCard,deleteDesignCard, getCard,downloadCsvFile,updateDesignCard} from "../api/api.js"
 import qs from "qs";
 export default {
   data() {
@@ -335,7 +335,18 @@ export default {
         this.inputFormItem.type=this.taskType
         this.inputFormItem.task=this.nowItem
     },
-    inputok(){
+    outPutXml(){
+      let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
+      const data = {path : csv_path_array +""}
+      
+      sendXmlInfo(data).then(res => {
+        console.info("send xml success",data)
+
+        // TODO:res判断后端返回操作成功
+        this.$Message.success('导出成功')
+      })
+    },
+    inputok(){s
       console.info("1111111111111")
     },
     modal(){

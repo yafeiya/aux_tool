@@ -137,3 +137,11 @@ export const addDesignCard = (data) => {
   })
 }
 
+export const sendXmlInfo = (data) => {
+  return myAxios({
+    method: "POST",
+    url: "/xmlinfo",
+    params: data
+  })
+}
+

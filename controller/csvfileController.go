@@ -10,9 +10,32 @@ import (
 	"os"
 	"strconv"
 	"unicode/utf8"
-
 	"github.com/gin-gonic/gin"
+	"encoding/xml"
+	"strings"
+	"reflect"
+	"io/ioutil"
 )
+type Header struct {
+	XMLName xml.Name   `xml:"header"`
+	// Id      int      `xml:"id,attr"`
+	Name    string     `xml:"name"`
+	Type    string     `xml:"type"`
+	Precise    int     `xml:"precise"`
+	Remark    string   `xml:"remark"`
+}
+
+type Table struct {
+	XMLName xml.Name 	  `xml:"table"`
+	Tablename    string   `xml:"tablename,attr"`
+	Heds  		 []Header   `xml:"header"`
+}
+
+type Database struct {
+	XMLName xml.Name    `xml:"database"`
+	Databasename string `xml:"databasename,attr"`
+	Tabs    	 []Table  `xml:"table"`
+}
 
 // 获取csv文件属性
 func GetCSVInfo(csv_path string) (int, int, []string) {
@@ -183,5 +206,66 @@ func GetCsvData(ctx *gin.Context) {
 		fmt.Println(datatables)
 		response.Success(ctx, gin.H{"datatables": datatables}, "success")
 	}
+
+}
+
+func OutPutXml(ctx *gin.Context){
+	CsvPath := ctx.Query("path")
+	// CsvPath := ctx.Params.ByName("path")
+	fmt.Println("接收到的参数类型：", reflect.TypeOf(CsvPath))
+	CsvPathList:= strings.Split(CsvPath, ",")
+	tmplist:= strings.Split(CsvPathList[0],"/")
+	DatabaseName:=tmplist[len(tmplist)-2]
+	XmlData := Database{Databasename:DatabaseName}
+	for _, value := range CsvPathList{
+		dst := "./auxTool-frontEnd-main/"+ value
+		csvPathSingle:= strings.Split(value,"/")
+		Tab:=Table{Tablename:csvPathSingle[len(csvPathSingle)-1]}
+		file, error := os.Open(dst)
+		if error != nil {
+		fmt.Println("无法打开CSV文件:", error)
+		}
+		defer file.Close()
+
+		reader := csv.NewReader(file)
+		lines, error := reader.ReadAll()
+		if error != nil {
+			fmt.Println("读取CSV文件失败:", error)
+		}
+		columns := lines[0]
+		fmt.Println("columns", columns)
+		
+		for index, column := range columns{
+					// 默认为字符串类型
+			var columnType string = "string"
+			var precise int = 0
+			// 尝试将第二行数据识别为rune
+			if utf8.RuneCountInString(lines[1][index]) == 1 {
+				columnType = "string"
+				}
+
+			// 尝试将第二行数据转换为int
+			_, error := strconv.Atoi(lines[1][index])
+			if error == nil {
+				columnType = "int"
+			}
+
+			// 尝试将第二行数据转换为float64
+			_, error = strconv.ParseFloat(lines[1][index], 64)
+			if error == nil {
+				columnType = "float"				
+				precise = len(strings.Split(lines[1][index],".")[1])
+			}
+			Hed := Header{Name:column,Type:columnType,Precise:precise,Remark:"损失函数"}
+			fmt.Println("读取CSV文件失败:", Hed)
+			Tab.Heds = append(Tab.Heds,Hed)
+		}
+		XmlData.Tabs = append(XmlData.Tabs,Tab)
+	}
+	
+	b, _ := xml.MarshalIndent(XmlData, "", "	")
+	b = append([]byte(xml.Header), b...)
+	ioutil.WriteFile("./"+DatabaseName +".xml", b, 0666)
+	fmt.Println("已输出xml")
 
 }

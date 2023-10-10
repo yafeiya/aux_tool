@@ -28,6 +28,7 @@ func main() {
 	engine.GET("/addPageMenuItem", controller.AddPageMenuItem)
 	engine.GET("/deletePageMenuItem", controller.DeletePageMenuItem)
 	engine.POST("/downloadCsvFile", controller.DownloadCsvFile)
+	engine.POST("/xmlinfo", controller.OutPutXml)
 	engine.POST("/login", controller.Login)
 	engine.POST("/register", controller.Register)
 	host := viper.GetString("server.host")
