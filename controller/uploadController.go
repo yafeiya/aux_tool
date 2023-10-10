@@ -113,7 +113,7 @@ func DownloadCsvFile(ctx *gin.Context) {
 	} else {
 		filePath := datatables[0].Csv_path
 		fmt.Println(filePath)
-		response.Response(ctx, http.StatusOK, 404, gin.H{"url": filePath},"success")
+		response.Response(ctx, http.StatusOK, 404, gin.H{"url": filePath}, filePath)
 	}
 
 }

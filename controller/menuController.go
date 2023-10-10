@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -80,10 +81,17 @@ func DeleteCard(ctx *gin.Context) {
 	pageKind := ctx.Query("pageKind")
 	fmt.Println(pageKind)
 	id := ctx.Query("id")
+	Task := ctx.Query("task")
+	Type := ctx.Query("type")
 	fmt.Println(id)
 	if pageKind == "database" {
 		database := []model.Database{}
 		result := db.Where("Id = ?", id).Delete(&database)
+		fmt.Println("idddddddddd", Type, Task, id)
+		erro := os.RemoveAll("./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + id)
+		if erro != nil {
+			fmt.Println("delete fail")
+		}
 		if result.RowsAffected == 0 {
 			fmt.Println("删除失败")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
@@ -95,6 +103,11 @@ func DeleteCard(ctx *gin.Context) {
 	if pageKind == "modelbase" {
 		modelbase := []model.Modelbase{}
 		result := db.Where("Id = ?", id).Delete(&modelbase)
+		fmt.Println("idddddddddd", Type, Task, id)
+		erro := os.RemoveAll("./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + id)
+		if erro != nil {
+			fmt.Println("delete fail")
+		}
 		if result.RowsAffected == 0 {
 			fmt.Println("删除失败")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")

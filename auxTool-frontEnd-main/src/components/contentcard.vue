@@ -355,8 +355,14 @@ export default {
       console.info("1111111111111")
     },
 	outPutXml(){
-      //TODO：改为当前卡片数据集名+xml  选中的csvlist
-      let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
+    let csv_path_array=[]
+    var xmlurl=EndUrl().fileUrl+'/xml/'
+    for(var i in this.selections){
+      var temp=this.selections[i].Type+"/"+this.selections[i].Task+"/"+this.selections[i].Dataset_name+"/"+this.selections[i].Table_name
+      csv_path_array.push(temp)
+    }
+    console.info("cccccccccccccccccccc",this.selections)
+    // let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
       const data = {path : csv_path_array +""}
       
       sendXmlInfo(data).then(res => {
@@ -530,10 +536,11 @@ export default {
       var data = {
         id: this.cardInfo["Id"],
         pageKind: this.pageKind,
+        task : this.cardInfo["Task"],
+        type : this.cardInfo["Type"]
       }
       if(data.pageKind=="database"||data.pageKind=="modelbase"){
         deleteCard(data).then(res => {
-          // this.cardName = this.cardInfo[this.cardNameFlag]
           this.updataPage("delete")
         })
       }
@@ -654,6 +661,7 @@ export default {
         a.href = response.data.data.url;
         a.target = '_blank'; // 在新标签页中打开文件
         var urlurl = response.data.data.url;
+        console.log(urlurl);
         var pos = urlurl.lastIndexOf('/');
         console.log(pos);
         var fileName = urlurl.substr(pos+1);
