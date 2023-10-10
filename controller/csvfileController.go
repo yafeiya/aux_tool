@@ -256,7 +256,6 @@ func OutPutXml(ctx *gin.Context){
 				precise = len(strings.Split(lines[1][index],".")[1])
 			}
 			Hed := Header{Name:column,Type:columnType,Precise:precise,Remark:"损失函数"}
-			fmt.Println("读取CSV文件失败:", Hed)
 			Tab.Heds = append(Tab.Heds,Hed)
 		}
 		XmlData.Tabs = append(XmlData.Tabs,Tab)
@@ -264,7 +263,14 @@ func OutPutXml(ctx *gin.Context){
 	
 	b, _ := xml.MarshalIndent(XmlData, "", "	")
 	b = append([]byte(xml.Header), b...)
-	ioutil.WriteFile("./"+DatabaseName +".xml", b, 0666)
-	fmt.Println("已输出xml")
 
+	folderPath := "./auxTool-frontEnd-main/xml"
+	xmlPath := folderPath +"/"+ DatabaseName +".xml"
+	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
+	if err != nil {
+		fmt.Println("创建文件夹失败:", err)
+	}
+	ioutil.WriteFile(xmlPath, b, 0666)
+	ctx.File(xmlPath)
+	fmt.Println("已输出xml")
 }

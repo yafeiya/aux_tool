@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 import { EndUrl } from './url_config'
 const frontEndUrl  = EndUrl().frontEndUrl
-
+const frontPost  = EndUrl().frontPost
 export default defineConfig({
   plugins: [
     vue(),
@@ -18,6 +18,7 @@ export default defineConfig({
   },
   server:{
    // host: '192.168.0.103'
-    host: frontEndUrl
+    host: frontEndUrl,
+    port: frontPost
   }
 })
