@@ -1,13 +1,13 @@
 # 后端服务
 server:
-  host: 
+  host:
   port: 8080
 
 # 数据库
 datasource:
-  host: localhost
+  host: 49.234.4.144
   port: 3306
   database: auxtool
   username: root
-  password: 123456
+  password: 2000815635
   charset: utf8mb4

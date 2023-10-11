@@ -193,7 +193,7 @@ export default {
       // taskType表明nowItem父级名字
       // nowItem表明选中的是菜单的哪一项。
       // cardNameFlag用来标识作为卡片名称的属性
-      cardNameFlag: "dataset_name",
+      cardNameFlag: "Dataset_name",
       pageKind: 'design',
       taskType: null,
       nowItem: null,
@@ -303,13 +303,13 @@ export default {
         var cardList = response.data.data.designs
         var length = cardList.length
         for(var i = 0; i < length;i++) {
-          if(cardList[i].released[0] == '1') {
+          if(cardList[i].Released[0] == '1') {
             this.myCardList.push(cardList[i] );
           }
-          if(cardList[i].released[1] == '1') {
+          if(cardList[i].Released[1] == '1') {
             this.publicCardList.push(cardList[i]);
           }
-          if(cardList[i].released == "00") {
+          if(cardList[i].Released == "00") {
 // TODO： 删除
             console.info("delete success")
           }

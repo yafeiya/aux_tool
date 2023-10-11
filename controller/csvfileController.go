@@ -5,36 +5,37 @@ import (
 	"backEnd/common/response"
 	"backEnd/model"
 	"encoding/csv"
+	"encoding/xml"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
-	"unicode/utf8"
-	"encoding/xml"
 	"strings"
+	"unicode/utf8"
 	// "reflect"
-	"io/ioutil"
 	"github.com/gin-gonic/gin"
 )
+
 type Header struct {
-	XMLName xml.Name   `xml:"header"`
+	XMLName xml.Name `xml:"header"`
 	// Id      int      `xml:"id,attr"`
-	Name    string     `xml:"name"`
-	Type    string     `xml:"type"`
-	Precise    int     `xml:"precise"`
-	Remark    string   `xml:"remark"`
+	Name    string `xml:"name"`
+	Type    string `xml:"type"`
+	Precise int    `xml:"precise"`
+	Remark  string `xml:"remark"`
 }
 
 type Table struct {
-	XMLName xml.Name 	  `xml:"table"`
-	Tablename    string   `xml:"tablename,attr"`
-	Heds  		 []Header   `xml:"header"`
+	XMLName   xml.Name `xml:"table"`
+	Tablename string   `xml:"tablename,attr"`
+	Heds      []Header `xml:"header"`
 }
 
 type Database struct {
-	XMLName xml.Name    `xml:"database"`
-	Databasename string `xml:"databasename,attr"`
-	Tabs    	 []Table  `xml:"table"`
+	XMLName      xml.Name `xml:"database"`
+	Databasename string   `xml:"databasename,attr"`
+	Tabs         []Table  `xml:"table"`
 }
 
 // 获取csv文件属性
@@ -208,21 +209,24 @@ func GetCsvData(ctx *gin.Context) {
 	}
 
 }
-func OutPutXml(ctx *gin.Context){
+func OutPutXml(ctx *gin.Context) {
 	CsvPath := ctx.Query("path")
+	DataName := ctx.Query("data_name")
+	fmt.Println("DataName:", DataName)
+	fmt.Println("CsvPath:", CsvPath)
 	// CsvPath := ctx.Params.ByName("path")
 	// fmt.Println("接收到的参数类型：", reflect.TypeOf(CsvPath))
-	CsvPathList:= strings.Split(CsvPath, ",")
-	tmplist:= strings.Split(CsvPathList[0],"/")
-	DatabaseName:=tmplist[len(tmplist)-2]
-	XmlData := Database{Databasename:DatabaseName}
-	for _, value := range CsvPathList{
-		dst := "./auxTool-frontEnd-main/"+ value
-		csvPathSingle:= strings.Split(value,"/")
-		Tab:=Table{Tablename:csvPathSingle[len(csvPathSingle)-1]}
+	CsvPathList := strings.Split(CsvPath, ",")
+	XmlData := Database{Databasename: DataName}
+	for _, value := range CsvPathList {
+		//value= 数值数据集/任务1/57/123,数值数据集/任务1/57/123.csv
+
+		dst := "./auxTool-frontEnd-main/" + value
+		csvPathSingle := strings.Split(value, "/")
+		Tab := Table{Tablename: csvPathSingle[len(csvPathSingle)-1]}
 		file, error := os.Open(dst)
 		if error != nil {
-		fmt.Println("无法打开CSV文件:", error)
+			fmt.Println("无法打开CSV文件:", error)
 		}
 		defer file.Close()
 
@@ -233,15 +237,15 @@ func OutPutXml(ctx *gin.Context){
 		}
 		columns := lines[0]
 		fmt.Println("columns", columns)
-		
-		for index, column := range columns{
-					// 默认为字符串类型
+
+		for index, column := range columns {
+			// 默认为字符串类型
 			var columnType string = "string"
 			var precise int = 0
 			// 尝试将第二行数据识别为rune
 			if utf8.RuneCountInString(lines[1][index]) == 1 {
 				columnType = "string"
-				}
+			}
 
 			// 尝试将第二行数据转换为int
 			_, error := strconv.Atoi(lines[1][index])
@@ -252,20 +256,20 @@ func OutPutXml(ctx *gin.Context){
 			// 尝试将第二行数据转换为float64
 			_, error = strconv.ParseFloat(lines[1][index], 64)
 			if error == nil {
-				columnType = "float"				
-				precise = len(strings.Split(lines[1][index],".")[1])
+				columnType = "float"
+				precise = len(strings.Split(lines[1][index], ".")[1])
 			}
-			Hed := Header{Name:column,Type:columnType,Precise:precise,Remark:"损失函数"}
-			Tab.Heds = append(Tab.Heds,Hed)
+			Hed := Header{Name: column, Type: columnType, Precise: precise, Remark: "损失函数"}
+			Tab.Heds = append(Tab.Heds, Hed)
 		}
-		XmlData.Tabs = append(XmlData.Tabs,Tab)
+		XmlData.Tabs = append(XmlData.Tabs, Tab)
 	}
-	
+
 	b, _ := xml.MarshalIndent(XmlData, "", "	")
 	b = append([]byte(xml.Header), b...)
 
-	xmlPath := "./auxTool-frontEnd-main/xml/"+ DatabaseName +".xml"
-	err := ioutil.WriteFile(xmlPath,b,0666)
+	xmlPath := "./auxTool-frontEnd-main/xml/" + DataName + ".xml"
+	err := ioutil.WriteFile(xmlPath, b, 0666)
 	if err != nil {
 		fmt.Println("后端xml文件写入失败:", err)
 	}

@@ -66,9 +66,22 @@
               title="上传与下载"
               style="margin-top: -50px"
           >
-            <Space style="margin-left: 40px;margin-bottom: 20px">
-              <Image :src=this.modelImageUrl :fit="fit" width="400px" height="220px" :alt="fit"  />
-            </Space>
+            <Upload  :action="this.uploadModelPNGUrl"
+                     style="margin-left: 80px"
+                     method="POST"
+                     :data="modelData"
+                     :on-success="uploadSuccess"
+                     :show-upload-list=false
+                     :disabled=this.imageUploadDisabled
+            >
+              <Space style="margin-left: -40px;margin-bottom: 20px">
+                <Image :src=this.modelImageUrl :fit="fit" width="400px" height="220px" :alt="fit" @click.ctrl="uploadModelPNG">
+                  <template #error>
+                    <Icon type="ios-image-outline" size="60" color="#ccc" />
+                  </template>
+                </Image>
+              </Space>
+            </Upload>
             <Space :size="15">
               <Upload  :action="this.uploadModelUrl"
                        style="margin-left: 80px"
@@ -77,18 +90,8 @@
                        :on-success="uploadSuccess"
                        :show-upload-list=false
                        >
-                  <Button icon="ios-cloud-upload-outline" style="margin-left: -20px;margin-bottom: 8px" @click="uploadModel">点击上传</Button>
+                  <Button icon="ios-cloud-upload-outline" style="margin-left: 30px;margin-bottom: 8px" @click="uploadModel">点击上传</Button>
               </Upload>
-              <Upload  :action="this.uploadModelPNGUrl"
-                       style="margin-left: 80px"
-                       method="POST"
-                       :data="modelData"
-                       :on-success="uploadSuccess"
-                       :show-upload-list=false
-              >
-                <Button icon="ios-cloud-upload-outline" style="margin-left: -70px;margin-bottom: 8px" @click="uploadModelPNG">修改图片</Button>
-              </Upload>
-
               <Button icon="ios-cloud-download-outline" style="margin-left: 10px;margin-bottom: 8px" @click="downloadModel">点击下载</Button>
             </Space>
 
@@ -215,6 +218,7 @@ export default {
       uploadModelUrl:EndUrl().backEndUrl+'/uploadModelFile',
       uploadModelPNGUrl:EndUrl().backEndUrl+'/uploadModelPNGFile',
       input: false,
+      imageUploadDisabled:true,
       modelData: {
         id:'',
         type: '',
@@ -363,11 +367,13 @@ export default {
     }
     console.info("cccccccccccccccccccc",csv_path_array)
     // let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
-      const data = {path : csv_path_array +""}
-      
+      const data = {path : csv_path_array +"",
+                    data_name: this.cardInfo["Dataset_name"]}
+    console.info("cccccccccccccccccccc",data)
       sendXmlInfo(data).then(res => {
         const blob = new Blob([res.data])
-        const a = document.createElement('a') 
+        console.info("rrrrrrrrrrrrr",res)
+        const a = document.createElement('a')
         a.download = this.cardInfo["Dataset_name"] + ".xml"  //TODO：改为当前卡片数据集名+xml
         a.href = window.URL.createObjectURL(blob)
         a.click()
@@ -428,8 +434,9 @@ export default {
       console.info("TTTTTTTTTTTTTTTdata:",data)
       data = qs.stringify(data)
       getModelImage(data).then(response => {
-        console.info("图片URL: ", response)
-        this.modelImageUrl=response.data.data.url
+
+        this.modelImageUrl=EndUrl().fileUrl + "/" + response.data.data.url
+        console.info("图片URL: ", this.modelImageUrl)
       })
     },
     editCard (name) {
@@ -565,7 +572,7 @@ export default {
       this.$Message.error('文件类型不支持')
     },
     handleUpload (file) {
-              console.info("file.name",file.name)
+              console.info("this.cardInfo",this.cardInfo)
               this.file = file;
               this.formItem.id=this.cardInfo["Id"]
               this.formItem.name=file.name
@@ -596,6 +603,7 @@ export default {
       console.info("mmmmmmmmmmmmmmmmm",this.modelData)
     },
     uploadModelPNG(){
+          this.imageUploadDisabled=false,
           this.modelData.id=this.cardInfo["Id"],
           this.modelData.task=this.cardInfo["Task"],
           this.modelData.type=this.cardInfo["Type"],
@@ -615,25 +623,32 @@ export default {
       data = qs.stringify(data)
       downloadModelFile(data).then(response => {
         console.info("下载URL: ", response.data.data.url)
-        const a = document.createElement('a');
-        a.href = response.data.data.url;
-        a.target = '_blank'; // 在新标签页中打开文件
-        var urlurl = response.data.data.url;
-        console.log(urlurl);
-        var pos = urlurl.lastIndexOf('/');
-        console.log(pos);
-        var fileName = urlurl.substr(pos+1);
-        console.log(fileName);
-        var filePath = urlurl.substr(0,pos);
-        console.log(filePath);
+        if(response.data.data.url==''){
+          this.$Message["error"]({
+            background: true,
+            content: "该模型暂未上传文件！"
+          });
+        }else{
+          const a = document.createElement('a');
+          a.href = EndUrl().fileUrl + "/" + response.data.data.url;
+          a.target = '_blank'; // 在新标签页中打开文件
+          var urlurl = EndUrl().fileUrl + "/" + response.data.data.url;
+          console.log(urlurl);
+          var pos = urlurl.lastIndexOf('/');
+          console.log(pos);
+          var fileName = urlurl.substr(pos+1);
+          console.log(fileName);
+          var filePath = urlurl.substr(0,pos);
+          console.log(filePath);
 
-        a.download = fileName; // 可以自定义文件名
-        document.body.appendChild(a);
+          a.download = fileName; // 可以自定义文件名
+          document.body.appendChild(a);
 
-        // 模拟用户点击链接以触发下载
-        a.click();
-        // 清除虚拟<a>标签
-        document.body.removeChild(a);
+          // 模拟用户点击链接以触发下载
+          a.click();
+          // 清除虚拟<a>标签
+          document.body.removeChild(a);
+        }
       })
     },
     selectChange(selection) {
@@ -658,9 +673,9 @@ export default {
       downloadCsvFile(data).then(response => {
         console.info("下载URL: ", response.data.data.url)
         const a = document.createElement('a');
-        a.href = response.data.data.url;
+        a.href = EndUrl().fileUrl + "/" + response.data.data.url;
         a.target = '_blank'; // 在新标签页中打开文件
-        var urlurl = response.data.data.url;
+        var urlurl = EndUrl().fileUrl + "/" + response.data.data.url;
         console.log(urlurl);
         var pos = urlurl.lastIndexOf('/');
         console.log(pos);

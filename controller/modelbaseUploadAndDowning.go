@@ -36,7 +36,7 @@ func UploadModelFile(ctx *gin.Context) {
 		fmt.Println("创建文件夹失败:", err)
 	}
 	dst := folderPath + "/" + file.Filename
-	dst_sql := "http://127.0.0.1:5173/" + Type + "/" + Task + "/" + Id + "/" + file.Filename
+	dst_sql := Type + "/" + Task + "/" + Id + "/" + file.Filename
 	var modelbase model.Modelbase
 	// 判重处理
 	//pageKind、task、type、dataset_name
@@ -87,7 +87,7 @@ func UploadModelPNGFile(ctx *gin.Context) {
 		fmt.Println("创建文件夹失败:", err)
 	}
 	dst := folderPath + "/" + file.Filename
-	dst_sql := "http://127.0.0.1:5173/" + Type + "/" + Task + "/" + Id + "/" + file.Filename
+	dst_sql := Type + "/" + Task + "/" + Id + "/" + file.Filename
 	var modelbase model.Modelbase
 	// 判重处理
 	//pageKind、task、type、dataset_name
