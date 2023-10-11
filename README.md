@@ -25,9 +25,12 @@ git clone https://github.com/yafeiya/aux_tool.git
 ```
 # 1.前端
 # 路径 ./auxTool-frontEnd-main/url_config.ys  
-    "frontEndUrl":'192.168.0.103',  # 可选项，部署时用
-
-    "backEndUrl": 'http://192.168.0.103:8080'  # 必填，向后端发送请求的地址
+    // 局域网内暴露本机地址
+    "frontEndUrl":'127.0.0.1',
+    "frontpost":"5173",
+    // 向后端发送请求的地址+端口
+    "backEndUrl": 'http://127.0.0.1:8080',
+    "fileUrl": 'http://127.0.0.1:5173'
 # 2. 后端
 # 路径 ./congfig/application.yml
   # 后端服务
