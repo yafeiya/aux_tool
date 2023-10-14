@@ -269,10 +269,13 @@ func OutPutXml(ctx *gin.Context) {
 	b = append([]byte(xml.Header), b...)
 
 	xmlPath := "./auxTool-frontEnd-main/xml/" + DataName + ".xml"
+
 	err := ioutil.WriteFile(xmlPath, b, 0666)
 	if err != nil {
 		fmt.Println("后端xml文件写入失败:", err)
 	}
+	// ctx.Header("Content-Type", "imgage/jpeg") // 这里是文件类型 对应参考代码：https://blog.csdn.net/qq_40739261
+	// ctx.Header("Content-Disposition"," fileContentDisposition.xml")  // 默认文件名
 	ctx.File(xmlPath)
 	fmt.Println("已输出xml")
 }

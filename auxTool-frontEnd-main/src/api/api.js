@@ -198,6 +198,7 @@ export const sendXmlInfo = (data) => {
   return myAxios({
     method: "POST",
     url: "/xmlinfo",
+    responseType: "blob",
     params: data
   })
 }
