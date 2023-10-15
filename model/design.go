@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	// "log"
+	"strconv"
 )
 
 type DefineFunction struct {
@@ -32,6 +33,7 @@ type Design struct {
 	Task         string                 `json:"Task"`
 	Id           int                    `json:"Id"`
 	Cell         map[string]interface{} `json:"Cell"`
+	Data_path	 string 				`json:"Data_path"`
 }
 
 type Data struct {
@@ -76,7 +78,9 @@ func AddDesign(released string, dataset_name string, ttype string, rank string, 
 			maxID = design.Id
 		}
 	}
-	newDesign.Id = maxID + 1
+	id := maxID + 1
+	newDesign.Id = id
+	newDesign.Data_path = "http://127.0.0.1:5173/" + ttype + "/" + task + "/" + strconv.Itoa(id) + "/"
 
 	// 插入新的user模型
 	data.Designs = append(data.Designs, newDesign)

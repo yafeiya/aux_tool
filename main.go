@@ -28,6 +28,7 @@ func main() {
 	engine.GET("/updateDesignCard", controller.UpdateDesignCard)
 	engine.GET("/createCard", controller.CreateCard)
 	engine.GET("/deleteCard", controller.DeleteCard)
+	engine.GET("/deleteTable", controller.DeleteTable)
 	engine.GET("/deleteDesignCard", controller.DeleteDesignCard)
 	engine.GET("/getCard", controller.GetCard)
 	engine.GET("/getDesignCards", controller.GetDesignCards)

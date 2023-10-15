@@ -139,21 +139,50 @@ func GetTable(ctx *gin.Context) {
 // 获取某数据集的csv表
 func DeleteTable(ctx *gin.Context) {
 	// 参数
-	Task := ctx.Query("任务1")
-	Database_name := ctx.Query("波士顿房价数据集")
-	Type := ctx.Query("数值数据集")
-	Table_name := ctx.Query("动作表")
-
 	db := common.InitDB()
+	Id := ctx.Query("id")
+	CsvName := ctx.Query("csv")
+	Task := ctx.Query("task")
+	Type := ctx.Query("type")
+	DatasetName := ctx.Query("datasetName")
+	IdList := strings.Split(Id, "/")
+	CsvList := strings.Split(CsvName, "/")
+	fmt.Println(Id)
+	fmt.Println(IdList)
+	fmt.Println(Task)
+	fmt.Println(Type)
+	fmt.Println(DatasetName)
+	fmt.Println(CsvName)
+	//此循环为删除文件的操作
+	for _, value := range CsvList {
+		if value == "" {
+			fmt.Println("文件删除结束")
+		} else {
+			fmt.Println("vvvvvvvvvvvvaluecsv", value)
+			erro := os.Remove("./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + DatasetName + "/" + value)
+			if erro != nil {
+				fmt.Println("delete fail")
+			}
+		}
+	}
+	//此循环为删除数据库记录的操作
+	for _, value := range IdList {
+		if value == "" {
+			fmt.Println("记录删除结束")
+		} else {
+			fmt.Println("vvvvvvvvvvvvvvvvalueid", value)
+			datatables := []model.Datatable{}
+			result := db.Where("Id = ?", value).Delete(&datatables)
+			fmt.Println("rrrrrrrrrrrr", result)
+			if result.RowsAffected == 0 {
+				fmt.Println("删除失败")
+				response.Response(ctx, http.StatusOK, 404, nil, "fail")
+			} else {
+				fmt.Println("删除成功")
+				response.Success(ctx, nil, "success")
+			}
+		}
 
-	datatable := []model.Datatable{}
-	result := db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Database_name, Table_name).Delete(&datatable)
-	if result.RowsAffected == 0 {
-		fmt.Println("删除失败")
-		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-	} else {
-		fmt.Println("删除成功")
-		response.Success(ctx, nil, "success")
 	}
 }
 
