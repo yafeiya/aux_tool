@@ -98,6 +98,13 @@ export const deleteCard = (data) => {
     params:data
   })
 }
+export const deleteTable = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/deleteTable',
+    params:data
+  })
+}
 export const deleteDesignCard = (data) => {
   return myAxios({
     method: 'GET',

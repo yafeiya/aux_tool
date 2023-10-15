@@ -14,7 +14,7 @@
                 <Input v-model="searchCsv" style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
                 <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
                 <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="outPutXml">导出</Button>
-                <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteDatabase('挂起')">删除</Button>
+                <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteCsv">删除</Button>
               </Space>
             </p>
             <Modal
@@ -25,8 +25,8 @@
 
               <Form :model="formItem" :label-width="80" >
                 <FormItem label="文件名称" prop="name">
-                 <Input v-model="formItem.name"></Input>
-              </FormItem>
+                  <Input v-model="formItem.name"></Input>
+                </FormItem>
                 <FormItem label="类型" prop="type">
                   <Input v-model="formItem.type" placeholder="自动获取" disabled="True"></Input>
                 </FormItem>
@@ -35,14 +35,14 @@
                 </FormItem>
 
                 <Upload  ref="upload" accept=".csv" :format="csv" :before-upload="handleUpload" :action="this.uploadUrl"
-                 :data="formItem" :auto-upload="true"  style="margin-left: 80px"
-                 :on-format-error="uploaderror"
-                 method="POST">
+                         :data="formItem" :auto-upload="true"  style="margin-left: 80px"
+                         :on-format-error="uploaderror"
+                         method="POST">
 
                   <Button icon="ios-cloud-upload-outline" style="margin-right: 5px">上传数据集</Button>
                 </Upload>
                 <FormItem>
-                <Button type="primary" @click="upload">提交</Button>
+                  <Button type="primary" @click="upload">提交</Button>
                 </FormItem>
               </Form>
 
@@ -89,8 +89,8 @@
                        :data="modelData"
                        :on-success="uploadSuccess"
                        :show-upload-list=false
-                       >
-                  <Button icon="ios-cloud-upload-outline" style="margin-left: 30px;margin-bottom: 8px" @click="uploadModel">点击上传</Button>
+              >
+                <Button icon="ios-cloud-upload-outline" style="margin-left: 30px;margin-bottom: 8px" @click="uploadModel">点击上传</Button>
               </Upload>
               <Button icon="ios-cloud-download-outline" style="margin-left: 10px;margin-bottom: 8px" @click="downloadModel">点击下载</Button>
             </Space>
@@ -141,14 +141,14 @@
       <img v-if="this.pageKind=='defineFunction'" src="../assets/function.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
       <img v-if="this.pageKind=='design'" src="../assets/design.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
       <Tooltip content="点击编辑" placement="bottom">
-<!--        <div v-if="this.pageKind == 'design'">-->
-<!--          <a @click="toindex">-->
-<!--            <h4 style="margin-top: 130px;color: #054079;height: 10%">-->
-<!--              <Icon type="ios-create" style="font-size: 20px"/>-->
-<!--              {{this.cardName}}-->
-<!--            </h4>-->
-<!--          </a>-->
-<!--        </div>-->
+        <!--        <div v-if="this.pageKind == 'design'">-->
+        <!--          <a @click="toindex">-->
+        <!--            <h4 style="margin-top: 130px;color: #054079;height: 10%">-->
+        <!--              <Icon type="ios-create" style="font-size: 20px"/>-->
+        <!--              {{this.cardName}}-->
+        <!--            </h4>-->
+        <!--          </a>-->
+        <!--        </div>-->
         <div>
           <a @click="editBtn = true">
             <h4 style="margin-top: 130px;color: #054079;height: 10%">
@@ -186,7 +186,7 @@
                     </div>
                     <div v-if="item.itemType == 'dynamicInput'">
                       <dynamicInput :params-form="cardInfo.Params"
-                                    />
+                      />
                     </div>
                   </FormItem>
                 </Form>
@@ -207,7 +207,7 @@ import parentMenu from "@/components/parentmenu.vue";
 import mainTable from "@/components/maintable.vue";
 import lineChart from "@/components/chart/line.vue";
 import { EndUrl } from '../../url_config'
-import {uploadModelFile,uploadModelPNGFile,sendXmlInfo,getModelImage,getCsvData, updataCard, deleteCard,deleteDesignCard, getCard,downloadCsvFile,downloadModelFile,updateDesignCard,updateDefinefunctionCard,deleteDefinefunctionCard} from "../api/api.js"
+import {deleteTable,uploadModelPNGFile,sendXmlInfo,getModelImage,getCsvData, updataCard, deleteCard,deleteDesignCard, getCard,downloadCsvFile,downloadModelFile,updateDesignCard,updateDefinefunctionCard,deleteDefinefunctionCard} from "../api/api.js"
 import qs from "qs";
 export default {
   data() {
@@ -225,14 +225,14 @@ export default {
         task: '',
       },
       formItem: {
-                  id:'',
-                  name: '',
-                  type: '',
-                  task: '',
-                  time:(new Date()).getTime()
-              },
-              file: null,
-              loadingStatus: false,
+        id:'',
+        name: '',
+        type: '',
+        task: '',
+        time:(new Date()).getTime()
+      },
+      file: null,
+      loadingStatus: false,
 
       inputFormItem: {
         name: '',
@@ -339,38 +339,40 @@ export default {
       console.info("刷新成功",this.tabledata)
     },
     handleSearch(){
-        if (this.searchCsv && this.searchCsv !== '') {
-          console.info("ssssssssssssearchcsv",this.searchCsv)
-          console.info("ttttttttttttttt",this.tabledata)
-          this.searchdata=this.tabledata.filter(
-              (p) => p.Table_name.indexOf(this.searchCsv) !== -1
+      if (this.searchCsv && this.searchCsv !== '') {
+        console.info("ssssssssssssearchcsv",this.searchCsv)
+        console.info("ttttttttttttttt",this.tabledata)
+        this.searchdata=this.tabledata.filter(
+            (p) => p.Table_name.indexOf(this.searchCsv) !== -1
         )
-        } else {
-          this.modal()
-          console.info("ttttttttttttttt2",this.tabledata)
-        }
+      } else {
+        this.modal()
+        console.info("ttttttttttttttt2",this.tabledata)
+      }
     },
     inputDatabase(){
-        this.input=true
-        this.inputFormItem.type=this.taskType
-        this.inputFormItem.task=this.nowItem
+      this.input=true
+      this.inputFormItem.type=this.taskType
+      this.inputFormItem.task=this.nowItem
     },
     inputok(){
       console.info("1111111111111")
     },
-	outPutXml(){
-    let csv_path_array=[]
-    var xmlurl=EndUrl().fileUrl+'/xml/'
-    for(var i in this.selections){
-      var temp=this.selections[i].Type+"/"+this.selections[i].Task+"/"+this.selections[i].Dataset_name+"/"+this.selections[i].Table_name
-      csv_path_array.push(temp)
-    }
-    // let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
+    outPutXml(){
+      let csv_path_array=[]
+      var xmlurl=EndUrl().fileUrl+'/xml/'
+      for(var i in this.selections){
+        var temp=this.selections[i].Type+"/"+this.selections[i].Task+"/"+this.selections[i].Dataset_name+"/"+this.selections[i].Table_name
+        csv_path_array.push(temp)
+      }
+
+      // let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
       const data = {path : csv_path_array +"",
-                    data_name: this.cardInfo["Dataset_name"]}
-    
+        data_name: this.cardInfo["Dataset_name"]}
+      console.info("cccccccccccccccccccc",data)
       sendXmlInfo(data).then(res => {
         const blob = new Blob([res.data])
+        console.info("rrrrrrrrrrrrr",res)
         const a = document.createElement('a')
         a.download = this.cardInfo["Dataset_name"] + ".xml"  //TODO：改为当前卡片数据集名+xml
         a.href = window.URL.createObjectURL(blob)
@@ -443,83 +445,83 @@ export default {
       var tmpData = this.cardInfo
       // console.info("pppppppppppppppppppppppthis.pageKind",this.pageKind)
       this.$refs[name].validate((valid) => {
-            if (valid) {
-              for(var i in this.addFormItemCfg) {
-                var item = this.addFormItemCfg[i]
-                if(item.isEditOnly == true) {
-                  console.info("the only is: " + item.title)
-                  for(var j in this.cardList) {
-                    if(this.cardInfo.Id != this.cardList[j].Id && this.cardInfo[item.name] == this.cardList[j][item.name]) {
-                      this.$Message["error"]({
-                        background: true,
-                        content: item.title + "与其他项重复，请仔细检查"
-                      });
-                      // this.cardInfo = tmpData
-                      this.getPageContent()
-                      // this.updataPage("editRepeat")
-                      // console.info("over")
-                      return;
-                    }
-                  }
+        if (valid) {
+          for(var i in this.addFormItemCfg) {
+            var item = this.addFormItemCfg[i]
+            if(item.isEditOnly == true) {
+              console.info("the only is: " + item.title)
+              for(var j in this.cardList) {
+                if(this.cardInfo.Id != this.cardList[j].Id && this.cardInfo[item.name] == this.cardList[j][item.name]) {
+                  this.$Message["error"]({
+                    background: true,
+                    content: item.title + "与其他项重复，请仔细检查"
+                  });
+                  // this.cardInfo = tmpData
+                  this.getPageContent()
+                  // this.updataPage("editRepeat")
+                  // console.info("over")
+                  return;
                 }
               }
-              var data = {
-                lan: this.cardInfo["Lan"],
-                id: this.cardInfo["Id"],
-                pageKind: this.pageKind,
-                dataset_name: this.cardInfo["Dataset_name"],
-                task: this.nowItem,
-                type: this.taskType,
-                rank: this.cardInfo["Rank"],
-                character_type: this.cardInfo["Character_type"],
-                header: this.cardInfo["Header"],
-                description: this.cardInfo["Description"],
-                code: this.cardInfo["Code"],
-                alias:this.cardInfo["Alias"],
-                function_body:this.cardInfo["Function_body"],
-                params:''
-              }
-              if(data.pageKind=="defineFunction"){
-                for(var i in this.cardInfo["Params"]){
-                  data.params+=this.cardInfo["Params"][i][0]
-                  data.params+=','
-                  data.params+=this.cardInfo["Params"][i][1]
-                  if(i==this.cardInfo["Params"].length-1){
-                    break
-                  }
-                  else
-                    data.params+='|'
-                }
-              }
-
-              console.info('22222222222222222222222database--data:',data)
-              // console.info('database--data:',data)
-              // var putUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
-              if(data.pageKind=="database"||data.pageKind=="modelbase")
-              {
-                updataCard(data).then(res => {
-                  this.updataPage("edit")
-                  console.info('44444444526262database--data:',res)
-                })
+            }
+          }
+          var data = {
+            lan: this.cardInfo["Lan"],
+            id: this.cardInfo["Id"],
+            pageKind: this.pageKind,
+            dataset_name: this.cardInfo["Dataset_name"],
+            task: this.nowItem,
+            type: this.taskType,
+            rank: this.cardInfo["Rank"],
+            character_type: this.cardInfo["Character_type"],
+            header: this.cardInfo["Header"],
+            description: this.cardInfo["Description"],
+            code: this.cardInfo["Code"],
+            alias:this.cardInfo["Alias"],
+            function_body:this.cardInfo["Function_body"],
+            params:''
+          }
+          if(data.pageKind=="defineFunction"){
+            for(var i in this.cardInfo["Params"]){
+              data.params+=this.cardInfo["Params"][i][0]
+              data.params+=','
+              data.params+=this.cardInfo["Params"][i][1]
+              if(i==this.cardInfo["Params"].length-1){
+                break
               }
               else
-              {
-                if(data.pageKind=="design"){
-                  updateDesignCard(data).then(res => {
-                    console.info('222222222222222222222222222we--data:',res)
-                    this.updataPage("edit")
-                  })
-                }
-                else
-                updateDefinefunctionCard(data).then(res => {
-                  console.info('222222222222222222222222222we--data:',res)
-                  this.updataPage("edit")
-                })
-              }
+                data.params+='|'
             }
-            else {
-              this.$Message.error('编辑失败，请检查必填项！');
+          }
+
+          console.info('22222222222222222222222database--data:',data)
+          // console.info('database--data:',data)
+          // var putUrl = this.jsonBaseUrl + "/" + this.pageKind + "/" + this.cardInfo.id
+          if(data.pageKind=="database"||data.pageKind=="modelbase")
+          {
+            updataCard(data).then(res => {
+              this.updataPage("edit")
+              console.info('44444444526262database--data:',res)
+            })
+          }
+          else
+          {
+            if(data.pageKind=="design"){
+              updateDesignCard(data).then(res => {
+                console.info('222222222222222222222222222we--data:',res)
+                this.updataPage("edit")
+              })
             }
+            else
+              updateDefinefunctionCard(data).then(res => {
+                console.info('222222222222222222222222222we--data:',res)
+                this.updataPage("edit")
+              })
+          }
+        }
+        else {
+          this.$Message.error('编辑失败，请检查必填项！');
+        }
       })
 
     },
@@ -570,38 +572,38 @@ export default {
       this.$Message.error('文件类型不支持')
     },
     handleUpload (file) {
-              console.info("this.cardInfo",this.cardInfo)
-              this.file = file;
-              this.formItem.id=this.cardInfo["Id"]
-              this.formItem.name=file.name
-              this.formItem.task=this.nowItem
-              this.formItem.type=this.taskType
-              this.formItem.time=(new Date()).getTime()
-              return false;
-          },
+      console.info("this.cardInfo",this.cardInfo)
+      this.file = file;
+      this.formItem.id=this.cardInfo["Id"]
+      this.formItem.name=file.name
+      this.formItem.task=this.nowItem
+      this.formItem.type=this.taskType
+      this.formItem.time=(new Date()).getTime()
+      return false;
+    },
     upload () {
-              this.loadingStatus = true;
-              setTimeout(() => {
-                  // 重点 赋值
-                  console.info("iddddddd",this.formItem)
-                  this.$refs.upload.data,'id',this.formItem.id
-                  this.$refs.upload.data,'type',this.formItem.type
-                  this.$refs.upload.data,'task',this.formItem.task
-                  this.$refs.upload.data,'time',this.formItem.time
-                  this.$refs.upload.post(this.file)
-                  this.file = null;
-                  this.loadingStatus = false;
-                  this.$Message.success(this.file,'上传成功')
-              }, 150);
-      },
+      this.loadingStatus = true;
+      setTimeout(() => {
+        // 重点 赋值
+        console.info("iddddddd",this.formItem)
+        this.$refs.upload.data,'id',this.formItem.id
+        this.$refs.upload.data,'type',this.formItem.type
+        this.$refs.upload.data,'task',this.formItem.task
+        this.$refs.upload.data,'time',this.formItem.time
+        this.$refs.upload.post(this.file)
+        this.file = null;
+        this.loadingStatus = false;
+        this.$Message.success(this.file,'上传成功')
+      }, 150);
+    },
     uploadModel(){
       this.modelData.id=this.cardInfo["Id"],
-      this.modelData.task=this.cardInfo["Task"],
-      this.modelData.type=this.cardInfo["Type"],
-      console.info("mmmmmmmmmmmmmmmmm",this.modelData)
+          this.modelData.task=this.cardInfo["Task"],
+          this.modelData.type=this.cardInfo["Type"],
+          console.info("mmmmmmmmmmmmmmmmm",this.modelData)
     },
     uploadModelPNG(){
-          this.imageUploadDisabled=false,
+      this.imageUploadDisabled=false,
           this.modelData.id=this.cardInfo["Id"],
           this.modelData.task=this.cardInfo["Task"],
           this.modelData.type=this.cardInfo["Type"],
@@ -653,9 +655,28 @@ export default {
       this.selections = selection;
       console.log('已选中数据', this.selections)
     },
-    deleteDatabase(){
-        console.info("dddddddddddddddddelete",this.selections)
-
+    deleteCsv(){
+      let selectId=""
+      let selectCsv=""
+      for(var i in this.selections){
+        selectId+=this.selections[i].Id+"/"
+        selectCsv+=this.selections[i].Table_name+"/"
+      }
+      let data = {
+        datasetName:this.cardInfo["Id"],
+        type:this.cardInfo["Type"],
+        task:this.cardInfo["Task"],
+        id:selectId,
+        csv:selectCsv
+      }
+      console.info("222222222222222222222",data)
+      deleteTable(data).then(res => {
+        console.info('删除csv结果：', res)
+      })
+      this.$Message.success('删除成功')
+      setTimeout(() => {
+        this.Refresh_table()
+      },200)
     },
     // data = ["数值数据集/任务1/13/loss.csv","数值数据集/任务1/13/loss.csv"]
     downloadCsv(row){
