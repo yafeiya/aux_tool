@@ -434,7 +434,6 @@ export default {
       console.info("TTTTTTTTTTTTTTTdata:",data)
       data = qs.stringify(data)
       getModelImage(data).then(response => {
-
         this.modelImageUrl=EndUrl().fileUrl + "/" + response.data.data.url
         console.info("图片URL: ", this.modelImageUrl)
       })

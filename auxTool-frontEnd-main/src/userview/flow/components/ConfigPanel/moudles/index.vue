@@ -3,56 +3,60 @@
     <TabPane label="属性" name="1">
 
       <div
-      v-for ="item in hasChildren(list)"
+      v-for ="children1 in hasChildren(menu)"
       >
         <div
-        v-for ="childrenitem in item.children"
+        v-for ="children2 in children1.children"
         >
-        <div v-if="!childrenitem.children">
-          <Row align="middle" 
-          v-if="globalGridAttr.selflabel === childrenitem.label"
+          <div
+          v-for ="childrenitem in children2.children"
           >
-            <Col :span="10">指定{{childrenitem.label}}</Col>
-            <Col :span="12">
-              <Select
-                style="width: 100%"
-                v-model="data.nodeLabelname "
-                @on-change="onLabelChange"
+            <div v-if="!childrenitem.children">
+              <Row align="middle" 
+              v-if="globalGridAttr.selflabel === childrenitem.title"
               >
-                <Option 
-                v-for="option in childrenitem.content"
-                :value="option.name"
-                >
-                {{option.name}}
-                </Option>
-              </Select>
-            </Col>
-          </Row>
-        </div>
-
-        <div v-else-if="childrenitem.children">
-          <div v-for="subchildrenitem in childrenitem.children">
-            <Row align="middle" 
-            v-if="globalGridAttr.selflabel === subchildrenitem.label"
-            >
-              <Col :span="10">指定{{subchildrenitem.label}}</Col>
-              <Col :span="12">
-                <Select
-                  style="width: 100%"
-                  v-model="data.nodeLabelname "
-                  @on-change="onLabelChange"
-                >
-                  <Option 
-                  v-for="option in subchildrenitem.content"
-                  :value="option.name"
+                <Col :span="10">指定{{childrenitem.title}}</Col>
+                <Col :span="12">
+                  <Select
+                    style="width: 100%"
+                    v-model="data.nodeLabelname "
+                    @on-change="onLabelChange"
                   >
-                  {{option.name}}
-                  </Option>
-                </Select>
-              </Col>
-            </Row>
+                    <Option 
+                    v-for="option in childrenitem.content"
+                    :value="option.Dataset_name"
+                    >
+                    {{option.Dataset_name}}
+                    </Option>
+                  </Select>
+                </Col>
+              </Row>
+            </div>
+
+            <div v-else-if="childrenitem.children">
+              <div v-for="subchildrenitem in childrenitem.children">
+                <Row align="middle" 
+                v-if="globalGridAttr.selflabel === subchildrenitem.title"
+                >
+                  <Col :span="10">指定{{subchildrenitem.title}}</Col>
+                  <Col :span="12">
+                    <Select
+                      style="width: 100%"
+                      v-model="data.nodeLabelname "
+                      @on-change="onLabelChange"
+                    >
+                      <Option 
+                      v-for="option in subchildrenitem.content"
+                      :value="option.Dataset_name"
+                      >
+                      {{option.Dataset_name}}
+                      </Option>
+                    </Select>
+                  </Col>
+                </Row>
+              </div>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -132,21 +136,21 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, watch, reactive} from 'vue';
+  import { defineComponent, inject, watch, reactive, ref} from 'vue';
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
-  import { menulist } from '../../../list'
+  import { getCard, getMenuInfo} from '../../../../../api/api.js'
+
 
 
   
   export default defineComponent({
     name: 'Index',
 
-    setup() {
+    async setup() {
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
-      const list = menulist()
 
       const data = reactive({
         nodenetworkdepth: '',
@@ -181,6 +185,46 @@
           deep: false,
         },
       );
+
+      let databasecards:any  = ref([])
+      // let databaselist:any  = ref([])
+      let menu:any = [
+        {
+          "name" :"modelbase",
+          "title": "模型模板",
+          "children": []
+        },
+        ]
+
+      let modelbase = await getMenuInfo("modelbase")
+      menu[0]["children"] = modelbase.data;
+
+      // console.log("显示初始菜单",await menu)
+      let i = 0;
+      while (menu[0]["children"][i] != null) { 
+        // console.log(i)
+        // console.log(menu[0]["children"][i].title)
+        let j=0
+        while (menu[0]["children"][i]["children"][j] != null) { 
+          // console.log(menu[0]["children"][i]["children"][j].title)
+          
+          let tip = {
+            pageKind: 'modelbase',
+            task: menu[0]["children"][i]["children"][j].title,
+            Type: menu[0]["children"][i].title,
+          }
+
+          databasecards = await getCard(tip)
+          if(databasecards.data.data != null){
+            let cardList = await databasecards.data.data.modelbase
+            // console.log("读取数据库",await cardList)
+            menu[0]["children"][i]["children"][j].content = cardList
+          }
+          j++
+        }
+        i++
+        // console.log("显示最终菜单",await menu)
+      }
 
 
 
@@ -279,7 +323,7 @@
         onfuturerewarddiscountChange,
         onmodelurlChange,
         onmodeltypeChange,
-        list,
+        menu,
         hasChildren,
         noChildren,
         onLabelChange

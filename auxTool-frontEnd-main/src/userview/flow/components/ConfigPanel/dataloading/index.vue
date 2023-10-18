@@ -1,17 +1,26 @@
 <template>
   <Tabs class="config" value="1">
     <TabPane label="属性" name="1">
-      <Row 
-      align="middle" 
+      <Row
+      align="middle"
       v-if="globalGridAttr.selflabel === '仿真监听数据'"
       >
         <Upload action="//localhost:3000/">
-          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择仿真监听数据</Button>
+          <Button class="view" icon="ios-cloud-upload-outline" @click="changewritepath()">选择仿真监听数据</Button>
+        </Upload>
+        <Upload action="//localhost:3000/">
+          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择网络损失数据</Button>
+        </Upload>
+        <Upload action="//localhost:3000/">
+          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择仿真奖励数据</Button>
+        </Upload>
+        <Upload action="//localhost:3000/">
+          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择训练动作数据</Button>
         </Upload>
       </Row>
 
-      <Row 
-      align="middle" 
+      <Row
+      align="middle"
       v-if="globalGridAttr.selflabel === '模型日志数据'"
       >
         <Upload action="//localhost:3000/">
@@ -20,60 +29,39 @@
       </Row>
 
       <div
-      v-for ="item in hasChildren(list)"
+      v-for ="children1 in hasChildren(menu)"
       >
         <div
-        v-for ="childrenitem in item.children"
+        v-for ="children2 in children1.children"
         >
-        <div v-if="!childrenitem.children">
-          <Row align="middle" 
-          v-if="(globalGridAttr.selflabel === childrenitem.label)&&(globalGridAttr.selflabel != '仿真监听数据')&&(globalGridAttr.selflabel != '模型日志数据')"
+          <div
+          v-for ="childrenitem in children2.children"
           >
-            <Col :span="10">指定{{childrenitem.label}}</Col>
-            <Col :span="12">
-              <Select
-                style="width: 100%"
-                v-model="data.nodeLabelname "
-                @on-change="onLabelChange"
-              >
-                <Option 
-                v-for="option in childrenitem.content"
-                :value="option.name"
-                >
-                {{option.name}}
-                </Option>
-              </Select>
-            </Col>
-          </Row>
-        </div>
 
-        <!-- <div v-if="childrenitem.children">
-          <div v-for="subchildrenitem in childrenitem.children">
-            <Row align="middle" 
-            v-if="globalGridAttr.selflabel === subchildrenitem.label"
+            <Row align="middle"
+            v-if="(globalGridAttr.selflabel === childrenitem.title)&&(globalGridAttr.selflabel != '仿真监听数据')&&(globalGridAttr.selflabel != '模型日志数据')"
             >
-              <Col :span="10">指定{{subchildrenitem.label}}</Col>
+              <Col :span="10">指定{{childrenitem.title}}</Col>
               <Col :span="12">
                 <Select
                   style="width: 100%"
                   v-model="data.nodeLabelname "
                   @on-change="onLabelChange"
                 >
-                  <Option 
-                  v-for="option in subchildrenitem.content"
-                  :value="option.name"
+                  <Option
+                  v-for="option in childrenitem.content"
+                  :value="option.Dataset_name"
                   >
-                  {{option.name}}
+                  {{option.Dataset_name}}
                   </Option>
                 </Select>
               </Col>
             </Row>
           </div>
-        </div> -->
         </div>
       </div>
 
-      <!-- <Row align="middle" 
+      <!-- <Row align="middle"
       v-if="globalGridAttr.selflabel === '数值数据集'"
       >
         <Col :span="10">指定数值数据集</Col>
@@ -83,7 +71,7 @@
             v-model="data.nodeLabelname "
             @on-change="onLabelChange"
           >
-            <Option 
+            <Option
             v-for="option in selectoptions2"
             :value="option.name"
             >
@@ -93,7 +81,7 @@
         </Col>
       </Row> -->
 
-
+      <div v-if="(globalGridAttr.selflabel != '仿真监听数据')&&(globalGridAttr.selflabel != '模型日志数据')">
 
       <Row class="params" align="middle">
         <Col :span="8">数据路径</Col>
@@ -119,6 +107,7 @@
           <Input v-model="data.nodeimgsize" style="width: 100%" @change="onimgsizeChange" />
         </Col>
       </Row>
+    </div>
 
     </TabPane>
     <TabPane label="节点" name="2">
@@ -165,22 +154,24 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, watch, reactive} from 'vue';
+  import { defineComponent, inject, watch, reactive, ref} from 'vue';
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
-  import { menulist } from '../../../list'
+  import { getCard, getMenuInfo} from '../../../../../api/api.js'
 
 
-  
   export default defineComponent({
     name: 'Index',
 
-    setup() {
+    async setup() {
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
-      const list = menulist()
-
+      let writepath :any =inject('datapath')
+      const changewritepath = () => {
+        writepath.value = !writepath.value
+        // console.log(writepath.value)
+      }
 
       const data = reactive({
         nodedataurl: '',
@@ -201,11 +192,11 @@
           data.nodeheadernum = globalGridAttr.nodeheadernum;
           data.nodedatasetsize = globalGridAttr.nodedatasetsize;
           data.nodeimgsize = globalGridAttr.nodeimgsize;
-          data.nodeStrokeWidth = globalGridAttr.nodeStrokeWidth
-          data.nodeFill = globalGridAttr.nodeFill
-          data.nodeFontSize = globalGridAttr.nodeFontSize
-          data.nodeLabelname = globalGridAttr.nodename 
-          data.nodeselflabel = globalGridAttr.selflabel
+          data.nodeStrokeWidth = globalGridAttr.nodeStrokeWidth;
+          data.nodeFill = globalGridAttr.nodeFill;
+          data.nodeFontSize = globalGridAttr.nodeFontSize;
+          data.nodeLabelname = globalGridAttr.nodename;
+          data.nodeselflabel = globalGridAttr.selflabel;
           // curCel?.attr('body/stroke', 'red');
         },
         {
@@ -213,6 +204,51 @@
           deep: false,
         },
       );
+
+
+      let databasecards:any  = ref([])
+      // let databaselist:any  = ref([])
+      let menu:any = [
+        {
+          "name" :"database",
+          "title": "数据加载",
+          "children": []
+        },
+        ]
+
+      let database = await getMenuInfo("database")
+      menu[0]["children"] = database.data;
+
+      // console.log("显示初始菜单",await menu)
+      let i = 0;
+      while (menu[0]["children"][i] != null) {
+        // console.log(i)
+        // console.log(menu[0]["children"][i].title)
+        let j=0
+        while (menu[0]["children"][i]["children"][j] != null) {
+          // console.log(menu[0]["children"][i]["children"][j].title)
+
+          let tip = {
+            pageKind: 'database',
+            task: menu[0]["children"][i]["children"][j].title,
+            Type: menu[0]["children"][i].title,
+          }
+
+          databasecards = await getCard(tip)
+          if(databasecards.data.data != null){
+            let cardList = await databasecards.data.data.database
+            // console.log("读取数据库",await cardList)
+            menu[0]["children"][i]["children"][j].content = cardList
+          }
+          j++
+        }
+        i++
+        // console.log("显示最终菜单",await menu)
+      }
+
+      // console.log("显示最终菜单",await menu)
+
+
 
       const onStrokeChange = (e: any) => {
         const val = e.target.value;
@@ -254,24 +290,24 @@
         curCel?.setData({
           headernum: val,
         });
-      };  
+      };
 
       const ondatasetsizeChange = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
           datasetsize: val,
         });
-      };  
+      };
 
       const onimgsizeChange = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
           imgsize: val,
         });
-      }; 
-      
+      };
+
       const onLabelChange = (value) => {
-        
+
         const val = value;
         globalGridAttr.nodename = val;
         curCel?.setData({
@@ -303,9 +339,10 @@
         ondatasetsizeChange,
         onimgsizeChange,
         onLabelChange,
-        list,
+        menu,
         hasChildren,
         noChildren,
+        changewritepath,
       };
     },
   });
@@ -315,7 +352,7 @@
 
 .config{
   width: 300px;
-  text-align: center, 
+  text-align: center
 }
 .params{
   margin: 10px;

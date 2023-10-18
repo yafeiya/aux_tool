@@ -15,8 +15,7 @@ import (
 	// "strings"
 )
 
-
-/* 
+/*
 前端保存按钮
 */
 func SaveCanvas(ctx *gin.Context) {
@@ -34,54 +33,54 @@ func SaveCanvas(ctx *gin.Context) {
 		return
 	}
 
-    // 解析JSON数据
-    var data model.Data
-    if err := json.Unmarshal(jsonData, &data); err != nil {
-        fmt.Println("解析JSON数据失败:", err)
+	// 解析JSON数据
+	var data model.Data
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		fmt.Println("解析JSON数据失败:", err)
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-        return
-    }
+		return
+	}
 
-    // 找到要覆盖的design
-    var targetDesign *model.Design
-    for i := range data.Designs {
-        if fmt.Sprintf("%d", data.Designs[i].Id) == id {
-            targetDesign = &data.Designs[i]
-            break
-        }
-    }
+	// 找到要覆盖的design
+	var targetDesign *model.Design
+	for i := range data.Designs {
+		if fmt.Sprintf("%d", data.Designs[i].Id) == id {
+			targetDesign = &data.Designs[i]
+			break
+		}
+	}
 
-    if targetDesign != nil {
-        // 解析新的cell数据为map[string]interface{}
-        var newCellMap map[string]interface{}
-        if err := json.Unmarshal([]byte(newCellData), &newCellMap); err != nil {
-            fmt.Println("解析新的cell数据失败:", err)
+	if targetDesign != nil {
+		// 解析新的cell数据为map[string]interface{}
+		var newCellMap map[string]interface{}
+		if err := json.Unmarshal([]byte(newCellData), &newCellMap); err != nil {
+			fmt.Println("解析新的cell数据失败:", err)
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-            return
-        }
+			return
+		}
 
-        // 将新的cell数据覆盖到目标design的Cells字段
-        targetDesign.Cell = newCellMap
+		// 将新的cell数据覆盖到目标design的Cells字段
+		targetDesign.Cell = newCellMap
 
-        // 将更新后的数据重新写入JSON文件
-        updatedData, err := json.MarshalIndent(data, "", "  ")
-        if err != nil {
-            fmt.Println("序列化更新后的数据失败:", err)
+		// 将更新后的数据重新写入JSON文件
+		updatedData, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			fmt.Println("序列化更新后的数据失败:", err)
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-            return
-        }
+			return
+		}
 
-        if err := ioutil.WriteFile("data.json", updatedData, os.ModePerm); err != nil {
-            fmt.Println("写入JSON文件失败:", err)
+		if err := ioutil.WriteFile("data.json", updatedData, os.ModePerm); err != nil {
+			fmt.Println("写入JSON文件失败:", err)
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-            return
-        }
-        fmt.Println("数据已更新")
+			return
+		}
+		fmt.Println("数据已更新")
 		response.Success(ctx, nil, "success")
-    } else {
-        fmt.Println("未找到指定的design")
+	} else {
+		fmt.Println("未找到指定的design")
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-    }
+	}
 }
 
 /*
@@ -101,72 +100,72 @@ func RunCanvas(ctx *gin.Context) {
 		return
 	}
 
-    // 解析JSON数据
-    var data model.Data
-    if err := json.Unmarshal(jsonData, &data); err != nil {
-        fmt.Println("解析JSON数据失败:", err)
+	// 解析JSON数据
+	var data model.Data
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		fmt.Println("解析JSON数据失败:", err)
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-        return
-    }
+		return
+	}
 
-    // 找到要覆盖的design
-    var targetDesign *model.Design
-    for i := range data.Designs {
-        if fmt.Sprintf("%d", data.Designs[i].Id) == id {
-            targetDesign = &data.Designs[i]
-            break
-        }
-    }
+	// 找到要覆盖的design
+	var targetDesign *model.Design
+	for i := range data.Designs {
+		if fmt.Sprintf("%d", data.Designs[i].Id) == id {
+			targetDesign = &data.Designs[i]
+			break
+		}
+	}
 
-    if targetDesign != nil {
-        // 解析新的cell数据为map[string]interface{}
-        var newCellMap map[string]interface{}
-        if err := json.Unmarshal([]byte(newCellData), &newCellMap); err != nil {
-            fmt.Println("解析新的cell数据失败:", err)
+	if targetDesign != nil {
+		// 解析新的cell数据为map[string]interface{}
+		var newCellMap map[string]interface{}
+		if err := json.Unmarshal([]byte(newCellData), &newCellMap); err != nil {
+			fmt.Println("解析新的cell数据失败:", err)
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-            return
-        }
+			return
+		}
 
-        // 将新的cell数据覆盖到目标design的Cells字段
-        targetDesign.Cell = newCellMap
+		// 将新的cell数据覆盖到目标design的Cells字段
+		targetDesign.Cell = newCellMap
 
-        // 将更新后的数据重新写入JSON文件
-        updatedData, err := json.MarshalIndent(data, "", "  ")
-        if err != nil {
-            fmt.Println("序列化更新后的数据失败:", err)
+		// 将更新后的数据重新写入JSON文件
+		updatedData, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			fmt.Println("序列化更新后的数据失败:", err)
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-            return
-        }
+			return
+		}
 
-        if err := ioutil.WriteFile("data.json", updatedData, os.ModePerm); err != nil {
-            fmt.Println("写入JSON文件失败:", err)
+		if err := ioutil.WriteFile("data.json", updatedData, os.ModePerm); err != nil {
+			fmt.Println("写入JSON文件失败:", err)
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-            return
-        }
-        fmt.Println("数据已更新")
+			return
+		}
+		fmt.Println("数据已更新")
 
 		// example添加
 		db := common.InitDB()
 
 		example := model.Example{
-			Example_name:   	design_name,
-			Rank:   			Rank,
-			State:           	"运行",
-			Cpu_num:           	4,
-			Gpu_num: 			1,
-			Post_data:         	0,
-			Dataset_url:      	"",
-			Model_name:    		"",
-			Model_type:         "",
-			Epoch_num:          "200e",
-			Loss:           	"loss",
-			Optimizer:          "optimizer",
-			Decay:           	"decay",
-			Evaluation:         "evaluation",
-			Model_url:          "model_url",
-			Memory:           	"2000M",
-			Start_time:         0,
-			End_time:           0,
+			Example_name: design_name,
+			Rank:         Rank,
+			State:        "运行",
+			Cpu_num:      4,
+			Gpu_num:      1,
+			Post_data:    0,
+			Dataset_url:  "",
+			Model_name:   "",
+			Model_type:   "",
+			Epoch_num:    "200e",
+			Loss:         "loss",
+			Optimizer:    "optimizer",
+			Decay:        "decay",
+			Evaluation:   "evaluation",
+			Model_url:    "model_url",
+			Memory:       "2000M",
+			Start_time:   0,
+			End_time:     0,
 		}
 		// 判重处理
 		//pageKind、task、type、dataset_name
@@ -179,10 +178,10 @@ func RunCanvas(ctx *gin.Context) {
 			db.Create(&example)
 			response.Success(ctx, nil, "success")
 		}
-    } else {
-        fmt.Println("未找到指定的design")
+	} else {
+		fmt.Println("未找到指定的design")
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-    }
+	}
 }
 
 /*
@@ -200,6 +199,8 @@ func SaveCanvasPNG(ctx *gin.Context) {
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
 	}
 
 	dst := folderPath + "/image.png"
@@ -207,7 +208,7 @@ func SaveCanvasPNG(ctx *gin.Context) {
 	ctx.SaveUploadedFile(image, dst)
 
 	response.Success(ctx, nil, "success")
-	
+
 }
 
 /*
@@ -225,6 +226,8 @@ func UploadReward(ctx *gin.Context) {
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
 	}
 
 	dst := folderPath + "/reward.txt"
@@ -249,6 +252,8 @@ func UploadActions(ctx *gin.Context) {
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
 	}
 
 	dst := folderPath + "/action.json"
@@ -280,4 +285,39 @@ func UploadLoss(ctx *gin.Context) {
 	ctx.SaveUploadedFile(loss, dst)
 
 	response.Success(ctx, nil, "success")
+}
+
+func GetprocessFile(ctx *gin.Context) {
+	fmt.Println("GetprocessFile")
+	Id := ctx.PostForm("id")
+	Type := ctx.Query("type")
+	Task := ctx.Query("task")
+	//processFile为reward.txt \ actions.json \ loss.csv
+	processFile := ctx.Query("processFile")
+	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + processFile
+
+	Info, err := GetTrainingProcessFileInfo(file_path)
+	if err != nil {
+		fmt.Println(err)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, gin.H{"Info": Info}, "success")
+}
+
+func GetPNG(ctx *gin.Context) {
+	fmt.Println("GetPNG")
+	Id := ctx.PostForm("id")
+	Type := ctx.Query("type")
+	Task := ctx.Query("task")
+	//目录下的文件名（带拓展名）
+	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + "image.png"
+
+	image, err := GetTrainingProcessFileInfo(file_path)
+	if err != nil {
+		fmt.Println(err)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, gin.H{"image": image}, "success")
 }

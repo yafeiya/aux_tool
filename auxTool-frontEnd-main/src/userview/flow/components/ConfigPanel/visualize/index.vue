@@ -89,6 +89,7 @@
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
+      let readpath :any =inject('datapath')
       
       // 向画布页面（祖父）传递预览图参数
       const changepreview: any = inject('changepreview')
@@ -96,6 +97,7 @@
       const sendMoneytoYe = function() {
         preview.value = !preview.value
         changepreview(preview.value)
+        console.log(readpath.value)
       }
 
 
@@ -119,7 +121,13 @@
           data.nodeFontSize = globalGridAttr.nodeFontSize
           data.nodeselflabel = globalGridAttr.selflabel
           data.nodedataurl = globalGridAttr.dataurl
-          initchart(data.nodeselflabel)
+          // 判断图像路径
+          if(readpath.value == true){
+            initchart(data.nodeselflabel)
+            // console.log("inif",readpath.value)
+          }else {
+            clearHander()
+          }
         },
         {
           immediate: false,
@@ -129,6 +137,7 @@
 
 
       const initchart = (label) => {
+        // console.log("initchart",readpath.value)
         clearHander()
         let actdata = datas["actions"]
         let rewarddata = datas["reward"]
