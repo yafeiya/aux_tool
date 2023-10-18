@@ -40,6 +40,29 @@
                 >
             </Card>
           </transition>
+          <transition name="move-down">
+            <Card
+                  class="preview"
+                  v-show="imgpreview" id="modelpre" 
+                  :style="{
+                    width: '1500px', 
+                    height: '300px', 
+                  }"
+                  :bordered="false"
+                  >
+                  <suspense>
+                    <Image 
+                    class = "img"
+                    :src = conbineimgpath(imgpath)
+                    fit="fill" 
+                    width="500px" 
+                    height="300px" 
+                    alt=""
+                    >
+                    </Image>
+                  </suspense>
+              </Card>
+          </transition>
       </Layout>
       <Sider 
       class="rightsider" 
@@ -111,12 +134,36 @@
           heightnum.value = 1050
         }else 
         {heightnum.value = 750}
-        console.log(grandpreview.value)
+        // console.log(grandpreview.value)
 
-        console.log(heightnum.value)
+        // console.log(heightnum.value)
       }
       provide('changepreview', changepreview)
       provide('grandpreview', grandpreview)
+
+      const imgpreview = ref(false)
+      var imgpath = ref("")
+      const changeimgpreview = function(value1,value2) {
+        imgpreview.value = value1
+        imgpath = value2
+        console.log("接受的地址:",imgpath)
+
+        if(!imgpreview.value) {
+          heightnum.value = 1050
+        }else 
+        {heightnum.value = 750}
+      }
+      provide('changeimgpreview', changeimgpreview)
+      provide('imgpreview', imgpreview)
+      provide('imgpath', imgpath)
+
+      // "http://127.0.0.1:5173/" +
+      const conbineimgpath =(a) =>{
+        if(a != null) {
+          // console.log(new URL(`http://127.0.0.1:5173/${imgpath}`))
+          return new URL(`http://127.0.0.1:5173/${imgpath}`).href;
+        }
+      }
 
 
       const initGraph = function () {
@@ -234,6 +281,10 @@
         changepreview, 
         grandpreview,
         heightnum,
+        changeimgpreview,
+        imgpreview,
+        imgpath,
+        conbineimgpath
       };
     },
   });
@@ -275,10 +326,15 @@
     align-items: center;
     background-color: #fff;
     z-index: 2;
+    margin: auto;
   }
   .rightsider{
     background-color: #fff;
     z-index: 3;
+  }
+  .img{
+    margin: auto;
+    align-items: center;
   }
 }
 </style>

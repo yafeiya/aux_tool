@@ -91,6 +91,9 @@
           <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
         </Col>
       </Row>
+      <Button class="view" @click="sendtoYe">缩略图显示</Button>
+
+      <!-- <Image src="http://127.0.0.1:5173/机器学习/回归/10/home.png" fit="fill" width="400px" height="220px" alt=""></Image> -->
     </TabPane>
     <TabPane label="节点" name="2">
       <Row align="middle">
@@ -151,6 +154,33 @@
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
+
+
+      // 向画布页面（祖父）传递预览图参数
+      const changeimgpreview: any = inject('changeimgpreview')
+      const imgpreview: any = inject('imgpreview')
+      var imgpath: any = inject('imgpath')
+      const sendtoYe = function() {
+        for(var children1 of menu[0].children){
+          // console.log(children1)
+          for(var children2 of children1.children){
+            // console.log(children2)
+            if(children2.content != null){
+              for(var item of children2.content){
+                if(item.Dataset_name === globalGridAttr.nodename){
+                  var path = item.Image_path
+                  console.log(path)
+                }
+              }
+            }
+          }
+        }
+        imgpath = path
+
+        imgpreview.value = !imgpreview.value
+        changeimgpreview(imgpreview.value,imgpath)
+        // console.log(imgpath)
+      }
 
       const data = reactive({
         nodenetworkdepth: '',
@@ -326,7 +356,8 @@
         menu,
         hasChildren,
         noChildren,
-        onLabelChange
+        onLabelChange,
+        sendtoYe
       };
     },
   });
