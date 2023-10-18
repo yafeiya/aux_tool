@@ -19,6 +19,11 @@ func main() {
 	engine := gin.Default()
 	engine.Use(common.CORS())
 	engine.POST("/upload", controller.UploadCsvFile)
+	engine.POST("/uploadReward", controller.UploadReward)
+	engine.POST("/uploadActions", controller.UploadActions)
+	engine.POST("/uploadLoss", controller.UploadLoss)
+	engine.POST("/getprocessFile", controller.GetprocessFile)
+
 	engine.POST("/uploadModelFile", controller.UploadModelFile)
 	engine.POST("/uploadModelPNGFile", controller.UploadModelPNGFile)
 	engine.POST("/xmlinfo", controller.OutPutXml)

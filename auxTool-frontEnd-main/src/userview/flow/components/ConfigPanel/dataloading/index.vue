@@ -5,17 +5,35 @@
       align="middle"
       v-if="globalGridAttr.selflabel === '仿真监听数据'"
       >
-        <Upload action="//localhost:3000/">
-          <Button class="view" icon="ios-cloud-upload-outline" @click="changewritepath()">选择仿真监听数据</Button>
+        <Upload  :action="EndUrl().backEndUrl+'/uploadLoss'"
+                 style="margin-bottom: 10px"
+                 method="POST"
+                 accept=".csv"
+                 :data="lossData"
+                 :show-upload-list=false
+                 :on-success="uploadSuccess"
+        >
+          <Button class="view" icon="ios-cloud-upload-outline" @click="uploadfile">选择网络损失数据</Button>
         </Upload>
-        <Upload action="//localhost:3000/">
-          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择网络损失数据</Button>
+        <Upload  :action="EndUrl().backEndUrl+'/uploadReward'"
+                 style="margin-bottom: 10px"
+                 method="POST"
+                 accept=".txt"
+                 :data="lossData"
+                 :show-upload-list=false
+                 :on-success="uploadSuccess"
+        >
+          <Button class="view" icon="ios-cloud-upload-outline" @click="uploadfile">选择仿真奖励数据</Button>
         </Upload>
-        <Upload action="//localhost:3000/">
-          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择仿真奖励数据</Button>
-        </Upload>
-        <Upload action="//localhost:3000/">
-          <Button class="view" icon="ios-cloud-upload-outline" @click="">选择训练动作数据</Button>
+        <Upload  :action="EndUrl().backEndUrl+'/uploadActions'"
+                 style="margin-bottom: 10px"
+                 method="POST"
+                 accept=".json"
+                 :data="lossData"
+                 :show-upload-list=false
+                 :on-success="uploadSuccess"
+        >
+          <Button class="view" icon="ios-cloud-upload-outline" @click="uploadfile">选择训练动作数据</Button>
         </Upload>
       </Row>
 
@@ -157,17 +175,49 @@
   import { defineComponent, inject, watch, reactive, ref} from 'vue';
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
+  import {EndUrl} from "../../../../../../url_config";
   import { getCard, getMenuInfo} from '../../../../../api/api.js'
 
 
   export default defineComponent({
     name: 'Index',
+    data() {
+      return {
+       lossData: {
+          id:'',
+          type: '',
+          task: '',
+        }
+
+      }
+    },
+    methods: {
+      EndUrl,
+      uploadfile(){
+        var url = decodeURI(window.location.href);
+        var cs_arr = url.split('?')[1];//?后面的
+        var id = cs_arr.split('=')[1].split('&')[0];
+        var task = cs_arr.split('=')[2].split('&')[0];
+        var type = cs_arr.split('=')[3];
+        this.lossData.id=id,
+        this.lossData.task=task,
+        this.lossData.type=type,
+        console.info("iiiiiiiiiiiiiiiiiiiiii",this.lossData)
+      },
+      uploadSuccess(){
+        this.$Message.success('上传成功')
+      },
+    },
 
     async setup() {
+
+
       const globalGridAttr: any = inject('globalGridAttr');
       const id: any = inject('id');
       let curCel: Cell;
       let writepath :any =inject('datapath')
+
+
       const changewritepath = () => {
         writepath.value = !writepath.value
         // console.log(writepath.value)

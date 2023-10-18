@@ -209,3 +209,31 @@ export const sendXmlInfo = (data) => {
     params: data
   })
 }
+export const uploadReward = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadReward',
+    data: data
+  })
+}
+export const uploadActions = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadActions',
+    data: data
+  })
+}
+export const uploadLoss = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadLoss',
+    data: data
+  })
+}
+export const getprocessFile = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/getprocessFile',
+    data: data
+  })
+}

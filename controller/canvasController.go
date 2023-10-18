@@ -217,21 +217,23 @@ func SaveCanvasPNG(ctx *gin.Context) {
 func UploadReward(ctx *gin.Context) {
 	fmt.Println("SaveCanvasPNG")
 	Id := ctx.PostForm("id")
-	Type := ctx.Query("type")
-	Task := ctx.Query("task")
-	reward, _ := ctx.FormFile("image")
-	// 要创建的文件夹的路径
+	Type := ctx.PostForm("type")
+	Task := ctx.PostForm("task")
+	reward, _ := ctx.FormFile("file")
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
-		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-		return
 	}
+	fmt.Println("11111111111111111111111:")
 
-	dst := folderPath + "/reward.txt"
-	// 上传文件至指定的完整文件路径
+	dst := folderPath + "/" + "reward.txt"
+	erro := os.Remove(dst)
+	if erro != nil {
+		fmt.Println("delete fail")
+	}
+	// 上传文件至指定的完整文件路径1
 	ctx.SaveUploadedFile(reward, dst)
 
 	response.Success(ctx, nil, "success")
@@ -241,23 +243,26 @@ func UploadReward(ctx *gin.Context) {
 前端上传actions.json
 */
 func UploadActions(ctx *gin.Context) {
-	fmt.Println("SaveCanvasPNG")
+	fmt.Println("UploadActions")
 	Id := ctx.PostForm("id")
-	Type := ctx.Query("type")
-	Task := ctx.Query("task")
-	actions, _ := ctx.FormFile("image")
-	// 要创建的文件夹的路径
+
+	Type := ctx.PostForm("type")
+	Task := ctx.PostForm("task")
+	actions, _ := ctx.FormFile("file")
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
-		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-		return
 	}
+	fmt.Println("11111111111111111111111:")
 
-	dst := folderPath + "/action.json"
-	// 上传文件至指定的完整文件路径
+	dst := folderPath + "/" + "actions.json"
+	erro := os.Remove(dst)
+	if erro != nil {
+		fmt.Println("delete fail")
+	}
+	// 上传文件至指定的完整文件路径1
 	ctx.SaveUploadedFile(actions, dst)
 
 	response.Success(ctx, nil, "success")
@@ -267,11 +272,11 @@ func UploadActions(ctx *gin.Context) {
 前端上传loss.csv
 */
 func UploadLoss(ctx *gin.Context) {
-	fmt.Println("SaveCanvasPNG")
+	fmt.Println("UploadLoss")
 	Id := ctx.PostForm("id")
-	Type := ctx.Query("type")
-	Task := ctx.Query("task")
-	loss, _ := ctx.FormFile("image")
+	Type := ctx.PostForm("type")
+	Task := ctx.PostForm("task")
+	loss, _ := ctx.FormFile("file")
 	// 要创建的文件夹的路径
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
 	// 使用os.Mkdir创建文件夹
@@ -279,9 +284,14 @@ func UploadLoss(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
 	}
+	fmt.Println("11111111111111111111111:")
 
-	dst := folderPath + "/loss.csv"
-	// 上传文件至指定的完整文件路径
+	dst := folderPath + "/" + "loss.csv"
+	erro := os.Remove(dst)
+	if erro != nil {
+		fmt.Println("delete fail")
+	}
+	// 上传文件至指定的完整文件路径1
 	ctx.SaveUploadedFile(loss, dst)
 
 	response.Success(ctx, nil, "success")
@@ -290,10 +300,12 @@ func UploadLoss(ctx *gin.Context) {
 func GetprocessFile(ctx *gin.Context) {
 	fmt.Println("GetprocessFile")
 	Id := ctx.PostForm("id")
-	Type := ctx.Query("type")
-	Task := ctx.Query("task")
+	fmt.Println("id", Id)
+	Type := ctx.PostForm("type")
+	Task := ctx.PostForm("task")
 	//processFile为reward.txt \ actions.json \ loss.csv
-	processFile := ctx.Query("processFile")
+	processFile := ctx.PostForm("processFile")
+	fmt.Println("processFile", processFile)
 	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + processFile
 
 	Info, err := GetTrainingProcessFileInfo(file_path)

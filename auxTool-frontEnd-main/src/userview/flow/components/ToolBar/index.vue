@@ -60,10 +60,10 @@
     <Tooltip content="保存" placement="bottom">
       <template #title>
       </template>
-      <Button name="save" 
-      @mousedown="handleClick" 
+      <Button name="save"
+      @mousedown="handleClick"
       @mouseup="info"
-      class="item-space" 
+      class="item-space"
       size="small"
       > 保存 </Button>
     </Tooltip>
@@ -74,7 +74,7 @@
       <template #title>
       </template>
       <Button name="run"  @mousedown="runorder" @mouseup="isRun" class="run" size="small">
-        运行 
+        运行
       </Button>
     </Tooltip>
     <Modal
@@ -83,7 +83,7 @@
         @on-ok="runErrorInfo({mustItem, example})"
         @on-cancel="cancel">
         <p>您已点击运行按钮，是否确认运行</p>
-       
+
     </Modal>
 
   </div>
@@ -155,8 +155,8 @@
         axios.get(findUrl).then(res=>{
           var design = res.data
           console.info(design)
-          var cells = design.cells 
-          
+          var cells = design.cells
+
           this.example.example_name = design.dataset_name
           this.example.rank = design.rank
           // example.post_date = t.getTime() - 86400 * 3 * 1000
@@ -184,7 +184,7 @@
               this.mustItem[3].flag = true
             }
           }
-        })  
+        })
       },
       isRun() {
         this.modal = true
@@ -224,7 +224,7 @@
       cancel () {
         this.$Message.info('已取消');
       }
-      
+
     },
 
     setup() {
@@ -233,8 +233,8 @@
 
       const canUndo = ref(history.canUndo());
       const canRedo = ref(history.canRedo());
-     
-      
+
+
       //！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！在此修改运行函数
       // const runorder =() =>{
       //     console.log("在此修改运行函数")
@@ -245,8 +245,8 @@
       //     axios.get(findUrl).then(res=>{
       //       var design = res.data
       //       console.info(design)
-      //       var cells = design.cells 
-            
+      //       var cells = design.cells
+
       //       example.example_name = design.dataset_name
       //       example.rank = design.rank
       //       // example.post_date = t.getTime() - 86400 * 3 * 1000
@@ -274,12 +274,12 @@
       //           mustItem[3].flag = true
       //         }
       //       }
-            
-            
-            
+
+
+
       //       // console.info(example)
       //     })
-          
+
       // }
 
 
@@ -364,6 +364,7 @@
             var graphData = graph.toJSON()
             var url = decodeURI(window.location.href);
             var cs_arr = url.split('?')[1];//?后面的
+            console.info("url",url);
             var iid = cs_arr.split('=')[1];
             console.log("测试");
             console.log(graphData);

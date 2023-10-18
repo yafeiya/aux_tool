@@ -403,7 +403,7 @@ export default {
     //跳转画布设计
     toindex() {
       console.info()
-      this.$router.push('/index?id=' + this.cardInfo.id )
+      this.$router.push('/index?id=' + this.cardInfo.Id +"&task="+ this.cardInfo.Task+"&type="+ this.cardInfo.Type)
     },
     cancelInfo () {
       //提示取消信息
