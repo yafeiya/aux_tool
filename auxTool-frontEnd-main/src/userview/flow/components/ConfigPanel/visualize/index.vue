@@ -93,6 +93,7 @@
                 this.$Message.info('预览完毕');
             },
       previewImage(){
+              //此为预览大图函数
         this.imagemodal=true
         var url = decodeURI(window.location.href);
         var cs_arr = url.split('?')[1];//?后面的
@@ -105,8 +106,10 @@
         this.cardInfo.processFile='actions.json'
         let data=this.cardInfo
         data = qs.stringify(data)
+        //打包数据发送给后端
         console.info("iiiiiiiiiiiiiiiiiiiiii",data)
         getprocessFile(data).then(response => {
+          //后端返回response.data.data.Info即为[[1,1][2,2]]
           this.actionData=response.data.data.Info
           console.info("rrrrrrrrrr",this.actionData)
         })
