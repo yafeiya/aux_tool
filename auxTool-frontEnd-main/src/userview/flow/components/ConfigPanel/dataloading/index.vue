@@ -201,11 +201,13 @@
         var type = cs_arr.split('=')[3];
         this.lossData.id=id,
         this.lossData.task=task,
-        this.lossData.type=type,
-        console.info("iiiiiiiiiiiiiiiiiiiiii",this.lossData)
+        this.lossData.type=type
+        // console.info("iiiiiiiiiiiiiiiiiiiiii",this.lossData)
+
       },
       uploadSuccess(){
         this.$Message.success('上传成功')
+        
       },
     },
 
@@ -216,6 +218,7 @@
       const id: any = inject('id');
       let curCel: Cell;
       let writepath :any =inject('datapath')
+
 
 
       const changewritepath = () => {

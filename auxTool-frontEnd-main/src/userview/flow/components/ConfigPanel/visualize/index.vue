@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, inject, watch, reactive,ref} from 'vue';
+  import { defineComponent, inject, watch, reactive,ref,provide} from 'vue';
   import { Cell } from '@antv/x6/lib';
   import { nodeOpt } from './method';
   import * as echarts from 'echarts'
@@ -72,6 +72,7 @@
   import datas from "../../../results/data.json"
   import {downloadModelFile, getprocessFile} from '../../../../../api/api.js'
   import qs from "qs";
+  import datapre from '../datapre/index.vue';
 
   export default defineComponent({
     name: 'Index',
@@ -122,10 +123,14 @@
           data.nodeFontSize = globalGridAttr.nodeFontSize
           data.nodeselflabel = globalGridAttr.selflabel
           data.nodedataurl = globalGridAttr.dataurl
+          
+          
+          
           // 判断图像路径
           if(readpath.value == true){
-            initchart(data.nodeselflabel)
-            // console.log("inif",readpath.value)
+            console.log("需要bashinfo")
+            bashinfo()
+            // console.log("需要initchart")
           }else {
             clearHander()
           }
@@ -180,9 +185,17 @@
       databaseinfo3 = await getprocessFile(tip3)
       // console.log("databaseinfo is", await getprocessFile(tip))
           //后端返回response.data.data.Info即为[[1,1][2,2]]
-      actionDataString= await databaseinfo.data.data.Info
-      rewardDataString= await databaseinfo2.data.data.Info
-      lossDataString= await databaseinfo3.data.data.Info
+      if(databaseinfo.data.data!=null){
+        actionDataString= await databaseinfo.data.data.Info
+        console.log("actionDataString:",await databaseinfo.data.data.Info)
+      }
+      if(databaseinfo2.data.data!=null){
+        rewardDataString= await databaseinfo2.data.data.Info
+      }
+      if(databaseinfo3.data.data!=null){
+        lossDataString= await databaseinfo3.data.data.Info
+      }
+
       // console.info("actionData is", await databaseinfo.data.data.Info)
       // console.log("actdata is", await actionDataString)
       // console.log("rewarddata is",await rewardDataString)
@@ -190,6 +203,7 @@
         
 
       const initchart = (label) => {
+        console.log("执行initchart")
         // console.log("initchart",readpath.value)
         clearHander()
         // let actdata = datas["actions"]
@@ -255,8 +269,8 @@
             MSLdata.push([n,m,MSLnum[n][m]])
           }
         }
-        // console.log(count)
-        // console.log(MSLdata)
+      // console.log(count)
+      console.log("MSLdata:",MSLdata)
 
 
         //处理reward
@@ -279,7 +293,7 @@
 
           serial2++
         }
-        // console.log("rewad is",rewarddata)
+        console.log("rewad is",rewarddata)
 
 
         //处理loss
@@ -324,10 +338,9 @@
           }
           serial3++
         }
-        // console.log(lossdict)
+        console.log("lossdict",lossdict)
         // console.log("lossdata['alpha_loss']:",lossdict['alpha_loss'])
         
-
 
         let myChart = echarts.init(document.getElementById("myChart"));
         let miniChart = echarts.init(document.getElementById("miniChart"));
@@ -445,16 +458,19 @@
         if( nodelabel == '动作分布'){
           myChart.setOption(option1);
           miniChart.setOption(option1);
+          console.log("执行动作分布")
         }
 
         else if( nodelabel == '奖励分布'){
           myChart.setOption(option2); 
           miniChart.setOption(option2);
+          console.log("执行奖励分布")
         }
 
         else if( nodelabel == '学习率'){
           myChart.setOption(option3); 
           miniChart.setOption(option3);
+          console.log("执行学习率")
         }
         
         window.onresize = function () { // 自适应大小
@@ -462,6 +478,26 @@
           miniChart.resize();
         };
       
+      }
+
+      async function bashinfo() {
+        console.log("执行bashinfo")
+        databaseinfo = await getprocessFile(tip)
+        databaseinfo2 = await getprocessFile(tip2)
+        databaseinfo3 = await getprocessFile(tip3)
+        // console.log("databaseinfo is", await getprocessFile(tip))
+            //后端返回response.data.data.Info即为[[1,1][2,2]]
+        if(databaseinfo.data.data!=null){
+          actionDataString= await databaseinfo.data.data.Info
+          console.log("actionDataString:",await databaseinfo.data.data.Info)
+        }
+        if(databaseinfo2.data.data!=null){
+          rewardDataString= await databaseinfo2.data.data.Info
+        }
+        if(databaseinfo3.data.data!=null){
+          lossDataString= await databaseinfo3.data.data.Info
+        }
+        initchart(data.nodeselflabel)
       }
 
       const clearHander = () => {
@@ -526,6 +562,7 @@
         onaugmentationscaleChange,
         // initchart,
         sendMoneytoYe,
+        bashinfo
       };
     },
   });
