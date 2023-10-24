@@ -232,8 +232,10 @@ export const uploadLoss = (data) => {
 }
 export const getprocessFile = (data) => {
   return myAxios({
-    method: 'POST',
+    method: 'GET',
     url: '/getprocessFile',
-    data: data
+    params:data
   })
 }
+
+

@@ -8,7 +8,10 @@
       <suspense>
         <moudles v-show="type === 'moudles'" />
       </suspense>
-      <visualize v-show="type === 'visualize'" />
+      <suspense>
+        <visualize v-show="type === 'visualize'" />
+      </suspense>
+      
     </div>
 
 </template>

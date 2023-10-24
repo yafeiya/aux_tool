@@ -6,11 +6,13 @@ import (
 	"backEnd/model"
 	"encoding/json"
 	"io/ioutil"
+
 	// "backEnd/utils"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 	// "strconv"
 	// "strings"
 )
@@ -298,16 +300,15 @@ func UploadLoss(ctx *gin.Context) {
 }
 
 func GetprocessFile(ctx *gin.Context) {
-	fmt.Println("GetprocessFile")
-	Id := ctx.PostForm("id")
-	fmt.Println("id", Id)
-	Type := ctx.PostForm("type")
-	Task := ctx.PostForm("task")
+	fmt.Println("GetprocessFile", ctx)
+	Id := ctx.Query("id")
+	fmt.Println("GetprocessFile_id", Id)
+	Type := ctx.Query("type")
+	Task := ctx.Query("task")
 	//processFile为reward.txt \ actions.json \ loss.csv
-	processFile := ctx.PostForm("processFile")
+	processFile := ctx.Query("processFile")
 	fmt.Println("processFile", processFile)
 	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + processFile
-
 	Info, err := GetTrainingProcessFileInfo(file_path)
 	if err != nil {
 		fmt.Println(err)

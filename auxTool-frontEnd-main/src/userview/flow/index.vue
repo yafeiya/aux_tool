@@ -28,12 +28,15 @@
           
           </div> 
           </Content>
+          <Content
+          class="cardsize"
+          >
           <transition name="move-down">
             <Card
                 class="preview"
                 v-show="grandpreview" id="miniChart" 
                 :style="{
-                  width: '1500px', 
+                  width: '1800px', 
                   height: '300px', 
                 }"
                 :bordered="false"
@@ -45,7 +48,7 @@
                   class="preview"
                   v-show="imgpreview" id="modelpre" 
                   :style="{
-                    width: '1500px', 
+                    width: '1800px', 
                     height: '300px', 
                   }"
                   :bordered="false"
@@ -63,6 +66,7 @@
                   </suspense>
               </Card>
           </transition>
+        </Content>
       </Layout>
       <Sider 
       class="rightsider" 
@@ -146,12 +150,14 @@
       const changeimgpreview = function(value1,value2) {
         imgpreview.value = value1
         imgpath = value2
-        console.log("接受的地址:",imgpath)
+        // console.log("接受的地址:",imgpath)
 
         if(!imgpreview.value) {
           heightnum.value = 1050
         }else 
         {heightnum.value = 750}
+
+        // console.log("heightnum is:",heightnum.value)
       }
       provide('changeimgpreview', changeimgpreview)
       provide('imgpreview', imgpreview)
@@ -312,21 +318,26 @@
   .graphheader{
     height: 40px;
     background-color: #fff;
+    width: 1800px;
+    align-items: center;
     }
   .graphcontent{
     height: 1060px;
     background-color: #fff;
+    width: 1800px;
+    align-items: center;
   }
   .active{
     height: 760px;
     background-color: #fff;
   }
   .preview{
-    
+    display: flex;
     align-items: center;
+    justify-content: center;
     background-color: #fff;
     z-index: 2;
-    margin: auto;
+    margin: 0;
   }
   .rightsider{
     background-color: #fff;
@@ -334,6 +345,10 @@
   }
   .img{
     margin: auto;
+    align-items: center;
+  }
+  .cardsize{
+    width: 100%;
     align-items: center;
   }
 }
