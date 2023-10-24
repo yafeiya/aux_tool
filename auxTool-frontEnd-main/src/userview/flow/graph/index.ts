@@ -142,12 +142,11 @@ export default class FlowGraph {
   // 初始化设置好的画布上的元素
   static initGraphShape() {
     var url = decodeURI(window.location.href);
+    console.log("uuuuuuuuuuuuuuuu",url);
     var cs_arr = url.split('?')[1];//?后面的
     var iid = cs_arr.split('=')[1];
     axios.get("http://localhost:3000/design?id="+iid).then(response => {
-
-      console.log(response);
-
+      console.log("rrrrrrrrrrrrrrrrrrrr",response);
       var graphData1 = response.data[0]
       this.graph.fromJSON(graphData1 as any);
     })

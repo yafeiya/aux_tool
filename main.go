@@ -23,6 +23,7 @@ func main() {
 	engine.POST("/uploadActions", controller.UploadActions)
 	engine.POST("/uploadLoss", controller.UploadLoss)
 	engine.GET("/getprocessFile", controller.GetprocessFile)
+	engine.GET("/saveCanvas", controller.SaveCanvas)
 
 	engine.POST("/uploadModelFile", controller.UploadModelFile)
 	engine.POST("/uploadModelPNGFile", controller.UploadModelPNGFile)

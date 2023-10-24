@@ -22,12 +22,10 @@ import (
 */
 func SaveCanvas(ctx *gin.Context) {
 	fmt.Println("SaveCanvas")
-	// Type := ctx.Query("type")
-	// Task := ctx.Query("task")
-	// pageKind := ctx.Query("pageKind")
 	id := ctx.Query("id")
 	newCellData := ctx.Query("cell")
-
+	fmt.Println("newCellData", newCellData)
+	fmt.Println("id", id)
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
 	if err != nil {

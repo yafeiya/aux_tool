@@ -94,6 +94,8 @@
   import FlowGraph from '../../graph';
   import { DataUri } from '@antv/x6';
   import axios from 'axios';
+  import { saveCanvas } from '../../../../api/api.js'
+  import qs from "qs";
   import ViewUIPlus from 'view-ui-plus'
   export default defineComponent({
     name: 'Index',
@@ -361,20 +363,29 @@
             paste();
             break;
           case 'save':
-            var graphData = graph.toJSON()
+            var graphData = graph.toJSON();
             var url = decodeURI(window.location.href);
             var cs_arr = url.split('?')[1];//?后面的
             console.info("url",url);
-            var iid = cs_arr.split('=')[1];
-            console.log("测试");
-            console.log(graphData);
-            axios.patch('http://localhost:3000/design/'+iid, {'cells':graphData.cells})
-                .then(response => {
-                  console.log(response);
-                })
-                .catch(error => {
-                  console.log(error);
-                })
+            var iid = cs_arr.split('=')[1].split('&')[0];
+            let data = {
+              cell:graphData.cells,
+              id:iid
+            }
+
+            console.log("ddddddddd",qs.stringify(data));
+
+            saveCanvas((data)).then(response => {
+              console.log(response);
+            })
+
+            // axios.patch('http://localhost:3000/design/'+iid, {'cells':graphData.cells})
+            //     .then(response => {
+            //       console.log(response);
+            //     })
+            //     .catch(error => {
+            //       console.log(error);
+            //     })
 
             break;
           default:
