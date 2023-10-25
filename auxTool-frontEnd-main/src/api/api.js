@@ -209,3 +209,74 @@ export const sendXmlInfo = (data) => {
     params: data
   })
 }
+export const uploadReward = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadReward',
+    data: data
+  })
+}
+export const uploadActions = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadActions',
+    data: data
+  })
+}
+export const uploadLoss = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/uploadLoss',
+    data: data
+  })
+}
+export const getprocessFile = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getprocessFile',
+    params:data
+  })
+}
+export const saveCanvas = (data) => {
+  console.info("111111111111111",data.cell)
+  return myAxios({
+    method: 'GET',
+    url: '/saveCanvas',
+    params:data
+  })
+}
+export const getDesignsById = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getDesignsById',
+    params:data
+  })
+}
+export const runCanvas = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/runCanvas',
+    params:data
+  })
+}
+export const getExampleList = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getExampleList',
+    params:data
+  })
+}
+export const updateExample = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/updateExample',
+    params:data
+  })
+}
+export const deleteExample = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/deleteExample',
+    params:data
+  })
+}

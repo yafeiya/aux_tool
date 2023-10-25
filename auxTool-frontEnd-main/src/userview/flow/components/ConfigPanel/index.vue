@@ -1,11 +1,19 @@
 <template>
-  <div class="config">
-    <ConfigGrid v-show="type === 'grid'" />
-    <dataloading v-show="type === 'dataloading'" />
-    <datapre v-show="type === 'datapre'" />
-    <moudles v-show="type === 'moudles'" />
-    <visualize v-show="type === 'visualize'" />
-  </div>
+    <div class="config">
+      <ConfigGrid v-show="type === 'grid'" />
+      <suspense>
+          <dataloading v-show="type === 'dataloading'" />
+      </suspense>
+      <datapre v-show="type === 'datapre'" />
+      <suspense>
+        <moudles v-show="type === 'moudles'" />
+      </suspense>
+      <suspense>
+        <visualize v-show="type === 'visualize'" />
+      </suspense>
+      
+    </div>
+
 </template>
 
 <script lang="ts">
@@ -14,11 +22,13 @@
   import datapre from './datapre/index.vue';
   import moudles from './moudles/index.vue';
   import visualize from './visualize/index.vue';
+  
   // import ConfigEdge from './ConfigEdge/index.vue';
   import FlowGraph from '../../graph/index';
   import './index.less';
   import { defineComponent, ref, provide } from 'vue';
   import { globalGridAttr } from '../../models/global';
+  
 
   export default defineComponent({
     name: 'Index',
@@ -33,6 +43,8 @@
     setup() {
       const type = ref('grid');
       const id = ref('');
+      const datapath = ref(true)
+      provide('datapath', datapath);
       // 待优化
       const boundEvent = function (): void {
         const { graph } = FlowGraph;
@@ -40,25 +52,24 @@
           type.value = 'grid';
         });
         graph.on('cell:click', ({ cell }) => {
-          if(cell.shape=='flow-chart-rect'){
-          id.value = cell.id;
-          if(cell.data.fatherLabel=='数据加载'){
-            type.value = 'dataloading';
+          if (cell.shape == "flow-chart-rect"){
+            id.value = cell.id;
+            if(cell.data.grandLabel=='数据加载'){
+              type.value = 'dataloading';
+            }
+            else if(cell.data.grandLabel=='数据预处理'){
+              type.value = 'datapre';
+            }
+            else if(cell.data.grandLabel=='模型模板'){
+              type.value = 'moudles';
+            }
+            else if(cell.data.grandLabel=='训练过程可视化'){
+              type.value = 'visualize';
+            }
+            else{
+              type.value = 'grid';
+            }
           }
-          else if(cell.data.fatherLabel=='数据预处理'){
-            type.value = 'datapre';
-          }
-          else if(cell.data.fatherLabel=='模型模板'){
-            type.value = 'moudles';
-          }
-          else if(cell.data.fatherLabel=='训练过程可视化'){
-            type.value = 'visualize';
-          }
-          else{
-            type.value = 'grid';
-          }
-          }
-          
         });
       };
       boundEvent();

@@ -89,22 +89,22 @@
             <!--根据状态state值显示图标-->
 
             <template #zhuangtai="{ row }">
-              <h4 v-if="row.state==='挂起中'">
+              <h4 v-if="row.State==='挂起中'">
                 <Icon type="md-pause" />
                 挂起中
               </h4>
-              <h4 v-if="row.state==='运行中'">
+              <h4 v-if="row.State==='运行中'">
                 <Icon type="md-time" />
                 运行中
               </h4>
-              <h4 v-if="row.state==='已终止'">
+              <h4 v-if="row.State==='已终止'">
                 <Icon type="md-power" />
                 已终止
               </h4>
             </template>
             <!--时间相关-->
             <template #time="{row}">
-              <Time :time="row.post_time" type="datetime" />
+              <Time :time="row.Start_time- 60 * 1 * 1000"  />
             </template>
             <!--表格最右列查看详情-->
 
@@ -123,39 +123,39 @@
                   <template #title><strong>任务信息</strong></template>
 
                   <Row>
-                    <Col span="8">案例号：{{ curRow.id }}</Col>
-                    <Col span="8">案例名: {{ curRow.example_name }}</Col>
-                    <Col span="8">状态: {{ curRow.state }}</Col>
-                    <Col span="8">级别: {{ curRow.rank }}</Col>
-                    <Col span="8">数据目录: {{ curRow.dataset_url }}</Col>
+                    <Col span="8">案例号：{{ curRow.Id }}</Col>
+                    <Col span="8">案例名: {{ curRow.Example_name }}</Col>
+                    <Col span="8">状态: {{ curRow.State }}</Col>
+                    <Col span="8">级别: {{ curRow.Rank }}</Col>
+                    <Col span="8">数据目录: {{ curRow.Dataset_url }}</Col>
                   </Row>
 
                 </Card>
                 <Card>
                   <template #title><strong>模型信息</strong></template>
                   <Row>
-                    <Col span="8">模型名：{{ curRow.model_name }}</Col>
-                    <Col span="8">模型类型: {{ curRow.model_type }}</Col>
-                    <Col span="8">迭代次数: {{ curRow.epoch_num }}</Col>
-                    <Col span="8">损失函数: {{ curRow.loss }}</Col>
-                    <Col span="8">优化器: {{ curRow.optimizer }}</Col>
-                    <Col span="8">衰减因子: {{ curRow.decay }}</Col>
-                    <Col span="8">评价指标: {{ curRow.evalution }}</Col>
-                    <Col span="8">保存位置: {{ curRow.model_url }}</Col>
+                    <Col span="8">模型名：{{ curRow.Model_name }}</Col>
+                    <Col span="8">模型类型: {{ curRow.Model_type }}</Col>
+                    <Col span="8">迭代次数: {{ curRow.Epoch_num }}</Col>
+                    <Col span="8">损失函数: {{ curRow.Loss }}</Col>
+                    <Col span="8">优化器: {{ curRow.Optimizer }}</Col>
+                    <Col span="8">衰减因子: {{ curRow.Decay }}</Col>
+                    <Col span="8">评价指标: {{ curRow.Evalution }}</Col>
+                    <Col span="8">保存位置: {{ curRow.Model_url }}</Col>
                   </Row>
                 </Card>
                 <Card>
                   <template #title><strong>资源需求</strong></template>
                   <Row>
-                    <Col span="8">CPU核数：{{ curRow.cpu_num }}</Col>
-                    <Col span="8">GPU算力: {{ curRow.gpu_num }}</Col>
-                    <Col span="8">内存用量: {{ curRow.memory }}</Col>
-                    <Col span="8">启动时间:<Time :time="curRow.start_time" type="datetime" /></Col>
+                    <Col span="8">CPU核数：{{ curRow.Cpu_num }}</Col>
+                    <Col span="8">GPU算力: {{ curRow.Gpu_num }}</Col>
+                    <Col span="8">内存用量: {{ curRow.Memory }}</Col>
+                    <Col span="8">启动时间:<Time :time="curRow.Start_time" type="datetime" /></Col>
                     <Col span="8">结束时间:
-                      <Time v-if="curRow.end_time!='' " :time="curRow.end_time" type="datetime" />
+                      <Time v-if="curRow.end_time!='' " :time="curRow.End_time" type="datetime" />
                       <div v-else> {{ "" }}</div>
                     </Col>
-                    <Col span="8">运行时间:{{ curRow.run_time }}</Col>
+                    <Col span="8">运行时间:{{ curRow.Run_time }}</Col>
                   </Row>
                 </Card>
                 <template #footer>
@@ -259,6 +259,8 @@ import lineChart from '../components/chart/line.vue'
 import axios from 'axios';
 import * as echarts from 'echarts'
 import chartData from "./chartdata.json"
+import {getCsvData, getExampleList, updateExample, deleteExample,getprocessFile} from "../api/api.js"
+
 import datas from "@/userview/flow/results/data.json";
 
 export default {
@@ -292,41 +294,41 @@ export default {
         },
         {
           title: '案例号',
-          key: 'id',
+          key: 'Id',
           width: 100,
           sortable: true,
           align: 'center'
         },
         {
           title: '案例名',
-          key: 'example_name',
+          key: 'Example_name',
           align: 'center'
         },
         {
           title: '级别',
-          key: 'rank',
+          key: 'Rank',
           sortable: true,
           align: 'center'
         },
         {
           title: '状态',
-          key: 'state',
+          key: 'State',
           slot: 'zhuangtai',
           align: 'center'
         },
         {
           title: 'CPU核数',
-          key: 'cpu_num',
+          key: 'Cpu_num',
           align: 'center'
         },
         {
           title: 'GPU个数',
-          key: 'gpu_num',
+          key: 'Gpu_num',
           align: 'center'
         },
         {
           title: '提交时间',
-          key: 'submit_time',
+          key: 'Start_time',
           width: 180,
           slot: 'time',
           align: 'center',
@@ -334,7 +336,7 @@ export default {
         },
         {
           title: '运行时长',
-          key: 'run_time',
+          key: 'Run_time',
           align: 'center',
           sortable: true,
         },
@@ -378,6 +380,13 @@ export default {
       let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
 
 
+      // var data={
+      //   Id :
+      //   Type :
+      //   Task :
+      //   processFile :
+      // }
+      getprocessFile
       let actdata = chartxyz["actions"]
       let rewarddata = chartxyz["reward"]
       let lrdata = chartxyz["learning_rate"]
@@ -577,14 +586,12 @@ export default {
     },
     LogInfo(row) {
       this.isLogInfo=true;
-
       for(var i in this.itemList) {
         if(row.id == this.itemList[i].id) {
-          this.chartId = chartData["chart"][i]["exampleId"];
-          var chartxyz=chartData["chart"][this.chartId]
-          console.info("this.chartId:",this.chartId)
-          console.info("chartxyz:",chartxyz)
-          this.getcharts(chartxyz)
+          // this.chartId = chartData["chart"][i]["exampleId"];
+          // var chartxyz=chartData["chart"][this.chartId]
+          console.info("row.id:",this.itemList[i])
+          // this.getcharts(chartxyz)
         }
 
       }
@@ -610,7 +617,6 @@ export default {
       var putList = []
       for(var i in this.selections) {
         for (var j in this.itemList) {
-          //
           if(this.selections[i].id == this.itemList[j].id) {
             if(toState == "挂起"){
               this.itemList[j].state = "挂起中"
@@ -625,8 +631,12 @@ export default {
               this.itemList[j].end_time = this.nowTime
               this.itemList[j].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
             }
-
             var putUrl = findUrl + "/" + this.itemList[j].id
+
+            updateExample(data).then(response => {
+
+
+            })
             var putPromise = new Promise((resolve,reject)=>{
               axios.put(putUrl, this.itemList[j]).then(response=>{
                 // console.info("in:" + response)
@@ -664,8 +674,6 @@ export default {
             }
           }
         }
-
-
         this.putItemState(toState)
       }
 
@@ -680,44 +688,35 @@ export default {
         });
         return;
       }
-      var findUrl = this.jsonBaseUrl + '/' + this.pageKind
-      var deleteList = []
-      for(var i in this.selections) {
-        for (var j in this.itemList) {
-          //
-          if(this.selections[i].id == this.itemList[j].id) {
-
-            var deleteUrl = findUrl + "/" + this.itemList[j].id
-            var deletePromise = new Promise((resolve,reject)=>{
-              axios.delete(deleteUrl, this.itemList[j]).then(response=>{
-                console.info("in:" + response)
-                this.itemList.splice(j, 1)
-                this.getItemInfo()
-              })
-            })
-            deleteList.push(deletePromise)
-
-          }
-        }
+      let selectId=""
+      for(var i in this.selections){
+        selectId+=this.selections[i].Id+"/"
       }
-      Promise.all(deleteList).then((result) =>{
-        console.info("result: " + result)
-
-      }).catch((error) => {
-        console.info(error)
+      let data = {
+        pagekind:this.pageKind,
+        id:selectId,
+      }
+      console.info("222222222222222222222",data)
+      deleteExample(data).then(res => {
+        console.info('删除csv结果：', res)
       })
-      // this.reload()
+      this.$Message.success('删除成功')
+      setTimeout(() => {
+        this.getItemInfo()
+      },20)
     },
     selectChange(selection) {
       this.selections = selection;
       console.log('已选中数据', this.selections)
     },
     getItemInfo() {
-      var findUrl = this.jsonBaseUrl + "/" + this.pageKind
+      // var findUrl = this.jsonBaseUrl + "/" + this.pageKind
       this.itemList = []
-      axios.get(findUrl).then(response => {
-        this.itemList = response.data
-        console.info(this.itemList)
+      let data={
+        pageKind:this.pageKind
+      }
+      getExampleList(data).then(response => {
+        this.itemList = response.data.data.examples
         this.itemNum = this.itemList.length
         for(var i in this.itemList) {
           if(this.itemList[i].state == "运行中") {
@@ -731,17 +730,18 @@ export default {
           }
         }
         this.updatePage(1)
-
       })
+      // axios.get(findUrl).then(response => {
+      //
+      //
+      // })
     },
     updatePage(page) {
-      console.info(this.itemNum)
       this.curItemList = []
       var len = Math.min(this.itemList.length - 1, this.pageSize * page - 1)
       for(var i = 0 + (page-1) * this.pageSize;i <= len;i++) {
         this.curItemList.push(this.itemList[i])
       }
-      console.info(this.curItemList)
     },
   },
   mounted(){

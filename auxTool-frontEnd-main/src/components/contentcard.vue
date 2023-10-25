@@ -403,7 +403,7 @@ export default {
     //跳转画布设计
     toindex() {
       console.info()
-      this.$router.push('/index?id=' + this.cardInfo.id )
+      this.$router.push('/index?id=' + this.cardInfo.Id +"&task="+ this.cardInfo.Task+"&type="+ this.cardInfo.Type)
     },
     cancelInfo () {
       //提示取消信息
@@ -434,7 +434,6 @@ export default {
       console.info("TTTTTTTTTTTTTTTdata:",data)
       data = qs.stringify(data)
       getModelImage(data).then(response => {
-
         this.modelImageUrl=EndUrl().fileUrl + "/" + response.data.data.url
         console.info("图片URL: ", this.modelImageUrl)
       })

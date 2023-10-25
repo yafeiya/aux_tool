@@ -3463,12 +3463,12 @@
     {
       "example_name": "方案2",
       "rank": "1级",
-      "state": "运行中",
+      "state": "已终止",
       "cpu_num": 1,
       "gpu_num": 10,
       "post_date": 1693138936685,
       "post_time": 1693138936685,
-      "run_time": "",
+      "run_time": "23分钟",
       "model_name": "模型模板",
       "epoch_num": "",
       "loss": "",
@@ -3477,7 +3477,7 @@
       "evalution": "",
       "memory": "2000MB",
       "start_time": 1693138936685,
-      "end_time": "",
+      "end_time": 1698134195152,
       "id": 3
     },
     {
@@ -3505,12 +3505,12 @@
     {
       "example_name": "fangan",
       "rank": "1级",
-      "state": "运行中",
+      "state": "挂起中",
       "cpu_num": 1,
       "gpu_num": 10,
       "post_date": 1693138982879,
       "post_time": 1693138982879,
-      "run_time": "",
+      "run_time": "23分钟",
       "dataset_url": "",
       "model_name": "",
       "model_type": "",
@@ -3522,7 +3522,7 @@
       "model_url": "",
       "memory": "2000MB",
       "start_time": 1693138982879,
-      "end_time": "",
+      "end_time": 1698134195152,
       "id": 5
     },
     {
@@ -3546,28 +3546,6 @@
       "start_time": 1693138995368,
       "end_time": "",
       "id": 6
-    },
-    {
-      "example_name": "方案3",
-      "rank": "1级",
-      "state": "运行中",
-      "cpu_num": 1,
-      "gpu_num": 10,
-      "post_date": 1693138998432,
-      "post_time": 1693138998432,
-      "run_time": "",
-      "model_name": "",
-      "model_type": "",
-      "epoch_num": "",
-      "loss": "",
-      "optimizer": "",
-      "decay": "",
-      "evalution": "",
-      "model_url": "",
-      "memory": "2000MB",
-      "start_time": 1693138998432,
-      "end_time": "",
-      "id": 7
     }
   ],
   "designData": [

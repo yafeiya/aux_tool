@@ -25,15 +25,15 @@ type DefineFunction struct {
 }
 
 type Design struct {
-	Released     string                 `json:"Released"`
-	Dataset_name string                 `json:"Dataset_name"`
-	Type         string                 `json:"Type"`
-	Rank         string                 `json:"Rank"`
-	Description  string                 `json:"Description"`
-	Task         string                 `json:"Task"`
-	Id           int                    `json:"Id"`
-	Cell         map[string]interface{} `json:"Cell"`
-	Data_path	 string 				`json:"Data_path"`
+	Released     string        `json:"Released"`
+	Dataset_name string        `json:"Dataset_name"`
+	Type         string        `json:"Type"`
+	Rank         string        `json:"Rank"`
+	Description  string        `json:"Description"`
+	Task         string        `json:"Task"`
+	Id           int           `json:"Id"`
+	Cell         []interface{} `json:"Cell"`
+	Data_path    string        `json:"Data_path"`
 }
 
 type Data struct {
