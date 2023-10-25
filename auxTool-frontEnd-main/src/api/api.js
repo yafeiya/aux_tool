@@ -245,4 +245,38 @@ export const saveCanvas = (data) => {
     params:data
   })
 }
-
+export const getDesignsById = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getDesignsById',
+    params:data
+  })
+}
+export const runCanvas = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/runCanvas',
+    params:data
+  })
+}
+export const getExampleList = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getExampleList',
+    params:data
+  })
+}
+export const updateExample = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/updateExample',
+    params:data
+  })
+}
+export const deleteExample = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/deleteExample',
+    params:data
+  })
+}

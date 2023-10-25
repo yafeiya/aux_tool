@@ -1,6 +1,6 @@
 <template>
     <Menu
-          class="menu" 
+          class="menu"
           width="187px"
           background-color="#545c64"
           text-color="#ffffff"
@@ -10,7 +10,7 @@
               class="backhome"
               name="backhome"
               @click="backhome()"
-              >   
+              >
                   <Icon type="md-arrow-back" />
                   <span>| 返回首页</span>
               </MenuItem>
@@ -59,16 +59,16 @@
               v-for="item in noChildren(list)"
               :name="item.name"
               @click=""
-              >   
+              >
                   <span>{{ item.title }}</span>
               </MenuItem>
 
               <Submenu
                   :name="item.name"
                   v-for="item in hasChildren(list)"
-                  
+
               >
-                  <template #title> 
+                  <template #title>
                       <span>{{ item.title }}</span>
                   </template>
 
@@ -76,18 +76,18 @@
                       class="secondmenustyle"
                       :name="item.title"
                       @mousedown="startDrag($event,item.title)"
-                      >   
+                      >
                           <span>{{ item.title }}</span>
                       </MenuItem> -->
-                  
-                      <MenuItem 
+
+                      <MenuItem
                       class="secondmenustyle"
                       :name="subitem.name"
                       v-for="subitem in noChildren(item.children)"
                       @mousedown="startDrag($event,item.title,subitem.title,subitem.title)"
                       >
                           <span>{{ subitem.title }}</span>
-                      </MenuItem> 
+                      </MenuItem>
 
                       <Submenu
                           class="secondmenustyle"
@@ -95,28 +95,28 @@
                           v-for="subitem in hasChildren(item.children)"
                           @mousedown.right="startDrag($event,item.title,subitem.title,subitem.title)"
                       >
-                          <template #title> 
+                          <template #title>
                               <span>{{ subitem.title }}</span>
                           </template>
-<!-- 
+<!--
                               <MenuItem
                               class="thirdmenustyle"
                               :name="subitem.title"
                               @mousedown="startDrag($event,item.title)"
-                              >   
+                              >
                                   <span>{{ subitem.title }}</span>
                               </MenuItem> -->
 
                               <MenuItem
-                              class="thirdmenustyle" 
+                              class="thirdmenustyle"
                               :name="lastitem.name"
                               v-for="lastitem in noChildren(subitem.children)"
                               @mousedown="startDrag($event,item.title,subitem.title,lastitem.title)"
                               >
                                   <span>{{ lastitem.title }}</span>
-                              </MenuItem>   
+                              </MenuItem>
                       </Submenu>
-    
+
               </Submenu>
           </Menu>
 </template>
@@ -134,8 +134,8 @@
   import datas from "./results/data.json"
   import { getMenuInfo } from '../../api/api.js'
 
-  
-  
+
+
   // const getContainerSize = () => {
   //   return {
   //     width: document.body.offsetWidth - 590,
@@ -175,21 +175,21 @@
       const heightnum = ref(1050)
       const startDrag: any = inject('startDrag')
 
-      
+
       // 编写菜单栏
       const noChildren =(thelist) =>{
         // console.log("type is",typeof thelist)
         // console.log("innoChildren",thelist)
         // console.log("result",thelist.filter((item) => !item.children))
           return thelist.filter((item) => !item.children);
-          
+
       };
       // 编写菜单栏
       const hasChildren =(thelist) =>{
           return thelist.filter((item) => item.children);
       };
 
-      
+
       // const list = inject('list')
       // let list = ref(menulist())
 
@@ -237,8 +237,8 @@
       menu[0]["children"].push({
                             "name": "modellog",
                             "title": "模型日志数据"
-                          })                    
-      let design = await getMenuInfo("design")                  
+                          })
+      let design = await getMenuInfo("design")
       menu[1]["children"] = design.data[0].children
       let modelbase = await getMenuInfo("modelbase")
       menu[2]["children"]= modelbase.data[0].children.concat(modelbase.data[1].children.concat(modelbase.data[2].children))
@@ -249,12 +249,13 @@
       menu[5]["children"] = defineFunction.data[1].children
 
       list = menu
-      
+
       function clearMenu(){
         list.data = []
         setTimeout(() => {
           list.data = menu
         }, 1);
+        console.info("收起ssssssssss")
       }
 
 
@@ -268,10 +269,10 @@
     //     }
     //     console.log("data=",data.value)
     //     list = readlist(data.value)
-    //     console.log("list=",list)    
+    //     console.log("list=",list)
     //   });
 
-    
+
 
       const editMenu = ref(false);
       const backhome = () =>{

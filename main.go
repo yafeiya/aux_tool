@@ -24,6 +24,11 @@ func main() {
 	engine.POST("/uploadLoss", controller.UploadLoss)
 	engine.GET("/getprocessFile", controller.GetprocessFile)
 	engine.GET("/saveCanvas", controller.SaveCanvas)
+	engine.GET("/getDesignsById", controller.GetDesignsById)
+	engine.GET("/runCanvas", controller.RunCanvas)
+	engine.GET("/getExampleList", controller.GetExampleList)
+	engine.GET("/updateExample", controller.UpdateExample)
+	engine.GET("/deleteExample", controller.DeleteExample)
 
 	engine.POST("/uploadModelFile", controller.UploadModelFile)
 	engine.POST("/uploadModelPNGFile", controller.UploadModelPNGFile)

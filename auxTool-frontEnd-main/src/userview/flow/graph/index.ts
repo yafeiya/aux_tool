@@ -1,6 +1,7 @@
 import { Graph, FunctionExt, Shape, Addon } from '@antv/x6';
 import './shape';
 import axios from 'axios';
+import {getDesignsById, saveCanvas} from '../../../api/api.js'
 export default class FlowGraph {
   static graph: Graph;
   static dnd: Addon.Dnd;
@@ -142,17 +143,17 @@ export default class FlowGraph {
   // 初始化设置好的画布上的元素
   static initGraphShape() {
     var url = decodeURI(window.location.href);
-    console.log("uuuuuuuuuuuuuuuu",url);
     var cs_arr = url.split('?')[1];//?后面的
-    var iid = cs_arr.split('=')[1];
-    axios.get("http://localhost:3000/design?id="+iid).then(response => {
-      console.log("rrrrrrrrrrrrrrrrrrrr",response);
-      var graphData1 = response.data[0]
+    var iid = cs_arr.split('=')[1].split('&')[0];
+    let data = {
+      id:iid
+    }
+    console.log("data",data);
+    getDesignsById((data)).then(response => {
+      var graphData1 = response.data.data.design.Cell[0]
+      console.log("graphData1",graphData1);
       this.graph.fromJSON(graphData1 as any);
     })
-        .catch(error => {
-          console.log(error);
-        })
   }
 
   static showPorts(ports: NodeListOf<SVGAElement>, show: boolean) {
