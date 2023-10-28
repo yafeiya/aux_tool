@@ -76,9 +76,9 @@
         <!--=批量处理按钮-->
         <p style="margin-top: 1%;font-size: 20px">
           批量处理：
-          <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="updateToState('终止')">终止</Button>
-          <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行')">继续</Button>
-          <Button  type="primary" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起')">挂起</Button>
+          <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="updateToState('已终止')">终止</Button>
+          <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('运行中')">继续</Button>
+          <Button  type="primary" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="updateToState('挂起中')">挂起</Button>
           <Button  type="error" icon="md-trash"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteItem">删除</Button>
         </p>
 
@@ -267,6 +267,10 @@ export default {
 
   data() {
     return {
+      actdata: "",
+      rewarddata:"",
+      lrdata:"",
+
       previewImage:false,
       urlList: ["",],
       isproxyInfo:false,
@@ -373,52 +377,67 @@ export default {
 
   },
   methods: {
-    getcharts(chartxyz){
+    getcharts(){
+
+      console.info('data1:',this.actdata)
+      console.info('data2:',this.rewarddata)
+      console.info('data3:',this.lrdata)
       let psgTimeCharts1 = echarts.init(this.$refs.Echarts1)
       let psgTimeCharts2 = echarts.init(this.$refs.Echarts2)
       let psgTimeCharts3 = echarts.init(this.$refs.Echarts3)
       let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
 
-
-      // var data={
-      //   Id :
-      //   Type :
-      //   Task :
-      //   processFile :
-      // }
-      getprocessFile
-      let actdata = chartxyz["actions"]
-      let rewarddata = chartxyz["reward"]
-      let lrdata = chartxyz["learning_rate"]
       let count=[]  //统计轮数
-      const x = 4;  //飞机种类数
-      const  y = 7; //导弹种类数
+      let x = 0;  //飞机种类数
+      let y = 0; //导弹种类数
       let maxnum = 0
-      let MSLnum = new Array(x); // MSL记录数据
-      let MSLdata=[]
+      let MSLnum= []; // MSL记录数据
+      let MSLdata= []   //最终画actions图的数据表
+      let rewarddata=[] //最终画reward的数据表
+      let lossdict= {}  //最终画loss的数据表
 
-      for (var i = 0; i < x; i++) {
-        MSLnum[i] = new Array(y); // 创建二维数组
+      for (var i = 0; i < 100; i++) {
+        MSLnum.push(new Array(50)) // 创建二维数组
       }
-      // console.log(MSLnum)
-      //初始为0
-      for (var q = 0; q < x; q++) {
-        for (var p = 0; p < y; p++) {
+      // console.log("创建二维数组",MSLnum)
+      // 初始为0
+      for (var q = 0; q < 100; q++) {
+        for (var p = 0; p < 50; p++) {
           MSLnum[q][p]=0
         }
       }
       // console.log(MSLnum)
       //统计发射数目
-      var turn = 0
-      let msi=0
-      while(lrdata[turn]){
-        count.push(turn)
-        for (var j=0;j<x;j++){
-          msi = actdata[turn][j][1]-1;//序号-1
-          MSLnum[j][msi]++
+      let msi= []
+      let serial = 12
+      var arr= [',','[',']'] //排除非数字
+
+      while(this.actdata[serial] != null){
+        if(arr.indexOf(this.actdata[serial])==-1){
+          // console.log(actionDataString[serial])
+          //处理数字
+          msi.push(Number(this.actdata[serial]))
+          // console.log(msi)
+          if(msi[1]!=null){
+            // console.log("处理msi",msi)
+            // console.log(actionDataString[serial])
+            if(x<msi[0]){
+              x=msi[0]
+              // console.log("显示最大x",x)
+            }
+            if(y<msi[1]){
+              y=msi[1]
+              // console.log("显示最大y",x)
+            }
+            // console.log("MSLnum[msi[0],msi[1]]",MSLnum[msi[0],msi[1]])
+            MSLnum[msi[0]][msi[1]]++
+            // console.log("MSLnum[msi[0],msi[1]]",MSLnum[msi[0],msi[1]])
+            msi = []
+          }
         }
-        turn++
+        serial++
       }
+      // console.log("处理的数组",MSLnum)
       //转换成最终坐标
       for (var n = 0; n < x; n++) {
         for (var m = 0; m < y; m++) {
@@ -426,6 +445,73 @@ export default {
           MSLdata.push([n,m,MSLnum[n][m]])
         }
       }
+      console.log("MSLdata:",MSLdata)
+
+      let serial2 = 11
+      let rewad= ''
+      while(this.rewarddata[serial2] != null){
+        if(this.rewarddata[serial2] != ','){
+          if(this.rewarddata[serial2] == ']'){
+            rewarddata.push(Number(rewad))
+            break
+          }
+          rewad= rewad + this.rewarddata[serial2]
+          // console.log(rewad)
+        }
+        else if(this.rewarddata[serial2] == ','){
+          rewarddata.push(Number(rewad))
+          rewad = ''
+          count++ // 记录轮数
+        }
+        serial2++
+      }
+      console.log("rewad is",rewarddata)
+
+      //处理loss
+      let lossname = ''
+      let lossnamedict= []
+      let serial3 = 9
+      let loss = ''
+
+      while(this.lrdata[serial3] != null){
+        if(this.lrdata[serial3] == '"'){
+          serial3++
+          while(this.lrdata[serial3] != '"'&&this.lrdata[serial3] != null){
+            lossname = lossname + this.lrdata[serial3]
+            // console.log(lossDataString[serial3])
+            serial3++
+          }
+          serial3=serial3+2
+          lossdict[lossname] = new Array()
+          // console.log("outwhile2",lossdict)
+          lossnamedict.push(lossname)
+        }
+        else if(this.lrdata[serial3] != ','){
+          if(this.lrdata[serial3] == ':'){
+            serial3 = serial3+2
+            // console.log("inpan：",lossDataString[serial3])
+            loss = loss+=this.lrdata[serial3]
+          }
+          else if(this.lrdata[serial3] == ']'){
+            lossdict[lossname].push(Number(loss))
+            loss = ''
+            lossname = ''
+            serial3++
+          }
+          else{
+            loss = loss+=this.lrdata[serial3]
+          }
+        }
+        else if(this.lrdata[serial3] == ','){
+          // console.log("loss:",loss)
+          lossdict[lossname].push(Number(loss))
+          loss = ''
+        }
+        serial3++
+      }
+      console.log("lossdict",lossdict)
+      // console.log("lossdata['alpha_loss']:",lossdict['alpha_loss'])
+
 
       var option1 = {
         title: {
@@ -471,11 +557,8 @@ export default {
       };
       var option2={
         title: {
-          text: '奖励曲线'
-        },
-        legend: {
-          data: ['reward'],
-          x:'right',      //可设定图例在左、右、居中
+          text: '奖励曲线',
+          x: 'left'
         },
         xAxis: {
           data: count
@@ -496,13 +579,13 @@ export default {
           }
         ]
       };
-      var option3={
+      var option3 ={
         title: {
-          text: '学习率曲线'
+          text: '损失函数',
+          x: 'left'
         },
-        legend: {
-          data: ['learning rate'],
-          x:'right',      //可设定图例在左、右、居中
+        xAxis: {
+          data: count
         },
         grid: {
           left: '5%',
@@ -510,55 +593,27 @@ export default {
           right: '5%',
           bottom: '5%',
           containLabel: true
-        },
-        xAxis: {
-          data: count
         },
         yAxis:{},
         series: [
-          {
-            name: "y轴",
-            type: "line",
-            data: lrdata
-          }
+
         ]
+      }
+
+      var lossnamenum = 0
+      while(lossnamedict[lossnamenum]!=null){
+        let a={
+          type: "line",
+          data: lossdict[lossnamedict[lossnamenum]]
+        }
+        option3.series.push(a)
+        lossnamenum++
       };
-      let option4 = {
-        title: {
-          text: '准确率曲线'
-        },
-        legend: {
-          data: ['acc'],
-          x:'right',      //可设定图例在左、右、居中
-        },
-        tooltip: {},
-        grid: {
-          left: '5%',
-          height: 'auto',
-          right: '5%',
-          bottom: '5%',
-          containLabel: true
-        },
-        xAxis: {
-          data: count
-        },
-        yAxis: {
-        },
-        series: [
-          {
-            name: 'y1',
-            symbol: 'none', //去掉折线上面的小圆点
-            data: chartxyz["Accuracy"],
-            type: 'line',
-            // areaStyle: {}
-          },
-        ],
-      };
+
       psgTimeCharts1.setOption(option1)
       psgTimeCharts2.setOption(option2)
       psgTimeCharts3.setOption(option3)
-      psgTimeCharts4.setOption(option4)
-    console.info("1111111111",option1)
+
   },
 
     calcTime(newTime, oldTime) {
@@ -585,13 +640,48 @@ export default {
 
     },
     LogInfo(row) {
+
       this.isLogInfo=true;
+      // this.getItemInfo()
       for(var i in this.itemList) {
-        if(row.id == this.itemList[i].id) {
+        if(row.Id == this.itemList[i].Id) {
           // this.chartId = chartData["chart"][i]["exampleId"];
           // var chartxyz=chartData["chart"][this.chartId]
           console.info("row.id:",this.itemList[i])
-          // this.getcharts(chartxyz)
+
+          let data1={
+            type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
+            task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
+            id:this.itemList[i].Dataset_url.split("//")[1].split("/")[3],
+            processFile:"actions.json"
+          }
+          getprocessFile(data1).then(res => {
+            this.actdata=res.data.data.Info
+          })
+
+          let data2={
+            type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
+            task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
+            id:this.itemList[i].Dataset_url.split("//")[1].split("/")[3],
+            processFile:"reward.txt"
+          }
+          getprocessFile(data2).then(res => {
+            this.rewarddata=res.data.data.Info
+          })
+
+          let data3={
+            type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
+            task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
+            id:this.itemList[i].Dataset_url.split("//")[1].split("/")[3],
+            processFile:"loss.csv"
+          }
+          getprocessFile(data3).then(res => {
+            this.lrdata=res.data.data.Info
+          })
+          setTimeout(()=>{
+            this.getcharts()
+          },100)
+
         }
 
       }
@@ -613,8 +703,25 @@ export default {
       this.$router.push(targetUrl)
     },
     putItemState(toState) {
-      var findUrl = this.jsonBaseUrl + '/' + this.pageKind
       var putList = []
+
+      let selectId=""
+      for(var i in this.selections){
+        selectId+=this.selections[i].Id+"/"
+      }
+      let data = {
+        id:selectId,
+        state:toState,
+      }
+      console.info("11111111111111111",data)
+      updateExample(data).then(response => {
+        console.info('j',j)
+      })
+      setTimeout(() => {
+        this.getItemInfo()
+      },20)
+      this.$Message.success('修改成功')
+
       for(var i in this.selections) {
         for (var j in this.itemList) {
           if(this.selections[i].id == this.itemList[j].id) {
@@ -631,18 +738,11 @@ export default {
               this.itemList[j].end_time = this.nowTime
               this.itemList[j].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
             }
-            var putUrl = findUrl + "/" + this.itemList[j].id
-
-            updateExample(data).then(response => {
 
 
-            })
-            var putPromise = new Promise((resolve,reject)=>{
-              axios.put(putUrl, this.itemList[j]).then(response=>{
-                // console.info("in:" + response)
-              })
-            })
-            putList.push(putPromise)
+            // var putUrl = findUrl + "/" + this.itemList[j].id
+
+            // putList.push(putPromise)
 
           }
         }
@@ -717,6 +817,7 @@ export default {
       }
       getExampleList(data).then(response => {
         this.itemList = response.data.data.examples
+        console.info("this.itemlist",this.itemList)
         this.itemNum = this.itemList.length
         for(var i in this.itemList) {
           if(this.itemList[i].state == "运行中") {

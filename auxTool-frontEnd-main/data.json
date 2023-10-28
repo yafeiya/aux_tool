@@ -3445,7 +3445,7 @@
       "gpu_num": 10,
       "post_date": 1691418125656,
       "post_time": 1691418125656,
-      "run_time": "23分钟",
+      "run_time": "1889小时17分钟",
       "dataset_url": "./data",
       "model_name": "YOLOv3",
       "model_type": "目标检测",
@@ -3457,7 +3457,7 @@
       "model_url": "./model",
       "memory": "2000MB",
       "start_time": 1691418125656,
-      "end_time": 1691419507178,
+      "end_time": 1698219593681,
       "id": 1
     },
     {

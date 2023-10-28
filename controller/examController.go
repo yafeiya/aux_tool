@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -64,15 +63,6 @@ func DeleteExample(ctx *gin.Context) {
 				}
 			}
 		}
-		//example := []model.Example{}
-		//result := db.Where("Id = ?", Id).Delete(&example)
-		//if result.RowsAffected == 0 {
-		//	fmt.Println("删除失败")
-		//	response.Response(ctx, http.StatusOK, 404, nil, "fail")
-		//} else {
-		//	fmt.Println("删除成功")
-		//	response.Success(ctx, nil, "success")
-		//}
 	}
 }
 
@@ -83,60 +73,33 @@ TODO:更新指定实例
 */
 func UpdateExample(ctx *gin.Context) {
 	db := common.InitDB()
-	pageKind := ctx.PostForm("pageKind")
-	fmt.Println(pageKind)
-	if pageKind == "example" {
-		example_name := "example_name"
-		rank := "example_name"
-		state := "example_name"
-		cpu_num := "5"
-		cpu, _ := strconv.ParseUint(cpu_num, 10, 64)
-		gpu_num := "5"
-		gpu, _ := strconv.ParseUint(gpu_num, 10, 64)
-		post_data := "21342134214"
-		post_time, _ := strconv.ParseUint(post_data, 10, 64)
-		dataset_url := "example_name"
-		model_name := "example_name"
-		model_type := "example_name"
-		epoch_num := "example_name"
-		loss := "example_name"
-		optimizer := "example_name"
-		decay := "example_name"
-		evaluation := "example_name"
-		model_url := "example_name"
-		memory := "example_name"
-		start_time := "25234234234"
-		end_time := "254235234"
-		example := model.Example{
-			Example_name: example_name,
-			Rank:         rank,
-			State:        state,
-			Cpu_num:      cpu,
-			Gpu_num:      gpu,
-			Post_data:    post_time,
-			Dataset_url:  dataset_url,
-			Model_name:   model_name,
-			Model_type:   model_type,
-			Epoch_num:    epoch_num,
-			Loss:         loss,
-			Optimizer:    optimizer,
-			Decay:        decay,
-			Evaluation:   evaluation,
-			Model_url:    model_url,
-			Memory:       memory,
-			Start_time:   start_time,
-			End_time:     end_time,
-		}
-		// 判重处理
-		//pageKind、task、type、dataset_name
-		result := db.Model(model.Example{}).Where("Example_name = ?", example_name).Updates(&example)
-		if result.RowsAffected == 0 {
-			fmt.Println("修改失败")
-			response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	Id := ctx.Query("id")
+	State := ctx.Query("state")
+	fmt.Println(Id)
+	fmt.Println(State)
+	IdList := strings.Split(Id, "/")
+	fmt.Println("IdList", IdList)
+	example := model.Example{
+		State: State,
+	}
+	for _, value := range IdList {
+		if value == "" {
+			fmt.Println("记录更新结束")
 		} else {
-			// 新增卡片
-			fmt.Println("修改成功")
-			response.Success(ctx, nil, "success")
+			fmt.Println("vvvvvvvvvvvvvvvvalueid", value, "test")
+			result := db.Model(model.Example{}).Where("Id = ?", value).Updates(&example)
+			if result.RowsAffected == 0 {
+				fmt.Println("修改失败")
+				response.Response(ctx, http.StatusOK, 404, nil, "fail")
+			} else {
+				// 新增卡片
+				fmt.Println("修改成功")
+				response.Success(ctx, nil, "success")
+			}
 		}
 	}
+
+	// 判重处理
+	//pageKind、task、type、dataset_name
+
 }

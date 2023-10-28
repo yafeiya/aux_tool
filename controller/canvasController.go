@@ -93,6 +93,8 @@ func RunCanvas(ctx *gin.Context) {
 	Rank := ctx.Query("rank")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
+	Dataset_url := ctx.Query("dataset_url")
+	fmt.Println("Dataset_url", Dataset_url)
 	// fmt.Println("newCellData", newCellData)
 	fmt.Println("id", id)
 	fmt.Println("time", Start_time)
@@ -156,7 +158,7 @@ func RunCanvas(ctx *gin.Context) {
 				Cpu_num:      4,
 				Gpu_num:      1,
 				Post_data:    0,
-				Dataset_url:  "",
+				Dataset_url:  Dataset_url,
 				Model_name:   "",
 				Model_type:   "",
 				Epoch_num:    "200e",
