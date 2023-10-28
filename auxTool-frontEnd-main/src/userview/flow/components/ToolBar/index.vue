@@ -93,6 +93,8 @@
   import { defineComponent, ref } from 'vue'; // ref, reactive
   import FlowGraph from '../../graph';
   import { DataUri } from '@antv/x6';
+  import { EndUrl } from '../../../../../url_config'
+
   import axios from 'axios';
   import {saveCanvas, runCanvas, getDesignsById} from '../../../../api/api.js'
   import qs from "qs";
@@ -132,11 +134,16 @@
       runorder() {
         const { graph } = FlowGraph;
         var graphData = graph.toJSON();
-        console.log("在此修改运行函数")
+
         var url = decodeURI(window.location.href);
         var cs_arr = url.split('?')[1];//?后面的
         var iid = cs_arr.split('=')[1].split('&')[0];
+        var task = cs_arr.split('=')[2].split('&')[0];
+        var type = cs_arr.split('=')[3].split('&')[0];
+        console.log("task",task)
+        console.log("type",type)
         let data = {
+          dataset_url:EndUrl().fileUrl+"/"+type+"/"+task+"/"+iid,
           start_time:(new Date()).getTime(),
           id:iid,
           design_name:'1',
