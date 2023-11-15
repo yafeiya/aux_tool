@@ -226,6 +226,10 @@
         },
         ]
 
+      let finalmenu:any = [
+
+        ] 
+
       let modelbase = await getMenuInfo("modelbase")
       menu[0]["children"] = modelbase.data;
 
@@ -250,11 +254,17 @@
             // console.log("读取数据库",await cardList)
             menu[0]["children"][i]["children"][j].content = cardList
           }
+          finalmenu.push(menu[0]["children"][i]["children"][j])
           j++
         }
         i++
         // console.log("显示最终菜单",await menu)
+        // console.log("显示finalmenu",await finalmenu)
       }
+
+      // while (menu[0]["children"][i] != null) { 
+
+      // }
 
 
 

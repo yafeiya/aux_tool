@@ -100,7 +100,7 @@
       const sendMoneytoYe = function() {
         preview.value = !preview.value
         changepreview(preview.value)
-        console.log(readpath.value)
+        // console.log(readpath.value)
       }
 
       const data = reactive({
@@ -123,12 +123,12 @@
           data.nodeFontSize = globalGridAttr.nodeFontSize
           data.nodeselflabel = globalGridAttr.selflabel
           data.nodedataurl = globalGridAttr.dataurl
-
-
-
+          
+          
+          
           // 判断图像路径
           if(readpath.value == true){
-            console.log("需要bashinfo")
+            // console.log("需要bashinfo")
             bashinfo()
             // console.log("需要initchart")
           }else {
@@ -172,26 +172,25 @@
       tip.task = cs_arr.split('=')[2].split('&')[0];
       tip.type = cs_arr.split('=')[3];
       tip2.id = tip.id
-      tip2.task = tip.task
-      tip2.type = tip.type
+      tip2.task = tip.task 
+      tip2.type = tip.type 
       tip3.id = tip.id
-      tip3.task = tip.task
-      tip3.type = tip.type
+      tip3.task = tip.task 
+      tip3.type = tip.type 
       qs.stringify(tip)
       // console.info("after——stringify",tip)
 
       databaseinfo = await getprocessFile(tip)
       databaseinfo2 = await getprocessFile(tip2)
       databaseinfo3 = await getprocessFile(tip3)
-
+      // console.log("databaseinfo is", await getprocessFile(tip))
           //后端返回response.data.data.Info即为[[1,1][2,2]]
       if(databaseinfo.data.data!=null){
         actionDataString= await databaseinfo.data.data.Info
-
+        // console.log("actionDataString:",await databaseinfo.data.data.Info)
       }
       if(databaseinfo2.data.data!=null){
         rewardDataString= await databaseinfo2.data.data.Info
-        console.log("rewardDataString:",rewardDataString)
       }
       if(databaseinfo3.data.data!=null){
         lossDataString= await databaseinfo3.data.data.Info
@@ -201,10 +200,10 @@
       // console.log("actdata is", await actionDataString)
       // console.log("rewarddata is",await rewardDataString)
       // console.log("lrdata is",await lossDataString)
-
+        
 
       const initchart = (label) => {
-        console.log("执行initchart")
+        // console.log("执行initchart")
         // console.log("initchart",readpath.value)
         clearHander()
         // let actdata = datas["actions"]
@@ -233,7 +232,7 @@
           }
         }
         // console.log("初始为0",MSLnum)
-        // 统计发射数目
+        // 统计发射数目  
         let msi:any = []
         let serial = 12
         var arr:any = [',','[',']'] //排除非数字
@@ -294,7 +293,7 @@
 
           serial2++
         }
-        console.log("rewad is",rewarddata)
+        // console.log("rewad is",rewarddata)
 
 
         //处理loss
@@ -339,9 +338,9 @@
           }
           serial3++
         }
-        console.log("lossdict",lossdict)
+        // console.log("lossdict",lossdict)
         // console.log("lossdata['alpha_loss']:",lossdict['alpha_loss'])
-
+        
 
         let myChart = echarts.init(document.getElementById("myChart"));
         let miniChart = echarts.init(document.getElementById("miniChart"));
@@ -384,7 +383,7 @@
               },
               grid3D: {
                   viewControl: {//可以控制整个柱状图场景旋转平移等，自行代数数据试试
-                      // alpha: 0,
+                      // alpha: 0, 
                       // beta: 0,
                       // minAlpha: 0,//x轴旋转
                       // maxAlpha: 0,
@@ -440,7 +439,7 @@
             },
             yAxis:{},
             series: [
-
+              
             ]
           }
 
@@ -459,30 +458,30 @@
         if( nodelabel == '动作分布'){
           myChart.setOption(option1);
           miniChart.setOption(option1);
-          console.log("执行动作分布")
+          // console.log("执行动作分布")
         }
 
         else if( nodelabel == '奖励分布'){
-          myChart.setOption(option2);
+          myChart.setOption(option2); 
           miniChart.setOption(option2);
-          console.log("执行奖励分布")
+          // console.log("执行奖励分布")
         }
 
         else if( nodelabel == '学习率'){
-          myChart.setOption(option3);
+          myChart.setOption(option3); 
           miniChart.setOption(option3);
-          console.log("执行学习率")
+          // console.log("执行学习率")
         }
-
+        
         window.onresize = function () { // 自适应大小
           myChart.resize();
           miniChart.resize();
         };
-
+      
       }
 
       async function bashinfo() {
-        console.log("执行bashinfo")
+        // console.log("执行bashinfo")
         databaseinfo = await getprocessFile(tip)
         databaseinfo2 = await getprocessFile(tip2)
         databaseinfo3 = await getprocessFile(tip3)
