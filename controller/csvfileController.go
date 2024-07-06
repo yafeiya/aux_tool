@@ -120,13 +120,13 @@ func GetCSVInfo(csv_path string) (int, int, []string) {
 func GetTable(ctx *gin.Context) {
 	// 参数
 	Task := ctx.Query("Task")
-	Dataset_name := ctx.Query("Dataset_name")
+	Dataset_Id := ctx.Query("Dataset_Id")
 	Type := ctx.Query("Type")
 
 	db := common.InitDB()
 
 	datatables := []model.Datatable{}
-	db.Where("Task = ? and Type = ? and Dataset_name = ?", Task, Type, Dataset_name).Find(&datatables)
+	db.Where("Task = ? and Type = ? and Dataset_Id = ?", Task, Type, Dataset_Id).Find(&datatables)
 	if len(datatables) == 0 {
 		fmt.Println("卡片")
 		response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
@@ -187,7 +187,7 @@ func DeleteTable(ctx *gin.Context) {
 }
 
 // 添加csv表
-func CreateTable(Task string, Type string, Dataset_name string, numColumns int, numRows int, Types []string, csv_name string, csv_path string, time string) string {
+func CreateTable(Task string, Type string, Dataset_Id int, numColumns int, numRows int, Types []string, csv_name string, csv_path string, time string) string {
 	db := common.InitDB()
 	types := ""
 	for _, columnType := range Types {
@@ -196,7 +196,7 @@ func CreateTable(Task string, Type string, Dataset_name string, numColumns int, 
 	datatable := model.Datatable{
 		Type:         Type,
 		Task:         Task,
-		Dataset_name: Dataset_name,
+		Dataset_Id:   uint(Dataset_Id),
 		Table_name:   csv_name,
 		Header_num:   uint(numColumns),
 		Data_len:     uint(numRows),
@@ -205,7 +205,7 @@ func CreateTable(Task string, Type string, Dataset_name string, numColumns int, 
 		Time:         time,
 	}
 	// 判重处理
-	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, csv_name).First(&datatable)
+	db.Where("Task = ? and Type = ? and Dataset_Id = ? and Table_name = ?", Task, Type, Dataset_Id, csv_name).First(&datatable)
 	if datatable.Id != 0 {
 		fmt.Println("该卡片已存在")
 		// response.Response(ctx, http.StatusOK, 404, nil, "The card already exists")
@@ -223,12 +223,12 @@ func CreateTable(Task string, Type string, Dataset_name string, numColumns int, 
 
 func GetCsvData(ctx *gin.Context) {
 	Dataset_id := ctx.Query("id")
-	fmt.Println("需要查询的数据集名称：", Dataset_id)
+	fmt.Println("需要查询的数据集id：", Dataset_id)
 
 	db := common.InitDB()
 
 	datatables := []model.Datatable{}
-	db.Where("Dataset_name = ?", Dataset_id).Find(&datatables)
+	db.Where("Dataset_Id = ?", Dataset_id).Find(&datatables)
 	if len(datatables) == 0 {
 		fmt.Println("未找到数据集下的csv文件")
 		response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")

@@ -160,5 +160,33 @@
         }
       ]
     }
+  ],
+  "canvas": [
+    {
+      "name": "datapre",
+      "title": "数据预处理",
+      "children": [
+        {
+          "name": "dataaugmentation",
+          "title": "数据扩充"
+        },
+        {
+          "name": "dataaugmentation",
+          "title": "数据清洗"
+        }
+      ]
+    },
+    {
+      "name": "moudlepredictive",
+      "title": "模型预测",
+      "children": [
+        {
+          "name": "batchdeduction",
+          "title": "批量推理"
+        }
+        
+      ]
+    }
+    
   ]
 }

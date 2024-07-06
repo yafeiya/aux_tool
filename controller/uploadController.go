@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	"strconv"
 	// "io"
 )
 
@@ -25,6 +26,7 @@ func UploadCsvFile(ctx *gin.Context) {
 	Task := ctx.PostForm("task")
 	Type := ctx.PostForm("type")
 	Id := ctx.PostForm("id")
+	num, _ := strconv.Atoi(Id)
 	Dataset_name := ctx.PostForm("name")
 	time := ctx.PostForm("time")
 	file, _ := ctx.FormFile("file")
@@ -48,7 +50,7 @@ func UploadCsvFile(ctx *gin.Context) {
 
 	// 读取csv文件信息，获取行数、列数、数据类型
 	numColumns, numRows, Types := GetCSVInfo(dst)
-	result := CreateTable(Task, Type, Id, numColumns, numRows, Types, file.Filename, dst_sql, time)
+	result := CreateTable(Task, Type, num, numColumns, numRows, Types, file.Filename, dst_sql, time)
 	if result == "success" {
 		response.Success(ctx, nil, "success")
 	} else {
@@ -70,13 +72,13 @@ func DeleteCsvFile(ctx *gin.Context) {
 	flag = 1
 	for _, record := range records {
 		Task := reflect.ValueOf(record).FieldByName("Task").String()
-		Dataset_name := reflect.ValueOf(record).FieldByName("Dataset_name").String()
+		Dataset_Id := reflect.ValueOf(record).FieldByName("Dataset_Id").String()
 		Type := reflect.ValueOf(record).FieldByName("Type").String()
 		Csv_name := reflect.ValueOf(record).FieldByName("Csv_name").String()
 
 		// 在这里执行删除记录的操作
 		datatable := []model.Datatable{}
-		result := db.Where("Task = ? and Dataset_name = ? and Type = ? and Csv_name = ?", Task, Dataset_name, Type, Csv_name).Delete(&datatable)
+		result := db.Where("Task = ? and Dataset_name = ? and Type = ? and Csv_name = ?", Task, Dataset_Id, Type, Csv_name).Delete(&datatable)
 		if result.RowsAffected == 0 {
 			fmt.Println("删除失败")
 			flag = 0
@@ -97,16 +99,16 @@ func DownloadCsvFile(ctx *gin.Context) {
 	db := common.InitDB()
 	// 路径参数
 	Task := ctx.PostForm("task")
-	Dataset_name := ctx.PostForm("dataset_name")
+	Dataset_Id := ctx.PostForm("Id")
 	Type := ctx.PostForm("type")
 	Table_name := ctx.PostForm("table_name")
 	fmt.Println(Task)
-	fmt.Println(Dataset_name)
+	fmt.Println(Dataset_Id)
 	fmt.Println(Type)
 	fmt.Println(Table_name)
 	datatables := []model.Datatable{}
 
-	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_name, Table_name).Find(&datatables)
+	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_Id, Table_name).Find(&datatables)
 	if len(datatables) == 0 {
 		fmt.Println("没找到")
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
