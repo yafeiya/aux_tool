@@ -238,11 +238,10 @@ export const getprocessFile = (data) => {
   })
 }
 export const saveCanvas = (data) => {
-  console.info("111111111111111",data.cell)
   return myAxios({
-    method: 'GET',
+    method: 'POST',
     url: '/saveCanvas',
-    params:data
+    data:data
   })
 }
 export const getDesignsById = (data) => {
@@ -277,6 +276,13 @@ export const deleteExample = (data) => {
   return myAxios({
     method: 'GET',
     url: '/deleteExample',
+    params:data
+  })
+}
+export const getCanvas = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getCanvas',
     params:data
   })
 }

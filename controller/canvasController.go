@@ -22,64 +22,63 @@ import (
 前端保存按钮
 */
 func SaveCanvas(ctx *gin.Context) {
-	fmt.Println("SaveCanvas")
-	id, _ := strconv.Atoi(ctx.Query("id"))
-	newCellData := ctx.QueryArray("cell")
-	// fmt.Println("newCellData", newCellData)
+	id, _ := strconv.Atoi(ctx.PostForm("id"))
+	newCellData := ctx.PostForm("cell")
+	fmt.Println("newCellData++++", newCellData)
 	fmt.Println("id", id)
 	// 读取JSON文件
-	jsonData, err := ioutil.ReadFile("./data/data.json")
-	if err != nil {
-		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-		return
-	}
+	// jsonData, err := ioutil.ReadFile("./data/data.json")
+	// if err != nil {
+	// 	response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	// 	return
+	// }
 
-	// 解析JSON数据
-	var data model.Data
-	if err := json.Unmarshal(jsonData, &data); err != nil {
-		fmt.Println("解析JSON数据失败:", err)
-		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-		return
-	}
+	// // 解析JSON数据
+	// var data model.Data
+	// if err := json.Unmarshal(jsonData, &data); err != nil {
+	// 	fmt.Println("解析JSON数据失败:", err)
+	// 	response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	// 	return
+	// }
 
-	// 遍历列表
-	for i := range data.Designs {
-		if data.Designs[i].Id == id {
-			fmt.Println("要覆盖的design的id为:", id)
-			var newCell []interface{}
+	// // 遍历列表
+	// for i := range data.Designs {
+	// 	if data.Designs[i].Id == id {
+	// 		fmt.Println("要覆盖的design的id为:", id)
+	// 		var newCell []interface{}
 
-			// 解析 JSON 数组数据
-			for _, jsonStr := range newCellData {
-				byteSlice := []byte(jsonStr) // Convert to []byte
-				var item interface{}
-				if err := json.Unmarshal(byteSlice, &item); err != nil {
-					fmt.Println("解析 JSON 数组数据fail:", err)
-					response.Response(ctx, http.StatusOK, 404, nil, "fail")
-					return
-				}
-				newCell = append(newCell, item)
-			}
-			// fmt.Println("newCell:", newCell)
-			data.Designs[i].Cell = newCell
+	// 		// 解析 JSON 数组数据
+	// 		for _, jsonStr := range newCellData {
+	// 			byteSlice := []byte(jsonStr) // Convert to []byte
+	// 			var item interface{}
+	// 			if err := json.Unmarshal(byteSlice, &item); err != nil {
+	// 				fmt.Println("解析 JSON 数组数据fail:", err)
+	// 				response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	// 				return
+	// 			}
+	// 			newCell = append(newCell, item)
+	// 		}
+	// 		// fmt.Println("newCell:", newCell)
+	// 		data.Designs[i].Cell = newCell
 
-			// 更新JSON文件
-			updatedJSON, err := json.MarshalIndent(data, "", "  ")
-			if err != nil {
-				response.Response(ctx, http.StatusOK, 404, nil, "fail")
-				return
-			}
+	// 		// 更新JSON文件
+	// 		updatedJSON, err := json.MarshalIndent(data, "", "  ")
+	// 		if err != nil {
+	// 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	// 			return
+	// 		}
 
-			if err := ioutil.WriteFile("./data/data.json", updatedJSON, 0644); err != nil {
-				response.Response(ctx, http.StatusOK, 404, nil, "fail")
-				return
-			}
-			response.Success(ctx, nil, "success")
-			return
-		}
-	}
+	// 		if err := ioutil.WriteFile("./data/data.json", updatedJSON, 0644); err != nil {
+	// 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	// 			return
+	// 		}
+	// 		response.Success(ctx, nil, "success")
+	// 		return
+	// 	}
+	// }
 
-	fmt.Println("未找到指定的design")
-	response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	// fmt.Println("未找到指定的design")
+	// response.Response(ctx, http.StatusOK, 404, nil, "fail")
 
 }
 
@@ -362,4 +361,26 @@ func GetPNG(ctx *gin.Context) {
 		return
 	}
 	response.Success(ctx, gin.H{"image": image}, "success")
+}
+
+func GetCanvas(ctx *gin.Context) {
+	fmt.Println("getCanvas000000000000")
+	Id, _ := strconv.Atoi(ctx.Query("id"))
+	jsonData, err := ioutil.ReadFile("./data/data.json")
+
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	var data model.Data
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	for i := range data.Designs {
+		if data.Designs[i].Id == Id {
+			response.Success(ctx, gin.H{"cell": data.Designs[i].Cell}, "success")
+			return
+		}
+	}
 }

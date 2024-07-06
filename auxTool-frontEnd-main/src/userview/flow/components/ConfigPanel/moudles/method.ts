@@ -20,7 +20,9 @@ export function nodeOpt(id: any, globalGridAttr: any) {
     globalGridAttr.nodefuturerewarddiscount = cell.getData()?.futurerewarddiscount;
     globalGridAttr.nodemodelurl = cell.getData()?.modelurl;
     globalGridAttr.nodemodeltype = cell.getData()?.modeltype;
+    if(cell.getData()?.name == undefined){cell.getData().name = cell.getData()?.selflabel}
     globalGridAttr.nodename = cell.getData()?.name;
+    // console.log(cell.getData().name == undefined)
     globalGridAttr.selflabel = cell.getData()?.selflabel
   }
   return curCel;
