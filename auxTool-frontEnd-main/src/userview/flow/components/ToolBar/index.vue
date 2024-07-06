@@ -68,7 +68,6 @@
       > 保存 </Button>
     </Tooltip>
 
-
     <!-- //！！！！！！！！！！！！！在这儿修改！！！！！！！！！！ -->
     <Tooltip content="运行" placement="bottom">
       <template #title>
@@ -93,7 +92,9 @@
   import { defineComponent, ref } from 'vue'; // ref, reactive
   import FlowGraph from '../../graph';
   import { DataUri } from '@antv/x6';
+  import {saveCanvas} from "../../../../api/api.js"
   import axios from 'axios';
+  import qs from "qs";
   import ViewUIPlus from 'view-ui-plus'
   export default defineComponent({
     name: 'Index',
@@ -192,7 +193,7 @@
       toDesign() {
         this.$router.push('/design')
       },
-      info () {
+      info() {
           this.$Message.info('画布已保存');
       },
       runErrorInfo({mustItem, example}) {
@@ -233,56 +234,6 @@
 
       const canUndo = ref(history.canUndo());
       const canRedo = ref(history.canRedo());
-
-
-      //！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！在此修改运行函数
-      // const runorder =() =>{
-      //     console.log("在此修改运行函数")
-      //     var url = decodeURI(window.location.href);
-      //     var cs_arr = url.split('?')[1];//?后面的
-      //     var iid = cs_arr.split('=')[1];
-      //     var findUrl = 'http://localhost:3000/design/' + iid
-      //     axios.get(findUrl).then(res=>{
-      //       var design = res.data
-      //       console.info(design)
-      //       var cells = design.cells
-
-      //       example.example_name = design.dataset_name
-      //       example.rank = design.rank
-      //       // example.post_date = t.getTime() - 86400 * 3 * 1000
-      //       // example.post_time = t.getTime() - 86400 * 3 * 1000
-      //       // example.start_time = t.toLocaleDateString()
-      //       for(var i in cells) {
-      //         console.info(i)
-      //         if(cells[i].data['fatherLabel'] == '数据加载') {
-      //           example.dataset_url = cells[i].data['dataurl']
-      //           mustItem[0].flag = true
-      //         } else if(cells[i].data['fatherLabel'] == '模型模板') {
-      //           example.model_name = cells[i].attrs.text.text
-      //           example.model_type = cells[i].data['modeltype']
-      //           example.model_url = cells[i].data['modelurl']
-      //           mustItem[1].flag = true
-      //         } else if(cells[i].data['fatherLabel'] == '模型训练') {
-      //           example.epoch_num = cells[i].data['iterations']
-      //           example.loss = cells[i].data['loss']
-      //           example.optimizer = cells[i].data['optimizer']
-      //           example.decay = cells[i].data['decayfactor']
-      //           example.evalution = cells[i].data['evalution']
-      //           mustItem[2].flag = true
-      //           // memory = cells[i].data['']
-      //         } else if(cells[i].data['fatherLabel'] == '仿真交互') {
-      //           mustItem[3].flag = true
-      //         }
-      //       }
-
-
-
-      //       // console.info(example)
-      //     })
-
-      // }
-
-
       const copy = () => {
         const { graph } = FlowGraph;
         const cells = graph.getSelectedCells();
@@ -362,23 +313,19 @@
             break;
           case 'save':
             var graphData = graph.toJSON()
-            var url = decodeURI(window.location.href);
-            var cs_arr = url.split('?')[1];//?后面的
-            console.info("url",url);
-            var iid = cs_arr.split('=')[1];
             console.log("测试");
-            console.log(graphData);
-            axios.patch('http://localhost:3000/design/'+iid, {'cells':graphData.cells})
-                .then(response => {
-                  console.log(response);
-                })
-                .catch(error => {
-                  console.log(error);
-                })
-
+            var data = {
+            //菜单的添加与删除
+            cell : graphData.cells ,
+       
+            }
+            const t = qs.stringify(data, {arrayFormat: 'repeat'})
+            console.log("graphData.cells",data);
+            saveCanvas(t).then(response => {
+            console.info("!111111111",response.data.msg)})
             break;
-          default:
-            break;
+            default:
+              break;
         }
       };
 

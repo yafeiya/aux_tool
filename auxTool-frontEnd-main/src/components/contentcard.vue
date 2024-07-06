@@ -391,6 +391,7 @@ export default {
       }
       getCsvData(data).then(response => {
         var csvdataList = response.data.data.datatables
+        console.info("获取的csv——list",csvdataList)
         this.tabledata=[]
         var i=0
         for(i;i<csvdataList.length;i++){

@@ -160,7 +160,9 @@
       const changeimgpreview: any = inject('changeimgpreview')
       const imgpreview: any = inject('imgpreview')
       var imgpath: any = inject('imgpath')
+
       const sendtoYe = function() {
+        console.log('触发sendtoYe', globalGridAttr.nodename)
         for(var children1 of menu[0].children){
           // console.log(children1)
           for(var children2 of children1.children){
