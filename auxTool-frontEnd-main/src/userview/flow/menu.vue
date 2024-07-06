@@ -241,13 +241,14 @@
                             "name": "modellog",
                             "title": "模型日志数据"
                           })                    
-      let design = await getMenuInfo("design")                  
-      menu[1]["children"] = design.data[0].children
+      let canvas = await getMenuInfo("canvas")   
+      console.log("design++++++++++++",canvas)               
+      menu[1]["children"] = canvas.data[0].children
       // let modelbase = await getMenuInfo("modelbase")
       // console.log(modelbase.data[0].children)
       // menu[2]["children"]= modelbase.data[0].children.concat(modelbase.data[1].children.concat(modelbase.data[2].children))
-
-      menu[3]["children"] = design.data[1].children
+      // let design = await getMenuInfo("design")
+      menu[3]["children"] = canvas.data[1].children
       let defineFunction = await getMenuInfo("defineFunction")
       menu[4]["children"] = defineFunction.data[0].children
       menu[5]["children"] = defineFunction.data[1].children

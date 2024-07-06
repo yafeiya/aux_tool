@@ -92,7 +92,7 @@
   import * as echarts from 'echarts'
   import datas from "./results/data.json"
   import { getMenuInfo } from '../../api/api.js'
-  
+  import { EndUrl } from '../../../url_config'
   
   // const getContainerSize = () => {
   //   return {
@@ -166,8 +166,10 @@
       // "http://127.0.0.1:5173/" +
       const conbineimgpath =(a) =>{
         if(a != null) {
-          // console.log(new URL(`http://127.0.0.1:5173/${imgpath}`))
-          return new URL(`http://127.0.0.1:5173/${imgpath}`).href;
+          
+          let geturl = EndUrl()['fileUrl']
+          console.log(new URL(`${geturl}/${imgpath}`))
+          return new URL(`${geturl}/${imgpath}`).href;
         }
       }
 
