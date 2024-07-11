@@ -91,6 +91,7 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'; // ref, reactive
+  import { runCanvas } from '../../../../api/api.js'
   import FlowGraph from '../../graph';
   import { DataUri } from '@antv/x6';
   import axios from 'axios';
@@ -122,6 +123,7 @@
               }
                   ],
         example:{
+          "id":"",
           "example_name": "",
           "rank": "",
           "state": "运行中",
@@ -150,8 +152,13 @@
         console.log("在此修改运行函数")
         var url = decodeURI(window.location.href);
         var cs_arr = url.split('?')[1];//?后面的
-        var iid = cs_arr.split('=')[1];
+        var iid = cs_arr.split('=')[1].split('&')[0];
         var findUrl = 'http://localhost:3000/design/' + iid
+        this.example.id=iid;
+        console.info("exmple",this.example)
+        runCanvas(this.example).then(res=>{
+          console.info("runres",res)
+        })
         axios.get(findUrl).then(res=>{
           var design = res.data
           console.info(design)
@@ -197,20 +204,22 @@
       },
       runErrorInfo({mustItem, example}) {
         console.info(example)
-        for(var i in mustItem) {
-          if(mustItem[i].flag == false) {
-            this.$Message["error"]({
-              background: true,
-              content: "缺失必要模块" + mustItem[i].name+"请仔细检查"
-            });
-            return ;
-          }
-        }
+        // for(var i in mustItem) {
+        //   if(mustItem[i].flag == false) {
+        //     this.$Message["error"]({
+        //       background: true,
+        //       content: "缺失必要模块" + mustItem[i].name+"请仔细检查"
+        //     });
+        //     return ;
+        //   }
+        // }
         example.post_date = (new Date()).getTime()
         example.post_time = (new Date()).getTime()
         example.start_time = (new Date()).getTime()
         example.end_time = ''
+        console.info("example",example)
         var postUrl = "http://localhost:3000/example"
+
         axios.post(postUrl,example).then(res=>{
           this.$Message["success"]({
               background: true,

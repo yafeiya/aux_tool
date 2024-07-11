@@ -34,7 +34,6 @@ export default {
   data () {
     return {
       autoLogin: true,
-      jsonBaseUrl: "http://localhost:3000",
       username: null,
     }
   },

@@ -98,7 +98,7 @@ func RunCanvas(ctx *gin.Context) {
 	fmt.Println("id", id)
 	fmt.Println("time", Start_time)
 	fmt.Println("rank", Rank)
-	fmt.Println("design_name", Design_name)
+	fmt.Println("start_time", Start_time)
 
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
@@ -151,6 +151,7 @@ func RunCanvas(ctx *gin.Context) {
 			db := common.InitDB()
 
 			example := model.Example{
+				Id:           1,
 				Example_name: Design_name,
 				Rank:         Rank,
 				State:        "运行中",

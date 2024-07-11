@@ -202,12 +202,11 @@
         this.lossData.id=id,
         this.lossData.task=task,
         this.lossData.type=type
-        // console.info("iiiiiiiiiiiiiiiiiiiiii",this.lossData)
-
+        //console.info("iiiiiiiiiiiiiiiiiiiiii",this.lossData)
       },
       uploadSuccess(){
         this.$Message.success('上传成功')
-        
+
       },
     },
 

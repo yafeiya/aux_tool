@@ -362,10 +362,10 @@ export default {
       let csv_path_array=[]
       var xmlurl=EndUrl().fileUrl+'/xml/'
       for(var i in this.selections){
-        var temp=this.selections[i].Type+"/"+this.selections[i].Task+"/"+this.selections[i].Dataset_name+"/"+this.selections[i].Table_name
+        var temp=this.selections[i].Type+"/"+this.selections[i].Task+"/"+this.selections[i].Dataset_Id+"/"+this.selections[i].Table_name
         csv_path_array.push(temp)
       }
-
+      console.info("ppppppppppp",csv_path_array)
       // let csv_path_array = ["数值数据集/任务1/波士顿房价数据集0/123.csv","数值数据集/任务1/波士顿房价数据集0/345.csv"]
       const data = {path : csv_path_array +"",
         data_name: this.cardInfo["Dataset_name"]}
@@ -682,7 +682,7 @@ export default {
       console.info("row",row)
       let data = {
         task: row.Task,
-        dataset_name: row.Dataset_name,
+        dataset_name: row.Dataset_Id,
         type: row.Type,
         table_name: row.Table_name
       }
