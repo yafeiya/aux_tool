@@ -88,7 +88,7 @@ func SaveCanvas(ctx *gin.Context) {
 func RunCanvas(ctx *gin.Context) {
 	fmt.Println("RunCanvas")
 	Start_time := ctx.Query("start_time")
-	Design_name := ctx.Query("design_name")
+
 	Rank := ctx.Query("rank")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
@@ -120,7 +120,8 @@ func RunCanvas(ctx *gin.Context) {
 		if data.Designs[i].Id == id {
 			fmt.Println("要覆盖的design的id为:", id)
 			var newCell []interface{}
-
+			//获取对应案例名称
+			Design_name := data.Designs[i].Dataset_name
 			// 解析 JSON 数组数据
 			for _, jsonStr := range newCellData {
 				byteSlice := []byte(jsonStr) // Convert to []byte
@@ -151,7 +152,6 @@ func RunCanvas(ctx *gin.Context) {
 			db := common.InitDB()
 
 			example := model.Example{
-				Id:           1,
 				Example_name: Design_name,
 				Rank:         Rank,
 				State:        "运行中",
@@ -173,8 +173,10 @@ func RunCanvas(ctx *gin.Context) {
 			}
 			// 判重处理
 			//pageKind、task、type、dataset_name
+
 			db.Where("Example_name = ?", Design_name).Find(&example)
 			fmt.Println("Example_name", Design_name)
+			fmt.Println("example_id", example.Id)
 			if example.Id != 0 {
 				fmt.Println("该实例已存在")
 				response.Response(ctx, http.StatusOK, 404, nil, "The example already exists")

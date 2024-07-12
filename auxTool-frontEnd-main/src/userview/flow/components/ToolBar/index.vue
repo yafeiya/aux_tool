@@ -73,14 +73,17 @@
     <Tooltip content="运行" placement="bottom">
       <template #title>
       </template>
-      <Button name="run"  @mousedown="runorder" @mouseup="isRun" class="run" size="small">
+<!--      <Button name="run"  @mousedown="runorder" @mouseup="isRun" class="run" size="small">-->
+<!--        运行-->
+<!--      </Button>-->
+      <Button name="run"  @click="isRun" class="run" size="small">
         运行
       </Button>
     </Tooltip>
     <Modal
         v-model="modal"
         title="即将运行该方案"
-        @on-ok="runErrorInfo({mustItem, example})"
+        @on-ok="RunExample({mustItem, example})"
         @on-cancel="cancel">
         <p>您已点击运行按钮，是否确认运行</p>
 
@@ -96,6 +99,7 @@
   import { DataUri } from '@antv/x6';
   import axios from 'axios';
   import ViewUIPlus from 'view-ui-plus'
+  import {EndUrl} from "../../../../../url_config";
   export default defineComponent({
     name: 'Index',
     components: {},
@@ -163,7 +167,6 @@
           var design = res.data
           console.info(design)
           var cells = design.cells
-
           this.example.example_name = design.dataset_name
           this.example.rank = design.rank
           // example.post_date = t.getTime() - 86400 * 3 * 1000
@@ -202,29 +205,51 @@
       info () {
           this.$Message.info('画布已保存');
       },
-      runErrorInfo({mustItem, example}) {
-        console.info(example)
-        // for(var i in mustItem) {
-        //   if(mustItem[i].flag == false) {
-        //     this.$Message["error"]({
-        //       background: true,
-        //       content: "缺失必要模块" + mustItem[i].name+"请仔细检查"
-        //     });
-        //     return ;
-        //   }
-        // }
+      RunExample({mustItem, example}) {
+        console.log("在此修改运行函数")
+        var url = decodeURI(window.location.href);
+        var cs_arr = url.split('?')[1];//?后面的
+        var iid = cs_arr.split('=')[1].split('&')[0];
+        this.example.id=iid;
         example.post_date = (new Date()).getTime()
         example.post_time = (new Date()).getTime()
         example.start_time = (new Date()).getTime()
         example.end_time = ''
         console.info("example",example)
-        var postUrl = "http://localhost:3000/example"
-
-        axios.post(postUrl,example).then(res=>{
+        var postUrl = EndUrl().backEndUrl+"/example"
+        console.info("postUrl",postUrl)
+        runCanvas(example).then(res=>{
           this.$Message["success"]({
               background: true,
               content: '运行成功，请在方案实例页面查看详情'
           });
+          var design = res.data
+          console.info(design)
+          var cells = design.cells
+          this.example.example_name = design.dataset_name
+          this.example.rank = design.rank
+          for(var i in cells) {
+            console.info(i)
+            if(cells[i].data['fatherLabel'] == '数据加载') {
+              this.example.dataset_url = cells[i].data['dataurl']
+              this.mustItem[0].flag = true
+            } else if(cells[i].data['fatherLabel'] == '模型模板') {
+              this.example.model_name = cells[i].attrs.text.text
+              this.example.model_type = cells[i].data['modeltype']
+              this.example.model_url = cells[i].data['modelurl']
+              this.mustItem[1].flag = true
+            } else if(cells[i].data['fatherLabel'] == '模型训练') {
+              this.example.epoch_num = cells[i].data['iterations']
+              this.example.loss = cells[i].data['loss']
+              this.example.optimizer = cells[i].data['optimizer']
+              this.example.decay = cells[i].data['decayfactor']
+              this.example.evalution = cells[i].data['evalution']
+              this.mustItem[2].flag = true
+              // memory = cells[i].data['']
+            } else if(cells[i].data['fatherLabel'] == '仿真交互') {
+              this.mustItem[3].flag = true
+            }
+          }
           for(var i in mustItem) {
             mustItem[i].flag = false
           }
