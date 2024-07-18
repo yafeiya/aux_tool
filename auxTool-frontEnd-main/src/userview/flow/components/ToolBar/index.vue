@@ -94,7 +94,7 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'; // ref, reactive
-  import { runCanvas } from '../../../../api/api.js'
+  import { runCanvas,saveCanvas } from '../../../../api/api.js'
   import FlowGraph from '../../graph';
   import { DataUri } from '@antv/x6';
   import axios from 'axios';
@@ -402,13 +402,16 @@
             var iid = cs_arr.split('=')[1];
             console.log("测试");
             console.log(graphData);
-            axios.patch('http://localhost:3000/design/'+iid, {'cells':graphData.cells})
-                .then(response => {
-                  console.log(response);
-                })
-                .catch(error => {
-                  console.log(error);
-                })
+            saveCanvas(graphData).then(res=>{
+              console.log(res);
+            })
+            // axios.patch('http://localhost:3000/design/'+iid, {'cells':graphData.cells})
+            //     .then(response => {
+            //       console.log(response);
+            //     })
+            //     .catch(error => {
+            //       console.log(error);
+            //     })
 
             break;
           default:

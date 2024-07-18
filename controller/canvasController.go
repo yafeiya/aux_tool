@@ -23,7 +23,7 @@ import (
 */
 func SaveCanvas(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.PostForm("id"))
-	newCellData := ctx.PostForm("cell")
+	newCellData := ctx.PostForm("cells")
 	fmt.Println("newCellData++++", newCellData)
 	fmt.Println("id", id)
 	// 读取JSON文件
@@ -318,6 +318,7 @@ func GetprocessFile(ctx *gin.Context) {
 	fmt.Println("processFile", processFile)
 	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + processFile
 	Info, err := GetTrainingProcessFileInfo(file_path)
+	fmt.Println("file_path", file_path)
 	if err != nil {
 		fmt.Println(err)
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")

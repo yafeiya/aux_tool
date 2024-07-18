@@ -198,8 +198,8 @@
 
       console.info("actionData is", await databaseinfo.data.data)
       console.log("actdata is", await actionDataString)
-      console.log("rewarddata is",await rewardDataString)
-      console.log("lrdata is",await lossDataString)
+      // console.log("rewarddata is",await rewardDataString)
+      // console.log("lrdata is",await lossDataString)
 
 
       const initchart = (label) => {
@@ -269,7 +269,7 @@
             MSLdata.push([n,m,MSLnum[n][m]])
           }
         }
-      // console.log(count)
+      // console.log("count",count)
       // console.log("MSLdata:",MSLdata)
 
 
@@ -383,22 +383,20 @@
               },
               grid3D: {
                   viewControl: {//可以控制整个柱状图场景旋转平移等，自行代数数据试试
-                      alpha: 0,
-                      beta: 0,
-                      minAlpha: 0,//x轴旋转
-                      maxAlpha: 0,
-                      minBeta: 0,//y轴旋转
-                      maxBeta: 0,
-                      projection: 'orthographic'//正交投影
+                      // alpha: 0,
+                      // beta: 0,
+                      // minAlpha: 0,//x轴旋转
+                      // maxAlpha: 0,
+                      // minBeta: 0,//y轴旋转
+                      // maxBeta: 0,
+                      // projection: 'orthographic'//正交投影
                   }
               },
               visualMap: {
-                  calculable: true,
-                  max: maxnum,
-                  dimension: 'Life Expectancy',
-                  inRange: {
-                      color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-                  }
+                max: 9,
+                inRange: {
+                  color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                }
               },
               dataset: {
                   source: MSLdata
@@ -408,9 +406,9 @@
                   barSize: 10,//柱子大小
                   encode: {
                     // 维度的名字默认就是表头的属性名
-                    x: 'Airplane',
-                    y: 'Missile',
-                    z: 'Num',
+                    x: '0',
+                    y: '1',
+                    z: '2',
                     tooltip: [0, 1, 2, 3, 4]
                   }
               }]
