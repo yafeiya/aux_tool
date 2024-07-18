@@ -125,11 +125,11 @@ func GetCard(ctx *gin.Context) {
 	db := common.InitDB()
 	pageKind := ctx.Query("pageKind")
 
-	fmt.Println("1111111111111111111", pageKind)
+	//fmt.Println("1111111111111111111", pageKind)
 	task := ctx.Query("task")
-	fmt.Println(task)
+	//fmt.Println(task)
 	Type := ctx.Query("Type")
-	fmt.Println(Type)
+	//fmt.Println(Type)
 
 	if pageKind == "database" {
 		database := []model.Database{}
@@ -138,7 +138,7 @@ func GetCard(ctx *gin.Context) {
 		db.Where("Task = ? and Type = ?", task, Type).Find(&database)
 		//fmt.Println("666666666", database)
 		if len(database) == 0 {
-			fmt.Println("未找到记录")
+			//fmt.Println("未找到记录")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
 		} else {
 			//fmt.Println(database)
@@ -150,10 +150,10 @@ func GetCard(ctx *gin.Context) {
 		modelbase := []model.Modelbase{}
 		db.Where("Task = ? and Type = ? ", task, Type).Find(&modelbase)
 		if len(modelbase) == 0 {
-			fmt.Println("未找到记录")
+			//fmt.Println("未找到记录")
 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
 		} else {
-			fmt.Println(modelbase)
+			//fmt.Println(modelbase)
 			response.Success(ctx, gin.H{"modelbase": modelbase}, "success")
 		}
 	}

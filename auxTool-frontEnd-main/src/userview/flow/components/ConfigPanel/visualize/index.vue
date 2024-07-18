@@ -183,7 +183,7 @@
       databaseinfo = await getprocessFile(tip)
       databaseinfo2 = await getprocessFile(tip2)
       databaseinfo3 = await getprocessFile(tip3)
-      // console.log("databaseinfo is", await getprocessFile(tip))
+      console.log("databaseinfo is", databaseinfo)
           //后端返回response.data.data.Info即为[[1,1][2,2]]
       if(databaseinfo.data.data!=null){
         actionDataString= await databaseinfo.data.data.Info
@@ -196,10 +196,10 @@
         lossDataString= await databaseinfo3.data.data.Info
       }
 
-      // console.info("actionData is", await databaseinfo.data.data.Info)
-      // console.log("actdata is", await actionDataString)
-      // console.log("rewarddata is",await rewardDataString)
-      // console.log("lrdata is",await lossDataString)
+      console.info("actionData is", await databaseinfo.data.data)
+      console.log("actdata is", await actionDataString)
+      console.log("rewarddata is",await rewardDataString)
+      console.log("lrdata is",await lossDataString)
 
 
       const initchart = (label) => {
@@ -350,52 +350,52 @@
 
         //定义act图表参数
         var option1 = {
-            // title: {
-            //         text: '3D堆叠柱状图',
-            //         x: 'center'
-            //     },
+            title: {
+                    text: '3D堆叠柱状图',
+                    x: 'center'
+                },
               xAxis3D: {
                   type: 'category',
-                  // axisLine:{
-                  //     lineStyle:{
-                  //         color:'black',
-                  //         width:2
-                  //     }
-                  // },
+                  axisLine:{
+                      lineStyle:{
+                          color:'black',
+                          width:2
+                      }
+                  },
               },
               yAxis3D: {
                   type: 'category',
-                  // axisLine:{
-                  //     lineStyle:{
-                  //       width:1,
-                  //       color:'black',
-                  //     }
-                  // },
+                  axisLine:{
+                      lineStyle:{
+                        width:1,
+                        color:'black',
+                      }
+                  },
               },
               zAxis3D: {
                   type: 'value',
-                  // axisLine:{
-                  //     lineStyle:{
-                  //         color:'black',
-                  //         width:1
-                  //     }
-                  // },
+                  axisLine:{
+                      lineStyle:{
+                          color:'black',
+                          width:1
+                      }
+                  },
               },
               grid3D: {
                   viewControl: {//可以控制整个柱状图场景旋转平移等，自行代数数据试试
-                      // alpha: 0,
-                      // beta: 0,
-                      // minAlpha: 0,//x轴旋转
-                      // maxAlpha: 0,
-                      // minBeta: 0,//y轴旋转
-                      // maxBeta: 0,
+                      alpha: 0,
+                      beta: 0,
+                      minAlpha: 0,//x轴旋转
+                      maxAlpha: 0,
+                      minBeta: 0,//y轴旋转
+                      maxBeta: 0,
                       projection: 'orthographic'//正交投影
                   }
               },
               visualMap: {
                   calculable: true,
                   max: maxnum,
-                  // dimension: 'Life Expectancy',
+                  dimension: 'Life Expectancy',
                   inRange: {
                       color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
                   }
