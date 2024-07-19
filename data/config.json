@@ -1,4 +1,4 @@
-{
+  {
   "database": [
     {
       "name": "numDataBase",
@@ -65,7 +65,7 @@
     {
       "name": "reinforcementLearning",
       "title": "强化学习",
-      "icon": " ios-analytics",
+      "icon": "md-calculator",
       "children": [
         {
           "name": "valueIteration",

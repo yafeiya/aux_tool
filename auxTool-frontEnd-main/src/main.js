@@ -19,17 +19,3 @@ app.use(ViewUIPlus)
     .use(echarts)
     .mount('#app')
 
-// export default new Router({
-//     routes: [
-//         {
-//         path: '/',
-//         name: 'home',
-//         component: Home
-//         },
-//         {
-//         path: './components/database.vue',
-//         name: 'about',
-//         component: About
-//         }
-//     ]
-//     })

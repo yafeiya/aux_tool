@@ -1,7 +1,8 @@
 <template>
-  
+
   <router-view />
- 
+
+
   <!-- <database /> -->
 </template>
 <script>

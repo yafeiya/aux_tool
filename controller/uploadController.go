@@ -99,7 +99,7 @@ func DownloadCsvFile(ctx *gin.Context) {
 	db := common.InitDB()
 	// 路径参数
 	Task := ctx.PostForm("task")
-	Dataset_Id := ctx.PostForm("Id")
+	Dataset_Id := ctx.PostForm("dataset_name")
 	Type := ctx.PostForm("type")
 	Table_name := ctx.PostForm("table_name")
 	fmt.Println(Task)
@@ -108,7 +108,7 @@ func DownloadCsvFile(ctx *gin.Context) {
 	fmt.Println(Table_name)
 	datatables := []model.Datatable{}
 
-	db.Where("Task = ? and Type = ? and Dataset_name = ? and Table_name = ?", Task, Type, Dataset_Id, Table_name).Find(&datatables)
+	db.Where("Task = ? and Type = ? and Dataset_Id = ? and Table_name = ?", Task, Type, Dataset_Id, Table_name).Find(&datatables)
 	if len(datatables) == 0 {
 		fmt.Println("没找到")
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")

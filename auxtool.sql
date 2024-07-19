@@ -1,6 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
+
  Source Server         : aux
  Source Server Type    : MySQL
  Source Server Version : 50743 (5.7.43-log)
@@ -22,6 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `database`;
 CREATE TABLE `database`  (
+
   `Id` bigint(20) NOT NULL AUTO_INCREMENT,
   `Released` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `Dataset_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -35,6 +37,7 @@ CREATE TABLE `database`  (
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
+
 -- ----------------------------
 -- Records of database
 -- ----------------------------
@@ -44,6 +47,7 @@ INSERT INTO `database` VALUES (3, '11', '波士顿房价数据集2', '数值数�
 INSERT INTO `database` VALUES (4, '11', '波士顿房价数据集3', '数值数据集', '1级', 'Utf-8', '无', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集', '任务1');
 INSERT INTO `database` VALUES (5, '11', '波士顿房价数据集4', '数值数据集', '1级', 'Utf-8', '无', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集', '任务1');
 INSERT INTO `database` VALUES (11, '11', '测试1', '数值数据集', '2级', 'uf8', '有', './任务1/数值数据集/测试1/', '测试', '任务1');
+
 
 -- ----------------------------
 -- Table structure for datatable
@@ -63,9 +67,11 @@ CREATE TABLE `datatable`  (
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
+
 -- ----------------------------
 -- Records of datatable
 -- ----------------------------
+
 INSERT INTO `datatable` VALUES (34, '数值数据集', '任务2', '2', 'loss00.csv', '4', '56', 'float', '数值数据集/任务2/2/loss00.csv', '1720180348382');
 INSERT INTO `datatable` VALUES (35, '数值数据集', '任务1', '1', '测试1.csv', '4', '56', 'float', '数值数据集/任务1/1/测试1.csv', '1720180551766');
 INSERT INTO `datatable` VALUES (36, '数值数据集', '任务2', '2', '测试1.csv', '4', '56', 'float', '数值数据集/任务2/2/测试1.csv', '1720182186844');
@@ -106,6 +112,7 @@ CREATE TABLE `example`  (
 -- ----------------------------
 INSERT INTO `example` VALUES (1, '方案2', '1级', '已终止', 1, 10, '2000-01-01 00:00:00', './data', 'YOLOv3', 10000, '目标检测', '奖励分布', 'SGD', '0.1', 'mAP', './model', '2000MB', '2000-01-01 00:00:00', '2000-01-05 00:00:00');
 
+
 -- ----------------------------
 -- Table structure for modelbase
 -- ----------------------------
@@ -127,27 +134,26 @@ CREATE TABLE `modelbase`  (
 -- ----------------------------
 -- Records of modelbase
 -- ----------------------------
-INSERT INTO `modelbase` VALUES (1, '多项式回归', '机器学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '回归', '11');
-INSERT INTO `modelbase` VALUES (2, 'DQN', '强化学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '值迭代', '11');
-INSERT INTO `modelbase` VALUES (3, 'A3C', '强化学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '策略学习', '11');
-INSERT INTO `modelbase` VALUES (4, 'FCN', '深度学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '卷积神经网络', '11');
-INSERT INTO `modelbase` VALUES (5, 'LSTM', '深度学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '循环神经网络', '11');
-INSERT INTO `modelbase` VALUES (6, 'SVM', '机器学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '分类', '11');
-INSERT INTO `modelbase` VALUES (7, '蚁群算法', '机器学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '优化', '11');
-INSERT INTO `modelbase` VALUES (8, '贝叶斯算法', '机器学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '优化', '11');
-INSERT INTO `modelbase` VALUES (9, '粒子种群算法', '机器学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '优化', '11');
-INSERT INTO `modelbase` VALUES (10, '决策树', '机器学习', '1级', 'C++', 'D:\\\\01_dataset\\\\波士顿房价数据集.csv', '波士顿房价数据集是一个经典的回归问题数据集，包含了1970年代末期波士顿的南部郊区共506个房屋样本。这些数据都是在20世纪70年代末期以旧金山海湾区房价的情况为基准，采集了波士顿房价相关的特征。这些特征包括了房屋所在城市的犯罪率、每个城镇平均房间数以及自有住房比例等。每个特征的值都已经经过了预处理，例如处理了缺失值和异常值。', 'import...', '分类', '11');
+INSERT INTO `modelbase` VALUES (10, '22222', '机器学习', '1级', 'python', '机器学习/回归/10/444.csv', '1', '1', '回归', '11', '机器学习/回归/10/1.png');
+INSERT INTO `modelbase` VALUES (12, '222', '机器学习', '1级', 'C++', '机器学习/回归/12/20.png', '11', '1', '回归', '11', '机器学习/回归/12/20.png');
+INSERT INTO `modelbase` VALUES (13, '12222', '机器学习', '2级', 'C++', '机器学习/回归/13/123.csv', '1', '1', '回归', '11', '机器学习/回归/13/截图 2023-10-08 20-49-13.png');
+INSERT INTO `modelbase` VALUES (16, '2222222', '机器学习', '1级', 'python', '机器学习/回归/16/mega耿鬼白底.png', '1', '1', '回归', '11', '');
+INSERT INTO `modelbase` VALUES (17, '1', '强化学习', '2级', 'python', '', '无', '无', '值迭代', '11', '');
+INSERT INTO `modelbase` VALUES (18, '111111111', '机器学习', '1级', 'C++', '机器学习/回归/18/444.csv', '111', '111', '回归', '11', '');
+INSERT INTO `modelbase` VALUES (19, '22', '机器学习', '1级', 'java', '机器学习/回归/19/111.csv', '23', '23', '回归', '11', '');
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
+
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `PassWord` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
 
 -- ----------------------------
 -- Records of user
@@ -159,7 +165,6 @@ INSERT INTO `user` VALUES (5, 'username', 'password');
 INSERT INTO `user` VALUES (6, 'sss', '123456');
 INSERT INTO `user` VALUES (7, 'sk', '111');
 INSERT INTO `user` VALUES (8, 'sssss', '111111');
-INSERT INTO `user` VALUES (9, '1234', '123456');
-INSERT INTO `user` VALUES (10, 'admin', '123456');
+INSERT INTO `user` VALUES (9, '456156', '123456');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -9,5 +9,5 @@ datasource:
   port: 3306
   database: auxtool
   username: root
-  password: 123456
+  password: xin2000815635
   charset: utf8mb4

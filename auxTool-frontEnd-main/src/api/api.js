@@ -253,7 +253,7 @@ export const getDesignsById = (data) => {
 }
 export const runCanvas = (data) => {
   return myAxios({
-    method: 'GET',
+    method: 'POST',
     url: '/runCanvas',
     params:data
   })

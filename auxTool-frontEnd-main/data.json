@@ -3527,6 +3527,29 @@
       "start_time": 1693138995368,
       "end_time": "",
       "id": 6
+    },
+    {
+      "example_name": "",
+      "rank": "",
+      "state": "运行中",
+      "cpu_num": 1,
+      "gpu_num": 10,
+      "post_date": 1720251668859,
+      "post_time": 1720251668859,
+      "run_time": "",
+      "dataset_url": "",
+      "model_name": "",
+      "model_type": "",
+      "epoch_num": "",
+      "loss": "",
+      "optimizer": "",
+      "decay": "",
+      "evalution": "",
+      "model_url": "",
+      "memory": "2000MB",
+      "start_time": 1720251668859,
+      "end_time": "",
+      "id": 7
     }
   ],
   "designData": [

@@ -23,7 +23,7 @@ import (
 */
 func SaveCanvas(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.PostForm("id"))
-	newCellData := ctx.PostForm("cell")
+	newCellData := ctx.PostForm("cells")
 	fmt.Println("newCellData++++", newCellData)
 	fmt.Println("id", id)
 	// 读取JSON文件
@@ -88,7 +88,7 @@ func SaveCanvas(ctx *gin.Context) {
 func RunCanvas(ctx *gin.Context) {
 	fmt.Println("RunCanvas")
 	Start_time := ctx.Query("start_time")
-	Design_name := ctx.Query("design_name")
+
 	Rank := ctx.Query("rank")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
@@ -98,7 +98,7 @@ func RunCanvas(ctx *gin.Context) {
 	fmt.Println("id", id)
 	fmt.Println("time", Start_time)
 	fmt.Println("rank", Rank)
-	fmt.Println("design_name", Design_name)
+	fmt.Println("start_time", Start_time)
 
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
@@ -120,7 +120,8 @@ func RunCanvas(ctx *gin.Context) {
 		if data.Designs[i].Id == id {
 			fmt.Println("要覆盖的design的id为:", id)
 			var newCell []interface{}
-
+			//获取对应案例名称
+			Design_name := data.Designs[i].Dataset_name
 			// 解析 JSON 数组数据
 			for _, jsonStr := range newCellData {
 				byteSlice := []byte(jsonStr) // Convert to []byte
@@ -172,8 +173,10 @@ func RunCanvas(ctx *gin.Context) {
 			}
 			// 判重处理
 			//pageKind、task、type、dataset_name
+
 			db.Where("Example_name = ?", Design_name).Find(&example)
 			fmt.Println("Example_name", Design_name)
+			fmt.Println("example_id", example.Id)
 			if example.Id != 0 {
 				fmt.Println("该实例已存在")
 				response.Response(ctx, http.StatusOK, 404, nil, "The example already exists")
@@ -315,6 +318,7 @@ func GetprocessFile(ctx *gin.Context) {
 	fmt.Println("processFile", processFile)
 	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + processFile
 	Info, err := GetTrainingProcessFileInfo(file_path)
+	fmt.Println("file_path", file_path)
 	if err != nil {
 		fmt.Println(err)
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")

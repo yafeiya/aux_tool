@@ -12,7 +12,7 @@ import temp from '../userview/temp.vue'
 // import List from '../views/List.vue'
 // import Detail from '../views/Detail.vue'
 const routes = [
-    {   
+    {
         path:'/',
         name:'login',
       //   component:resolve => require(['../components/login.vue'], resolve),
@@ -21,16 +21,8 @@ const routes = [
             title: '登录'
         }
     },
-    // {   
-    //   path:'/login',
-    //   name:'login',
-    // //   component:resolve => require(['../components/login.vue'], resolve),
-    //   component:login,
-    //   meta: {
-    //     title: '登录'
-    //   }
-    // },
-    {   
+
+    {
         path:'/regist',
         name:'regist',
       //   component:resolve => require(['../components/login.vue'], resolve),

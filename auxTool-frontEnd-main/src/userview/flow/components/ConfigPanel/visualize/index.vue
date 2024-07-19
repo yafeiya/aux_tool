@@ -123,9 +123,9 @@
           data.nodeFontSize = globalGridAttr.nodeFontSize
           data.nodeselflabel = globalGridAttr.selflabel
           data.nodedataurl = globalGridAttr.dataurl
-          
-          
-          
+
+
+
           // 判断图像路径
           if(readpath.value == true){
             // console.log("需要bashinfo")
@@ -172,18 +172,18 @@
       tip.task = cs_arr.split('=')[2].split('&')[0];
       tip.type = cs_arr.split('=')[3];
       tip2.id = tip.id
-      tip2.task = tip.task 
-      tip2.type = tip.type 
+      tip2.task = tip.task
+      tip2.type = tip.type
       tip3.id = tip.id
-      tip3.task = tip.task 
-      tip3.type = tip.type 
+      tip3.task = tip.task
+      tip3.type = tip.type
       qs.stringify(tip)
       // console.info("after——stringify",tip)
 
       databaseinfo = await getprocessFile(tip)
       databaseinfo2 = await getprocessFile(tip2)
       databaseinfo3 = await getprocessFile(tip3)
-      // console.log("databaseinfo is", await getprocessFile(tip))
+      console.log("databaseinfo is", databaseinfo)
           //后端返回response.data.data.Info即为[[1,1][2,2]]
       if(databaseinfo.data.data!=null){
         actionDataString= await databaseinfo.data.data.Info
@@ -196,11 +196,11 @@
         lossDataString= await databaseinfo3.data.data.Info
       }
 
-      // console.info("actionData is", await databaseinfo.data.data.Info)
-      // console.log("actdata is", await actionDataString)
+      console.info("actionData is", await databaseinfo.data.data)
+      console.log("actdata is", await actionDataString)
       // console.log("rewarddata is",await rewardDataString)
       // console.log("lrdata is",await lossDataString)
-        
+
 
       const initchart = (label) => {
         // console.log("执行initchart")
@@ -232,7 +232,7 @@
           }
         }
         // console.log("初始为0",MSLnum)
-        // 统计发射数目  
+        // 统计发射数目
         let msi:any = []
         let serial = 12
         var arr:any = [',','[',']'] //排除非数字
@@ -269,7 +269,7 @@
             MSLdata.push([n,m,MSLnum[n][m]])
           }
         }
-      // console.log(count)
+      // console.log("count",count)
       // console.log("MSLdata:",MSLdata)
 
 
@@ -340,7 +340,7 @@
         }
         // console.log("lossdict",lossdict)
         // console.log("lossdata['alpha_loss']:",lossdict['alpha_loss'])
-        
+
 
         let myChart = echarts.init(document.getElementById("myChart"));
         let miniChart = echarts.init(document.getElementById("miniChart"));
@@ -350,55 +350,53 @@
 
         //定义act图表参数
         var option1 = {
-            // title: {
-            //         text: '3D堆叠柱状图',
-            //         x: 'center'
-            //     },
+            title: {
+                    text: '3D堆叠柱状图',
+                    x: 'center'
+                },
               xAxis3D: {
                   type: 'category',
-                  // axisLine:{
-                  //     lineStyle:{
-                  //         color:'black',
-                  //         width:2
-                  //     }
-                  // },
+                  axisLine:{
+                      lineStyle:{
+                          color:'black',
+                          width:2
+                      }
+                  },
               },
               yAxis3D: {
                   type: 'category',
-                  // axisLine:{
-                  //     lineStyle:{
-                  //       width:1,
-                  //       color:'black',
-                  //     }
-                  // },
+                  axisLine:{
+                      lineStyle:{
+                        width:1,
+                        color:'black',
+                      }
+                  },
               },
               zAxis3D: {
                   type: 'value',
-                  // axisLine:{
-                  //     lineStyle:{
-                  //         color:'black',
-                  //         width:1
-                  //     }
-                  // },
+                  axisLine:{
+                      lineStyle:{
+                          color:'black',
+                          width:1
+                      }
+                  },
               },
               grid3D: {
                   viewControl: {//可以控制整个柱状图场景旋转平移等，自行代数数据试试
-                      // alpha: 0, 
+                      // alpha: 0,
                       // beta: 0,
                       // minAlpha: 0,//x轴旋转
                       // maxAlpha: 0,
                       // minBeta: 0,//y轴旋转
                       // maxBeta: 0,
-                      projection: 'orthographic'//正交投影
+                      // projection: 'orthographic'//正交投影
                   }
               },
               visualMap: {
-                  calculable: true,
-                  max: maxnum,
-                  // dimension: 'Life Expectancy',
-                  inRange: {
-                      color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-                  }
+                max: 9,
+                inRange: {
+                  color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                }
               },
               dataset: {
                   source: MSLdata
@@ -408,9 +406,9 @@
                   barSize: 10,//柱子大小
                   encode: {
                     // 维度的名字默认就是表头的属性名
-                    x: 'Airplane',
-                    y: 'Missile',
-                    z: 'Num',
+                    x: '0',
+                    y: '1',
+                    z: '2',
                     tooltip: [0, 1, 2, 3, 4]
                   }
               }]
@@ -439,7 +437,7 @@
             },
             yAxis:{},
             series: [
-              
+
             ]
           }
 
@@ -462,22 +460,22 @@
         }
 
         else if( nodelabel == '奖励分布'){
-          myChart.setOption(option2); 
+          myChart.setOption(option2);
           miniChart.setOption(option2);
           // console.log("执行奖励分布")
         }
 
         else if( nodelabel == '学习率'){
-          myChart.setOption(option3); 
+          myChart.setOption(option3);
           miniChart.setOption(option3);
           // console.log("执行学习率")
         }
-        
+
         window.onresize = function () { // 自适应大小
           myChart.resize();
           miniChart.resize();
         };
-      
+
       }
 
       async function bashinfo() {
