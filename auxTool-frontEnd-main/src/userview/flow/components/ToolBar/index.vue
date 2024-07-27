@@ -96,7 +96,6 @@
   import { runCanvas,saveCanvas } from '../../../../api/api.js'
   import FlowGraph from '../../graph';
   import { DataUri } from '@antv/x6';
-  import {saveCanvas} from "../../../../api/api.js"
   import axios from 'axios';
   import qs from "qs";
   import ViewUIPlus from 'view-ui-plus'

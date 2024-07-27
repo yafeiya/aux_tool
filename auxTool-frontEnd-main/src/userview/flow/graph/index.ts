@@ -142,29 +142,15 @@ export default class FlowGraph {
 
   // 初始化设置好的画布上的元素
   static initGraphShape() {
-    var url = decodeURI(window.location.href);
-    var cs_arr = url.split('?')[1];//?后面的
-    var iid = cs_arr.split('=')[1];
-    var id = "1"
-    console.info("初始化id",id)
-    getCanvas(id).then(response => {
-      console.info("response11111111111111111111")
-      console.info("response",response.data)
-      var graphData = response.data
-      this.graph.fromJSON(graphData as any);
+    // TODO: id从哪里来,点击名字查询id
+    var data= {id:"1"}
+    console.info("初始化id++++++++++++++++++++++" )
+    getCanvas(data).then(response => {
+      var graphData = response.data.data.cell
+      console.info("画布初始化，获取的数据：",graphData ) 
+      this.graph.fromJSON(graphData);
       console.log(graphData)
     })
-
-    // axios.get("http://localhost:3000/design?id="+iid).then(response => {
-
-    //   console.log(response);
-
-    //   var graphData1 = response.data[0]
-    //   this.graph.fromJSON(graphData1 as any);
-    // })
-    //     .catch(error => {
-    //       console.log(error);
-    //     })
   }
 
   static showPorts(ports: NodeListOf<SVGAElement>, show: boolean) {
