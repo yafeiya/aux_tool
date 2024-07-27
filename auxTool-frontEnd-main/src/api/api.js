@@ -241,9 +241,13 @@ export const saveCanvas = (data) => {
   return myAxios({
     method: 'POST',
     url: '/saveCanvas',
-    data:data
-  })
+    headers: {
+      'Content-Type': 'application/json', // 设置请求头
+    },
+    data: JSON.stringify(data), // 将数据转换为 JSON 字符串
+  });
 }
+
 export const getDesignsById = (data) => {
   return myAxios({
     method: 'GET',

@@ -32,7 +32,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标1"               
+                "strTgrId":"目标1"
             },
             "time":124.00000
         },
@@ -70,7 +70,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标2"               
+                "strTgrId":"目标2"
             },
             "time":124.00000
         },
@@ -108,7 +108,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体C",
-                "strTgrId":"目标2"               
+                "strTgrId":"目标2"
             },
             "time":124.00000
         },
@@ -146,7 +146,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标3"               
+                "strTgrId":"目标3"
             },
             "time":124.00000
         },
@@ -184,7 +184,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标4"               
+                "strTgrId":"目标4"
             },
             "time":124.00000
         },
@@ -223,7 +223,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体D",
-                "strTgrId":"目标1"               
+                "strTgrId":"目标1"
             },
             "time":124.00000
         },
@@ -261,7 +261,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标4"               
+                "strTgrId":"目标4"
             },
             "time":124.00000
         },
@@ -299,7 +299,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标5"               
+                "strTgrId":"目标5"
             },
             "time":124.00000
         },
@@ -338,7 +338,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体D",
-                "strTgrId":"目标6"               
+                "strTgrId":"目标6"
             },
             "time":124.00000
         },
@@ -377,7 +377,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体E",
-                "strTgrId":"目标5"               
+                "strTgrId":"目标5"
             },
             "time":124.00000
         },
@@ -415,7 +415,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标1"               
+                "strTgrId":"目标1"
             },
             "time":124.00000
         },
@@ -454,7 +454,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标2"               
+                "strTgrId":"目标2"
             },
             "time":124.00000
         },
@@ -492,7 +492,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体E",
-                "strTgrId":"目标6"               
+                "strTgrId":"目标6"
             },
             "time":124.00000
         },
@@ -530,7 +530,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标7"               
+                "strTgrId":"目标7"
             },
             "time":124.00000
         },
@@ -568,7 +568,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体G",
-                "strTgrId":"目标8"               
+                "strTgrId":"目标8"
             },
             "time":124.00000
         },
@@ -606,7 +606,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标4"               
+                "strTgrId":"目标4"
             },
             "time":124.00000
         },
@@ -644,7 +644,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标7"               
+                "strTgrId":"目标7"
             },
             "time":124.00000
         },
@@ -682,7 +682,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标9"               
+                "strTgrId":"目标9"
             },
             "time":124.00000
         },
@@ -720,7 +720,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标10"               
+                "strTgrId":"目标10"
             },
             "time":124.00000
         },
@@ -758,7 +758,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标11"               
+                "strTgrId":"目标11"
             },
             "time":124.00000
         },
@@ -796,7 +796,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标12"               
+                "strTgrId":"目标12"
             },
             "time":124.00000
         },
@@ -834,7 +834,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体H",
-                "strTgrId":"目标1"               
+                "strTgrId":"目标1"
             },
             "time":124.00000
         },
@@ -872,7 +872,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体I",
-                "strTgrId":"目标3"               
+                "strTgrId":"目标3"
             },
             "time":124.00000
         },
@@ -910,7 +910,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体I",
-                "strTgrId":"目标6"               
+                "strTgrId":"目标6"
             },
             "time":124.00000
         },
@@ -947,7 +947,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标11"               
+                "strTgrId":"目标11"
             },
             "time":124.00000
         },
@@ -984,7 +984,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标12"               
+                "strTgrId":"目标12"
             },
             "time":124.00000
         },
@@ -1021,7 +1021,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体E",
-                "strTgrId":"目标10"               
+                "strTgrId":"目标10"
             },
             "time":124.00000
         },
@@ -1059,7 +1059,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体G",
-                "strTgrId":"目标9"               
+                "strTgrId":"目标9"
             },
             "time":124.00000
         },
@@ -1097,7 +1097,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体C",
-                "strTgrId":"目标9"               
+                "strTgrId":"目标9"
             },
             "time":124.00000
         },
@@ -1135,7 +1135,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体C",
-                "strTgrId":"目标11"               
+                "strTgrId":"目标11"
             },
             "time":124.00000
         },
@@ -1173,7 +1173,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体D",
-                "strTgrId":"目标12"               
+                "strTgrId":"目标12"
             },
             "time":124.00000
         },
@@ -1211,7 +1211,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标8"               
+                "strTgrId":"目标8"
             },
             "time":124.00000
         },
@@ -1248,7 +1248,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体E",
-                "strTgrId":"目标11"               
+                "strTgrId":"目标11"
             },
             "time":124.00000
         },
@@ -1285,7 +1285,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标13"               
+                "strTgrId":"目标13"
             },
             "time":124.00000
         },
@@ -1322,7 +1322,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体H",
-                "strTgrId":"目标11"               
+                "strTgrId":"目标11"
             },
             "time":124.00000
         },
@@ -1359,7 +1359,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标1"               
+                "strTgrId":"目标1"
             },
             "time":124.00000
         },
@@ -1397,7 +1397,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标2"               
+                "strTgrId":"目标2"
             },
             "time":124.00000
         },
@@ -1435,7 +1435,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体C",
-                "strTgrId":"目标11"               
+                "strTgrId":"目标11"
             },
             "time":124.00000
         },
@@ -1473,7 +1473,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体D",
-                "strTgrId":"目标10"               
+                "strTgrId":"目标10"
             },
             "time":124.00000
         },
@@ -1511,7 +1511,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体E",
-                "strTgrId":"目标12"               
+                "strTgrId":"目标12"
             },
             "time":124.00000
         },
@@ -1549,7 +1549,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标13"               
+                "strTgrId":"目标13"
             },
             "time":124.00000
         },
@@ -1587,7 +1587,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标14"               
+                "strTgrId":"目标14"
             },
             "time":124.00000
         },
@@ -1625,7 +1625,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标13"               
+                "strTgrId":"目标13"
             },
             "time":124.00000
         },
@@ -1663,7 +1663,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标14"               
+                "strTgrId":"目标14"
             },
             "time":124.00000
         },
@@ -1701,7 +1701,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标2"               
+                "strTgrId":"目标2"
             },
             "time":124.00000
         },
@@ -1739,7 +1739,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标4"               
+                "strTgrId":"目标4"
             },
             "time":124.00000
         },
@@ -1777,7 +1777,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体C",
-                "strTgrId":"目标3"               
+                "strTgrId":"目标3"
             },
             "time":124.00000
         },
@@ -1815,7 +1815,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体A",
-                "strTgrId":"目标6"               
+                "strTgrId":"目标6"
             },
             "time":124.00000
         },
@@ -1853,7 +1853,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体E",
-                "strTgrId":"目标5"               
+                "strTgrId":"目标5"
             },
             "time":124.00000
         },
@@ -1891,7 +1891,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体F",
-                "strTgrId":"目标4"               
+                "strTgrId":"目标4"
             },
             "time":124.00000
         },
@@ -1929,7 +1929,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体G",
-                "strTgrId":"目标1"               
+                "strTgrId":"目标1"
             },
             "time":124.00000
         },
@@ -1967,7 +1967,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体H",
-                "strTgrId":"目标4"               
+                "strTgrId":"目标4"
             },
             "time":124.00000
         },
@@ -2005,7 +2005,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体I",
-                "strTgrId":"目标3"               
+                "strTgrId":"目标3"
             },
             "time":124.00000
         },
@@ -2043,7 +2043,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体I",
-                "strTgrId":"目标7"               
+                "strTgrId":"目标7"
             },
             "time":124.00000
         },
@@ -2081,7 +2081,7 @@
                 "iReason":3,
                 "strDestId":"战术级指控系统",
                 "strSenderId":"机体B",
-                "strTgrId":"目标6"               
+                "strTgrId":"目标6"
             },
             "time":124.00000
         },
@@ -2104,7 +2104,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2118,12 +2118,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标1"               
+                        "strTgrId":"目标1"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2142,7 +2142,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2156,12 +2156,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体B",
-                        "strTgrId":"目标2"               
+                        "strTgrId":"目标2"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2180,7 +2180,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2194,12 +2194,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体C",
-                        "strTgrId":"目标2"               
+                        "strTgrId":"目标2"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2218,7 +2218,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2232,12 +2232,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标3"               
+                        "strTgrId":"目标3"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2256,7 +2256,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2270,13 +2270,13 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标4"               
+                        "strTgrId":"目标4"
                     },
                     "time":124.00000
                 },
-        
-        
-        
+
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2295,7 +2295,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2309,12 +2309,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体D",
-                        "strTgrId":"目标1"               
+                        "strTgrId":"目标1"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2333,7 +2333,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2347,12 +2347,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标4"               
+                        "strTgrId":"目标4"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2371,7 +2371,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2385,13 +2385,13 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体B",
-                        "strTgrId":"目标5"               
+                        "strTgrId":"目标5"
                     },
                     "time":124.00000
                 },
-        
-        
-        
+
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2410,7 +2410,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2424,13 +2424,13 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体D",
-                        "strTgrId":"目标6"               
+                        "strTgrId":"目标6"
                     },
                     "time":124.00000
                 },
-        
-        
-        
+
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2449,7 +2449,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2463,12 +2463,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体E",
-                        "strTgrId":"目标5"               
+                        "strTgrId":"目标5"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2487,7 +2487,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2501,13 +2501,13 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标1"               
+                        "strTgrId":"目标1"
                     },
                     "time":124.00000
                 },
-        
-        
-        
+
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2526,7 +2526,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2540,12 +2540,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标2"               
+                        "strTgrId":"目标2"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2564,7 +2564,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2578,12 +2578,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体E",
-                        "strTgrId":"目标6"               
+                        "strTgrId":"目标6"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2602,7 +2602,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2616,12 +2616,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标7"               
+                        "strTgrId":"目标7"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2640,7 +2640,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2654,12 +2654,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体G",
-                        "strTgrId":"目标8"               
+                        "strTgrId":"目标8"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2678,7 +2678,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2692,12 +2692,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标4"               
+                        "strTgrId":"目标4"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2716,7 +2716,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2730,12 +2730,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体B",
-                        "strTgrId":"目标7"               
+                        "strTgrId":"目标7"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2754,7 +2754,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2768,12 +2768,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标9"               
+                        "strTgrId":"目标9"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2792,7 +2792,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2806,12 +2806,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标10"               
+                        "strTgrId":"目标10"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2830,7 +2830,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2844,12 +2844,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体B",
-                        "strTgrId":"目标11"               
+                        "strTgrId":"目标11"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2868,7 +2868,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2882,12 +2882,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标12"               
+                        "strTgrId":"目标12"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2906,7 +2906,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2920,12 +2920,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体H",
-                        "strTgrId":"目标1"               
+                        "strTgrId":"目标1"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2944,7 +2944,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2958,12 +2958,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体I",
-                        "strTgrId":"目标3"               
+                        "strTgrId":"目标3"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -2982,7 +2982,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -2996,11 +2996,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体I",
-                        "strTgrId":"目标6"               
+                        "strTgrId":"目标6"
                     },
                     "time":124.00000
                 },
-        
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3019,7 +3019,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3033,11 +3033,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标11"               
+                        "strTgrId":"目标11"
                     },
                     "time":124.00000
                 },
-        
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3056,7 +3056,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3070,11 +3070,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标12"               
+                        "strTgrId":"目标12"
                     },
                     "time":124.00000
                 },
-        
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3093,7 +3093,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3107,12 +3107,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体E",
-                        "strTgrId":"目标10"               
+                        "strTgrId":"目标10"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3131,7 +3131,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3145,12 +3145,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体G",
-                        "strTgrId":"目标9"               
+                        "strTgrId":"目标9"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3169,7 +3169,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3183,12 +3183,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体C",
-                        "strTgrId":"目标9"               
+                        "strTgrId":"目标9"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3207,7 +3207,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3221,12 +3221,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体C",
-                        "strTgrId":"目标11"               
+                        "strTgrId":"目标11"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3245,7 +3245,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3259,12 +3259,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体D",
-                        "strTgrId":"目标12"               
+                        "strTgrId":"目标12"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3283,7 +3283,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3297,11 +3297,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标8"               
+                        "strTgrId":"目标8"
                     },
                     "time":124.00000
                 },
-        
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3320,7 +3320,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3334,11 +3334,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体E",
-                        "strTgrId":"目标11"               
+                        "strTgrId":"目标11"
                     },
                     "time":124.00000
                 },
-        
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3357,7 +3357,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3371,11 +3371,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标13"               
+                        "strTgrId":"目标13"
                     },
                     "time":124.00000
                 },
-        
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3394,7 +3394,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3408,11 +3408,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体H",
-                        "strTgrId":"目标11"               
+                        "strTgrId":"目标11"
                     },
                     "time":124.00000
                 },
-        
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3431,7 +3431,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3445,12 +3445,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标1"               
+                        "strTgrId":"目标1"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3469,7 +3469,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3483,12 +3483,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体B",
-                        "strTgrId":"目标2"               
+                        "strTgrId":"目标2"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3507,7 +3507,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3521,12 +3521,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体C",
-                        "strTgrId":"目标11"               
+                        "strTgrId":"目标11"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3545,7 +3545,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3559,12 +3559,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体D",
-                        "strTgrId":"目标10"               
+                        "strTgrId":"目标10"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3583,7 +3583,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3597,12 +3597,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体E",
-                        "strTgrId":"目标12"               
+                        "strTgrId":"目标12"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3621,7 +3621,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3635,12 +3635,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体F",
-                        "strTgrId":"目标13"               
+                        "strTgrId":"目标13"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3659,7 +3659,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3673,12 +3673,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标14"               
+                        "strTgrId":"目标14"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3697,7 +3697,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3711,12 +3711,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体B",
-                        "strTgrId":"目标13"               
+                        "strTgrId":"目标13"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3735,7 +3735,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3749,12 +3749,12 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体A",
-                        "strTgrId":"目标14"               
+                        "strTgrId":"目标14"
                     },
                     "time":124.00000
                 },
-        
-        
+
+
                 {
                     "length":444,
                     "TgtAssign":{
@@ -3773,7 +3773,7 @@
                             "x":0.0,
                             "y":0.0,
                             "z":0.0
-        
+
                         }
                     },
                     "time":124.00000
@@ -3787,390 +3787,11 @@
                         "iReason":3,
                         "strDestId":"战术级指控系统",
                         "strSenderId":"机体B",
-                        "strTgrId":"目标2"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体B",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标4",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体B",
-                        "strTgrId":"目标4"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体C",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标3",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体C",
-                        "strTgrId":"目标3"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体A",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标6",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体A",
-                        "strTgrId":"目标6"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体E",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标5",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体E",
-                        "strTgrId":"目标5"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体F",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标4",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体F",
-                        "strTgrId":"目标4"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体G",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标1",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体G",
-                        "strTgrId":"目标1"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体H",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标4",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体H",
-                        "strTgrId":"目标4"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体I",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标3",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体I",
-                        "strTgrId":"目标3"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体I",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标7",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体I",
-                        "strTgrId":"目标7"               
-                    },
-                    "time":124.00000
-                },
-        
-        
-                {
-                    "length":444,
-                    "TgtAssign":{
-                        "Name":"TgtAssign",
-                        "dSimutine":0.0,
-                        "detectTgtVel":{
-                            "vx":0.0,
-                            "vy":0.0,
-                            "vz":0.0
-                        },
-                        "iIntegratedTracNo":0,
-                        "strDestId":"机体B",
-                        "strSenderId":"战术级指控系统",
-                        "strTgrId":"目标6",
-                        "tgtPos":{
-                            "x":0.0,
-                            "y":0.0,
-                            "z":0.0
-        
-                        }
-                    },
-                    "time":124.00000
-                },
-                {
-                    "length":399,
-                    "TgtAssignAffirm":{
-                        "Name":"TgtAssignAffirm",
-                        "bIncpt":true,
-                        "dCurTime":124.000,
-                        "iReason":3,
-                        "strDestId":"战术级指控系统",
-                        "strSenderId":"机体B",
-                        "strTgrId":"目标6"               
+                        "strTgrId":"目标2"
                     },
                     "time":124.00000
                 }
+
 
     ]
 

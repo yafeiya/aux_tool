@@ -216,6 +216,11 @@
         example.post_time = (new Date()).getTime()
         example.start_time = (new Date()).getTime()
         example.end_time = ''
+        var cs_arr = url.split('?')[1];//?后面的
+        var id = cs_arr.split('=')[1].split('&')[0];
+        var task = cs_arr.split('=')[2].split('&')[0];
+        var type = cs_arr.split('=')[3];
+        example.dataset_url=EndUrl().fileUrl+"/"+ type+"/"+task+"/"+id
         console.info("example",example)
         var postUrl = EndUrl().backEndUrl+"/example"
         console.info("postUrl",postUrl)
@@ -347,19 +352,20 @@
             break;
           case 'save':
             var graphData = graph.toJSON()
+            var url = decodeURI(window.location.href);
+            var cs_arr = url.split('?')[1];//?后面的
+            console.info("url",url);
+            var iid = cs_arr.split('=')[1].split('&')[0];
+
+            var cellsToSend = {
+              id: iid,
+              cells: graphData.cells // 假设 graphData 里有一个 cells 属性
+            };
             console.log("测试");
-            console.log(graphData);
-            saveCanvas(graphData).then(res=>{
+            console.log(cellsToSend);
+            saveCanvas(cellsToSend).then(res=>{
               console.log(res);
             })
-            // axios.patch('http://localhost:3000/design/'+iid, {'cells':graphData.cells})
-            //     .then(response => {
-            //       console.log(response);
-            //     })
-            //     .catch(error => {
-            //       console.log(error);
-            //     })
-
             break;
           default:
             break;
