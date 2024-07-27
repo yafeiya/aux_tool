@@ -21,64 +21,65 @@ import (
 /*
 前端保存按钮
 */
+
+type CellsRequest struct {
+	Id    string        `json:"id"` // 添加 name 字段
+	Cells []interface{} `json:"cells"`
+}
+
 func SaveCanvas(ctx *gin.Context) {
-	id, _ := strconv.Atoi(ctx.PostForm("id"))
-	newCellData := ctx.PostForm("cells")
-	fmt.Println("newCellData++++", newCellData)
-	fmt.Println("id", id)
+	var request CellsRequest
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// 将 ID 字符串转换为整数
+	idInt, err := strconv.Atoi(request.Id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+	// 打印接收到的 ID
+	fmt.Printf("Canvas ID: %d\n", idInt)
+
 	// 读取JSON文件
-	// jsonData, err := ioutil.ReadFile("./data/data.json")
-	// if err != nil {
-	// 	response.Response(ctx, http.StatusOK, 404, nil, "fail")
-	// 	return
-	// }
+	jsonData, err := ioutil.ReadFile("./data/data.json")
+	if err != nil {
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	// 解析JSON数据
+	var data model.Data
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		fmt.Println("解析JSON数据失败:", err)
+		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
 
-	// // 解析JSON数据
-	// var data model.Data
-	// if err := json.Unmarshal(jsonData, &data); err != nil {
-	// 	fmt.Println("解析JSON数据失败:", err)
-	// 	response.Response(ctx, http.StatusOK, 404, nil, "fail")
-	// 	return
-	// }
+	// 遍历列表
+	for i := range data.Designs {
+		if data.Designs[i].Id == idInt {
+			fmt.Println("要覆盖的design的id为:", idInt)
+			//var newCell []interface{}
+			data.Designs[i].Cell = request.Cells
+			// 更新JSON文件
+			updatedJSON, err := json.MarshalIndent(data, "", "  ")
+			if err != nil {
+				response.Response(ctx, http.StatusOK, 404, nil, "fail")
+				return
+			}
 
-	// // 遍历列表
-	// for i := range data.Designs {
-	// 	if data.Designs[i].Id == id {
-	// 		fmt.Println("要覆盖的design的id为:", id)
-	// 		var newCell []interface{}
+			if err := ioutil.WriteFile("./data/data.json", updatedJSON, 0644); err != nil {
+				response.Response(ctx, http.StatusOK, 404, nil, "fail")
+				return
+			}
+			response.Success(ctx, nil, "success")
+			return
+		}
+	}
 
-	// 		// 解析 JSON 数组数据
-	// 		for _, jsonStr := range newCellData {
-	// 			byteSlice := []byte(jsonStr) // Convert to []byte
-	// 			var item interface{}
-	// 			if err := json.Unmarshal(byteSlice, &item); err != nil {
-	// 				fmt.Println("解析 JSON 数组数据fail:", err)
-	// 				response.Response(ctx, http.StatusOK, 404, nil, "fail")
-	// 				return
-	// 			}
-	// 			newCell = append(newCell, item)
-	// 		}
-	// 		// fmt.Println("newCell:", newCell)
-	// 		data.Designs[i].Cell = newCell
-
-	// 		// 更新JSON文件
-	// 		updatedJSON, err := json.MarshalIndent(data, "", "  ")
-	// 		if err != nil {
-	// 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-	// 			return
-	// 		}
-
-	// 		if err := ioutil.WriteFile("./data/data.json", updatedJSON, 0644); err != nil {
-	// 			response.Response(ctx, http.StatusOK, 404, nil, "fail")
-	// 			return
-	// 		}
-	// 		response.Success(ctx, nil, "success")
-	// 		return
-	// 	}
-	// }
-
-	// fmt.Println("未找到指定的design")
-	// response.Response(ctx, http.StatusOK, 404, nil, "fail")
+	fmt.Println("未找到指定的design")
+	response.Response(ctx, http.StatusOK, 404, nil, "fail")
 
 }
 
@@ -89,7 +90,6 @@ func RunCanvas(ctx *gin.Context) {
 	fmt.Println("RunCanvas")
 	Start_time := ctx.Query("start_time")
 
-	Rank := ctx.Query("rank")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
 	Dataset_url := ctx.Query("dataset_url")
@@ -97,7 +97,7 @@ func RunCanvas(ctx *gin.Context) {
 	// fmt.Println("newCellData", newCellData)
 	fmt.Println("id", id)
 	fmt.Println("time", Start_time)
-	fmt.Println("rank", Rank)
+
 	fmt.Println("start_time", Start_time)
 
 	// 读取JSON文件
@@ -122,6 +122,8 @@ func RunCanvas(ctx *gin.Context) {
 			var newCell []interface{}
 			//获取对应案例名称
 			Design_name := data.Designs[i].Dataset_name
+			Rank := data.Designs[i].Rank
+			fmt.Println("rank", Rank)
 			// 解析 JSON 数组数据
 			for _, jsonStr := range newCellData {
 				byteSlice := []byte(jsonStr) // Convert to []byte

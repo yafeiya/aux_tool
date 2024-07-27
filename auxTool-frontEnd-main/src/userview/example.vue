@@ -378,7 +378,6 @@ export default {
   },
   methods: {
     getcharts(){
-
       console.info('data1:',this.actdata)
       console.info('data2:',this.rewarddata)
       console.info('data3:',this.lrdata)
@@ -386,7 +385,6 @@ export default {
       let psgTimeCharts2 = echarts.init(this.$refs.Echarts2)
       let psgTimeCharts3 = echarts.init(this.$refs.Echarts3)
       let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
-
       let count=[]  //统计轮数
       let x = 0;  //飞机种类数
       let y = 0; //导弹种类数
@@ -640,21 +638,17 @@ export default {
 
     },
     LogInfo(row) {
-
       this.isLogInfo=true;
-      // this.getItemInfo()
       for(var i in this.itemList) {
         if(row.Id == this.itemList[i].Id) {
-          // this.chartId = chartData["chart"][i]["exampleId"];
-          // var chartxyz=chartData["chart"][this.chartId]
           console.info("row.id:",this.itemList[i])
-
           let data1={
             type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
             task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
             id:this.itemList[i].Dataset_url.split("//")[1].split("/")[3],
             processFile:"actions.json"
           }
+          console.info("data1",data1)
           getprocessFile(data1).then(res => {
             this.actdata=res.data.data.Info
           })
