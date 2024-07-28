@@ -193,118 +193,100 @@
       };
 
       
-      // const list = inject('list')
-      // let list = ref(menulist())
-
+      // list是响应数组 画布总菜单目录
       let list:any  = ref([])
-      let menu:any = [
-        {
-          "name" :"database",
-          "title": "数据加载",
-          "children": []
-        },
-        {
-          "name" :"datapre",
-          "title": "数据预处理",
-          "children": []
-        },
-        {
-          "name" :"modelbase",
-          "title": "模型模板",
-          "children": []
+      
+      // menu初始化画布一级菜单
+      // TODO: 
+      // 1.从数据库config.json读取菜单信息
+      // 2.从SQL读取信息(不能用数字下标--匹配title)
+      let menu:any = (await getMenuInfo("canvas")).data
+      let database = (await getMenuInfo("database")).data
+      console.log("后端获取的menu数据库数据",menu)
+      const item_data = menu.find(menuItem => menuItem.title === "数据加载");
+      if (item_data) {
+        item_data.children.push(...database)
+      }  
 
-        },
-        {
-          "name" :"moudlepredictive",
-          "title": "模型预测",
-          "children": []
-        },
-        {
-          "name" :"resultvisualization",
-          "title": "训练过程可视化",
-          "children": []
-        },
-        {
-          "name" :"scorefunction",
-          "title": "评价指标",
-          "children": []
-        }
+      let modelbase = (await getMenuInfo("modelbase")).data
+      // console.log("模型数据",modelbase)
+      const item_model = menu.find(menuItem => menuItem.title === "模型模板");
+      if (item_model) {
+        item_model.children.push(...modelbase)
+      } 
 
-        ]
-      let database = await getMenuInfo("database")
-      menu[0]["children"] = database.data
-      menu[0]["children"].push({
-                            "name": "monitordata",
-                            "title": "仿真监听数据"
-                          })
-      menu[0]["children"].push({
-                            "name": "modellog",
-                            "title": "模型日志数据"
-                          })                    
-      let canvas = await getMenuInfo("canvas")   
-      console.log("design++++++++++++",canvas)               
-      menu[1]["children"] = canvas.data[0].children
+      let defineFunction = (await getMenuInfo("defineFunction")).data
+      const item_train = menu.find(menuItem => menuItem.title === "训练过程可视化");
+      if (item_train) {
+        item_train.children.push(...defineFunction[0].children)
+      } 
+      const item_eval = menu.find(menuItem => menuItem.title === "评价指标");
+      if (item_eval) {
+        item_eval.children.push(...defineFunction[1].children)
+      } 
+
+
       // let modelbase = await getMenuInfo("modelbase")
       // console.log(modelbase.data[0].children)
-      // menu[2]["children"]= modelbase.data[0].children.concat(modelbase.data[1].children.concat(modelbase.data[2].children))
-      // let design = await getMenuInfo("design")
-      menu[3]["children"] = canvas.data[1].children
-      let defineFunction = await getMenuInfo("defineFunction")
-      menu[4]["children"] = defineFunction.data[0].children
-      menu[5]["children"] = defineFunction.data[1].children
+      // // menu[2]["children"]= modelbase.data[0].children.concat(modelbase.data[1].children.concat(modelbase.data[2].children))
+      // // let design = await getMenuInfo("design")
+      // menu[3]["children"] = canvas.data[1].children
+      // let defineFunction = await getMenuInfo("defineFunction")
+      // menu[4]["children"] = defineFunction.data[0].children
+      // menu[5]["children"] = defineFunction.data[1].children
 
-      // 更改
+      // // 更改
 
-      let databasecards:any  = ref([])
-      // let databaselist:any  = ref([])
-      let midmenu:any = [
-        {
-          "name" :"modelbase",
-          "title": "模型模板",
-          "children": []
-        },
-        ]
+      // let databasecards:any  = ref([])
+      // // let databaselist:any  = ref([])
+      // let midmenu:any = [
+      //   {
+      //     "name" :"modelbase",
+      //     "title": "模型模板",
+      //     "children": []
+      //   },
+      //   ]
 
-      let finalmenu:any = [] 
+      // let finalmenu:any = [] 
 
-      let modelbase = await getMenuInfo("modelbase")
-      midmenu[0]["children"] = modelbase.data;
+      // let modelbase = await getMenuInfo("modelbase")
+      // midmenu[0]["children"] = modelbase.data;
 
-      // console.log("显示初始菜单",await midmenu)
-      let i = 0;
-      while (midmenu[0]["children"][i] != null) { 
-        // console.log(i)
-        // console.log(midmenu[0]["children"][i].title)
-        let j=0
-        while (midmenu[0]["children"][i]["children"][j] != null) { 
-          // console.log(midmenu[0]["children"][i]["children"][j].title)
+      // // console.log("显示初始菜单",await midmenu)
+      // let i = 0;
+      // while (midmenu[0]["children"][i] != null) { 
+      //   // console.log(i)
+      //   // console.log(midmenu[0]["children"][i].title)
+      //   let j=0
+      //   while (midmenu[0]["children"][i]["children"][j] != null) { 
+      //     // console.log(midmenu[0]["children"][i]["children"][j].title)
           
-          let tip = {
-            pageKind: 'modelbase',
-            task: midmenu[0]["children"][i]["children"][j].title,
-            Type: midmenu[0]["children"][i].title,
-          }
+      //     let tip = {
+      //       pageKind: 'modelbase',
+      //       task: midmenu[0]["children"][i]["children"][j].title,
+      //       Type: midmenu[0]["children"][i].title,
+      //     }
 
-          databasecards = await getCard(tip)
-          if(databasecards.data.data != null){
-            let cardList = await databasecards.data.data.modelbase
-            // console.log("读取数据库",await cardList)
-            let k=0
-            while (cardList[k] != null) {
-              cardList[k].title = cardList[k].Dataset_name
-              k++
-            }
-            midmenu[0]["children"][i]["children"][j].children = cardList
-          }
-          finalmenu.push(midmenu[0]["children"][i]["children"][j])
-          j++
-        }
-        i++
-        // console.log("显示最终菜单",await midmenu)
-        // console.log("显示finalmenu",await finalmenu)
-      }
+      //     databasecards = await getCard(tip)
+      //     if(databasecards.data.data != null){
+      //       let cardList = await databasecards.data.data.modelbase
+      //       // console.log("读取数据库",await cardList)
+      //       let k=0
+      //       while (cardList[k] != null) {
+      //         cardList[k].title = cardList[k].Dataset_name
+      //         k++
+      //       }
+      //       midmenu[0]["children"][i]["children"][j].children = cardList
+      //     }
+      //     finalmenu.push(midmenu[0]["children"][i]["children"][j])
+      //     j++
+      //   }
+      //   i++
+      //   // console.log("显示最终菜单",await midmenu)
+      //   // console.log("显示finalmenu",await finalmenu)
+      // }
 
-      menu[2]["children"] = finalmenu
+      // menu[2]["children"] = finalmenu
 
       list = await menu
       // console.log("显示list",await list)
@@ -328,7 +310,7 @@
         router.push("/home")
       };
 
-      // console.log("sonsetup")
+      console.log("打印list",list)
 
       return {
         list,

@@ -163,7 +163,12 @@
   ],
   "canvas": [
     {
-      "name": "datapre",
+      "name" :"database",
+      "title": "数据加载",
+      "children": []
+    },
+    {
+      "name" :"datapre",
       "title": "数据预处理",
       "children": [
         {
@@ -177,7 +182,13 @@
       ]
     },
     {
-      "name": "moudlepredictive",
+      "name" :"modelbase",
+      "title": "模型模板",
+      "children": []
+
+    },
+    {
+      "name" :"moudlepredictive",
       "title": "模型预测",
       "children": [
         {
@@ -186,7 +197,17 @@
         }
         
       ]
+    },
+    {
+      "name" :"resultvisualization",
+      "title": "训练过程可视化",
+      "children": []
+    },
+    {
+      "name" :"scorefunction",
+      "title": "评价指标",
+      "children": []
     }
-    
-  ]
+
+    ]
 }
