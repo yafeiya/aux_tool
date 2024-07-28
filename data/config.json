@@ -1,4 +1,4 @@
-  {
+{
   "database": [
     {
       "name": "numDataBase",
@@ -7,11 +7,13 @@
       "children": [
         {
           "name": "任务1",
-          "title": "任务1"
+          "title": "任务1",
+          "children": null
         },
         {
           "name": "任务2",
-          "title": "任务2"
+          "title": "任务2",
+          "children": null
         }
       ]
     },
@@ -22,7 +24,20 @@
       "children": [
         {
           "name": "",
-          "title": "待补充"
+          "title": "待补充",
+          "children": null
+        }
+      ]
+    },
+    {
+      "name": "3333333333",
+      "title": "3333333333",
+      "icon": "ios-navigate",
+      "children": [
+        {
+          "name": "2222222222",
+          "title": "2222222222",
+          "children": null
         }
       ]
     }
@@ -35,15 +50,18 @@
       "children": [
         {
           "name": "regression",
-          "title": "回归"
+          "title": "回归",
+          "children": null
         },
         {
           "name": "classification",
-          "title": "分类"
+          "title": "分类",
+          "children": null
         },
         {
           "name": "optimization",
-          "title": "优化"
+          "title": "优化",
+          "children": null
         }
       ]
     },
@@ -54,11 +72,13 @@
       "children": [
         {
           "name": "CNN",
-          "title": "卷积神经网络"
+          "title": "卷积神经网络",
+          "children": null
         },
         {
           "name": "RNN",
-          "title": "循环神经网络"
+          "title": "循环神经网络",
+          "children": null
         }
       ]
     },
@@ -69,11 +89,13 @@
       "children": [
         {
           "name": "valueIteration",
-          "title": "值迭代"
+          "title": "值迭代",
+          "children": null
         },
         {
           "name": "strategy_learning",
-          "title": "策略学习"
+          "title": "策略学习",
+          "children": null
         }
       ]
     }
@@ -86,15 +108,18 @@
       "children": [
         {
           "name": "action_distribution",
-          "title": "动作分布"
+          "title": "动作分布",
+          "children": null
         },
         {
           "name": "learning_rate",
-          "title": "学习率"
+          "title": "学习率",
+          "children": null
         },
         {
           "name": "reward_distribution",
-          "title": "奖励分布"
+          "title": "奖励分布",
+          "children": null
         }
       ]
     },
@@ -105,19 +130,23 @@
       "children": [
         {
           "name": "comprehensive",
-          "title": "综合评价指标"
+          "title": "综合评价指标",
+          "children": null
         },
         {
           "name": "generalization",
-          "title": "泛化性"
+          "title": "泛化性",
+          "children": null
         },
         {
           "name": "model_accuracy",
-          "title": "模型精度"
+          "title": "模型精度",
+          "children": null
         },
         {
           "name": "portability",
-          "title": "自定义指标"
+          "title": "自定义指标",
+          "children": null
         }
       ]
     }
@@ -130,7 +159,8 @@
       "children": [
         {
           "name": "领域1",
-          "title": "领域1"
+          "title": "领域1",
+          "children": null
         }
       ]
     },
@@ -141,11 +171,13 @@
       "children": [
         {
           "name": "领域2",
-          "title": "领域2"
+          "title": "领域2",
+          "children": null
         },
         {
           "name": "领域3",
-          "title": "领域3"
+          "title": "领域3",
+          "children": null
         }
       ]
     },
@@ -156,67 +188,76 @@
       "children": [
         {
           "name": "XXXX",
-          "title": "XXXX"
+          "title": "XXXX",
+          "children": null
         }
       ]
     }
   ],
   "canvas": [
     {
-      "name" :"database",
+      "name": "database",
       "title": "数据加载",
+      "icon": "",
       "children": [
         {
           "name": "monitordata",
-          "title": "仿真监听数据"
+          "title": "仿真监听数据",
+          "children": null
         },
         {
           "name": "modellog",
-          "title": "模型日志数据"
+          "title": "模型日志数据",
+          "children": null
         }
       ]
     },
     {
-      "name" :"datapre",
+      "name": "datapre",
       "title": "数据预处理",
+      "icon": "",
       "children": [
         {
           "name": "dataaugmentation",
-          "title": "数据扩充"
+          "title": "数据扩充",
+          "children": null
         },
         {
           "name": "dataaugmentation",
-          "title": "数据清洗"
+          "title": "数据清洗",
+          "children": null
         }
       ]
     },
     {
-      "name" :"modelbase",
+      "name": "modelbase",
       "title": "模型模板",
+      "icon": "",
       "children": []
-
     },
     {
-      "name" :"moudlepredictive",
+      "name": "moudlepredictive",
       "title": "模型预测",
+      "icon": "",
       "children": [
         {
           "name": "batchdeduction",
-          "title": "批量推理"
+          "title": "批量推理",
+          "children": null
         }
-        
       ]
     },
     {
-      "name" :"resultvisualization",
+      "name": "resultvisualization",
       "title": "训练过程可视化",
+      "icon": "",
       "children": []
     },
     {
-      "name" :"scorefunction",
+      "name": "scorefunction",
       "title": "评价指标",
+      "icon": "",
       "children": []
     }
-
-    ]
+  ]
 }
