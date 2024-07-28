@@ -165,7 +165,16 @@
     {
       "name" :"database",
       "title": "数据加载",
-      "children": []
+      "children": [
+        {
+          "name": "monitordata",
+          "title": "仿真监听数据"
+        },
+        {
+          "name": "modellog",
+          "title": "模型日志数据"
+        }
+      ]
     },
     {
       "name" :"datapre",
