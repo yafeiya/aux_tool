@@ -142,12 +142,18 @@ export default class FlowGraph {
 
   // 初始化设置好的画布上的元素
   static initGraphShape() {
+    var url = decodeURI(window.location.href);
+    var cs_arr = url.split('?')[1];//?后面的
+    var iid = cs_arr.split('=')[1].split('&')[0];
+
+    console.info("id",iid)
+
     // TODO: id从哪里来,点击名字查询id
-    var data= {id:"1"}
+    var data= {id:iid}
     console.info("初始化id++++++++++++++++++++++" )
     getCanvas(data).then(response => {
       var graphData = response.data.data.cell
-      console.info("画布初始化，获取的数据：",graphData ) 
+      console.info("画布初始化，获取的数据：",graphData )
       this.graph.fromJSON(graphData);
       console.log(graphData)
     })
