@@ -247,6 +247,17 @@ export const saveCanvas = (data) => {
     data: JSON.stringify(data), // 将数据转换为 JSON 字符串
   });
 }
+export const saveCanvasPNG = (data) => {
+  return myAxios({
+    method: 'POST',
+    url: '/saveCanvasPNG',
+    headers: {
+      'Content-Type': 'multipart/form-data', // 设置请求头
+    },
+    data: data, // 直接发送FormData对象
+  });
+}
+
 
 export const getDesignsById = (data) => {
   return myAxios({

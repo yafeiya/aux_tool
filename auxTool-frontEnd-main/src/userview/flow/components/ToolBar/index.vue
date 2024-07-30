@@ -93,7 +93,7 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'; // ref, reactive
-  import { runCanvas,saveCanvas } from '../../../../api/api.js'
+  import { runCanvas,saveCanvas,saveCanvasPNG } from '../../../../api/api.js'
   import FlowGraph from '../../graph';
   import { DataUri } from '@antv/x6';
   import axios from 'axios';
@@ -228,33 +228,48 @@
               background: true,
               content: '运行成功，请在方案实例页面查看详情'
           });
-          var design = res.data
-          console.info(design)
-          var cells = design.cells
-          this.example.example_name = design.dataset_name
-          this.example.rank = design.rank
-          for(var i in cells) {
-            console.info(i)
-            if(cells[i].data['fatherLabel'] == '数据加载') {
-              this.example.dataset_url = cells[i].data['dataurl']
-              this.mustItem[0].flag = true
-            } else if(cells[i].data['fatherLabel'] == '模型模板') {
-              this.example.model_name = cells[i].attrs.text.text
-              this.example.model_type = cells[i].data['modeltype']
-              this.example.model_url = cells[i].data['modelurl']
-              this.mustItem[1].flag = true
-            } else if(cells[i].data['fatherLabel'] == '模型训练') {
-              this.example.epoch_num = cells[i].data['iterations']
-              this.example.loss = cells[i].data['loss']
-              this.example.optimizer = cells[i].data['optimizer']
-              this.example.decay = cells[i].data['decayfactor']
-              this.example.evalution = cells[i].data['evalution']
-              this.mustItem[2].flag = true
-              // memory = cells[i].data['']
-            } else if(cells[i].data['fatherLabel'] == '仿真交互') {
-              this.mustItem[3].flag = true
-            }
-          }
+          const { graph } = FlowGraph;
+          var graphData = graph.toJSON()
+          var url = decodeURI(window.location.href);
+          var cs_arr = url.split('?')[1];//?后面的
+          console.info("url",url);
+          var iid = cs_arr.split('=')[1].split('&')[0];
+          var cellsToSend = {
+            id: iid,
+            cells: graphData.cells // 假设 graphData 里有一个 cells 属性
+          };
+          console.log("测试");
+          console.log(cellsToSend);
+          saveCanvas(cellsToSend).then(res=>{
+            console.log(res);
+          })
+          // var design = res.data
+          // console.info(design)
+          // var cells = design.cells
+          // this.example.example_name = design.dataset_name
+          // this.example.rank = design.rank
+          // for(var i in cells) {
+          //   console.info(i)
+          //   if(cells[i].data['fatherLabel'] == '数据加载') {
+          //     this.example.dataset_url = cells[i].data['dataurl']
+          //     this.mustItem[0].flag = true
+          //   } else if(cells[i].data['fatherLabel'] == '模型模板') {
+          //     this.example.model_name = cells[i].attrs.text.text
+          //     this.example.model_type = cells[i].data['modeltype']
+          //     this.example.model_url = cells[i].data['modelurl']
+          //     this.mustItem[1].flag = true
+          //   } else if(cells[i].data['fatherLabel'] == '模型训练') {
+          //     this.example.epoch_num = cells[i].data['iterations']
+          //     this.example.loss = cells[i].data['loss']
+          //     this.example.optimizer = cells[i].data['optimizer']
+          //     this.example.decay = cells[i].data['decayfactor']
+          //     this.example.evalution = cells[i].data['evalution']
+          //     this.mustItem[2].flag = true
+          //     // memory = cells[i].data['']
+          //   } else if(cells[i].data['fatherLabel'] == '仿真交互') {
+          //     this.mustItem[3].flag = true
+          //   }
+          // }
           for(var i in mustItem) {
             mustItem[i].flag = false
           }
@@ -315,22 +330,69 @@
             break;
           case 'savePNG':
             graph.toPNG(
-              (dataUri: string) => {
-                // 下载
-                DataUri.downloadDataUri(dataUri, 'chartx.png');
-              },
-              {
-                backgroundColor: 'white',
-                padding: {
-                  top: 20,
-                  right: 30,
-                  bottom: 40,
-                  left: 50,
+                (dataUri) => {
+                  // 将dataUri转换为Blob对象
+                  const byteString = atob(dataUri.split(',')[1]);
+                  const mimeString = dataUri.split(',')[0].split(':')[1].split(';')[0];
+                  const ab = new ArrayBuffer(byteString.length);
+                  const ia = new Uint8Array(ab);
+                  for (let i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                  }
+                  const blob = new Blob([ab], { type: mimeString });
+
+                  // 创建FormData对象
+                  const formData = new FormData();
+                  const url = decodeURI(window.location.href);
+                  const cs_arr = url.split('?')[1]; //?后面的
+                  const id = cs_arr.split('=')[1].split('&')[0];
+                  const type = cs_arr.split('=')[2].split('&')[0];
+                  const task = cs_arr.split('=')[3];
+                  formData.append('image', blob, 'chartx.png');
+                  formData.append('id', id); // 替换为实际的id
+                  formData.append('type', task); // 替换为实际的type
+                  formData.append('task', type); // 替换为实际的task
+
+                  // 打印FormData的内容
+                  for (let [key, value] of formData.entries()) {
+                    console.log(key, value);
+                  }
+
+                  // 使用axios发送POST请求到服务器
+                  saveCanvasPNG(formData).then(res => {
+                    console.log('Success:', res.data);
+                  });
                 },
-                quality: 1,
-              },
+                {
+                  backgroundColor: 'white',
+                  padding: {
+                    top: 20,
+                    right: 30,
+                    bottom: 40,
+                    left: 50,
+                  },
+                  quality: 1,
+                },
             );
+
             break;
+            // graph.toPNG(
+            //   (dataUri: string) => {
+            //     // 下载
+            //     DataUri.downloadDataUri(dataUri, 'chartx.png');
+            //   },
+            //   {
+            //     backgroundColor: 'white',
+            //     padding: {
+            //       top: 20,
+            //       right: 30,
+            //       bottom: 40,
+            //       left: 50,
+            //     },
+            //     quality: 1,
+            //   },
+            // );
+            // break;
           case 'saveSVG':
             graph.toSVG((dataUri: string) => {
               // 下载
@@ -355,7 +417,6 @@
             var cs_arr = url.split('?')[1];//?后面的
             console.info("url",url);
             var iid = cs_arr.split('=')[1].split('&')[0];
-
             var cellsToSend = {
               id: iid,
               cells: graphData.cells // 假设 graphData 里有一个 cells 属性

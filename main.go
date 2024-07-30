@@ -24,6 +24,7 @@ func main() {
 	engine.POST("/uploadLoss", controller.UploadLoss)
 	engine.GET("/getprocessFile", controller.GetprocessFile)
 	engine.POST("/saveCanvas", controller.SaveCanvas)
+	engine.POST("/saveCanvasPNG", controller.SaveCanvasPNG)
 	engine.GET("/getDesignsById", controller.GetDesignsById)
 	engine.POST("/runCanvas", controller.RunCanvas)
 	engine.GET("/getExampleList", controller.GetExampleList)
