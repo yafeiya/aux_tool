@@ -202,20 +202,21 @@ func RunCanvas(ctx *gin.Context) {
 func SaveCanvasPNG(ctx *gin.Context) {
 	fmt.Println("SaveCanvasPNG")
 	Id := ctx.PostForm("id")
-	Type := ctx.Query("type")
-	Task := ctx.Query("task")
+	Type := ctx.PostForm("type")
+	Task := ctx.PostForm("task")
 	image, _ := ctx.FormFile("image")
 	// 要创建的文件夹的路径
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
+	fmt.Println("folderPath",folderPath)
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
-		return
 	}
 
 	dst := folderPath + "/image.png"
+	fmt.Println("dst:",dst)
 	// 上传文件至指定的完整文件路径
 	ctx.SaveUploadedFile(image, dst)
 
@@ -238,7 +239,6 @@ func UploadReward(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
 	}
-	fmt.Println("11111111111111111111111:")
 
 	dst := folderPath + "/" + "reward.txt"
 	erro := os.Remove(dst)

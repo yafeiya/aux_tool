@@ -187,7 +187,10 @@
                     <div id="Charts" ref="Echarts3" ></div>
                   </Col>
                   <Col span="12">
-                    <div id="Charts" ref="Echarts4"></div>
+                    <div id="Charts" style="display: flex;justify-content: center;">
+                      <img style="height: 100%;" :src="imageUrl"  alt="Example Image" />
+                    </div>
+
                   </Col>
                 </Row>
 
@@ -270,7 +273,7 @@ export default {
       actdata: "",
       rewarddata:"",
       lrdata:"",
-
+      imageUrl: '',
       previewImage:false,
       urlList: ["",],
       isproxyInfo:false,
@@ -384,7 +387,7 @@ export default {
       let psgTimeCharts1 = echarts.init(this.$refs.Echarts1)
       let psgTimeCharts2 = echarts.init(this.$refs.Echarts2)
       let psgTimeCharts3 = echarts.init(this.$refs.Echarts3)
-      let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
+      // let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
       let count=[]  //统计轮数
       let x = 0;  //飞机种类数
       let y = 0; //导弹种类数
@@ -642,6 +645,8 @@ export default {
       for(var i in this.itemList) {
         if(row.Id == this.itemList[i].Id) {
           console.info("row.id:",this.itemList[i])
+          this.imageUrl=this.itemList[i].Dataset_url+"/image.png"
+          console.info("imageUrl",this.imageUrl)
           let data1={
             type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
             task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
