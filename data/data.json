@@ -999,7 +999,114 @@
       "Description": "1233",
       "Task": "领域1",
       "Id": 5,
-      "Cell": null,
+      "Cell": [
+        {
+          "attrs": {
+            "text": {
+              "text": "仿真监听数据"
+            }
+          },
+          "data": {
+            "fatherLabel": "仿真监听数据",
+            "grandLabel": "数据加载",
+            "selflabel": "仿真监听数据"
+          },
+          "id": "948ea8e3-e559-4a6f-916b-5f2853c52820",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "e5a3490a-43b8-4d8b-9a56-23b2fcbdf0d9"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "d55ed4d8-4a33-4632-a90d-da21fa34d3d4"
+              }
+            ]
+          },
+          "position": {
+            "x": 560,
+            "y": 60
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 1
+        }
+      ],
       "Data_path": "http://127.0.0.1:5173/A领域/领域1/5/"
     },
     {
