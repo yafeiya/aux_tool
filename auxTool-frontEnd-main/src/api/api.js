@@ -287,6 +287,7 @@ export const updateExample = (data) => {
     params:data
   })
 }
+
 export const deleteExample = (data) => {
   return myAxios({
     method: 'GET',

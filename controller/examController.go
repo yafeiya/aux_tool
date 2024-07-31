@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 )
 
 // TODO:获取当前界面实例列表
@@ -66,6 +68,9 @@ func DeleteExample(ctx *gin.Context) {
 	}
 }
 
+
+
+
 /*
 TODO:更新指定实例
 参数：前端传来的参数
@@ -79,14 +84,17 @@ func UpdateExample(ctx *gin.Context) {
 	fmt.Println(State)
 	IdList := strings.Split(Id, "/")
 	fmt.Println("IdList", IdList)
+	// 获取当前时间并格式化为字符串
+	currentTime := strconv.FormatInt(time.Now().UnixMilli(), 10)
 	example := model.Example{
 		State: State,
+		End_time: currentTime,
+
 	}
 	for _, value := range IdList {
 		if value == "" {
 			fmt.Println("记录更新结束")
 		} else {
-			fmt.Println("vvvvvvvvvvvvvvvvalueid", value, "test")
 			result := db.Model(model.Example{}).Where("Id = ?", value).Updates(&example)
 			if result.RowsAffected == 0 {
 				fmt.Println("修改失败")
@@ -99,7 +107,5 @@ func UpdateExample(ctx *gin.Context) {
 		}
 	}
 
-	// 判重处理
-	//pageKind、task、type、dataset_name
 
 }

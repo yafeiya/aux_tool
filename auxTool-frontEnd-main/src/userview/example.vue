@@ -104,7 +104,7 @@
             </template>
             <!--时间相关-->
             <template #time="{row}">
-              <Time :time="row.Start_time- 60 * 1 * 1000"  />
+              <Time :time="row.Start_time- 60 * 1 * 1000"  type="datetime" />
             </template>
             <!--表格最右列查看详情-->
 
@@ -343,7 +343,7 @@ export default {
         },
         {
           title: '运行时长',
-          key: 'Run_time',
+          key: 'run_time',
           align: 'center',
           sortable: true,
         },
@@ -617,19 +617,26 @@ export default {
 
   },
 
-    calcTime(newTime, oldTime) {
-      var timeDiff = newTime - oldTime
-      var timeDiff = Math.floor(timeDiff / 1000)
-      var min = Math.floor(timeDiff / 60)
-      var hour = Math.floor(min / 60)
-      min = min % 60
-      var ans = 0;
-      if(hour == 0) {
-        ans = min + "分钟"
-      } else {
-        ans = hour + "小时" + min + "分钟"
+    calcTime(startTime,endTime,state) {
+      if(state==='on'){
+        const currentTime = Date.now(); // 获取当前时间戳
+        const runTime = currentTime - parseInt(startTime); // 计算运行时长，确保开始时间戳是整数
+        // 将运行时长转换为天、小时、分钟和秒的格式
+        // const seconds = Math.floor((runTime / 1000) % 60);
+        const minutes = Math.floor((runTime / (1000 * 60)) % 60);
+        const hours = Math.floor((runTime / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(runTime / (1000 * 60 * 60 * 24));
+        return `${days}天${hours}小时${minutes}分钟`;
+      }else{
+        const runTime = endTime-startTime; // 计算运行时长，确保开始时间戳是整数
+        // 将运行时长转换为天、小时、分钟和秒的格式
+        // const seconds = Math.floor((runTime / 1000) % 60);
+        const minutes = Math.floor((runTime / (1000 * 60)) % 60);
+        const hours = Math.floor((runTime / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(runTime / (1000 * 60 * 60 * 24));
+        return `${days}天${hours}小时${minutes}分钟`;
       }
-      return ans
+
     },
     itemInfoBtn(row, index) {
       this.isItemInfo=true;
@@ -644,9 +651,7 @@ export default {
       this.isLogInfo=true;
       for(var i in this.itemList) {
         if(row.Id == this.itemList[i].Id) {
-          console.info("row.id:",this.itemList[i])
           this.imageUrl=this.itemList[i].Dataset_url+"/image.png"
-          console.info("imageUrl",this.imageUrl)
           let data1={
             type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
             task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
@@ -703,7 +708,6 @@ export default {
     },
     putItemState(toState) {
       var putList = []
-
       let selectId=""
       for(var i in this.selections){
         selectId+=this.selections[i].Id+"/"
@@ -714,38 +718,36 @@ export default {
       }
       console.info("11111111111111111",data)
       updateExample(data).then(response => {
-        console.info('j',j)
+        console.info('更新成功')
       })
       setTimeout(() => {
         this.getItemInfo()
       },20)
       this.$Message.success('修改成功')
-
       for(var i in this.selections) {
         for (var j in this.itemList) {
           if(this.selections[i].id == this.itemList[j].id) {
-            if(toState == "挂起"){
+            if(toState == "挂起中"){
               this.itemList[j].state = "挂起中"
               this.itemList[j].end_time = this.nowTime
-              this.itemList[j].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
-            } else if(toState == "运行") {
+              // this.itemList[j].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
+            } else if(toState == "运行中") {
               this.itemList[j].state = "运行中"
               this.itemList[j].end_time = ""
-              this.itemList[j].run_time = this.calcTime(this.nowTime, this.itemList[i].start_time)
-            } else if(toState == "终止") {
+              // this.itemList[j].run_time = this.calcTime(this.nowTime, this.itemList[i].start_time)
+            } else if(toState == "已终止") {
               this.itemList[j].state = "已终止"
               this.itemList[j].end_time = this.nowTime
               this.itemList[j].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
             }
-
-
             // var putUrl = findUrl + "/" + this.itemList[j].id
-
             // putList.push(putPromise)
 
           }
         }
       }
+      console.info("itemList",this.itemList)
+
       Promise.all(putList).then((result) =>{
         console.info("result: " + result)
         this.getItemInfo()
@@ -762,9 +764,10 @@ export default {
           content: "当前未选中任何对象，请选择需要" + toState + "的对象"
         });
       } else {
-        if(toState == "运行" || toState == "挂起") {
+        if(toState == "运行中" || toState == "挂起中") {
           for(var i in this.selections) {
-            if(this.selections[i].state == "已终止") {
+            if(this.selections[i].State == "已终止") {
+              console.info("this.selections[i].State",this.selections[i].State)
               this.$Message["error"]({
                 background: true,
                 content: "选中目标中存在终止对象，请修改后操作"
@@ -819,14 +822,10 @@ export default {
         console.info("this.itemlist",this.itemList)
         this.itemNum = this.itemList.length
         for(var i in this.itemList) {
-          if(this.itemList[i].state == "运行中") {
-            this.itemList[i].run_time = this.calcTime(this.nowTime, this.itemList[i].start_time)
-            console.info(this.itemList[i].run_time)
-            console.info(this.nowTime)
-            console.info(this.itemList[i].start_time)
-            this.itemList[i].end_time = ""
-          } else if(this.itemList[i].state == "挂起中" || this.itemList[i].state == "已终止") {
-            this.itemList[i].run_time = this.calcTime(this.itemList[i].end_time, this.itemList[i].start_time)
+          if(this.itemList[i].State === "已终止") {
+            this.itemList[i].run_time = this.calcTime(this.itemList[i].Start_time,this.itemList[i].End_time,'off')
+          }else{
+            this.itemList[i].run_time = this.calcTime(this.itemList[i].Start_time,this.itemList[i].End_time,'on')
           }
         }
         this.updatePage(1)
