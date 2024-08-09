@@ -18,13 +18,13 @@
       ]
     },
     {
-      "name": "others",
-      "title": "其他数据集",
+      "name": "imageDataBase",
+      "title": "图像数据集",
       "icon": "ios-analytics",
       "children": [
         {
-          "name": "",
-          "title": "待补充",
+          "name": "自然图像",
+          "title": "自然图像",
           "children": null
         }
       ]
