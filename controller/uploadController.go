@@ -5,12 +5,11 @@ import (
 	"backEnd/common/response"
 	"backEnd/model"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"reflect"
 	"strconv"
-	// "io"
+	"github.com/gin-gonic/gin"
 )
 
 type Record struct {
@@ -27,16 +26,12 @@ func UploadCsvFile(ctx *gin.Context) {
 	Type := ctx.PostForm("type")
 	Id := ctx.PostForm("id")
 	num, _ := strconv.Atoi(Id)
-	Dataset_name := ctx.PostForm("name")
 	time := ctx.PostForm("time")
 	file, _ := ctx.FormFile("file")
-	fmt.Println(file.Filename)
-	fmt.Println("ID", Id)
-	fmt.Println(Dataset_name, Task, Type, time)
+
 
 	// 要创建的文件夹的路径
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
-	fmt.Println("111111111111111111", folderPath)
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
@@ -102,10 +97,6 @@ func DownloadCsvFile(ctx *gin.Context) {
 	Dataset_Id := ctx.PostForm("dataset_name")
 	Type := ctx.PostForm("type")
 	Table_name := ctx.PostForm("table_name")
-	fmt.Println(Task)
-	fmt.Println(Dataset_Id)
-	fmt.Println(Type)
-	fmt.Println(Table_name)
 	datatables := []model.Datatable{}
 
 	db.Where("Task = ? and Type = ? and Dataset_Id = ? and Table_name = ?", Task, Type, Dataset_Id, Table_name).Find(&datatables)

@@ -13,13 +13,11 @@ import (
 	"strconv"
 	"strings"
 	"unicode/utf8"
-	// "reflect"
 	"github.com/gin-gonic/gin"
 )
 
 type Header struct {
 	XMLName xml.Name `xml:"header"`
-	// Id      int      `xml:"id,attr"`
 	Name    string `xml:"name"`
 	Type    string `xml:"type"`
 	Precise int    `xml:"precise"`
@@ -102,17 +100,6 @@ func GetCSVInfo(csv_path string) (int, int, []string) {
 		Types = append(Types, uniqueElement)
 	}
 
-	// // 输出列数
-	// fmt.Printf("CSV文件有 %d 列\n", numColumns)
-
-	// // 输出每列的数据类型
-	// for columnIndex, columnType := range columnTypes {
-	// 	fmt.Printf("  列 %d: %s\n", columnIndex+1, columnType)
-	// }
-
-	// // 输出行数
-	// fmt.Printf("CSV文件有 %d 行\n", numRows)
-
 	return numColumns, numRows, Types
 }
 
@@ -128,10 +115,10 @@ func GetTable(ctx *gin.Context) {
 	datatables := []model.Datatable{}
 	db.Where("Task = ? and Type = ? and Dataset_Id = ?", Task, Type, Dataset_Id).Find(&datatables)
 	if len(datatables) == 0 {
-		fmt.Println("卡片")
+
 		response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
 	} else {
-		fmt.Println(datatables)
+
 		response.Success(ctx, gin.H{"datatables": datatables}, "success")
 	}
 }
@@ -147,18 +134,12 @@ func DeleteTable(ctx *gin.Context) {
 	DatasetName := ctx.Query("datasetName")
 	IdList := strings.Split(Id, "/")
 	CsvList := strings.Split(CsvName, "/")
-	fmt.Println(Id)
-	fmt.Println(IdList)
-	fmt.Println(Task)
-	fmt.Println(Type)
-	fmt.Println(DatasetName)
-	fmt.Println(CsvName)
+
 	//此循环为删除文件的操作
 	for _, value := range CsvList {
 		if value == "" {
 			fmt.Println("文件删除结束")
 		} else {
-			fmt.Println("vvvvvvvvvvvvaluecsv", value)
 			erro := os.Remove("./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + DatasetName + "/" + value)
 			if erro != nil {
 				fmt.Println("delete fail")
@@ -170,10 +151,10 @@ func DeleteTable(ctx *gin.Context) {
 		if value == "" {
 			fmt.Println("记录删除结束")
 		} else {
-			fmt.Println("vvvvvvvvvvvvvvvvalueid", value)
+
 			datatables := []model.Datatable{}
 			result := db.Where("Id = ?", value).Delete(&datatables)
-			fmt.Println("rrrrrrrrrrrr", result)
+
 			if result.RowsAffected == 0 {
 				fmt.Println("删除失败")
 				response.Response(ctx, http.StatusOK, 404, nil, "fail")
@@ -194,15 +175,15 @@ func CreateTable(Task string, Type string, Dataset_Id int, numColumns int, numRo
 		types = types + columnType
 	}
 	datatable := model.Datatable{
-		Type:         Type,
-		Task:         Task,
-		Dataset_Id:   uint(Dataset_Id),
-		Table_name:   csv_name,
-		Header_num:   uint(numColumns),
-		Data_len:     uint(numRows),
-		Data_type:    types,
-		Csv_path:     csv_path,
-		Time:         time,
+		Type:       Type,
+		Task:       Task,
+		Dataset_Id: uint(Dataset_Id),
+		Table_name: csv_name,
+		Header_num: uint(numColumns),
+		Data_len:   uint(numRows),
+		Data_type:  types,
+		Csv_path:   csv_path,
+		Time:       time,
 	}
 	// 判重处理
 	db.Where("Task = ? and Type = ? and Dataset_Id = ? and Table_name = ?", Task, Type, Dataset_Id, csv_name).First(&datatable)
@@ -223,14 +204,13 @@ func CreateTable(Task string, Type string, Dataset_Id int, numColumns int, numRo
 
 func GetCsvData(ctx *gin.Context) {
 	Dataset_id := ctx.Query("id")
-	fmt.Println("需要查询的数据集id：", Dataset_id)
 
 	db := common.InitDB()
 
 	datatables := []model.Datatable{}
 	db.Where("Dataset_Id = ?", Dataset_id).Find(&datatables)
 	if len(datatables) == 0 {
-		fmt.Println("未找到数据集下的csv文件")
+
 		response.Response(ctx, http.StatusOK, 404, nil, "No corresponding card found")
 	} else {
 		fmt.Println(datatables)
@@ -241,15 +221,9 @@ func GetCsvData(ctx *gin.Context) {
 func OutPutXml(ctx *gin.Context) {
 	CsvPath := ctx.Query("path")
 	DataName := ctx.Query("data_name")
-	fmt.Println("DataName:", DataName)
-	fmt.Println("CsvPath:", CsvPath)
-	// CsvPath := ctx.Params.ByName("path")
-	// fmt.Println("接收到的参数类型：", reflect.TypeOf(CsvPath))
 	CsvPathList := strings.Split(CsvPath, ",")
 	XmlData := Database{Databasename: DataName}
 	for _, value := range CsvPathList {
-		//value= 数值数据集/任务1/57/123,数值数据集/任务1/57/123.csv
-
 		dst := "./auxTool-frontEnd-main/" + value
 		csvPathSingle := strings.Split(value, "/")
 		Tab := Table{Tablename: csvPathSingle[len(csvPathSingle)-1]}
@@ -303,8 +277,5 @@ func OutPutXml(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println("后端xml文件写入失败:", err)
 	}
-	// ctx.Header("Content-Type", "imgage/jpeg") // 这里是文件类型 对应参考代码：https://blog.csdn.net/qq_40739261
-	// ctx.Header("Content-Disposition"," fileContentDisposition.xml")  // 默认文件名
 	ctx.File(xmlPath)
-	fmt.Println("已输出xml")
 }

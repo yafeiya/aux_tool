@@ -1,20 +1,17 @@
 package controller
 
 import (
-	// "backEnd/model"
-	// "net/http"
-	// "backEnd/common"
-	// "backEnd/common/response"
+
 	"encoding/json"
-	// "github.com/gin-gonic/gin"
+
+	"fmt"
 	"os"
 	"strconv"
-	"fmt"
-	// "unicode/utf8"
-	"encoding/csv"
+
 	"bufio"
-	"strings"
+	"encoding/csv"
 	"io/ioutil"
+	"strings"
 )
 
 type CSVData struct {
@@ -57,58 +54,51 @@ func GetTrainingProcessFileInfo(filePath string) (string, error) {
 	}
 
 
-	// // 将处理结果转换为JSON字符串
-	// jsonBytes, err := json.Marshal(result)
-	// if err != nil {
-	// 	return "", err
-	// }
-
-	// return string(jsonBytes), nil
 }
 
-func processTxtFile(filePath string) (string, error)  {
+func processTxtFile(filePath string) (string, error) {
 	file, err := os.Open(filePath)
-    if err != nil {
-        fmt.Println("无法打开文件:", err)
-        return "", err
-    }
-    defer file.Close()
+	if err != nil {
+		fmt.Println("无法打开文件:", err)
+		return "", err
+	}
+	defer file.Close()
 
-    // 创建一个切片来存储第三列数据
-    var thirdColumn []float64
+	// 创建一个切片来存储第三列数据
+	var thirdColumn []float64
 
-    // 创建一个Scanner来逐行读取文件内容
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        // 拆分每一行的数据
-        line := scanner.Text()
-        parts := strings.Fields(line)
+	// 创建一个Scanner来逐行读取文件内容
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		// 拆分每一行的数据
+		line := scanner.Text()
+		parts := strings.Fields(line)
 
-        if len(parts) >= 3 {
-            // 将第三列数据解析为float64并添加到切片中
-            value, err := strconv.ParseFloat(parts[2], 64)
-            if err != nil {
-                fmt.Printf("无法解析第三列数据：%v\n", err)
-                continue
-            }
-            thirdColumn = append(thirdColumn, value)
-        }
-    }
+		if len(parts) >= 3 {
+			// 将第三列数据解析为float64并添加到切片中
+			value, err := strconv.ParseFloat(parts[2], 64)
+			if err != nil {
+			
+				continue
+			}
+			thirdColumn = append(thirdColumn, value)
+		}
+	}
 
-    if err := scanner.Err(); err != nil {
-        fmt.Println("读取文件时出错:", err)
-        return "", err
-    }
+	if err := scanner.Err(); err != nil {
+		fmt.Println("读取文件时出错:", err)
+		return "", err
+	}
 
-    // 创建一个JSON对象
-    jsonData := map[string][]float64{"reward": thirdColumn}
+	// 创建一个JSON对象
+	jsonData := map[string][]float64{"reward": thirdColumn}
 
-    // 将JSON对象编码为JSON字符串
-    jsonBytes, err := json.Marshal(jsonData)
-    if err != nil {
-        fmt.Println("JSON编码出错:", err)
-        return "", err
-    }
+	// 将JSON对象编码为JSON字符串
+	jsonBytes, err := json.Marshal(jsonData)
+	if err != nil {
+		fmt.Println("JSON编码出错:", err)
+		return "", err
+	}
 	return string(jsonBytes), nil
 }
 

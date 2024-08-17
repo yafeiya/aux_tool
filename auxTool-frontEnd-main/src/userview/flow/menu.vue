@@ -105,7 +105,7 @@ import { menulist } from './list'
 import { readlist } from './readlist'
 import * as echarts from 'echarts'
 import datas from "./results/data.json"
-import { getCard, getMenuInfo } from '../../api/api.js'
+import { deletePageMenuItem,addPageMenuItem,getCard, getMenuInfo } from '../../api/api.js'
 
 // const getContainerSize = () => {
 //   return {
@@ -140,10 +140,34 @@ export default defineComponent({
         gran_title: grandsonMenu
         
       }
+      addPageMenuItem(data).then(response => {
+        console.info("!111111111",response.data.msg)
+      })
+      setTimeout(() => {
+          getMenuInfo("canvas").then(res => {
+          })
+          location.reload();
+        }, 500);
     };
     const canvasMenuDelete = (fartherMenu, childreMenu, grandsonMenu) => {
       // 删除菜单项的逻辑
       console.log('删除:', { fartherMenu, childreMenu, grandsonMenu });
+      var data = {
+        //菜单的添加与删除
+        pageKind: "canvas",
+        title: fartherMenu,
+        children_title: childreMenu,
+        gran_title: grandsonMenu
+      }
+      deletePageMenuItem(data).then(response => {
+        console.info("!222222",response.data.msg)
+      })
+      setTimeout(() => {
+          getMenuInfo("canvas").then(res => {
+          })
+          location.reload();
+        }, 500);
+      
     };
 
     const router = useRouter();

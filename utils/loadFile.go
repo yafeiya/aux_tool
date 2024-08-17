@@ -25,11 +25,7 @@ func LoadJson(filePath string) (map[string]interface{}, bool) {
 		fmt.Println(err)
 		return nil, false
 	}
-	// fmt.Printf("value: %+v\n", newMenu)
-	// var menu map[string]interface{}
-	// menu := menuList[pageName]
-	// fmt.Println("menu: ")
-	// fmt.Println(menu)
+
 	return menuList, true
-	// fmt.Println(reflect.TypeOf(newMenu))
+
 }

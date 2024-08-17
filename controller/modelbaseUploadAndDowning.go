@@ -5,10 +5,10 @@ import (
 	"backEnd/common/response"
 	"backEnd/model"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"path/filepath"
+	"github.com/gin-gonic/gin"
 	// "reflect"
 	// "io"
 )
@@ -16,20 +16,15 @@ import (
 // 上传模型文件和模型的png文件
 func UploadModelFile(ctx *gin.Context) {
 	// 路径参数
-	fmt.Println("UploadModelFile")
 	db := common.InitDB()
 	Task := ctx.PostForm("task")
 	Type := ctx.PostForm("type")
 	Id := ctx.PostForm("id")
 	file, _ := ctx.FormFile("file")
-	fmt.Println(file.Filename)
-	fmt.Println("ID", Id)
-	fmt.Println("Type", Type)
-	fmt.Println("Task", Task)
 
 	// 要创建的文件夹的路径
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
-	fmt.Println("111111111111111111", folderPath)
+
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
@@ -59,7 +54,7 @@ func UploadModelFile(ctx *gin.Context) {
 			return
 		}
 		response.Success(ctx, nil, "success")
-		//response.Response(ctx, http.StatusOK, 404, nil, "success")
+
 	} else {
 		response.Success(ctx, nil, "fail")
 	}
@@ -73,14 +68,11 @@ func UploadModelPNGFile(ctx *gin.Context) {
 	Type := ctx.PostForm("type")
 	Id := ctx.PostForm("id")
 	file, _ := ctx.FormFile("file")
-	fmt.Println(file.Filename)
-	fmt.Println("ID", Id)
-	fmt.Println("Type", Type)
-	fmt.Println("Task", Task)
+
 
 	// 要创建的文件夹的路径
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
-	fmt.Println("111111111111111111", folderPath)
+
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {

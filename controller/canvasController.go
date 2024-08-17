@@ -5,17 +5,12 @@ import (
 	"backEnd/common/response"
 	"backEnd/model"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"strconv"
-
-	// "backEnd/utils"
-	"fmt"
 	"net/http"
 	"os"
-
 	"github.com/gin-gonic/gin"
-	// "strconv"
-	// "strings"
 )
 
 /*
@@ -39,8 +34,6 @@ func SaveCanvas(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 		return
 	}
-	// 打印接收到的 ID
-	fmt.Printf("Canvas ID: %d\n", idInt)
 
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
@@ -59,7 +52,7 @@ func SaveCanvas(ctx *gin.Context) {
 	// 遍历列表
 	for i := range data.Designs {
 		if data.Designs[i].Id == idInt {
-			fmt.Println("要覆盖的design的id为:", idInt)
+
 			//var newCell []interface{}
 			data.Designs[i].Cell = request.Cells
 			// 更新JSON文件
@@ -87,18 +80,11 @@ func SaveCanvas(ctx *gin.Context) {
 // 前端运行按钮
 // */
 func RunCanvas(ctx *gin.Context) {
-	fmt.Println("RunCanvas")
 	Start_time := ctx.Query("start_time")
 
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
 	Dataset_url := ctx.Query("dataset_url")
-	fmt.Println("Dataset_url", Dataset_url)
-	// fmt.Println("newCellData", newCellData)
-	fmt.Println("id", id)
-	fmt.Println("time", Start_time)
-
-	fmt.Println("start_time", Start_time)
 
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
@@ -123,7 +109,7 @@ func RunCanvas(ctx *gin.Context) {
 			//获取对应案例名称
 			Design_name := data.Designs[i].Dataset_name
 			Rank := data.Designs[i].Rank
-			fmt.Println("rank", Rank)
+
 			// 解析 JSON 数组数据
 			for _, jsonStr := range newCellData {
 				byteSlice := []byte(jsonStr) // Convert to []byte
@@ -135,7 +121,7 @@ func RunCanvas(ctx *gin.Context) {
 				}
 				newCell = append(newCell, item)
 			}
-			// fmt.Println("newCell:", newCell)
+
 			data.Designs[i].Cell = newCell
 
 			// 更新JSON文件
@@ -177,8 +163,6 @@ func RunCanvas(ctx *gin.Context) {
 			//pageKind、task、type、dataset_name
 
 			db.Where("Example_name = ?", Design_name).Find(&example)
-			fmt.Println("Example_name", Design_name)
-			fmt.Println("example_id", example.Id)
 			if example.Id != 0 {
 				fmt.Println("该实例已存在")
 				response.Response(ctx, http.StatusOK, 404, nil, "The example already exists")
@@ -200,14 +184,12 @@ func RunCanvas(ctx *gin.Context) {
 前端保存png
 */
 func SaveCanvasPNG(ctx *gin.Context) {
-	fmt.Println("SaveCanvasPNG")
 	Id := ctx.PostForm("id")
 	Type := ctx.PostForm("type")
 	Task := ctx.PostForm("task")
 	image, _ := ctx.FormFile("image")
 	// 要创建的文件夹的路径
 	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
-	fmt.Println("folderPath",folderPath)
 	// 使用os.Mkdir创建文件夹
 	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
 	if err != nil {
@@ -216,7 +198,7 @@ func SaveCanvasPNG(ctx *gin.Context) {
 	}
 
 	dst := folderPath + "/image.png"
-	fmt.Println("dst:",dst)
+
 	// 上传文件至指定的完整文件路径
 	ctx.SaveUploadedFile(image, dst)
 
@@ -267,7 +249,6 @@ func UploadActions(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
 	}
-	fmt.Println("11111111111111111111111:")
 
 	dst := folderPath + "/" + "actions.json"
 	erro := os.Remove(dst)
@@ -296,7 +277,6 @@ func UploadLoss(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println("创建文件夹失败:", err)
 	}
-	fmt.Println("11111111111111111111111:")
 
 	dst := folderPath + "/" + "loss.csv"
 	erro := os.Remove(dst)
@@ -310,17 +290,17 @@ func UploadLoss(ctx *gin.Context) {
 }
 
 func GetprocessFile(ctx *gin.Context) {
-	fmt.Println("GetprocessFile", ctx)
+
 	Id := ctx.Query("id")
-	fmt.Println("GetprocessFile_id", Id)
+
 	Type := ctx.Query("type")
 	Task := ctx.Query("task")
 	//processFile为reward.txt \ actions.json \ loss.csv
 	processFile := ctx.Query("processFile")
-	fmt.Println("processFile", processFile)
+
 	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + processFile
 	Info, err := GetTrainingProcessFileInfo(file_path)
-	fmt.Println("file_path", file_path)
+
 	if err != nil {
 		fmt.Println(err)
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
@@ -330,7 +310,7 @@ func GetprocessFile(ctx *gin.Context) {
 }
 
 func GetDesignsById(ctx *gin.Context) {
-	fmt.Println("GetDesignsById")
+
 	Id, _ := strconv.Atoi(ctx.Query("id"))
 	jsonData, err := ioutil.ReadFile("./data/data.json")
 	if err != nil {
@@ -353,7 +333,7 @@ func GetDesignsById(ctx *gin.Context) {
 }
 
 func GetPNG(ctx *gin.Context) {
-	fmt.Println("GetPNG")
+
 	Id := ctx.PostForm("id")
 	Type := ctx.Query("type")
 	Task := ctx.Query("task")
@@ -370,7 +350,6 @@ func GetPNG(ctx *gin.Context) {
 }
 
 func GetCanvas(ctx *gin.Context) {
-	fmt.Println("getCanvas000000000000")
 	Id, _ := strconv.Atoi(ctx.Query("id"))
 	jsonData, err := ioutil.ReadFile("./data/data.json")
 
