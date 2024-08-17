@@ -3,7 +3,7 @@
     <!-- {{ console.info(this.cardInfo.dataset_name) + " " + console.info(this.viewRange)}} -->
     <template #title>
       <div style="text-align: center">
-        <a @click="modal" v-if="this.pageKind=='database'">
+        <a @click="modal" v-if="this.pageKind==='database'">
           <Icon type="ios-help-circle-outline" />管理
           <Modal
               v-model="modal_intro1"
@@ -13,7 +13,7 @@
               <Space :size="15">
                 <Input v-model="searchCsv" style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
                 <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
-                <Button  type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="outPutXml">导出</Button>
+                <Button v-if="this.taskType==='数值数据集'" type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="outPutXml">导出</Button>
                 <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteCsv">删除</Button>
               </Space>
             </p>
@@ -47,7 +47,15 @@
               </Form>
 
             </Modal>
-            <Table border  :columns="columns" :data="searchdata" style="width: auto" @on-selection-change="selectChange">
+            <Table v-if="this.taskType==='数值数据集'" border :columns="NumColumns" :data="searchdata" style="width: auto" @on-selection-change="selectChange">
+              <template #preview="{row, index }">
+                <Button type="primary" v-width=90 style="margin-left: -5px" @click="downloadCsv(row)">下载</Button>
+              </template>
+              <template #inputTime="{row, index }">
+                <Time :time="row.Time - 60 * 1 * 1000" />
+              </template>
+            </Table>
+            <Table v-if="this.taskType==='图像数据集'" border :columns="ImageColumns" :data="searchdata" style="width: auto" @on-selection-change="selectChange">
               <template #preview="{row, index }">
                 <Button type="primary" v-width=90 style="margin-left: -5px" @click="downloadCsv(row)">下载</Button>
               </template>
@@ -255,8 +263,8 @@ export default {
           }
         ],
       },
-      //表头
-      columns: [
+      //数值数据集表头
+      NumColumns: [
         {
           type: 'selection',
           width: 60,
@@ -291,6 +299,53 @@ export default {
             },
             {
               title: '数据类型',
+              key: 'Data_type',
+              align: 'center',
+            },
+          ],
+          align: 'center'
+        },
+        {
+          title: '预览',
+          slot: 'preview',
+          align: 'center',
+        },
+      ],
+      ImageColumns: [
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: '文件名',
+          key: 'Table_name',
+          align: 'center'
+        },
+        {
+          title: '导入时间',
+          key: 'Time',
+          align: 'center',
+          slot: 'inputTime',
+          sortable: true
+        },
+        {
+          title: '统计信息',
+          children:[
+            {
+              title: '图片数量',
+              key: 'Header_num',
+              align: 'center',
+              sortable: true
+            },
+            {
+              title: '分辨率',
+              key: 'Data_len',
+              align: 'center',
+              sortable: true
+            },
+            {
+              title: '图片格式',
               key: 'Data_type',
               align: 'center',
             },
@@ -383,6 +438,7 @@ export default {
     },
     modal(){
       this.modal_intro1 = true
+      this.searchdata=[]
       // todo 获取base
       let data = {
         id: this.cardInfo["Id"],
