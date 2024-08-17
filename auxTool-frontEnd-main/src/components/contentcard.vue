@@ -14,6 +14,7 @@
                 <Input v-model="searchCsv" style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
                 <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
                 <Button v-if="this.taskType==='数值数据集'" type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="outPutXml">导出</Button>
+                <input v-if="this.taskType==='图像数据集'" type="file" webkitdirectory multiple @change="handleFileUpload" />
                 <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteCsv">删除</Button>
               </Space>
             </p>
@@ -225,6 +226,7 @@ export default {
       uploadUrl:EndUrl().backEndUrl+'/upload',
       uploadModelUrl:EndUrl().backEndUrl+'/uploadModelFile',
       uploadModelPNGUrl:EndUrl().backEndUrl+'/uploadModelPNGFile',
+      uploadFoldersUrl:EndUrl().backEndUrl+'/uploadFolders',
       input: false,
       imageUploadDisabled:true,
       modelData: {
@@ -785,6 +787,28 @@ export default {
         }
       }
     },
+    //  上传文件夹
+    handleFileUpload(event) {
+      this.files = Array.from(event.target.files);
+    },
+    async uploadFiles() {
+      const formData = new FormData();
+      this.files.forEach(file => {
+        formData.append('files', file);
+      });
+
+      try {
+        const response = await fetch(this.uploadFoldersUrl, {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+        console.log(result);
+      } catch (error) {
+        console.error('上传失败:', error);
+      }
+    }
+  
   },
 
 
