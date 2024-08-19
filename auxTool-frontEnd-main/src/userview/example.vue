@@ -227,22 +227,40 @@
                 </template>
               </Modal>
               <Button type="info" style="margin-right: -30px" @click="isDataInfo=true" v-width=85 >模型评价</Button>
-              <Modal v-model="isDataInfo" width="500" style="margin-top: 100px">
+              <Modal v-model="isDataInfo" width="1200" style="margin-top: -80px">
                 <template #header>
                   <p style="color:#4d85ea;text-align:center">
                     <Icon type="ios-information-circle"></Icon>
-                    <span>案例数据</span>
+                    <span>模型评价</span>
                   </p>
                 </template>
-                <p style="text-align:center">
-                  <!--以上传组件代替实现打开本地资源管理器-->
-                  <Upload action="">
-                    <Button icon="ios-albums-outline />" >查看本地数据</Button>
-                  </Upload>
-                </p>
-                <template #footer>
-                  <Button type="info"  long @click="close" >确定</Button>
-                </template>
+
+                <Row>
+                  <Col span="12">
+                    <div id="Charts" style="display: flex;justify-content: center;">
+                      <img style="height: 100%;" :src="modelimageUrl1"  alt="Example Image" />
+                    </div>
+                  </Col>
+                  <Col span="12">
+                    <div id="Charts" style="display: flex;justify-content: center;">
+                      <img style="height: 100%;" :src="modelimageUrl2"  alt="Example Image" />
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span="12">
+                    <div id="Charts" style="display: flex;justify-content: center;">
+                      <img style="height: 100%;" :src="modelimageUrl3"  alt="Example Image" />
+                    </div>
+                  </Col>
+                  <Col span="12">
+                    <div id="Charts" style="display: flex;justify-content: center;">
+                      <img style="height: 100%;" :src="modelimageUrl4"  alt="Example Image" />
+                    </div>
+
+                  </Col>
+                </Row>
+
               </Modal>
 
             </template>
@@ -274,6 +292,10 @@ export default {
       rewarddata:"",
       lrdata:"",
       imageUrl: '',
+      modelimageUrl1: '',
+      modelimageUrl2: '',
+      modelimageUrl3: '',
+      modelimageUrl4: '',
       previewImage:false,
       urlList: ["",],
       isproxyInfo:false,

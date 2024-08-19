@@ -86,13 +86,70 @@
         </Col>
       </Row>
       <Row class="params" align="middle">
-        <Col :span="8">任务类型</Col>
+        <Col :span="8">批量大小</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelbatch" style="width: 100%" @change="onmodelbatchChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">优化器</Col>
         <Col :span="14">
           <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
         </Col>
       </Row>
-      <Button class="view" @click="sendtoYe">缩略图显示</Button>
-
+      <Row class="params" align="middle">
+        <Col :span="8">训练轮数</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">学习率</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">衰减因子</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">GPU占用数</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">内存用量</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">CPU核数</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+        </Col>
+      </Row>
+<!--      <Button class="view" @click="sendtoYe">模型超参数</Button>-->
+<!--      <Modal-->
+<!--          v-model="data.ModelModal"-->
+<!--          title="模型超参数"-->
+<!--          width="40px"-->
+<!--          >-->
+<!--        <Row>-->
+<!--          <Col span="12"><strong>批量大小: </strong> 11111</Col>-->
+<!--          <Col span="12"><strong>优化器: </strong> 11111</Col>-->
+<!--          <Col span="12"><strong>训练轮数: </strong> 11111</Col>-->
+<!--          <Col span="12"><strong>学习率: </strong> 11111</Col>-->
+<!--          <Col span="12"><strong>衰减因子: </strong> 11111</Col>-->
+<!--          <Col span="12"><strong>GPU占用数: </strong> 11111</Col>-->
+<!--          <Col span="12"><strong>内存用量: </strong> 11111</Col>-->
+<!--          <Col span="12"><strong>CPU核数: </strong> 11111</Col>-->
+<!--        </Row>-->
+<!--      </Modal>-->
       <!-- <Image src="http://127.0.0.1:5173/机器学习/回归/10/home.png" fit="fill" width="400px" height="220px" alt=""></Image> -->
     </TabPane>
     <TabPane label="节点" name="2">
@@ -161,27 +218,32 @@
       const imgpreview: any = inject('imgpreview')
       var imgpath: any = inject('imgpath')
 
+      // const sendtoYe = function() {
+      //   console.log('触发sendtoYe', globalGridAttr.nodename)
+      //   for(var children1 of menu[0].children){
+      //     // console.log(children1)
+      //     for(var children2 of children1.children){
+      //       // console.log(children2)
+      //       if(children2.content != null){
+      //         for(var item of children2.content){
+      //           if(item.Dataset_name === globalGridAttr.nodename){
+      //             var path = item.Image_path
+      //             console.log(path)
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      //   imgpath = path
+      //
+      //   imgpreview.value = !imgpreview.value
+      //   changeimgpreview(imgpreview.value,imgpath)
+      //   // console.log(imgpath)
+      // }
       const sendtoYe = function() {
-        console.log('触发sendtoYe', globalGridAttr.nodename)
-        for(var children1 of menu[0].children){
-          // console.log(children1)
-          for(var children2 of children1.children){
-            // console.log(children2)
-            if(children2.content != null){
-              for(var item of children2.content){
-                if(item.Dataset_name === globalGridAttr.nodename){
-                  var path = item.Image_path
-                  console.log(path)
-                }
-              }
-            }
-          }
-        }
-        imgpath = path
+        data.ModelModal=true
+        console.log('ModelModal', data.ModelModal)
 
-        imgpreview.value = !imgpreview.value
-        changeimgpreview(imgpreview.value,imgpath)
-        // console.log(imgpath)
       }
 
       const data = reactive({
@@ -194,7 +256,9 @@
         nodeFill: '',
         nodeFontSize: '',
         nodeLabelname:'',
-        nodeselflabel:''
+        nodeselflabel:'',
+        ModelModal:false,
+        nodemodelbatch:'',
       })
       watch(
         [() => id.value],
@@ -329,7 +393,13 @@
         curCel?.setData({
           modeltype: val,
         });
-      };  
+      };
+      const onmodelbatchChange = (e: any) => {
+        const val = e.target.value;
+        curCel?.setData({
+          modelbatch: val,
+        });
+      };
 
       const hasChildren =(thelist) =>{
           return thelist.filter((item) => item.children);
@@ -364,6 +434,7 @@
         onclassnumChange,
         onfuturerewarddiscountChange,
         onmodelurlChange,
+        onmodelbatchChange,
         onmodeltypeChange,
         menu,
         hasChildren,

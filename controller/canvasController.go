@@ -6,11 +6,13 @@ import (
 	"backEnd/model"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
-	"strconv"
+	"log"
 	"net/http"
 	"os"
-	"github.com/gin-gonic/gin"
+	"os/exec"
+	"strconv"
 )
 
 /*
@@ -81,11 +83,36 @@ func SaveCanvas(ctx *gin.Context) {
 // */
 func RunCanvas(ctx *gin.Context) {
 	Start_time := ctx.Query("start_time")
-
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
 	Dataset_url := ctx.Query("dataset_url")
 
+	// 创建命令
+	cmd := exec.Command("ipconfig") // Windows 系统
+	// 获取命令输出
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": fmt.Sprintf("Failed to run command: %v", err),
+		})
+		return
+	}
+	// 打开日志文件（如果不存在则创建）
+	logFile, err := os.OpenFile("command_output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Printf("Failed to open log file: %v\n", err)
+		ctx.String(http.StatusInternalServerError, "Failed to open log file")
+		return
+	}
+	defer logFile.Close()
+
+	// 创建日志记录器
+	logger := log.New(logFile, "", log.LstdFlags)
+
+	// 写入输出到日志文件
+	logger.Printf("Command Output:\n%s\n", string(output))
+	
+	
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
 	if err != nil {
@@ -171,12 +198,12 @@ func RunCanvas(ctx *gin.Context) {
 				db.Create(&example)
 				response.Success(ctx, nil, "success")
 			}
-
 			return
 		}
 	}
 
 	fmt.Println("未找到指定的design")
+	
 	response.Response(ctx, http.StatusOK, 404, nil, "fail")
 }
 

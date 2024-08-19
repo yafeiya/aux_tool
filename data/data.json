@@ -987,6 +987,547 @@
           },
           "visible": true,
           "zIndex": 5
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "回归"
+            }
+          },
+          "data": {
+            "classnum": "322",
+            "fatherLabel": "机器学习",
+            "futurerewarddiscount": "231",
+            "grandLabel": "模型模板",
+            "modelbatch": "123",
+            "modeltype": "2313",
+            "modelurl": "2",
+            "name": "22222",
+            "networkdepth": "213",
+            "selflabel": "回归"
+          },
+          "id": "cfac82af-0f8a-4723-93dc-df08b6f2f01b",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "e253f3b6-6731-411d-8161-b83cd21d6aba"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "77a1da1f-732d-4e5d-90e0-1367665438dd"
+              }
+            ]
+          },
+          "position": {
+            "x": 980,
+            "y": 230
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 6
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "批量推理"
+            }
+          },
+          "data": {
+            "fatherLabel": "批量推理",
+            "grandLabel": "模型预测",
+            "name": "批量推理",
+            "selflabel": "批量推理"
+          },
+          "id": "35dcdc46-c9bc-4662-a395-ac2845055694",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "33f87bf0-3baa-497f-b493-de4a9e5367bf"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "34774279-a4aa-414e-9701-1b8eeb35fdec"
+              }
+            ]
+          },
+          "position": {
+            "x": 550,
+            "y": 460
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 7
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "回归"
+            }
+          },
+          "data": {
+            "fatherLabel": "机器学习",
+            "grandLabel": "模型模板",
+            "name": "回归",
+            "selflabel": "回归"
+          },
+          "id": "2b0581b0-3844-4ad1-adb1-8c55cb5f36a6",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "93d367c0-e565-4e5d-b7dd-ea85e134bb7d"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "0dabcfe1-26b3-4482-8790-4626ce29977a"
+              }
+            ]
+          },
+          "position": {
+            "x": 840,
+            "y": 380
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 8
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "分类"
+            }
+          },
+          "data": {
+            "fatherLabel": "机器学习",
+            "grandLabel": "模型模板",
+            "name": "分类",
+            "selflabel": "分类"
+          },
+          "id": "1ab0a15d-b9a6-4fa4-b38a-e6da8aa1b2b6",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "515f6c97-f200-4622-961e-b71ed6ce38e8"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "8901a04f-8082-479a-b4a0-5eb9133a5a4b"
+              }
+            ]
+          },
+          "position": {
+            "x": 1029,
+            "y": 380
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 9
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "卷积神经网络"
+            }
+          },
+          "data": {
+            "fatherLabel": "深度学习",
+            "grandLabel": "模型模板",
+            "name": "卷积神经网络",
+            "selflabel": "卷积神经网络"
+          },
+          "id": "0b359e10-dcb9-4abf-b268-4e09138dc8a6",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "05f35140-4c6f-473a-9c64-cba3d03f5e96"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "46f0efb5-8774-4afb-93f2-4cec8bab6b7e"
+              }
+            ]
+          },
+          "position": {
+            "x": 1070,
+            "y": 570
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 10
         }
       ],
       "Data_path": "http://127.0.0.1:5173/A领域/领域1/4/"
@@ -1117,7 +1658,115 @@
       "Description": "213123",
       "Task": "领域1",
       "Id": 6,
-      "Cell": null,
+      "Cell": [
+        {
+          "attrs": {
+            "text": {
+              "text": "数据扩充"
+            }
+          },
+          "data": {
+            "fatherLabel": "数据扩充",
+            "grandLabel": "数据预处理",
+            "name": "数据扩充",
+            "selflabel": "数据扩充"
+          },
+          "id": "2c9973f6-1ccf-4707-b72f-b3c891210438",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "f582c010-d433-4de2-8fac-0a4ca28deced"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "4f083003-91a9-4081-90a9-8f033b85bd60"
+              }
+            ]
+          },
+          "position": {
+            "x": 700,
+            "y": 130
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 1
+        }
+      ],
       "Data_path": "http://127.0.0.1:5173/A领域/领域1/6/"
     }
   ],
