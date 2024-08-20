@@ -72,9 +72,6 @@
     <Tooltip content="运行" placement="bottom">
       <template #title>
       </template>
-<!--      <Button name="run"  @mousedown="runorder" @mouseup="isRun" class="run" size="small">-->
-<!--        运行-->
-<!--      </Button>-->
       <Button name="run"  @click="isRun" class="run" size="small">
         运行
       </Button>
@@ -220,7 +217,6 @@
         var task = cs_arr.split('=')[2].split('&')[0];
         var type = cs_arr.split('=')[3];
         example.dataset_url=EndUrl().fileUrl+"/"+ type+"/"+task+"/"+id
-        console.info("example",example)
         var postUrl = EndUrl().backEndUrl+"/example"
         console.info("postUrl",postUrl)
         runCanvas(example).then(res=>{
@@ -238,38 +234,11 @@
             id: iid,
             cells: graphData.cells // 假设 graphData 里有一个 cells 属性
           };
-          console.log("测试");
-          console.log(cellsToSend);
+
           saveCanvas(cellsToSend).then(res=>{
             console.log(res);
           })
-          // var design = res.data
-          // console.info(design)
-          // var cells = design.cells
-          // this.example.example_name = design.dataset_name
-          // this.example.rank = design.rank
-          // for(var i in cells) {
-          //   console.info(i)
-          //   if(cells[i].data['fatherLabel'] == '数据加载') {
-          //     this.example.dataset_url = cells[i].data['dataurl']
-          //     this.mustItem[0].flag = true
-          //   } else if(cells[i].data['fatherLabel'] == '模型模板') {
-          //     this.example.model_name = cells[i].attrs.text.text
-          //     this.example.model_type = cells[i].data['modeltype']
-          //     this.example.model_url = cells[i].data['modelurl']
-          //     this.mustItem[1].flag = true
-          //   } else if(cells[i].data['fatherLabel'] == '模型训练') {
-          //     this.example.epoch_num = cells[i].data['iterations']
-          //     this.example.loss = cells[i].data['loss']
-          //     this.example.optimizer = cells[i].data['optimizer']
-          //     this.example.decay = cells[i].data['decayfactor']
-          //     this.example.evalution = cells[i].data['evalution']
-          //     this.mustItem[2].flag = true
-          //     // memory = cells[i].data['']
-          //   } else if(cells[i].data['fatherLabel'] == '仿真交互') {
-          //     this.mustItem[3].flag = true
-          //   }
-          // }
+
           for(var i in mustItem) {
             mustItem[i].flag = false
           }
