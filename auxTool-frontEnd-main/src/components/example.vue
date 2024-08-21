@@ -74,7 +74,7 @@
                 </MenuItem>
                 <MenuItem name="2">
                   <Icon type="ios-keypad"></Icon>
-                  模型库
+                  算法库
                 </MenuItem>
                 <MenuItem name="3">
                   <Icon type="ios-analytics"></Icon>
@@ -82,11 +82,11 @@
                 </MenuItem>
                 <MenuItem name="4">
                   <Icon type="ios-paper"></Icon>
-                  方案设计
+                  模型设计
                 </MenuItem>
                 <MenuItem name="5">
                   <Icon type="md-arrow-dropright-circle"></Icon>
-                  方案实例
+                  实例管理
                 </MenuItem>
               </div>
             </Menu>

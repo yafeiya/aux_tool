@@ -54,7 +54,7 @@ export default {
       this.labelName1 = "我的数据集"
       this.labelName2 = "公共数据集"
     } else if(this.pageKind === "modelbase") {
-      this.labelName1 = "我的模型库"
+      this.labelName1 = "我的算法库"
       this.labelName2 = "基础算法模型"
     } else if(this.pageKind === "design") {
       this.labelName1 = "我的方案"

@@ -222,7 +222,7 @@
         runCanvas(example).then(res=>{
           this.$Message["success"]({
               background: true,
-              content: '运行成功，请在方案实例页面查看详情'
+              content: '运行成功，请在实例管理页面查看详情'
           });
           const { graph } = FlowGraph;
           var graphData = graph.toJSON()

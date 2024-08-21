@@ -88,8 +88,7 @@ func RunCanvas(ctx *gin.Context) {
 	Dataset_url := ctx.Query("dataset_url")
 
 	// 创建命令
-	cmd := exec.Command("ipconfig") // Windows 系统
-	// 获取命令输出
+	cmd := exec.Command("python", "main.py", "12333", "131321212") // 或者使用 "python3" 根据你的环境	// 获取命令输出
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -111,8 +110,7 @@ func RunCanvas(ctx *gin.Context) {
 
 	// 写入输出到日志文件
 	logger.Printf("Command Output:\n%s\n", string(output))
-	
-	
+
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
 	if err != nil {
@@ -203,7 +201,7 @@ func RunCanvas(ctx *gin.Context) {
 	}
 
 	fmt.Println("未找到指定的design")
-	
+
 	response.Response(ctx, http.StatusOK, 404, nil, "fail")
 }
 

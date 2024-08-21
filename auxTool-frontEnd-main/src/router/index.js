@@ -46,7 +46,7 @@ const routes = [
         //   component:resolve => require(['../components/database.vue'], resolve),
         component:modelbase,
         meta: {
-            title: '模型库信息'
+            title: '算法库信息'
       }
     },
     {
@@ -64,7 +64,7 @@ const routes = [
         //   component:resolve => require(['../components/database.vue'], resolve),
         component:design,
         meta: {
-            title: '方案设计'
+            title: '模型设计'
       }
     },
     {
@@ -73,7 +73,7 @@ const routes = [
         //   component:resolve => require(['../components/database.vue'], resolve),
         component:example,
         meta: {
-            title: '方案实例'
+            title: '实例管理'
       }
     },
     {

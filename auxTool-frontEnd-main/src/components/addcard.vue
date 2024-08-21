@@ -98,7 +98,7 @@ export default {
     } else if(this.pageKind == "design") {
       tmp = "方案"
     } else if(this.pageKind == "modelbase") {
-      tmp = "模型"
+      tmp = "算法"
     }
     this.addBtnName = this.addBtnName + tmp
   },

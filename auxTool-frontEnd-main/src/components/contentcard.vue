@@ -12,9 +12,26 @@
             <p style="margin-top: 1%;font-size: 20px;text-align: center;" >
               <Space :size="15">
                 <Input v-model="searchCsv" style="width: 500px" search enter-button="Search" placeholder="搜索数据集..." @click="handleSearch" />
-                <Button  type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
+                <Button v-if="this.taskType==='数值数据集'" type="warning" icon="md-power" shape="circle" v-width=90 style="margin-left: 0%" @click="inputDatabase">导入</Button>
                 <Button v-if="this.taskType==='数值数据集'" type="success" icon="md-play"  shape="circle" v-width=90 style="margin-left: 1%" @click="outPutXml">导出</Button>
-                <input v-if="this.taskType==='图像数据集'" type="file" webkitdirectory multiple @change="handleFileUpload" />
+                <Button
+                    v-if="this.taskType==='图像数据集'"
+                    type="primary"
+                    shape="circle"
+                    @click="triggerFileUpload"
+                    v-width=90 style="margin-left: 1%">
+                  选择文件
+                </Button>
+                <input
+                    ref="fileInput"
+                    v-if="taskType === '图像数据集'"
+                    type="file"
+                    webkitdirectory
+                    multiple
+                    @change="handleFileUpload"
+                    style="display: none;"
+                />
+<!--                <input v-if="this.taskType==='图像数据集'" type="file" webkitdirectory multiple @change="handleFileUpload" />-->
                 <Button  type="error" icon="md-pause"  shape="circle" v-width=90 style="margin-left: 1%" @click="deleteCsv">删除</Button>
               </Space>
             </p>
@@ -397,14 +414,11 @@ export default {
     },
     handleSearch(){
       if (this.searchCsv && this.searchCsv !== '') {
-        console.info("ssssssssssssearchcsv",this.searchCsv)
-        console.info("ttttttttttttttt",this.tabledata)
         this.searchdata=this.tabledata.filter(
             (p) => p.Table_name.indexOf(this.searchCsv) !== -1
         )
       } else {
         this.modal()
-        console.info("ttttttttttttttt2",this.tabledata)
       }
     },
     inputDatabase(){
@@ -414,6 +428,9 @@ export default {
     },
     inputok(){
       console.info("1111111111111")
+    },
+    triggerFileUpload() {
+      this.$refs.fileInput.click();
     },
     outPutXml(){
       let csv_path_array=[]
@@ -644,10 +661,6 @@ export default {
       setTimeout(() => {
         // 重点 赋值
         console.info("iddddddd",this.formItem)
-        this.$refs.upload.data,'id',this.formItem.id
-        this.$refs.upload.data,'type',this.formItem.type
-        this.$refs.upload.data,'task',this.formItem.task
-        this.$refs.upload.data,'time',this.formItem.time
         this.$refs.upload.post(this.file)
         this.file = null;
         this.loadingStatus = false;
@@ -790,13 +803,20 @@ export default {
     //  上传文件夹
     handleFileUpload(event) {
       this.files = Array.from(event.target.files);
+      if (this.files.length > 0) {
+        // 获取第一个文件的相对路径
+        const firstFilePath = this.files[0].webkitRelativePath;
+        // 提取文件夹名称
+        var folderName = firstFilePath.split('/')[0];
+        console.info("folderName", folderName)
+      }
     },
+
     async uploadFiles() {
       const formData = new FormData();
       this.files.forEach(file => {
         formData.append('files', file);
       });
-
       try {
         const response = await fetch(this.uploadFoldersUrl, {
           method: 'POST',
@@ -804,6 +824,7 @@ export default {
         });
         const result = await response.json();
         console.log(result);
+        this.$Message("上传成功！")
       } catch (error) {
         console.error('上传失败:', error);
       }
