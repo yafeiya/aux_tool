@@ -36,8 +36,8 @@ export default {
   methods: {
     getModelData() {
       const result = this.cells
-          .filter(cell => cell.data.grandLabel === "模型模板")
-          .map(cell => cell.data);
+        .filter(cell => cell.data.grandLabel === "模型模板")
+        .map(cell => cell.data);
 
       this.modelData = result.length > 0 ? result : "没有找到符合条件的数据";
     }

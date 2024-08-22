@@ -85,7 +85,10 @@ func RunCanvas(ctx *gin.Context) {
 	Start_time := ctx.Query("start_time")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
-
+	Dataset_name := ctx.Query("Dataset_name")
+	Model_name := ctx.Query("Model_name")
+	Train_state := ctx.Query("Train_state")
+	fmt.Println("Dataset_name:", Dataset_name)
 	// 创建命令
 	cmd := exec.Command("python", "main.py", "12333", "131321212") // 或者使用 "python3" 根据你的环境	// 获取命令输出
 	output, err := cmd.CombinedOutput()
@@ -165,14 +168,15 @@ func RunCanvas(ctx *gin.Context) {
 			db := common.InitDB()
 
 			example := model.Example{
+				Example_id:    id,
 				Example_name:  Design_name,
 				Rank:          Rank,
 				State:         "运行中",
 				Task:          Task,
 				Type:          Type,
-				Dataset_name:  "Dataset_name",
-				Model_name:    "string",
-				Train_state:   "1",
+				Dataset_name:  Dataset_name,
+				Model_name:    Model_name,
+				Train_state:   Train_state,
 				Metics:        "string",
 				Network_num:   1,
 				Learning_rate: 0.01,
@@ -188,10 +192,33 @@ func RunCanvas(ctx *gin.Context) {
 			}
 			// 判重处理
 			//pageKind、task、type、dataset_name
-
 			db.Where("Example_name = ?", Design_name).Find(&example)
 			if example.Id != 0 {
 				fmt.Println("该实例已存在")
+				// 更新现有实例的字段
+				example.Example_id = id
+				example.Rank = Rank
+				example.State = "运行中"
+				example.Task = Task
+				example.Type = Type
+				example.Dataset_name = Dataset_name
+				example.Model_name = Model_name
+				example.Train_state = Train_state
+				example.Metics = "string"
+				example.Network_num = 1
+				example.Learning_rate = 0.01
+				example.Act_function = "RELu"
+				example.Radom_seed = 2
+				example.Optimizer = "string"
+				example.Batch_size = 64
+				example.Epoch_num = 10
+				example.Explore_rate = 0.1
+				example.Decay_factor = 0.1
+				example.Start_time = Start_time
+				example.End_time = "0"
+
+				db.Save(&example) // 保存更新
+				db.Save(&example) // 保存更新
 				response.Response(ctx, http.StatusOK, 404, nil, "The example already exists")
 			} else {
 				// 新增

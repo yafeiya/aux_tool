@@ -2,6 +2,7 @@ package model
 
 type Example struct {
 	Id            uint    `gorm:"primarykey"`
+	Example_id    int     `gorm:"column:Example_id"`
 	Example_name  string  `gorm:"column:Example_name"`
 	Rank          string  `gorm:"column:Rank"`
 	State         string  `gorm:"column:State"`

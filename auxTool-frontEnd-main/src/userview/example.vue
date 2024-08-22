@@ -280,6 +280,7 @@ import chartData from "./chartdata.json"
 import {getCsvData, getExampleList, updateExample, deleteExample,getprocessFile} from "../api/api.js"
 
 import datas from "@/userview/flow/results/data.json";
+import {EndUrl} from "../../url_config";
 
 export default {
 
@@ -288,7 +289,7 @@ export default {
       actdata: "",
       rewarddata:"",
       lrdata:"",
-      imageUrl: '',
+      imageUrl:EndUrl().fileUrl,
       modelimageUrl1: '',
       modelimageUrl2: '',
       modelimageUrl3: '',
@@ -669,24 +670,27 @@ export default {
     },
     LogInfo(row) {
       this.isLogInfo=true;
+      console.info("this.itemList",this.itemList)
       for(var i in this.itemList) {
         if(row.Id == this.itemList[i].Id) {
-          this.imageUrl=this.itemList[i].Dataset_url+"/image.png"
+          this.imageUrl+="/"+this.itemList[i].Type+"/"+this.itemList[i].Task+"/"+this.itemList[i].Example_id+"/image.png"
+          console.info("this.imageUrl",this.imageUrl)
           let data1={
-            type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
-            task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
-            id:this.itemList[i].Dataset_url.split("//")[1].split("/")[3],
+            type:this.itemList[i].Type,
+            task:this.itemList[i].Task,
+            id:this.itemList[i].Example_id,
             processFile:"actions.json"
           }
           console.info("data1",data1)
           getprocessFile(data1).then(res => {
             this.actdata=res.data.data.Info
+            console.info("this.actdata",this.actdata)
           })
 
           let data2={
-            type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
-            task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
-            id:this.itemList[i].Dataset_url.split("//")[1].split("/")[3],
+            type:this.itemList[i].Type,
+            task:this.itemList[i].Task,
+            id:this.itemList[i].Example_id,
             processFile:"reward.txt"
           }
           getprocessFile(data2).then(res => {
@@ -694,9 +698,9 @@ export default {
           })
 
           let data3={
-            type:this.itemList[i].Dataset_url.split("//")[1].split("/")[1],
-            task:this.itemList[i].Dataset_url.split("//")[1].split("/")[2],
-            id:this.itemList[i].Dataset_url.split("//")[1].split("/")[3],
+            type:this.itemList[i].Type,
+            task:this.itemList[i].Task,
+            id:this.itemList[i].Example_id,
             processFile:"loss.csv"
           }
           getprocessFile(data3).then(res => {
