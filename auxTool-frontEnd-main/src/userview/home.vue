@@ -40,7 +40,7 @@
                   <Icon type="logo-buffer" />
                 </p>
                 <div style="font-size: 20px;margin-top: -10%;height: 80px;">
-                  <Button type="primary" shape="circle" size="large" style="width: 80%" @click="toModelbase" ghost>模型库</Button>
+                  <Button type="primary" shape="circle" size="large" style="width: 80%" @click="toModelbase" ghost>算法库</Button>
                 </div>
               </div>
             </Card>
@@ -64,7 +64,7 @@
                   <Icon type="ios-git-network" />
                 </p>
                 <div style="font-size: 20px;margin-top: -10%;height: 80px;">
-                  <Button type="primary" shape="circle" size="large" style="width: 80%" @click="toDesign" ghost>方案设计</Button>
+                  <Button type="primary" shape="circle" size="large" style="width: 80%" @click="toDesign" ghost>模型设计</Button>
                 </div>
               </div>
             </Card>
@@ -76,7 +76,7 @@
                   <Icon type="ios-laptop" />
                 </p>
                 <div style="font-size: 20px;margin-top: -10%;height: 80px;">
-                  <Button type="primary" shape="circle" size="large" style="width: 80%" @click="toExample" ghost>方案实例</Button>
+                  <Button type="primary" shape="circle" size="large" style="width: 80%" @click="toExample" ghost>实例管理</Button>
                 </div>
               </div>
             </Card>

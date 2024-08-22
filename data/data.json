@@ -444,6 +444,551 @@
           },
           "visible": true,
           "zIndex": 1
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "自然图像"
+            }
+          },
+          "data": {
+            "fatherLabel": "图像数据集",
+            "grandLabel": "数据加载",
+            "name": "自然图像",
+            "selflabel": "自然图像"
+          },
+          "id": "418a0854-4396-4d04-95eb-02c3f76608c6",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "44bbe0b4-808d-4834-9185-658d2ca05e57"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "5a6629b4-a0d9-4eae-9c16-c82424574e32"
+              }
+            ]
+          },
+          "position": {
+            "x": 660,
+            "y": 330
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 2
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "批量推理"
+            }
+          },
+          "data": {
+            "fatherLabel": "批量推理",
+            "grandLabel": "模型预测",
+            "name": "批量推理",
+            "selflabel": "批量推理"
+          },
+          "id": "ade47b1b-77bd-48f7-8fd2-75c18c4361a0",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "52194415-74dc-491c-96b5-07f8e4628502"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "b8e76d72-8160-43e5-a1d4-0b20eb68bbc9"
+              }
+            ]
+          },
+          "position": {
+            "x": 560,
+            "y": 620
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 3
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "卷积神经网络"
+            }
+          },
+          "data": {
+            "classnum": "2",
+            "fatherLabel": "深度学习",
+            "futurerewarddiscount": "3",
+            "grandLabel": "模型模板",
+            "modelurl": "4",
+            "name": "卷积神经网络",
+            "networkdepth": "12",
+            "selflabel": "卷积神经网络"
+          },
+          "id": "1e51064d-2988-4f56-bddd-0f8a0db9ab71",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "884afe96-5bf6-4ebe-9ed2-ab8897abbf97"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "0a5fc194-4de7-41e8-a844-2af135a9738b"
+              }
+            ]
+          },
+          "position": {
+            "x": 1190,
+            "y": 160
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 4
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "循环神经网络"
+            }
+          },
+          "data": {
+            "fatherLabel": "深度学习",
+            "grandLabel": "模型模板",
+            "name": "循环神经网络",
+            "selflabel": "循环神经网络"
+          },
+          "id": "ef6a39da-4ad6-417a-aca2-4e094ef55fa5",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "510ccba5-6772-46a3-8619-df0803d31467"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "2d3b9a90-e971-485a-8ddf-c3ac6a0cf78f"
+              }
+            ]
+          },
+          "position": {
+            "x": 620,
+            "y": 540
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 5
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "值迭代"
+            }
+          },
+          "data": {
+            "classnum": "32",
+            "fatherLabel": "强化学习",
+            "futurerewarddiscount": "122",
+            "grandLabel": "模型模板",
+            "modelbatch": "1",
+            "modeltype": "11",
+            "modelurl": "3",
+            "name": "1",
+            "networkdepth": "12",
+            "selflabel": "值迭代"
+          },
+          "id": "96916d60-20f2-4e1e-bdb1-b1f47e70a1d8",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "b362d7c8-3ffd-4f63-9413-870914b29ce3"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "79aa2d19-8ed2-4861-9ff4-dd3f94101732"
+              }
+            ]
+          },
+          "position": {
+            "x": 1030,
+            "y": 460
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 6
         }
       ],
       "Data_path": "http://127.0.0.1:5173/A领域/领域1/2/"
@@ -1429,9 +1974,13 @@
             }
           },
           "data": {
+            "classnum": "3",
             "fatherLabel": "深度学习",
+            "futurerewarddiscount": "2",
             "grandLabel": "模型模板",
+            "modelurl": "3",
             "name": "卷积神经网络",
+            "networkdepth": "12",
             "selflabel": "卷积神经网络"
           },
           "id": "0b359e10-dcb9-4abf-b268-4e09138dc8a6",
@@ -1646,6 +2195,223 @@
           },
           "visible": true,
           "zIndex": 1
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "卷积神经网络"
+            }
+          },
+          "data": {
+            "classnum": "11111111111",
+            "fatherLabel": "深度学习",
+            "futurerewarddiscount": "1111111111",
+            "grandLabel": "模型模板",
+            "name": "1233333",
+            "networkdepth": "111111111",
+            "selflabel": "卷积神经网络"
+          },
+          "id": "d00742b7-6f87-4a79-a39c-fbfc3686d45e",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "fed64069-a380-4fbb-b6c0-f12436c9ddac"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "fb8593c2-b90b-49e1-93b9-c476fa47d6e1"
+              }
+            ]
+          },
+          "position": {
+            "x": 330,
+            "y": 340
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 2
+        },
+        {
+          "attrs": {
+            "text": {
+              "text": "循环神经网络"
+            }
+          },
+          "data": {
+            "fatherLabel": "深度学习",
+            "grandLabel": "模型模板",
+            "name": "循环神经网络",
+            "selflabel": "循环神经网络"
+          },
+          "id": "5f59a2cc-798f-44c6-89e3-8b23d5c3e138",
+          "ports": {
+            "groups": {
+              "bottom": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "bottom"
+              },
+              "left": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "left"
+              },
+              "right": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "right"
+              },
+              "top": {
+                "attrs": {
+                  "circle": {
+                    "fill": "#fff",
+                    "magnet": true,
+                    "r": 9,
+                    "stroke": "#5F95FF",
+                    "strokeWidth": 2,
+                    "style": {
+                      "visibility": "hidden"
+                    }
+                  }
+                },
+                "position": "top"
+              }
+            },
+            "items": [
+              {
+                "group": "top",
+                "id": "in1"
+              },
+              {
+                "group": "right",
+                "id": "6130a3d4-fa48-4922-993c-27b88107905a"
+              },
+              {
+                "group": "bottom",
+                "id": "out1"
+              },
+              {
+                "group": "left",
+                "id": "e4670c20-b2fc-4fa3-8371-cc1324037cae"
+              }
+            ]
+          },
+          "position": {
+            "x": 520,
+            "y": 430
+          },
+          "shape": "flow-chart-rect",
+          "size": {
+            "height": 42,
+            "width": 80
+          },
+          "visible": true,
+          "zIndex": 4
         }
       ],
       "Data_path": "http://127.0.0.1:5173/A领域/领域1/5/"

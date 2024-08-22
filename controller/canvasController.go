@@ -85,11 +85,9 @@ func RunCanvas(ctx *gin.Context) {
 	Start_time := ctx.Query("start_time")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
-	Dataset_url := ctx.Query("dataset_url")
 
 	// 创建命令
-	cmd := exec.Command("ipconfig") // Windows 系统
-	// 获取命令输出
+	cmd := exec.Command("python", "main.py", "12333", "131321212") // 或者使用 "python3" 根据你的环境	// 获取命令输出
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -111,8 +109,7 @@ func RunCanvas(ctx *gin.Context) {
 
 	// 写入输出到日志文件
 	logger.Printf("Command Output:\n%s\n", string(output))
-	
-	
+
 	// 读取JSON文件
 	jsonData, err := ioutil.ReadFile("./data/data.json")
 	if err != nil {
@@ -136,7 +133,8 @@ func RunCanvas(ctx *gin.Context) {
 			//获取对应案例名称
 			Design_name := data.Designs[i].Dataset_name
 			Rank := data.Designs[i].Rank
-
+			Task := data.Designs[i].Task
+			Type := data.Designs[i].Type
 			// 解析 JSON 数组数据
 			for _, jsonStr := range newCellData {
 				byteSlice := []byte(jsonStr) // Convert to []byte
@@ -167,24 +165,26 @@ func RunCanvas(ctx *gin.Context) {
 			db := common.InitDB()
 
 			example := model.Example{
-				Example_name: Design_name,
-				Rank:         Rank,
-				State:        "运行中",
-				Cpu_num:      4,
-				Gpu_num:      1,
-				Post_data:    0,
-				Dataset_url:  Dataset_url,
-				Model_name:   "",
-				Model_type:   "",
-				Epoch_num:    "200e",
-				Loss:         "loss",
-				Optimizer:    "optimizer",
-				Decay:        "decay",
-				Evaluation:   "evaluation",
-				Model_url:    "model_url",
-				Memory:       "2000M",
-				Start_time:   Start_time,
-				End_time:     "0",
+				Example_name:  Design_name,
+				Rank:          Rank,
+				State:         "运行中",
+				Task:          Task,
+				Type:          Type,
+				Dataset_name:  "Dataset_name",
+				Model_name:    "string",
+				Train_state:   "1",
+				Metics:        "string",
+				Network_num:   1,
+				Learning_rate: 0.01,
+				Act_function:  "RELu",
+				Radom_seed:    2,
+				Optimizer:     "string",
+				Batch_size:    64,
+				Epoch_num:     10,
+				Explore_rate:  0.1,
+				Decay_factor:  0.1,
+				Start_time:    Start_time,
+				End_time:      "0",
 			}
 			// 判重处理
 			//pageKind、task、type、dataset_name
@@ -203,7 +203,7 @@ func RunCanvas(ctx *gin.Context) {
 	}
 
 	fmt.Println("未找到指定的design")
-	
+
 	response.Response(ctx, http.StatusOK, 404, nil, "fail")
 }
 

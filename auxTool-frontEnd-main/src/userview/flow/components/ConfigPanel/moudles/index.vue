@@ -1,6 +1,6 @@
 <template>
   <Tabs class="config" value="1">
-    <TabPane label="属性" name="1">
+    <TabPane label="超参数" name="1">
 
       <div
       v-for ="children1 in hasChildren(menu)"
@@ -59,80 +59,61 @@
           </div>
         </div>
       </div>
-
-
       <Row class="params" align="middle">
-        <Col :span="8">网络深度</Col>
+        <Col :span="8">网络层数</Col>
         <Col :span="14">
-          <Input v-model="data.nodenetworkdepth" style="width: 100%" @change="onnetworkdepthChange" />
-        </Col>
-      </Row>
-      <Row class="params" align="middle">
-        <Col :span="8">分类类别数</Col>
-        <Col :span="14">
-          <Input v-model="data.nodeclassnum" style="width: 100%" @change="onclassnumChange" />
-        </Col>
-      </Row>
-      <Row class="params" align="middle">
-        <Col :span="8">未来奖励折扣</Col>
-        <Col :span="14">
-          <Input v-model="data.nodefuturerewarddiscount" style="width: 100%" @change="onfuturerewarddiscountChange" />
-        </Col>
-      </Row>
-      <Row class="params" align="middle">
-        <Col :span="8">模型路径</Col>
-        <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" @change="onmodelurlChange" />
-        </Col>
-      </Row>
-      <Row class="params" align="middle">
-        <Col :span="8">批量大小</Col>
-        <Col :span="14">
-          <Input v-model="data.nodemodelbatch" style="width: 100%" @change="onmodelbatchChange" />
-        </Col>
-      </Row>
-      <Row class="params" align="middle">
-        <Col :span="8">优化器</Col>
-        <Col :span="14">
-          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
-        </Col>
-      </Row>
-      <Row class="params" align="middle">
-        <Col :span="8">训练轮数</Col>
-        <Col :span="14">
-          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+          <Input v-model="data.nodenetworkdepth" style="width: 100%" placeholder="default 256" @change="onnetworkdepthChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">学习率</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+          <Input v-model="data.nodeclassnum" style="width: 100%" placeholder="default 0.001" @change="onclassnumChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">优化器</Col>
+        <Col :span="14">
+          <Input v-model="data.nodefuturerewarddiscount" style="width: 100%" placeholder="default SGD" @change="onfuturerewarddiscountChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">迭代次数</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 10000" @change="onmodelurlChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">批大小</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 256" @change="onmodelurlChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">激活函数</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default RELU" @change="onmodelurlChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">衰减因子</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 0.95" @change="onmodelurlChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
-        <Col :span="8">GPU占用数</Col>
+        <Col :span="8">探索率</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 0.9" @change="onmodelurlChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
-        <Col :span="8">内存用量</Col>
+        <Col :span="8">随机种子</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 42" @change="onmodelurlChange" />
         </Col>
       </Row>
-      <Row class="params" align="middle">
-        <Col :span="8">CPU核数</Col>
-        <Col :span="14">
-          <Input v-model="data.nodemodeltype" style="width: 100%" @change="onmodeltypeChange" />
-        </Col>
-      </Row>
+
 <!--      <Button class="view" @click="sendtoYe">模型超参数</Button>-->
 <!--      <Modal-->
 <!--          v-model="data.ModelModal"-->
@@ -152,7 +133,7 @@
 <!--      </Modal>-->
       <!-- <Image src="http://127.0.0.1:5173/机器学习/回归/10/home.png" fit="fill" width="400px" height="220px" alt=""></Image> -->
     </TabPane>
-    <TabPane label="节点" name="2">
+    <TabPane label="样式" name="2">
       <Row align="middle">
         <Col :span="8">边框颜色</Col>
         <Col :span="14">
@@ -175,7 +156,7 @@
         </Col>
       </Row>
     </TabPane>
-    <TabPane label="文本" name="3">
+    <TabPane label="字体" name="3">
       <Row align="middle">
         <Col :span="8">字体大小</Col>
         <Col :span="12">
@@ -193,6 +174,7 @@
       </Row>
     </TabPane>
   </Tabs>
+
 </template>
 
 <script lang="ts">
@@ -450,7 +432,7 @@
 
 .config{
   width: 300px;
-  text-align: center, 
+  text-align: center
 }
 .params{
   margin: 10px;

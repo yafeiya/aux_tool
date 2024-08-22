@@ -1,224 +1,208 @@
 {
-  "database": [
-    {
-      "name": "numDataBase",
-      "title": "数值数据集",
-      "icon": "ios-navigate",
-      "children": [
+    "database": [
         {
-          "name": "任务1",
-          "title": "任务1"
+            "name": "numDataBase",
+            "title": "数值数据集",
+            "icon": "ios-navigate",
+            "children": [
+                {
+                    "name": "任务1",
+                    "title": "任务1"
+                },
+                {
+                    "name": "任务2",
+                    "title": "任务2"
+                }
+            ]
         },
         {
-          "name": "任务2",
-          "title": "任务2"
+            "name": "imageDataBase",
+            "title": "图像数据集",
+            "icon": "ios-analytics",
+            "children": [
+                {
+                    "name": "自然图像",
+                    "title": "自然图像"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "name": "imageDataBase",
-      "title": "图像数据集",
-      "icon": "ios-analytics",
-      "children": [
+    ],
+    "modelbase": [
         {
-          "name": "自然图像",
-          "title": "自然图像"
-        }
-      ]
-    }
-  ],
-  "modelbase": [
-    {
-      "name": "machineLearning",
-      "title": "机器学习",
-      "icon": "ios-navigate",
-      "children": [
-        {
-          "name": "regression",
-          "title": "回归"
+            "name": "machineLearning",
+            "title": "机器学习",
+            "icon": "ios-navigate",
+            "children": [
+                {
+                    "name": "regression",
+                    "title": "回归"
+                },
+                {
+                    "name": "classification",
+                    "title": "分类"
+                },
+                {
+                    "name": "optimization",
+                    "title": "优化"
+                }
+            ]
         },
         {
-          "name": "classification",
-          "title": "分类"
+            "name": "deepLearning",
+            "title": "深度学习",
+            "icon": "ios-keypad",
+            "children": [
+                {
+                    "name": "CNN",
+                    "title": "卷积神经网络"
+                },
+                {
+                    "name": "RNN",
+                    "title": "循环神经网络"
+                }
+            ]
         },
         {
-          "name": "optimization",
-          "title": "优化"
+            "name": "reinforcementLearning",
+            "title": "强化学习",
+            "icon": "md-calculator",
+            "children": [
+                {
+                    "name": "valueIteration",
+                    "title": "值迭代"
+                },
+                {
+                    "name": "strategy_learning",
+                    "title": "策略学习"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "name": "deepLearning",
-      "title": "深度学习",
-      "icon": "ios-keypad",
-      "children": [
+    ],
+    "defineFunction": [
         {
-          "name": "CNN",
-          "title": "卷积神经网络"
+            "name": "lossFunction",
+            "title": "训练过程分布",
+            "icon": "ios-navigate",
+            "children": [
+                {
+                    "name": "action_distribution",
+                    "title": "动作分布"
+                },
+                {
+                    "name": "learning_rate",
+                    "title": "学习率"
+                },
+                {
+                    "name": "reward_distribution",
+                    "title": "奖励分布"
+                }
+            ]
         },
         {
-          "name": "RNN",
-          "title": "循环神经网络"
+            "name": "evalution",
+            "title": "评价指标",
+            "icon": "ios-keypad",
+            "children": [
+                {
+                    "name": "comprehensive",
+                    "title": "综合评价指标"
+                },
+                {
+                    "name": "generalization",
+                    "title": "泛化性"
+                },
+                {
+                    "name": "model_accuracy",
+                    "title": "模型精度"
+                },
+                {
+                    "name": "portability",
+                    "title": "自定义指标"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "name": "reinforcementLearning",
-      "title": "强化学习",
-      "icon": "md-calculator",
-      "children": [
+    ],
+    "design": [
         {
-          "name": "valueIteration",
-          "title": "值迭代"
+            "name": "A领域",
+            "title": "A领域",
+            "icon": "ios-navigate",
+            "children": [
+                {
+                    "name": "领域1",
+                    "title": "领域1"
+                }
+            ]
         },
         {
-          "name": "strategy_learning",
-          "title": "策略学习"
-        }
-      ]
-    }
-  ],
-  "defineFunction": [
-    {
-      "name": "lossFunction",
-      "title": "训练过程分布",
-      "icon": "ios-navigate",
-      "children": [
-        {
-          "name": "action_distribution",
-          "title": "动作分布"
+            "name": "B领域",
+            "title": "B领域",
+            "icon": "ios-keypad",
+            "children": [
+                {
+                    "name": "领域2",
+                    "title": "领域2"
+                },
+                {
+                    "name": "领域3",
+                    "title": "领域3"
+                }
+            ]
         },
         {
-          "name": "learning_rate",
-          "title": "学习率"
+            "name": "C领域",
+            "title": "C领域",
+            "icon": "ios-navigate",
+            "children": [
+                {
+                    "name": "XXXX",
+                    "title": "XXXX"
+                }
+            ]
+        }
+    ],
+    "canvas": [
+        {
+            "name": "database",
+            "title": "数据加载",
+            "children": [
+                {
+                    "name": "monitordata",
+                    "title": "仿真监听数据",
+                    "children": null
+                },
+                {
+                    "name": "modellog",
+                    "title": "模型日志数据",
+                    "children": null
+                }
+            ]
         },
         {
-          "name": "reward_distribution",
-          "title": "奖励分布"
-        }
-      ]
-    },
-    {
-      "name": "evalution",
-      "title": "评价指标",
-      "icon": "ios-keypad",
-      "children": [
-        {
-          "name": "comprehensive",
-          "title": "综合评价指标"
+            "name": "modelbase",
+            "title": "模型模板",
+            "children": []
         },
         {
-          "name": "generalization",
-          "title": "泛化性"
+            "name": "moudlepredictive",
+            "title": "模型预测",
+            "children": [
+                {
+                    "name": "batchdeduction",
+                    "title": "批量推理",
+                    "children": null
+                }
+            ]
         },
         {
-          "name": "model_accuracy",
-          "title": "模型精度"
+            "name": "resultvisualization",
+            "title": "训练过程可视化",
+            "children": []
         },
         {
-          "name": "portability",
-          "title": "自定义指标"
+            "name": "scorefunction",
+            "title": "评价指标",
+            "children": []
         }
-      ]
-    }
-  ],
-  "design": [
-    {
-      "name": "A领域",
-      "title": "A领域",
-      "icon": "ios-navigate",
-      "children": [
-        {
-          "name": "领域1",
-          "title": "领域1"
-        }
-      ]
-    },
-    {
-      "name": "B领域",
-      "title": "B领域",
-      "icon": "ios-keypad",
-      "children": [
-        {
-          "name": "领域2",
-          "title": "领域2"
-        },
-        {
-          "name": "领域3",
-          "title": "领域3"
-        }
-      ]
-    },
-    {
-      "name": "C领域",
-      "title": "C领域",
-      "icon": "ios-navigate",
-      "children": [
-        {
-          "name": "XXXX",
-          "title": "XXXX"
-        }
-      ]
-    }
-  ],
-  "canvas": [
-    {
-      "name": "database",
-      "title": "数据加载",
-      "children": [
-        {
-          "name": "monitordata",
-          "title": "仿真监听数据",
-          "children": null
-        },
-        {
-          "name": "modellog",
-          "title": "模型日志数据",
-          "children": null
-        }
-      ]
-    },
-    {
-      "name": "datapre",
-      "title": "数据预处理",
-      "children": [
-        {
-          "name": "dataaugmentation",
-          "title": "数据扩充",
-          "children": null
-        },
-        {
-          "name": "dataaugmentation",
-          "title": "数据清洗",
-          "children": null
-        }
-      ]
-    },
-    {
-      "name": "modelbase",
-      "title": "模型模板",
-      "children": []
-    },
-    {
-      "name": "moudlepredictive",
-      "title": "模型预测",
-      "children": [
-        {
-          "name": "batchdeduction",
-          "title": "批量推理",
-          "children": null
-        }
-      ]
-    },
-    {
-      "name": "resultvisualization",
-      "title": "训练过程可视化",
-      "children": []
-    },
-    {
-      "name": "scorefunction",
-      "title": "评价指标",
-      "children": []
-    }
-  ]
+    ]
 }

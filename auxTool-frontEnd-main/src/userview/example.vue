@@ -51,7 +51,7 @@
             </MenuItem>
             <MenuItem name="modelbase">
               <Icon type="ios-keypad"></Icon>
-              模型库
+              算法库
             </MenuItem>
             <MenuItem name="defineFunction">
               <Icon type="ios-analytics"></Icon>
@@ -59,11 +59,11 @@
             </MenuItem>
             <MenuItem name="design">
               <Icon type="ios-paper"></Icon>
-              方案设计
+              模型设计
             </MenuItem>
             <MenuItem name="example">
               <Icon type="md-arrow-dropright-circle"></Icon>
-              方案实例
+              实例管理
             </MenuItem>
           </div>
         </Menu>
@@ -120,42 +120,39 @@
                   </p>
                 </template>
                 <Card>
-                  <template #title><strong>任务信息</strong></template>
+                  <template #title><strong>实例信息</strong></template>
 
                   <Row>
                     <Col span="8">案例号：{{ curRow.Id }}</Col>
                     <Col span="8">案例名: {{ curRow.Example_name }}</Col>
+                    <Col span="8">类型: {{ curRow.Type }}</Col>
                     <Col span="8">状态: {{ curRow.State }}</Col>
                     <Col span="8">级别: {{ curRow.Rank }}</Col>
-                    <Col span="8">数据目录: {{ curRow.Dataset_url }}</Col>
+                    <Col span="8">任务: {{ curRow.Task }}</Col>
                   </Row>
 
                 </Card>
                 <Card>
-                  <template #title><strong>模型信息</strong></template>
+                  <template #title><strong>建模方案</strong></template>
                   <Row>
-                    <Col span="8">模型名：{{ curRow.Model_name }}</Col>
-                    <Col span="8">模型类型: {{ curRow.Model_type }}</Col>
-                    <Col span="8">迭代次数: {{ curRow.Epoch_num }}</Col>
-                    <Col span="8">损失函数: {{ curRow.Loss }}</Col>
-                    <Col span="8">优化器: {{ curRow.Optimizer }}</Col>
-                    <Col span="8">衰减因子: {{ curRow.Decay }}</Col>
-                    <Col span="8">评价指标: {{ curRow.Evalution }}</Col>
-                    <Col span="8">保存位置: {{ curRow.Model_url }}</Col>
+                    <Col span="8">数据集：{{ curRow.Model_name }}</Col>
+                    <Col span="8">模型算法: {{ curRow.Model_type }}</Col>
+                    <Col span="8">训练过程分布: {{ curRow.Epoch_num }}</Col>
+                    <Col span="8">评价指标: {{ curRow.Loss }}</Col>
                   </Row>
                 </Card>
                 <Card>
-                  <template #title><strong>资源需求</strong></template>
+                  <template #title><strong>模型超参数</strong></template>
                   <Row>
-                    <Col span="8">CPU核数：{{ curRow.Cpu_num }}</Col>
-                    <Col span="8">GPU算力: {{ curRow.Gpu_num }}</Col>
-                    <Col span="8">内存用量: {{ curRow.Memory }}</Col>
-                    <Col span="8">启动时间:<Time :time="curRow.Start_time" type="datetime" /></Col>
-                    <Col span="8">结束时间:
-                      <Time v-if="curRow.end_time!='' " :time="curRow.End_time" type="datetime" />
-                      <div v-else> {{ "" }}</div>
-                    </Col>
-                    <Col span="8">运行时间:{{ curRow.Run_time }}</Col>
+                    <Col span="8">网络层数: {{ curRow.Memory }}</Col>
+                    <Col span="8">学习率: {{ curRow.Gpu_num }}</Col>
+                    <Col span="8">优化器：{{ curRow.Cpu_num }}</Col>
+                    <Col span="8">迭代次数: {{ curRow.Memory }}</Col>
+                    <Col span="8">批大小: {{ curRow.Memory }}</Col>
+                    <Col span="8">激活函数: {{ curRow.Memory }}</Col>
+                    <Col span="8">衰减因子: {{ curRow.Memory }}</Col>
+                    <Col span="8">探索率: {{ curRow.Memory }}</Col>
+                    <Col span="8">随机种子: {{ curRow.Memory }}</Col>
                   </Row>
                 </Card>
                 <template #footer>
@@ -346,13 +343,13 @@ export default {
           align: 'center'
         },
         {
-          title: 'CPU核数',
-          key: 'Cpu_num',
+          title: '数据集',
+          key: 'Dataset_name',
           align: 'center'
         },
         {
-          title: 'GPU个数',
-          key: 'Gpu_num',
+          title: '模型算法',
+          key: 'Model_name',
           align: 'center'
         },
         {
@@ -662,6 +659,7 @@ export default {
     },
     itemInfoBtn(row, index) {
       this.isItemInfo=true;
+      console.info("itemList",this.itemList)
       for(var i in this.itemList) {
         if(row.id == this.itemList[i].id) {
           this.curRow = this.itemList[i];

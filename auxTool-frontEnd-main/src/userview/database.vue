@@ -56,7 +56,7 @@
                 </MenuItem>
                 <MenuItem name="modelbase">
                   <Icon type="ios-keypad"></Icon>
-                  模型库
+                  算法库
                 </MenuItem>
                 <MenuItem name="defineFunction">
                   <Icon type="ios-analytics"></Icon>
@@ -64,11 +64,11 @@
                 </MenuItem>
                 <MenuItem name="design">
                   <Icon type="ios-paper"></Icon>
-                  方案设计
+                  模型设计
                 </MenuItem>
                 <MenuItem name="example">
                   <Icon type="md-arrow-dropright-circle"></Icon>
-                  方案实例
+                  实例管理
                 </MenuItem>
               </div>
             </Menu>

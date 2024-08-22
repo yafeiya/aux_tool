@@ -30,22 +30,21 @@
           <FormItem label="三级菜单" prop="grandsonMenu"> <!-- 修正这里 -->
             <Input v-model="menuform.grandsonMenu" placeholder="输入三级菜单名称" style="width: 250px"></Input>
           </FormItem>
-          <FormItem>
-            <Row>
-              <Col span="8">
-              <Button type="default" long
-                @click="canvasMenuAdd(menuform.fartherMenu, menuform.childreMenu, menuform.grandsonMenu)" icon="md-add"
-                style="margin-left: 10px">添加</Button>
-              </Col>
-              <Col span="8">
-              <Button type="default" long
-                @click="canvasMenuDelete(menuform.fartherMenu, menuform.childreMenu, menuform.grandsonMenu)"
-                icon="md-remove" style="margin-left: 30px">删除</Button>
-              </Col>
-            </Row>
-          </FormItem>
         </Form>
-
+        <template #footer >
+          <Row style="margin-left: 80px">
+            <Col span="8">
+              <Button type="default" long
+                      @click="canvasMenuAdd(menuform.fartherMenu, menuform.childreMenu, menuform.grandsonMenu)" icon="md-add"
+                      style="margin-left: 10px">添加</Button>
+            </Col>
+            <Col span="8">
+              <Button type="default" long
+                      @click="canvasMenuDelete(menuform.fartherMenu, menuform.childreMenu, menuform.grandsonMenu)"
+                      icon="md-remove" style="margin-left: 30px">删除</Button>
+            </Col>
+          </Row>
+        </template>
       </Modal>
     </Space>
 
