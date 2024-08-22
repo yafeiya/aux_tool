@@ -59,30 +59,58 @@
           </div>
         </div>
       </div>
-
-
       <Row class="params" align="middle">
-        <Col :span="8">网络深度</Col>
+        <Col :span="8">网络层数</Col>
         <Col :span="14">
           <Input v-model="data.nodenetworkdepth" style="width: 100%" placeholder="default 256" @change="onnetworkdepthChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
-        <Col :span="8">分类类别数</Col>
+        <Col :span="8">学习率</Col>
         <Col :span="14">
-          <Input v-model="data.nodeclassnum" style="width: 100%" @change="onclassnumChange" />
+          <Input v-model="data.nodeclassnum" style="width: 100%" placeholder="default 0.001" @change="onclassnumChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
-        <Col :span="8">未来奖励折扣</Col>
+        <Col :span="8">优化器</Col>
         <Col :span="14">
-          <Input v-model="data.nodefuturerewarddiscount" style="width: 100%" @change="onfuturerewarddiscountChange" />
+          <Input v-model="data.nodefuturerewarddiscount" style="width: 100%" placeholder="default SGD" @change="onfuturerewarddiscountChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
-        <Col :span="8">模型路径</Col>
+        <Col :span="8">迭代次数</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" @change="onmodelurlChange" />
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 10000" @change="onmodelurlChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">批大小</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 256" @change="onmodelurlChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">激活函数</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default RELU" @change="onmodelurlChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">衰减因子</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 0.95" @change="onmodelurlChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">探索率</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 0.9" @change="onmodelurlChange" />
+        </Col>
+      </Row>
+      <Row class="params" align="middle">
+        <Col :span="8">随机种子</Col>
+        <Col :span="14">
+          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 42" @change="onmodelurlChange" />
         </Col>
       </Row>
 

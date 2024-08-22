@@ -126,73 +126,29 @@
         example:{
           "id":"",
           "example_name": "",
-          "rank": "",
-          "state": "运行中",
-          "cpu_num": 1,
-          "gpu_num": 10,
-          "post_date": (new Date()).getTime(),
-          "post_time": (new Date()).getTime(),
-          "run_time": "",
-          "dataset_url": "",
-          "model_name": "",
-          "model_type": "",
-          "epoch_num": "",
-          "loss": "",
-          "optimizer":"",
-          "decay": "",
-          "evalution": "",
-          "model_url": "",
-          "memory": "2000MB",
+          "Rank":          "",
+          "State":         "运行中",
+          "Task":          "",
+          "Type":          "",
+          "Dataset_name":  "Dataset_name",
+          "Model_name":    "string",
+          "Train_state":   "1",
+          "Metics":        "string",
+          "Network_num":   1,
+          "Learning_rate": 0.01,
+          "Act_function":  "RELu",
+          "Radom_seed":    2,
+          "Optimizer":     "string",
+          "Batch_size":    64,
+          "Epoch_num":     10,
+          "Explore_rate":  0.1,
+          "Decay_factor":  0.1,
           "start_time":(new Date()).getTime() ,
           "end_time": '' ,
       }
       }
     },
     methods: {
-      runorder() {
-        console.log("在此修改运行函数")
-        var url = decodeURI(window.location.href);
-        var cs_arr = url.split('?')[1];//?后面的
-        var iid = cs_arr.split('=')[1].split('&')[0];
-        var findUrl = 'http://localhost:3000/design/' + iid
-        this.example.id=iid;
-        console.info("exmple",this.example)
-        runCanvas(this.example).then(res=>{
-          console.info("runres",res)
-        })
-        axios.get(findUrl).then(res=>{
-          var design = res.data
-          console.info(design)
-          var cells = design.cells
-          this.example.example_name = design.dataset_name
-          this.example.rank = design.rank
-          // example.post_date = t.getTime() - 86400 * 3 * 1000
-          // example.post_time = t.getTime() - 86400 * 3 * 1000
-          // example.start_time = t.toLocaleDateString()
-          for(var i in cells) {
-            console.info(i)
-            if(cells[i].data['fatherLabel'] == '数据加载') {
-              this.example.dataset_url = cells[i].data['dataurl']
-              this.mustItem[0].flag = true
-            } else if(cells[i].data['fatherLabel'] == '模型模板') {
-              this.example.model_name = cells[i].attrs.text.text
-              this.example.model_type = cells[i].data['modeltype']
-              this.example.model_url = cells[i].data['modelurl']
-              this.mustItem[1].flag = true
-            } else if(cells[i].data['fatherLabel'] == '模型训练') {
-              this.example.epoch_num = cells[i].data['iterations']
-              this.example.loss = cells[i].data['loss']
-              this.example.optimizer = cells[i].data['optimizer']
-              this.example.decay = cells[i].data['decayfactor']
-              this.example.evalution = cells[i].data['evalution']
-              this.mustItem[2].flag = true
-              // memory = cells[i].data['']
-            } else if(cells[i].data['fatherLabel'] == '仿真交互') {
-              this.mustItem[3].flag = true
-            }
-          }
-        })
-      },
       isRun() {
         this.modal = true
       },
@@ -203,13 +159,10 @@
           this.$Message.info('画布已保存');
       },
       RunExample({mustItem, example}) {
-        console.log("在此修改运行函数")
         var url = decodeURI(window.location.href);
         var cs_arr = url.split('?')[1];//?后面的
         var iid = cs_arr.split('=')[1].split('&')[0];
         this.example.id=iid;
-        example.post_date = (new Date()).getTime()
-        example.post_time = (new Date()).getTime()
         example.start_time = (new Date()).getTime()
         example.end_time = ''
         var cs_arr = url.split('?')[1];//?后面的
@@ -217,8 +170,7 @@
         var task = cs_arr.split('=')[2].split('&')[0];
         var type = cs_arr.split('=')[3];
         example.dataset_url=EndUrl().fileUrl+"/"+ type+"/"+task+"/"+id
-        var postUrl = EndUrl().backEndUrl+"/example"
-        console.info("postUrl",postUrl)
+        console.info("example",example)
         runCanvas(example).then(res=>{
           this.$Message["success"]({
               background: true,
@@ -234,7 +186,51 @@
             id: iid,
             cells: graphData.cells // 假设 graphData 里有一个 cells 属性
           };
+          graph.toPNG(
+              (dataUri) => {
+                // 将dataUri转换为Blob对象
+                const byteString = atob(dataUri.split(',')[1]);
+                const mimeString = dataUri.split(',')[0].split(':')[1].split(';')[0];
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) {
+                  ia[i] = byteString.charCodeAt(i);
+                }
+                const blob = new Blob([ab], { type: mimeString });
 
+                // 创建FormData对象
+                const formData = new FormData();
+                const url = decodeURI(window.location.href);
+                const cs_arr = url.split('?')[1]; //?后面的
+                const id = cs_arr.split('=')[1].split('&')[0];
+                const type = cs_arr.split('=')[2].split('&')[0];
+                const task = cs_arr.split('=')[3];
+                formData.append('image', blob, 'chartx.png');
+                formData.append('id', id); // 替换为实际的id
+                formData.append('type', task); // 替换为实际的type
+                formData.append('task', type); // 替换为实际的task
+
+                // 打印FormData的内容
+                for (let [key, value] of formData.entries()) {
+                  console.log(key, value);
+                }
+
+                // 使用axios发送POST请求到服务器
+                saveCanvasPNG(formData).then(res => {
+                  console.log('Success:', res.data);
+                });
+              },
+              {
+                backgroundColor: 'white',
+                padding: {
+                  top: 20,
+                  right: 30,
+                  bottom: 40,
+                  left: 50,
+                },
+                quality: 1,
+              },
+          );
           saveCanvas(cellsToSend).then(res=>{
             console.log(res);
           })
@@ -345,23 +341,7 @@
             );
 
             break;
-            // graph.toPNG(
-            //   (dataUri: string) => {
-            //     // 下载
-            //     DataUri.downloadDataUri(dataUri, 'chartx.png');
-            //   },
-            //   {
-            //     backgroundColor: 'white',
-            //     padding: {
-            //       top: 20,
-            //       right: 30,
-            //       bottom: 40,
-            //       left: 50,
-            //     },
-            //     quality: 1,
-            //   },
-            // );
-            // break;
+
           case 'saveSVG':
             graph.toSVG((dataUri: string) => {
               // 下载
