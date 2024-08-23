@@ -184,6 +184,15 @@
             .map(cell => cell.data);
         var Model = ModelResult.length > 0 ? ModelResult : "没有找到符合条件的数据";
         example.Model_name=Model[0].name
+        example. Act_function=Model[0]. Act_function
+        example.Decay_factor=Model[0].Decay_factor
+        example.Epoch_num=Model[0].Epoch_num
+        example.Explore_rate=Model[0].Explore_rate
+        example.Optimizer=Model[0].Optimizer
+        example.Radom_seed=Model[0].Radom_seed
+        example.batch=Model[0].batch
+        example.Network_num=Model[0].Network_num
+        example.learning_rate=Model[0].learning_rate
         console.info("Model",Model)
         const TrainStateResult = graphData.cells
             .filter(cell => cell.data.grandLabel === "训练过程可视化")

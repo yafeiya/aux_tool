@@ -135,24 +135,23 @@
                 <Card>
                   <template #title><strong>建模方案</strong></template>
                   <Row>
-                    <Col span="8">数据集：{{ curRow.Model_name }}</Col>
-                    <Col span="8">模型算法: {{ curRow.Model_type }}</Col>
-                    <Col span="8">训练过程分布: {{ curRow.Epoch_num }}</Col>
-                    <Col span="8">评价指标: {{ curRow.Loss }}</Col>
+                    <Col span="8">数据集：{{ curRow.Dataset_name }}</Col>
+                    <Col span="8">模型算法: {{ curRow.Model_name }}</Col>
+                    <Col span="8">训练过程分布: {{ curRow.Train_state }}</Col>
                   </Row>
                 </Card>
                 <Card>
                   <template #title><strong>模型超参数</strong></template>
                   <Row>
-                    <Col span="8">网络层数: {{ curRow.Memory }}</Col>
-                    <Col span="8">学习率: {{ curRow.Gpu_num }}</Col>
-                    <Col span="8">优化器：{{ curRow.Cpu_num }}</Col>
-                    <Col span="8">迭代次数: {{ curRow.Memory }}</Col>
-                    <Col span="8">批大小: {{ curRow.Memory }}</Col>
-                    <Col span="8">激活函数: {{ curRow.Memory }}</Col>
-                    <Col span="8">衰减因子: {{ curRow.Memory }}</Col>
-                    <Col span="8">探索率: {{ curRow.Memory }}</Col>
-                    <Col span="8">随机种子: {{ curRow.Memory }}</Col>
+                    <Col span="8">网络层数: {{ curRow.Network_num }}</Col>
+                    <Col span="8">学习率: {{ curRow.Learning_rate }}</Col>
+                    <Col span="8">优化器：{{ curRow.Optimizer }}</Col>
+                    <Col span="8">迭代次数: {{ curRow.Epoch_num }}</Col>
+                    <Col span="8">批大小: {{ curRow.Batch_size }}</Col>
+                    <Col span="8">激活函数: {{ curRow.Act_function }}</Col>
+                    <Col span="8">衰减因子: {{ curRow.Decay_factor }}</Col>
+                    <Col span="8">探索率: {{ curRow.Explore_rate }}</Col>
+                    <Col span="8">随机种子: {{ curRow.Radom_seed }}</Col>
                   </Row>
                 </Card>
                 <template #footer>
@@ -223,7 +222,7 @@
                   <Button type="info"  long @click="isproxyInfo=false" >确定</Button>
                 </template>
               </Modal>
-              <Button type="info" style="margin-right: -30px" @click="isDataInfo=true" v-width=85 >模型评价</Button>
+              <Button type="info" style="margin-right: -30px" @click="getMeticscharts" v-width=85 >模型评价</Button>
               <Modal v-model="isDataInfo" width="1200" style="margin-top: -80px">
                 <template #header>
                   <p style="color:#4d85ea;text-align:center">
@@ -234,29 +233,15 @@
 
                 <Row>
                   <Col span="12">
-                    <div id="Charts" style="display: flex;justify-content: center;">
-                      <img style="height: 100%;" :src="modelimageUrl1"  alt="Example Image" />
-                    </div>
+                    <div id="Charts" ref="Echarts4" ></div>
+
                   </Col>
                   <Col span="12">
-                    <div id="Charts" style="display: flex;justify-content: center;">
-                      <img style="height: 100%;" :src="modelimageUrl2"  alt="Example Image" />
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span="12">
-                    <div id="Charts" style="display: flex;justify-content: center;">
-                      <img style="height: 100%;" :src="modelimageUrl3"  alt="Example Image" />
-                    </div>
-                  </Col>
-                  <Col span="12">
-                    <div id="Charts" style="display: flex;justify-content: center;">
-                      <img style="height: 100%;" :src="modelimageUrl4"  alt="Example Image" />
-                    </div>
+                    <div id="Charts" ref="Echarts5" ></div>
 
                   </Col>
                 </Row>
+
 
               </Modal>
 
@@ -286,6 +271,36 @@ export default {
 
   data() {
     return {
+      modelchartData: {
+        categories1: [
+        ],
+        categories2:[],
+        acc:[],
+        series: [
+          {
+            name: "正样本",
+            data: [35, 35, 37, 40, 40, 42, 45, 45, 47, 50, 50, 52, 55, 55, 57, 60, 60, 62, 65, 65, 67, 70, 70, 72, 75, 75, 77, 80, 80, 82, 85, 85, 87, 90, 90, 92, 95, 95, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96],
+            color: "#ff4d4f", // 红色
+          },
+          {
+            name: "负样本",
+            data: [75, 75, 73, 70, 70, 68, 65, 65, 63, 60, 60, 58, 55, 55, 53, 50, 50, 48, 45, 45, 43, 40, 40, 38, 35, 35, 33, 30, 30, 28, 25, 25, 23, 20, 20, 18, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
+            color: "#4d88ff", // 蓝色
+          },
+        ],
+        series2:[{
+          name: "正样本",
+          data: [35, 35, 37, 40, 40, 42, 45, 45, 47, 50, 50, 52, 55, 55, 57, 60, 60, 62, 65, 65, 67, 70, 70, 72, 75, 75, 77, 80, 80, 82, 85, 85, 87, 90, 90, 92, 95, 95, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96],
+          color: "#ff4d4f", // 红色
+        },
+          {
+            name: "负样本",
+            data: [75, 75, 73, 70, 70, 68, 65, 65, 63, 60, 60, 58, 55, 55, 53, 50, 50, 48, 45, 45, 43, 40, 40, 38, 35, 35, 33, 30, 30, 28, 25, 25, 23, 20, 20, 18, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
+            color: "#4d88ff", // 蓝色
+          },],
+      },
+
+
       actdata: "",
       rewarddata:"",
       lrdata:"",
@@ -617,10 +632,8 @@ export default {
         },
         yAxis:{},
         series: [
-
         ]
-      }
-
+      };
       var lossnamenum = 0
       while(lossnamedict[lossnamenum]!=null){
         let a={
@@ -636,7 +649,117 @@ export default {
       psgTimeCharts3.setOption(option3)
 
   },
+    getMeticscharts(){
+      this.isDataInfo=true
+      this.modelchartData.categories2 = Array.from({ length: 50 }, (v, i) => (i + 1) * 200); // 生成 50 个数
+      this.modelchartData.categories1 = this.modelchartData.categories2.filter((_, index) => index % 5 === 0);// 抽取 10 个数
+      this.modelchartData.series2.forEach((s) => {
+        s.data = s.data.filter((_, index) => index % 5 === 0);
+      });
+      const positiveData = this.modelchartData.series[0].data; // 正样本数据
+      const negativeData = this.modelchartData.series[1].data; // 负样本数据
+      // 清空 acc 数组
+      this.modelchartData.acc = [];
+      // 计算准确率
+      for (let i = 0; i < positiveData.length; i++) {
+        const positive = positiveData[i];
+        const negative = negativeData[i];
+        const accuracy = positive / (positive + negative); // 计算准确率
+        this.modelchartData.acc.push(accuracy); // 将准确率添加到 acc 数组
+      }
 
+      let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
+      let psgTimeCharts5 = echarts.init(this.$refs.Echarts5)
+      // let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
+
+      var option4 = {
+        tooltip: {},
+        title: {
+          text: '正负样本',
+          x: 'left'
+        },
+        legend: {
+          data: this.modelchartData.series.map((s) => s.name),
+        },
+        xAxis: {
+          type: "category",
+          data: this.modelchartData.categories1,
+          axisLabel: {
+            interval: 0,
+            rotate: 0, // 旋转标签
+          },
+        },
+        graphic: [
+          {
+            type: 'text',
+            left: '90%', // 右侧位置
+            top: '80%', // 垂直居中
+            style: {
+              text: 'epochs',
+              font: '12px Microsoft YaHei', // 字体样式
+              fill: '#333', // 字体颜色
+              textAlign: 'center',
+            },
+          },
+        ],
+        yAxis: {
+          type: "value",
+        },
+        series: this.modelchartData.series2.map((s) => ({
+          name: s.name,
+          type: "bar",
+          data: s.data,
+          itemStyle: {
+            color: s.color,
+          },
+        })),
+      };
+      var option5 = {
+        tooltip: {},
+        title: {
+          text: '准确率',
+          x: 'left'
+        },
+        legend: {
+          data: this.modelchartData.series.map((s) => s.name),
+        },
+        xAxis: {
+          type: "category",
+          data: this.modelchartData.categories2,
+          axisLabel: {
+            interval: 10,
+            rotate: 0, // 旋转标签
+          },
+        },
+        graphic: [
+          {
+            type: 'text',
+            left: '90%', // 右侧位置
+            top: '80%', // 垂直居中
+            style: {
+              text: 'epochs',
+              font: '12px Microsoft YaHei', // 字体样式
+              fill: '#333', // 字体颜色
+              textAlign: 'center',
+            },
+          },
+        ],
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            name: "y轴",
+            type: "line",
+            data: this.modelchartData.acc
+          }
+        ]
+      };
+
+      psgTimeCharts4.setOption(option4)
+      psgTimeCharts5.setOption(option5)
+
+    },
     calcTime(startTime,endTime,state) {
       if(state==='on'){
         const currentTime = Date.now(); // 获取当前时间戳

@@ -15,10 +15,17 @@ export function nodeOpt(id: any, globalGridAttr: any) {
     globalGridAttr.nodeFill = cell.attr('body/fill');
     globalGridAttr.nodeFontSize = cell.attr('text/fontSize');
     globalGridAttr.nodeColor = cell.attr('text/fill');
-    globalGridAttr.nodenetworkdepth = cell.getData()?.networkdepth;
-    globalGridAttr.nodeclassnum = cell.getData()?.classnum;
-    globalGridAttr.nodefuturerewarddiscount = cell.getData()?.futurerewarddiscount;
-    globalGridAttr.nodemodelurl = cell.getData()?.modelurl;
+    globalGridAttr.Network_num = cell.getData()?.Network_num;
+    globalGridAttr.Optimizer = cell.getData()?.Optimizer;
+    globalGridAttr.batch = cell.getData()?.batch;
+    globalGridAttr.learning_rate = cell.getData()?.learning_rate;
+    globalGridAttr.Epoch_num = cell.getData()?.Epoch_num;
+    globalGridAttr.Act_function = cell.getData()?.Act_function;
+    globalGridAttr.Decay_factor = cell.getData()?.Decay_factor;
+    globalGridAttr.Explore_rate = cell.getData()?.Explore_rate;
+    globalGridAttr.Radom_seed = cell.getData()?.Radom_seed;
+
+
     globalGridAttr.nodemodeltype = cell.getData()?.modeltype;
     globalGridAttr.nodemodelbatch = cell.getData()?.modelbatch;
     if(cell.getData()?.name == undefined){cell.getData().name = cell.getData()?.selflabel}

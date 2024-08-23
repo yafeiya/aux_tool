@@ -12,7 +12,7 @@
           v-for ="childrenitem in children2.children"
           >
             <div v-if="!childrenitem.children">
-              <Row align="middle" 
+              <Row align="middle"
               v-if="globalGridAttr.selflabel === childrenitem.title"
               >
                 <Col :span="10">指定{{childrenitem.title}}</Col>
@@ -22,7 +22,7 @@
                     v-model="data.nodeLabelname "
                     @on-change="onLabelChange"
                   >
-                    <Option 
+                    <Option
                     v-for="option in childrenitem.content"
                     :value="option.Dataset_name"
                     >
@@ -35,7 +35,7 @@
 
             <div v-else-if="childrenitem.children">
               <div v-for="subchildrenitem in childrenitem.children">
-                <Row align="middle" 
+                <Row align="middle"
                 v-if="globalGridAttr.selflabel === subchildrenitem.title"
                 >
                   <Col :span="10">指定{{subchildrenitem.title}}</Col>
@@ -45,7 +45,7 @@
                       v-model="data.nodeLabelname "
                       @on-change="onLabelChange"
                     >
-                      <Option 
+                      <Option
                       v-for="option in subchildrenitem.content"
                       :value="option.Dataset_name"
                       >
@@ -62,76 +62,58 @@
       <Row class="params" align="middle">
         <Col :span="8">网络层数</Col>
         <Col :span="14">
-          <Input v-model="data.nodenetworkdepth" style="width: 100%" placeholder="default 256" @change="onnetworkdepthChange" />
+          <Input v-model="data.Network_num" style="width: 100%" placeholder="default 256" @change="onNetwork_numChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">学习率</Col>
         <Col :span="14">
-          <Input v-model="data.nodeclassnum" style="width: 100%" placeholder="default 0.001" @change="onclassnumChange" />
+          <Input v-model="data.learning_rate" style="width: 100%" placeholder="default 0.001" @change="onlearningrateChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">优化器</Col>
         <Col :span="14">
-          <Input v-model="data.nodefuturerewarddiscount" style="width: 100%" placeholder="default SGD" @change="onfuturerewarddiscountChange" />
+          <Input v-model="data.Optimizer" style="width: 100%" placeholder="default SGD" @change="onOptimizerChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">迭代次数</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 10000" @change="onmodelurlChange" />
+          <Input v-model="data.Epoch_num" style="width: 100%" placeholder="default 10000" @change="onEpoch_numChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">批大小</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 256" @change="onmodelurlChange" />
+          <Input v-model="data.batch" style="width: 100%" placeholder="default 256" @change="onbatchChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">激活函数</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default RELU" @change="onmodelurlChange" />
+          <Input v-model="data.Act_function" style="width: 100%" placeholder="default RELU" @change="onAct_functionChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">衰减因子</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 0.95" @change="onmodelurlChange" />
+          <Input v-model="data.Decay_factor" style="width: 100%" placeholder="default 0.95" @change="onDecay_factorChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">探索率</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 0.9" @change="onmodelurlChange" />
+          <Input v-model="data.Explore_rate" style="width: 100%" placeholder="default 0.9" @change="onExplore_rateChange" />
         </Col>
       </Row>
       <Row class="params" align="middle">
         <Col :span="8">随机种子</Col>
         <Col :span="14">
-          <Input v-model="data.nodemodelurl" style="width: 100%" placeholder="default 42" @change="onmodelurlChange" />
+          <Input v-model="data.Radom_seed" style="width: 100%" placeholder="default 42" @change="onRadom_seedChange" />
         </Col>
       </Row>
 
-<!--      <Button class="view" @click="sendtoYe">模型超参数</Button>-->
-<!--      <Modal-->
-<!--          v-model="data.ModelModal"-->
-<!--          title="模型超参数"-->
-<!--          width="40px"-->
-<!--          >-->
-<!--        <Row>-->
-<!--          <Col span="12"><strong>批量大小: </strong> 11111</Col>-->
-<!--          <Col span="12"><strong>优化器: </strong> 11111</Col>-->
-<!--          <Col span="12"><strong>训练轮数: </strong> 11111</Col>-->
-<!--          <Col span="12"><strong>学习率: </strong> 11111</Col>-->
-<!--          <Col span="12"><strong>衰减因子: </strong> 11111</Col>-->
-<!--          <Col span="12"><strong>GPU占用数: </strong> 11111</Col>-->
-<!--          <Col span="12"><strong>内存用量: </strong> 11111</Col>-->
-<!--          <Col span="12"><strong>CPU核数: </strong> 11111</Col>-->
-<!--        </Row>-->
-<!--      </Modal>-->
-      <!-- <Image src="http://127.0.0.1:5173/机器学习/回归/10/home.png" fit="fill" width="400px" height="220px" alt=""></Image> -->
     </TabPane>
     <TabPane label="样式" name="2">
       <Row align="middle">
@@ -185,7 +167,7 @@
 
 
 
-  
+
   export default defineComponent({
     name: 'Index',
 
@@ -194,34 +176,6 @@
       const id: any = inject('id');
       let curCel: Cell;
 
-
-      // 向画布页面（祖父）传递预览图参数
-      const changeimgpreview: any = inject('changeimgpreview')
-      const imgpreview: any = inject('imgpreview')
-      var imgpath: any = inject('imgpath')
-
-      // const sendtoYe = function() {
-      //   console.log('触发sendtoYe', globalGridAttr.nodename)
-      //   for(var children1 of menu[0].children){
-      //     // console.log(children1)
-      //     for(var children2 of children1.children){
-      //       // console.log(children2)
-      //       if(children2.content != null){
-      //         for(var item of children2.content){
-      //           if(item.Dataset_name === globalGridAttr.nodename){
-      //             var path = item.Image_path
-      //             console.log(path)
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      //   imgpath = path
-      //
-      //   imgpreview.value = !imgpreview.value
-      //   changeimgpreview(imgpreview.value,imgpath)
-      //   // console.log(imgpath)
-      // }
       const sendtoYe = function() {
         data.ModelModal=true
         console.log('ModelModal', data.ModelModal)
@@ -229,10 +183,14 @@
       }
 
       const data = reactive({
-        nodenetworkdepth: '',
-        nodeclassnum: '',
-        nodefuturerewarddiscount: '',
-        nodemodelurl:'',
+        Network_num: '',
+        learning_rate: '',
+        Epoch_num:'',
+        Act_function:'',
+        Decay_factor:'',
+        Explore_rate:'',
+        Radom_seed:'',
+        Optimizer: '',
         nodemodeltype:'',
         nodeStrokeWidth: '',
         nodeFill: '',
@@ -241,20 +199,27 @@
         nodeselflabel:'',
         ModelModal:false,
         nodemodelbatch:'',
+        batch:'',
       })
       watch(
         [() => id.value],
         () => {
           curCel = nodeOpt(id, globalGridAttr);
-          data.nodenetworkdepth = globalGridAttr.nodenetworkdepth;
-          data.nodeclassnum = globalGridAttr.nodeclassnum;
-          data.nodefuturerewarddiscount = globalGridAttr.nodefuturerewarddiscount;
-          data.nodemodelurl = globalGridAttr.nodemodelurl;
+          data.Network_num = globalGridAttr.Network_num;
+          data.learning_rate = globalGridAttr.learning_rate;
+          data.Optimizer = globalGridAttr.Optimizer;
+          data.Epoch_num = globalGridAttr.Epoch_num;
+          data.batch = globalGridAttr.batch;
+          data.Act_function = globalGridAttr.Act_function;
+          data.Decay_factor = globalGridAttr.Decay_factor;
+          data.Explore_rate = globalGridAttr.Explore_rate;
+          data.Radom_seed = globalGridAttr.Radom_seed;
+
           data.nodemodeltype = globalGridAttr.nodemodeltype;
           data.nodeStrokeWidth = globalGridAttr.nodeStrokeWidth
           data.nodeFill = globalGridAttr.nodeFill
           data.nodeFontSize = globalGridAttr.nodeFontSize
-          data.nodeLabelname = globalGridAttr.nodename 
+          data.nodeLabelname = globalGridAttr.nodename
           data.nodeselflabel = globalGridAttr.selflabel
           // curCel?.attr('body/stroke', 'red');
         },
@@ -276,20 +241,20 @@
 
       let finalmenu:any = [
 
-        ] 
+        ]
 
       let modelbase = await getMenuInfo("modelbase")
       menu[0]["children"] = modelbase.data;
 
       // console.log("显示初始菜单",await menu)
       let i = 0;
-      while (menu[0]["children"][i] != null) { 
+      while (menu[0]["children"][i] != null) {
         // console.log(i)
         // console.log(menu[0]["children"][i].title)
         let j=0
-        while (menu[0]["children"][i]["children"][j] != null) { 
+        while (menu[0]["children"][i]["children"][j] != null) {
           // console.log(menu[0]["children"][i]["children"][j].title)
-          
+
           let tip = {
             pageKind: 'modelbase',
             task: menu[0]["children"][i]["children"][j].title,
@@ -310,7 +275,7 @@
         // console.log("显示finalmenu",await finalmenu)
       }
 
-      // while (menu[0]["children"][i] != null) { 
+      // while (menu[0]["children"][i] != null) {
 
       // }
 
@@ -345,31 +310,61 @@
         curCel?.attr('text/fill', val);
       };
 
-      const onnetworkdepthChange = (e: any) => {
+      const onNetwork_numChange = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
-          networkdepth: val,
+          Network_num: val,
         });
       };
-      const onclassnumChange = (e: any) => {
+      const onlearningrateChange = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
-          classnum: val,
+          learning_rate: val,
         });
-      };  
+      };
 
-      const onfuturerewarddiscountChange = (e: any) => {
+      const onOptimizerChange = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
-          futurerewarddiscount: val,
+          Optimizer: val,
         });
-      };  
-      const onmodelurlChange = (e: any) => {
+      };
+      const onEpoch_numChange = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
-          modelurl: val,
+          Epoch_num: val,
         });
-      };  
+      };
+      const onbatchChange = (e: any) => {
+        const val = e.target.value;
+        curCel?.setData({
+          batch: val,
+        });
+      };
+      const onAct_functionChange = (e: any) => {
+        const val = e.target.value;
+        curCel?.setData({
+          Act_function: val,
+        });
+      };
+      const onDecay_factorChange = (e: any) => {
+        const val = e.target.value;
+        curCel?.setData({
+          Decay_factor: val,
+        });
+      };
+      const onExplore_rateChange = (e: any) => {
+        const val = e.target.value;
+        curCel?.setData({
+          Explore_rate: val,
+        });
+      };
+      const onRadom_seedChange = (e: any) => {
+        const val = e.target.value;
+        curCel?.setData({
+          Radom_seed: val,
+        });
+      };
       const onmodeltypeChange = (e: any) => {
         const val = e.target.value;
         curCel?.setData({
@@ -392,7 +387,7 @@
       };
 
       const onLabelChange = (value) => {
-        
+
         const val = value;
         globalGridAttr.nodename = val;
         curCel?.setData({
@@ -412,10 +407,15 @@
         onFillChange,
         onFontSizeChange,
         onColorChange,
-        onnetworkdepthChange,
-        onclassnumChange,
-        onfuturerewarddiscountChange,
-        onmodelurlChange,
+        onNetwork_numChange,
+        onlearningrateChange,
+        onOptimizerChange,
+        onAct_functionChange,
+        onEpoch_numChange,
+        onExplore_rateChange,
+        onDecay_factorChange,
+        onbatchChange,
+        onRadom_seedChange,
         onmodelbatchChange,
         onmodeltypeChange,
         menu,

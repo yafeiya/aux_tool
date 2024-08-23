@@ -1,50 +1,69 @@
 <template>
-  <div>
-    <button @click="getModelData">获取模型数据</button>
-    <pre>{{ modelData }}</pre>
-  </div>
+  <div ref="barChart" style="width: 100%; height: 400px"></div>
 </template>
 
 <script>
+import * as echarts from "echarts";
+
 export default {
+  name: "BarChart",
   data() {
     return {
-      cells: [
-        {
-          attrs: {
-            text: {
-              text: "策略学习"
-            }
+      chartData: {
+        categories: [
+
+        ],
+        series: [
+          {
+            name: "系列 1",
+            data: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+            color: "#ff4d4f", // 红色
           },
-          data: {
-            classnum: "768",
-            fatherLabel: "强化学习",
-            futurerewarddiscount: "45",
-            grandLabel: "模型模板",
-            modelbatch: "56",
-            modelurl: "46q4",
-            name: "A3C",
-            networkdepth: "7867",
-            selflabel: "策略学习"
-          }
-        },
-        // 其他对象...
-      ],
-      modelData: null
+          {
+            name: "系列 2",
+            data: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+            color: "#4d88ff", // 蓝色
+          },
+        ],
+      },
     };
   },
+  mounted() {
+    this.initChart();
+  },
   methods: {
-    getModelData() {
-      const result = this.cells
-          .filter(cell => cell.data.grandLabel === "模型模板")
-          .map(cell => cell.data);
-
-      this.modelData = result.length > 0 ? result : "没有找到符合条件的数据";
-    }
-  }
+    initChart() {
+      const chart = echarts.init(this.$refs.barChart);
+      this.chartData.categories = Array.from({ length: 50 }, (v, i) => (i + 1) * 32); // 生成 50 个数
+      const option = {
+        tooltip: {},
+        legend: {
+          data: this.chartData.series.map((s) => s.name),
+        },
+        xAxis: {
+          type: "category",
+          data: this.chartData.categories,
+          axisLabel: {
+            interval: 0,
+            rotate: 45, // 旋转标签
+          },
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: this.chartData.series.map((s) => ({
+          name: s.name,
+          type: "line",
+          data: s.data,
+          itemStyle: {
+            color: s.color,
+          },
+        })),
+      };
+      chart.setOption(option);
+    },
+  },
 };
 </script>
 
-<style scoped>
-/* 自定义样式 */
-</style>
+<style scoped></style>
