@@ -85,7 +85,20 @@ func RunCanvas(ctx *gin.Context) {
 	Start_time := ctx.Query("start_time")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
+	Dataset_name := ctx.Query("Dataset_name")
+	Model_name := ctx.Query("Model_name")
+	Train_state := ctx.Query("Train_state")
+	network_num, _ := strconv.Atoi(ctx.Query("Network_num"))
+	learning_rate, _ := strconv.ParseFloat(ctx.Query("Learning_rate"), 64)
+	Act_function := ctx.Query("Act_function")
+	radom_seed, _ := strconv.Atoi(ctx.Query("Radom_seed"))
+	Optimizer := ctx.Query("Optimizer")
+	batch_size, _ := strconv.Atoi(ctx.Query("Batch"))
+	epoch_num, _ := strconv.Atoi(ctx.Query("Epoch_num"))
+	explore_rate, _ := strconv.ParseFloat(ctx.Query("Explore_rate"), 64)
+	decay_factor, _ := strconv.ParseFloat(ctx.Query("Decay_factor"), 64)
 
+	fmt.Println("Dataset_name:", Dataset_name)
 	// 创建命令
 	cmd := exec.Command("python", "main.py", "12333", "131321212") // 或者使用 "python3" 根据你的环境	// 获取命令输出
 	output, err := cmd.CombinedOutput()
@@ -165,33 +178,57 @@ func RunCanvas(ctx *gin.Context) {
 			db := common.InitDB()
 
 			example := model.Example{
+				Example_id:    id,
 				Example_name:  Design_name,
 				Rank:          Rank,
 				State:         "运行中",
 				Task:          Task,
 				Type:          Type,
-				Dataset_name:  "Dataset_name",
-				Model_name:    "string",
-				Train_state:   "1",
+				Dataset_name:  Dataset_name,
+				Model_name:    Model_name,
+				Train_state:   Train_state,
 				Metics:        "string",
-				Network_num:   1,
-				Learning_rate: 0.01,
-				Act_function:  "RELu",
-				Radom_seed:    2,
-				Optimizer:     "string",
-				Batch_size:    64,
-				Epoch_num:     10,
-				Explore_rate:  0.1,
-				Decay_factor:  0.1,
+				Network_num:   network_num,
+				Learning_rate: learning_rate,
+				Act_function:  Act_function,
+				Radom_seed:    radom_seed,
+				Optimizer:     Optimizer,
+				Batch_size:    batch_size,
+				Epoch_num:     epoch_num,
+				Explore_rate:  explore_rate,
+				Decay_factor:  decay_factor,
 				Start_time:    Start_time,
 				End_time:      "0",
 			}
 			// 判重处理
 			//pageKind、task、type、dataset_name
-
 			db.Where("Example_name = ?", Design_name).Find(&example)
 			if example.Id != 0 {
 				fmt.Println("该实例已存在")
+				// 更新现有实例的字段
+				example.Example_id = id
+				example.Rank = Rank
+				example.State = "运行中"
+				example.Task = Task
+				example.Type = Type
+				example.Dataset_name = Dataset_name
+				example.Model_name = Model_name
+				example.Train_state = Train_state
+				example.Metics = "string"
+				example.Network_num = network_num
+				example.Learning_rate = learning_rate
+				example.Act_function = Act_function
+				example.Radom_seed = radom_seed
+				example.Optimizer = Optimizer
+				example.Batch_size = batch_size
+				example.Epoch_num = epoch_num
+				example.Explore_rate = explore_rate
+				example.Decay_factor = decay_factor
+				example.Start_time = Start_time
+				example.End_time = "0"
+
+				db.Save(&example) // 保存更新
+				db.Save(&example) // 保存更新
 				response.Response(ctx, http.StatusOK, 404, nil, "The example already exists")
 			} else {
 				// 新增

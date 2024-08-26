@@ -170,12 +170,43 @@
         var task = cs_arr.split('=')[2].split('&')[0];
         var type = cs_arr.split('=')[3];
         example.dataset_url=EndUrl().fileUrl+"/"+ type+"/"+task+"/"+id
+        example.id =id
+        const { graph } = FlowGraph;
+        var graphData = graph.toJSON()
+        console.info("graphData",graphData)
+        const DatasetResult = graphData.cells
+            .filter(cell => cell.data.grandLabel === "数据加载"&&(cell.data.fatherLabel.endsWith("数据集")))
+            .map(cell => cell.data);
+        var Dataset = DatasetResult.length > 0 ? DatasetResult : "没有找到符合条件的数据";
+        example.Dataset_name=Dataset[0].name
+        const ModelResult = graphData.cells
+            .filter(cell => cell.data.grandLabel === "模型模板")
+            .map(cell => cell.data);
+        var Model = ModelResult.length > 0 ? ModelResult : "没有找到符合条件的数据";
+        example.Model_name=Model[0].name
+        example. Act_function=Model[0]. Act_function
+        example.Decay_factor=Model[0].Decay_factor
+        example.Epoch_num=Model[0].Epoch_num
+        example.Explore_rate=Model[0].Explore_rate
+        example.Optimizer=Model[0].Optimizer
+        example.Radom_seed=Model[0].Radom_seed
+        example.batch=Model[0].batch
+        example.Network_num=Model[0].Network_num
+        example.learning_rate=Model[0].learning_rate
+        console.info("Model",Model)
+        const TrainStateResult = graphData.cells
+            .filter(cell => cell.data.grandLabel === "训练过程可视化")
+            .map(cell => cell.data);
+        var TrainState = TrainStateResult.length > 0 ? TrainStateResult : "没有找到符合条件的数据";
+        example.Train_state=TrainState[0].selflabel
         console.info("example",example)
         runCanvas(example).then(res=>{
           this.$Message["success"]({
               background: true,
               content: '运行成功，请在实例管理页面查看详情'
           });
+
+          //以下代码用于存png
           const { graph } = FlowGraph;
           var graphData = graph.toJSON()
           var url = decodeURI(window.location.href);

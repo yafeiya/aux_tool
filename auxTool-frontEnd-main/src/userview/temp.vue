@@ -1,41 +1,69 @@
 <template>
-  <Button type="info" @click="download">下载测试</Button>
-  <div>
-    {{ chartcsvmsg }}
-  </div>
+  <div ref="barChart" style="width: 100%; height: 400px"></div>
 </template>
 
 <script>
-import {downloadCsvFile} from '../api/api.js'
-import qs from "qs";
-export default{
-  methods:{
-    download(){
-      //模拟下载时，往后端传的数据
-      var csvData = {
-        dataset_name: "波士顿房价数据集",
-        csvName: "动作表",
-        Type: "数值数据集",
-        Task: "任务1"
-      }
-      csvData = qs.stringify(csvData)
-      downloadCsvFile(csvData).then(res => {
-        console.info("下载URL: ", res.data.data.url)
-        // 创建一个虚拟的<a>标签
-        const a = document.createElement('a');
-        a.href = res.data.data.url;
-        a.target = '_blank'; // 在新标签页中打开文件
-        a.download = 'file.csv'; // 可以自定义文件名
-        document.body.appendChild(a);
+import * as echarts from "echarts";
 
-        // 模拟用户点击链接以触发下载
-        a.click();
+export default {
+  name: "BarChart",
+  data() {
+    return {
+      chartData: {
+        categories: [
 
-        // 清除虚拟<a>标签
-        document.body.removeChild(a);
-      })
-      // window.location.href = res.data.data.url
-    }
-  }
-}
+        ],
+        series: [
+          {
+            name: "系列 1",
+            data: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+            color: "#ff4d4f", // 红色
+          },
+          {
+            name: "系列 2",
+            data: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+            color: "#4d88ff", // 蓝色
+          },
+        ],
+      },
+    };
+  },
+  mounted() {
+    this.initChart();
+  },
+  methods: {
+    initChart() {
+      const chart = echarts.init(this.$refs.barChart);
+      this.chartData.categories = Array.from({ length: 50 }, (v, i) => (i + 1) * 32); // 生成 50 个数
+      const option = {
+        tooltip: {},
+        legend: {
+          data: this.chartData.series.map((s) => s.name),
+        },
+        xAxis: {
+          type: "category",
+          data: this.chartData.categories,
+          axisLabel: {
+            interval: 0,
+            rotate: 45, // 旋转标签
+          },
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: this.chartData.series.map((s) => ({
+          name: s.name,
+          type: "line",
+          data: s.data,
+          itemStyle: {
+            color: s.color,
+          },
+        })),
+      };
+      chart.setOption(option);
+    },
+  },
+};
 </script>
+
+<style scoped></style>
