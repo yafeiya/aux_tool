@@ -4,6 +4,7 @@ import (
 	"backEnd/common"
 	"backEnd/common/response"
 	"backEnd/model"
+	"backEnd/utils"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -352,7 +353,30 @@ func UploadLoss(ctx *gin.Context) {
 
 	response.Success(ctx, nil, "success")
 }
+func UploadResult(ctx *gin.Context) {
+	fmt.Println("UploadResult")
+	Id := ctx.PostForm("id")
+	Type := ctx.PostForm("type")
+	Task := ctx.PostForm("task")
+	loss, _ := ctx.FormFile("file")
+	// 要创建的文件夹的路径
+	folderPath := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id
+	// 使用os.Mkdir创建文件夹
+	err := os.Mkdir(folderPath, 0755) // 0755是文件夹的权限设置
+	if err != nil {
+		fmt.Println("创建文件夹失败:", err)
+	}
 
+	dst := folderPath + "/" + "result.json"
+	erro := os.Remove(dst)
+	if erro != nil {
+		fmt.Println("delete fail")
+	}
+	// 上传文件至指定的完整文件路径1
+	ctx.SaveUploadedFile(loss, dst)
+
+	response.Success(ctx, nil, "success")
+}
 func GetprocessFile(ctx *gin.Context) {
 
 	Id := ctx.Query("id")
@@ -368,6 +392,21 @@ func GetprocessFile(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 		response.Response(ctx, http.StatusOK, 404, nil, "fail")
+		return
+	}
+	response.Success(ctx, gin.H{"Info": Info}, "success")
+}
+func GetResultFile(ctx *gin.Context) {
+
+	Id := ctx.Query("id")
+	Type := ctx.Query("type")
+	Task := ctx.Query("task")
+	processFile := ctx.Query("processFile")
+	file_path := "./auxTool-frontEnd-main/" + Type + "/" + Task + "/" + Id + "/" + processFile
+	Info, err := utils.LoadJson(file_path)
+
+	if !err {
+		fmt.Println("加载文件失败")
 		return
 	}
 	response.Success(ctx, gin.H{"Info": Info}, "success")

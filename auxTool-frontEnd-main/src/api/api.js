@@ -237,6 +237,13 @@ export const getprocessFile = (data) => {
     params:data
   })
 }
+export const getResultFile = (data) => {
+  return myAxios({
+    method: 'GET',
+    url: '/getResultFile',
+    params:data
+  })
+}
 export const saveCanvas = (data) => {
   return myAxios({
     method: 'POST',

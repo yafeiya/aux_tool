@@ -1,7 +1,7 @@
 <style>
 #Charts{
   width: 500px;
-  height:250px;
+  height:350px;
   border: 1px solid #729ce3;
   margin: auto;
   margin-top: 10px;
@@ -109,142 +109,166 @@
             <!--表格最右列查看详情-->
 
             <template #details="{row, index}">
+              <Row>
+                <Col span="6">
+                  <Upload  :action="EndUrl().backEndUrl+'/uploadResult'"
+                           method="POST"
+                           accept=".json"
+                           :data="lossData"
+                           :show-upload-list=false
+                           :on-success="uploadSuccess"
+                  >
+                    <Button type="success" style="" @click="uploadfile(row)" v-width=85 >结果上传</Button>
+                  </Upload>
+                </Col>
+                <Col span="6">
+                  <Button type="info" style="" @click="itemInfoBtn(row, index)" v-width=85 >详情</Button>
 
-              <Button type="info" style="margin-right: 5px;margin-left: -10%" @click="itemInfoBtn(row, index)" v-width=85 >详情</Button>
+                  <Modal v-model="isItemInfo" width="800" :loading="true">
+                    <template #header>
+                      <p style="color:#4d85ea;text-align:center">
+                        <Icon type="ios-information-circle"></Icon>
+                        <span>案例详情</span>
+                      </p>
+                    </template>
+                    <Card>
+                      <template #title><strong>实例信息</strong></template>
 
-              <Modal v-model="isItemInfo" width="800" :loading="true">
-                <template #header>
-                  <p style="color:#4d85ea;text-align:center">
-                    <Icon type="ios-information-circle"></Icon>
-                    <span>案例详情</span>
-                  </p>
-                </template>
-                <Card>
-                  <template #title><strong>实例信息</strong></template>
+                      <Row>
+                        <Col span="8">案例号：{{ curRow.Id }}</Col>
+                        <Col span="8">案例名: {{ curRow.Example_name }}</Col>
+                        <Col span="8">类型: {{ curRow.Type }}</Col>
+                        <Col span="8">状态: {{ curRow.State }}</Col>
+                        <Col span="8">级别: {{ curRow.Rank }}</Col>
+                        <Col span="8">任务: {{ curRow.Task }}</Col>
+                      </Row>
 
-                  <Row>
-                    <Col span="8">案例号：{{ curRow.Id }}</Col>
-                    <Col span="8">案例名: {{ curRow.Example_name }}</Col>
-                    <Col span="8">类型: {{ curRow.Type }}</Col>
-                    <Col span="8">状态: {{ curRow.State }}</Col>
-                    <Col span="8">级别: {{ curRow.Rank }}</Col>
-                    <Col span="8">任务: {{ curRow.Task }}</Col>
-                  </Row>
+                    </Card>
+                    <Card>
+                      <template #title><strong>建模方案</strong></template>
+                      <Row>
+                        <Col span="8">数据集：{{ curRow.Dataset_name }}</Col>
+                        <Col span="8">模型算法: {{ curRow.Model_name }}</Col>
+                        <Col span="8">训练过程分布: {{ curRow.Train_state }}</Col>
+                      </Row>
+                    </Card>
+                    <Card>
+                      <template #title><strong>模型超参数</strong></template>
+                      <Row>
+                        <Col span="8">网络层数: {{ curRow.Network_num }}</Col>
+                        <Col span="8">学习率: {{ curRow.Learning_rate }}</Col>
+                        <Col span="8">优化器：{{ curRow.Optimizer }}</Col>
+                        <Col span="8">迭代次数: {{ curRow.Epoch_num }}</Col>
+                        <Col span="8">批大小: {{ curRow.Batch_size }}</Col>
+                        <Col span="8">激活函数: {{ curRow.Act_function }}</Col>
+                        <Col span="8">衰减因子: {{ curRow.Decay_factor }}</Col>
+                        <Col span="8">探索率: {{ curRow.Explore_rate }}</Col>
+                        <Col span="8">随机种子: {{ curRow.Radom_seed }}</Col>
+                      </Row>
+                    </Card>
+                    <template #footer>
+                      <Button type="info"  long @click="close">确定</Button>
+                    </template>
+                  </Modal>
+                </Col>
+                <Col span="6">
+                  <Button type="info" style="" @click="LogInfo(row)" v-width=85 >训练过程</Button>
+                  <!--              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=85 >训练过程</Button>-->
+                  <Modal v-model="isLogInfo" width="1200" style="margin-top: -80px">
+                    <template #header>
+                      <p style="color:#4d85ea;text-align:center">
+                        <Icon type="ios-information-circle"></Icon>
+                        <span>训练过程可视化</span>
+                      </p>
+                    </template>
 
-                </Card>
-                <Card>
-                  <template #title><strong>建模方案</strong></template>
-                  <Row>
-                    <Col span="8">数据集：{{ curRow.Dataset_name }}</Col>
-                    <Col span="8">模型算法: {{ curRow.Model_name }}</Col>
-                    <Col span="8">训练过程分布: {{ curRow.Train_state }}</Col>
-                  </Row>
-                </Card>
-                <Card>
-                  <template #title><strong>模型超参数</strong></template>
-                  <Row>
-                    <Col span="8">网络层数: {{ curRow.Network_num }}</Col>
-                    <Col span="8">学习率: {{ curRow.Learning_rate }}</Col>
-                    <Col span="8">优化器：{{ curRow.Optimizer }}</Col>
-                    <Col span="8">迭代次数: {{ curRow.Epoch_num }}</Col>
-                    <Col span="8">批大小: {{ curRow.Batch_size }}</Col>
-                    <Col span="8">激活函数: {{ curRow.Act_function }}</Col>
-                    <Col span="8">衰减因子: {{ curRow.Decay_factor }}</Col>
-                    <Col span="8">探索率: {{ curRow.Explore_rate }}</Col>
-                    <Col span="8">随机种子: {{ curRow.Radom_seed }}</Col>
-                  </Row>
-                </Card>
-                <template #footer>
-                  <Button type="info"  long @click="close">确定</Button>
-                </template>
-              </Modal>
+                    <Row>
+                      <Col span="12">
+                        <div id="Charts" ref="Echarts1" ></div>
+                      </Col>
+                      <Col span="12">
+                        <div id="Charts" ref="Echarts2"></div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span="12">
+                        <div id="Charts" ref="Echarts3" ></div>
+                      </Col>
+                      <Col span="12">
+                        <div id="Charts" style="display: flex;justify-content: center;">
+                          <img style="height: 100%;" :src="imageUrl"  alt="Example Image" />
+                        </div>
 
+                      </Col>
+                    </Row>
 
-              <Button type="info" style="margin-right: 5px" @click="LogInfo(row)" v-width=85 >训练过程</Button>
-<!--              <Button type="info" style="margin-right: 5px" @click="isLogInfo=true" v-width=85 >训练过程</Button>-->
-              <Modal v-model="isLogInfo" width="1200" style="margin-top: -80px">
-                <template #header>
-                  <p style="color:#4d85ea;text-align:center">
-                    <Icon type="ios-information-circle"></Icon>
-                    <span>训练过程可视化</span>
-                  </p>
-                </template>
+                    <template #footer>
+                      <Space :size="50">
+                        <Button type="info"  long @click="previewImage=true" v-width="100" >方案预览</Button>
+                        <Button type="info"  long @click="isproxyInfo=true" v-width="100" style="margin-right: 460px">指标介绍</Button>
+                      </Space>
+                    </template>
+                  </Modal>
+                  <ImagePreview v-model="previewImage" :preview-list="urlList" />
+                  <Modal v-model="isproxyInfo" width="700" style="margin-top: -10px">
+                    <template #header>
+                      <p style="color:#4d85ea;text-align:center">
+                        <Icon type="ios-information-circle"></Icon>
+                        <span>指标介绍</span>
+                      </p>
+                    </template>
+                    <Card>
+                      <template #title><strong>学习率 (learning-rate)</strong></template>
+                      学习率决定了在模型训练过程中每一步参数更新的幅度，如果学习率设置得过小，模型训练会变得非常缓慢，甚至可能在达到最优值之前就停止更新了。相反，如果学习率设置得过大，可能会导致在损失函数空间中来回跳动，甚至可能使得损失不断增大，从而无法收敛到最优解
+                    </Card>
+                    <Card>
+                      <template #title><strong>回报率 (reward)</strong></template>
+                      在强化学习中，奖励（Reward）是一个用于评价智能体在环境中行动的反馈信号。奖励通常是一个标量值，用来表示某个特定时刻智能体的行动的好坏程度。奖励的目的是引导智能体学习如何在环境中选择行动以达到特定的目标。
+                    </Card>
+                    <Card>
+                      <template #title><strong>网络损失 (loss)</strong></template>
+                      损失函数是在机器学习和深度学习中用来度量模型预测输出与实际标签之间差异的一种函数，损失函数接受模型的预测输出和真实标签作为输入，并计算一个数值来表示它们之间的差异。该数值越小，表示模型的预测越接近实际标签，也就是模型的性能越好。
+                    </Card>
 
-                <Row>
-                  <Col span="12">
-                    <div id="Charts" ref="Echarts1" ></div>
-                  </Col>
-                  <Col span="12">
-                    <div id="Charts" ref="Echarts2"></div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span="12">
-                    <div id="Charts" ref="Echarts3" ></div>
-                  </Col>
-                  <Col span="12">
-                    <div id="Charts" style="display: flex;justify-content: center;">
-                      <img style="height: 100%;" :src="imageUrl"  alt="Example Image" />
-                    </div>
+                    <template #footer>
+                      <Button type="info"  long @click="isproxyInfo=false" >确定</Button>
+                    </template>
+                  </Modal>
+                </Col>
+                <Col span="6">
+                  <Button type="info" style="" @click="ModelVal(row)" v-width=85 >模型评价</Button>
+                  <Modal v-model="isModelInfo" width="1200" style="margin-top: -80px">
+                    <template #header>
+                      <p style="color:#4d85ea;text-align:center">
+                        <Icon type="ios-information-circle"></Icon>
+                        <span>模型评价</span>
+                      </p>
+                    </template>
 
-                  </Col>
-                </Row>
+                    <Row>
+                      <Col span="12">
+                        <div id="Charts" ref="Echarts4" ></div>
 
-                <template #footer>
-                  <Space :size="50">
-                    <Button type="info"  long @click="previewImage=true" v-width="100" >方案预览</Button>
-                    <Button type="info"  long @click="isproxyInfo=true" v-width="100" style="margin-right: 460px">指标介绍</Button>
-                  </Space>
-                </template>
-              </Modal>
-              <ImagePreview v-model="previewImage" :preview-list="urlList" />
-              <Modal v-model="isproxyInfo" width="700" style="margin-top: -10px">
-                <template #header>
-                  <p style="color:#4d85ea;text-align:center">
-                    <Icon type="ios-information-circle"></Icon>
-                    <span>指标介绍</span>
-                  </p>
-                </template>
-                <Card>
-                  <template #title><strong>学习率 (learning-rate)</strong></template>
-                  学习率决定了在模型训练过程中每一步参数更新的幅度，如果学习率设置得过小，模型训练会变得非常缓慢，甚至可能在达到最优值之前就停止更新了。相反，如果学习率设置得过大，可能会导致在损失函数空间中来回跳动，甚至可能使得损失不断增大，从而无法收敛到最优解
-                </Card>
-                <Card>
-                  <template #title><strong>回报率 (reward)</strong></template>
-                  在强化学习中，奖励（Reward）是一个用于评价智能体在环境中行动的反馈信号。奖励通常是一个标量值，用来表示某个特定时刻智能体的行动的好坏程度。奖励的目的是引导智能体学习如何在环境中选择行动以达到特定的目标。
-                </Card>
-                <Card>
-                  <template #title><strong>网络损失 (loss)</strong></template>
-                  损失函数是在机器学习和深度学习中用来度量模型预测输出与实际标签之间差异的一种函数，损失函数接受模型的预测输出和真实标签作为输入，并计算一个数值来表示它们之间的差异。该数值越小，表示模型的预测越接近实际标签，也就是模型的性能越好。
-                </Card>
+                      </Col>
+                      <Col span="12">
+                        <div id="Charts" ref="Echarts5" ></div>
 
-                <template #footer>
-                  <Button type="info"  long @click="isproxyInfo=false" >确定</Button>
-                </template>
-              </Modal>
-              <Button type="info" style="margin-right: -30px" @click="getMeticscharts" v-width=85 >模型评价</Button>
-              <Modal v-model="isDataInfo" width="1200" style="margin-top: -80px">
-                <template #header>
-                  <p style="color:#4d85ea;text-align:center">
-                    <Icon type="ios-information-circle"></Icon>
-                    <span>模型评价</span>
-                  </p>
-                </template>
+                      </Col>
+                    </Row>
+                    <Row v-if="!isBigdata">
+                      <Col span="12">
+                        <div id="Charts" ref="Echarts6" ></div>
 
-                <Row>
-                  <Col span="12">
-                    <div id="Charts" ref="Echarts4" ></div>
+                      </Col>
+                      <Col span="12">
+                        <div id="Charts" ref="Echarts7" ></div>
 
-                  </Col>
-                  <Col span="12">
-                    <div id="Charts" ref="Echarts5" ></div>
+                      </Col>
+                    </Row>
 
-                  </Col>
-                </Row>
-
-
-              </Modal>
-
+                  </Modal>
+                </Col>
+              </Row>
             </template>
           </Table>
         </div>
@@ -262,7 +286,7 @@ import lineChart from '../components/chart/line.vue'
 import axios from 'axios';
 import * as echarts from 'echarts'
 import chartData from "./chartdata.json"
-import {getCsvData, getExampleList, updateExample, deleteExample,getprocessFile} from "../api/api.js"
+import {getCsvData, getExampleList, updateExample, deleteExample, getprocessFile, getResultFile} from "../api/api.js"
 
 import datas from "@/userview/flow/results/data.json";
 import {EndUrl} from "../../url_config";
@@ -271,37 +295,14 @@ export default {
 
   data() {
     return {
-      modelchartData: {
-        categories1: [
-        ],
-        categories2:[],
-        acc:[],
-        series: [
-          {
-            name: "正样本",
-            data: [35, 35, 37, 40, 40, 42, 45, 45, 47, 50, 50, 52, 55, 55, 57, 60, 60, 62, 65, 65, 67, 70, 70, 72, 75, 75, 77, 80, 80, 82, 85, 85, 87, 90, 90, 92, 95, 95, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96],
-            color: "#ff4d4f", // 红色
-          },
-          {
-            name: "负样本",
-            data: [75, 75, 73, 70, 70, 68, 65, 65, 63, 60, 60, 58, 55, 55, 53, 50, 50, 48, 45, 45, 43, 40, 40, 38, 35, 35, 33, 30, 30, 28, 25, 25, 23, 20, 20, 18, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
-            color: "#4d88ff", // 蓝色
-          },
-        ],
-        series2:[{
-          name: "正样本",
-          data: [35, 35, 37, 40, 40, 42, 45, 45, 47, 50, 50, 52, 55, 55, 57, 60, 60, 62, 65, 65, 67, 70, 70, 72, 75, 75, 77, 80, 80, 82, 85, 85, 87, 90, 90, 92, 95, 95, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96],
-          color: "#ff4d4f", // 红色
-        },
-          {
-            name: "负样本",
-            data: [75, 75, 73, 70, 70, 68, 65, 65, 63, 60, 60, 58, 55, 55, 53, 50, 50, 48, 45, 45, 43, 40, 40, 38, 35, 35, 33, 30, 30, 28, 25, 25, 23, 20, 20, 18, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14],
-            color: "#4d88ff", // 蓝色
-          },],
+      lossData: {
+        id:'',
+        type: '',
+        task: '',
       },
-
-
+      isModelInfo:false,
       actdata: "",
+      resultdata:"",
       rewarddata:"",
       lrdata:"",
       imageUrl:EndUrl().fileUrl,
@@ -323,6 +324,7 @@ export default {
       isItemInfo: false,
       isLogInfo: false,
       isDataInfo: false,
+      isBigdata:false,
       // 当前行
       curRow: {},
       chartId: "",
@@ -385,7 +387,7 @@ export default {
         {
           title: '查看',
           slot: 'details',
-          width: 280,
+          width: 400,
           align: 'center'
         },
         // {
@@ -415,6 +417,17 @@ export default {
 
   },
   methods: {
+    EndUrl,
+    uploadfile(row){
+      this.lossData.id=row.Example_id,
+          this.lossData.task=row.Task,
+          this.lossData.type=row.Type
+      console.info("iiiiiiiiiiiiiiiiiiiiii",this.lossData)
+    },
+    uploadSuccess(){
+      this.$Message.success('上传成功')
+
+    },
     getcharts(){
       console.info('data1:',this.actdata)
       console.info('data2:',this.rewarddata)
@@ -650,114 +663,332 @@ export default {
 
   },
     getMeticscharts(){
-      this.isDataInfo=true
-      this.modelchartData.categories2 = Array.from({ length: 50 }, (v, i) => (i + 1) * 200); // 生成 50 个数
-      this.modelchartData.categories1 = this.modelchartData.categories2.filter((_, index) => index % 5 === 0);// 抽取 10 个数
-      this.modelchartData.series2.forEach((s) => {
-        s.data = s.data.filter((_, index) => index % 5 === 0);
-      });
-      const positiveData = this.modelchartData.series[0].data; // 正样本数据
-      const negativeData = this.modelchartData.series[1].data; // 负样本数据
-      // 清空 acc 数组
-      this.modelchartData.acc = [];
-      // 计算准确率
-      for (let i = 0; i < positiveData.length; i++) {
-        const positive = positiveData[i];
-        const negative = negativeData[i];
-        const accuracy = positive / (positive + negative); // 计算准确率
-        this.modelchartData.acc.push(accuracy); // 将准确率添加到 acc 数组
+      if(this.isBigdata==false){
+        let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
+        let psgTimeCharts5 = echarts.init(this.$refs.Echarts5)
+        let psgTimeCharts6 = echarts.init(this.$refs.Echarts6)
+        let psgTimeCharts7 = echarts.init(this.$refs.Echarts7)
+        var option4 = {
+          tooltip: {
+            position: 'top',
+          },
+          title: {
+            text: '混淆矩阵',
+            x: 'left'
+          },
+          grid: {
+            left: '10%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true,
+          },
+          xAxis: {
+            type: 'category',
+            data: ['攻击', '突防', '预警', '侦察', '佯攻', '撤退', '干扰'],
+            splitLine: { show: false },
+            axisLabel: {
+              fontSize: 10, // 调整字体大小
+              rotate: 45,   // 旋转标签
+            },
+          },
+          yAxis: {
+            type: 'category',
+            data: ['攻击', '突防', '预警', '侦察', '佯攻', '撤退', '干扰'],
+            splitLine: { show: false },
+          },
+          visualMap: {
+            min: 0,
+            max: 0.25,
+            calculable: true,
+            inRange: {
+              color: ['#ffffff', '#565656'], // 从白色到红色
+            },
+            text: ['高', '低'],
+            textStyle: {
+              color: '#fff',
+            },
+          },
+          series: [{
+            name: '热力图',
+            type: 'heatmap',
+            data: this.resultdata.con_mat,
+            label: {
+              show: true,
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowColor: '#333',
+              },
+            },
+          }],
+        };
+        var option5 = {
+          tooltip: {},
+          title: {
+            text: '准确率曲线',
+            x: 'left'
+          },
+
+          xAxis: {
+            type: "category",
+            axisLabel: {
+              interval: 4,
+              rotate: 0, // 旋转标签
+            },
+          },
+          graphic: [
+            {
+              type: 'text',
+              left: '90%', // 右侧位置
+              top: '80%', // 垂直居中
+              style: {
+                text: 'epochs',
+                font: '12px Microsoft YaHei', // 字体样式
+                fill: '#333', // 字体颜色
+                textAlign: 'center',
+              },
+            },
+          ],
+          yAxis: {
+            type: "value",
+          },
+          series: [
+            {
+              name: "y轴",
+              type: "line",
+              data: this.resultdata.acc
+            }
+          ]
+        };
+        var option6 = {
+          tooltip: {
+            position: 'top',
+          },
+          title: {
+            text: '意图研判',
+            x: 'left'
+          },
+          grid: {
+            left: '10%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true,
+          },
+          xAxis: {
+            type: 'category',
+            data: ['距离', '速度', 'RCS', '高度', '雷达状态', '方位角','机动类型'],
+            splitLine: { show: false },
+            axisLabel: {
+              fontSize: 10, // 调整字体大小
+              rotate: 45,   // 旋转标签
+            },
+          },
+          yAxis: {
+            type: 'category',
+            data: ['攻击', '突防', '预警', '侦察', '佯攻', '撤退', '干扰'],
+            splitLine: { show: false },
+          },
+          visualMap: {
+            min: 0,
+            max: 0.25,
+            calculable: true,
+            inRange: {
+              color: ['#ffffff', '#ff0000'], // 从白色到红色
+            },
+            text: ['高', '低'],
+            textStyle: {
+              color: '#fff',
+            },
+          },
+          series: [{
+            name: '热力图',
+            type: 'heatmap',
+            data: this.resultdata.hot,
+            label: {
+              show: true,
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowColor: '#333',
+              },
+            },
+          }],
+        };
+        var option7 = {
+          title: {
+            text: 'ROC&AUC曲线',
+            left: 'left'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          xAxis: {
+            type: 'value',
+            name: '假正例率',
+            nameLocation: 'middle',  // 将标签放在中间
+            min: 0,
+            max: 1
+          },
+          yAxis: {
+            type: 'value',
+            name: '真正例率',
+            nameLocation: 'middle',  // 将标签放在中间
+            nameGap: 30,              // 标签与轴的间距
+            min: 0,
+            max: 1
+          },
+          series: [
+            {
+              name: 'ROC Curve',
+              type: 'line',
+              data: this.resultdata.fpr.map((x, i) => [x, this.resultdata.tpr[i]]),
+              smooth: true,
+              lineStyle: {
+                color: 'blue',
+                width: 2
+              },
+              symbol: 'none'
+            },
+            {
+              name: 'Random Guess',
+              type: 'line',
+              data: [[0, 0], [1, 1]],
+              lineStyle: {
+                color: 'red',
+                type: 'dashed'
+              }
+            }
+          ],
+          graphic: {
+            elements: [
+              {
+                type: 'text',
+                left: '70%', // 右侧位置
+                top: '80%', // 垂直居中
+                style: {
+                  text: `AUC: 0.82`,
+                  fill: 'blue',
+                  font: '16px Microsoft YaHei'
+                }
+              }
+            ]
+          },
+          grid: {
+            left: '10%',
+            right: '10%',
+            top: '10%',
+            bottom: '10%',
+            containLabel: true,
+            // 设置宽高比
+            aspectRatio: 1
+          }
+        };
+        psgTimeCharts4.setOption(option4)
+        psgTimeCharts5.setOption(option5)
+        psgTimeCharts6.setOption(option6)
+        psgTimeCharts7.setOption(option7)
+      }else{
+        let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
+        let psgTimeCharts5 = echarts.init(this.$refs.Echarts5)
+        var option4 = {
+          tooltip: {},
+          title: {
+            text: '成功率曲线',
+            x: 'left'
+          },
+          xAxis: {
+            type: 'value', // 将类型改为 'value'
+            min: 0, // 设置最小值为 0
+            max: 9999, // 设置最大值为 9999
+            interval: 1000, // 设置刻度间隔
+            axisLabel: {
+              formatter: function (value) {
+                return value; // 格式化显示
+              }
+            }
+          },
+          graphic: [
+            {
+              type: 'text',
+              left: '90%', // 右侧位置
+              top: '85%', // 垂直居中
+              style: {
+                text: 'epochs',
+                font: '12px Microsoft YaHei', // 字体样式
+                fill: '#333', // 字体颜色
+                textAlign: 'center',
+              },
+            },
+          ],
+          yAxis: {
+            type: 'value',
+          },
+          series: [
+            {
+              name: 'y轴',
+              type: 'line',
+              smooth: true,
+              lineStyle: {
+                width: 2
+              },
+              symbol: 'none',
+              data: this.resultdata.succ.map((value, index) => [index * (9999 / (this.resultdata.succ.length - 1)), value]) // 将数据映射到 0 到 9999
+            }
+          ]
+        };
+        var option5 = {
+          tooltip: {},
+          title: {
+            text: '奖励曲线',
+            x: 'left'
+          },
+          xAxis: {
+            type: 'value', // 将类型改为 'value'
+            min: 0, // 设置最小值为 0
+            max: 9999, // 设置最大值为 9999
+            interval: 1000, // 设置刻度间隔
+            axisLabel: {
+              formatter: function (value) {
+                return value; // 格式化显示
+              }
+            }
+          },
+          graphic: [
+            {
+              type: 'text',
+              left: '90%', // 右侧位置
+              top: '85%', // 垂直居中
+              style: {
+                text: 'epochs',
+                font: '12px Microsoft YaHei', // 字体样式
+                fill: '#333', // 字体颜色
+                textAlign: 'center',
+              },
+            },
+          ],
+          yAxis: {
+            type: 'value',
+          },
+          series: [
+            {
+              name: 'y轴',
+              type: 'line',
+              smooth: true,
+              lineStyle: {
+                width: 2
+              },
+              symbol: 'none',
+              data: this.resultdata.reward.map((value, index) => [index * (9999 / (this.resultdata.reward.length - 1)), value]) // 将数据映射到 0 到 9999
+            }
+          ]
+        };
+        psgTimeCharts4.setOption(option4)
+        psgTimeCharts5.setOption(option5)
       }
 
-      let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
-      let psgTimeCharts5 = echarts.init(this.$refs.Echarts5)
-      // let psgTimeCharts4 = echarts.init(this.$refs.Echarts4)
 
-      var option4 = {
-        tooltip: {},
-        title: {
-          text: '正负样本',
-          x: 'left'
-        },
-        legend: {
-          data: this.modelchartData.series.map((s) => s.name),
-        },
-        xAxis: {
-          type: "category",
-          data: this.modelchartData.categories1,
-          axisLabel: {
-            interval: 0,
-            rotate: 0, // 旋转标签
-          },
-        },
-        graphic: [
-          {
-            type: 'text',
-            left: '90%', // 右侧位置
-            top: '80%', // 垂直居中
-            style: {
-              text: 'epochs',
-              font: '12px Microsoft YaHei', // 字体样式
-              fill: '#333', // 字体颜色
-              textAlign: 'center',
-            },
-          },
-        ],
-        yAxis: {
-          type: "value",
-        },
-        series: this.modelchartData.series2.map((s) => ({
-          name: s.name,
-          type: "bar",
-          data: s.data,
-          itemStyle: {
-            color: s.color,
-          },
-        })),
-      };
-      var option5 = {
-        tooltip: {},
-        title: {
-          text: '准确率',
-          x: 'left'
-        },
-        legend: {
-          data: this.modelchartData.series.map((s) => s.name),
-        },
-        xAxis: {
-          type: "category",
-          data: this.modelchartData.categories2,
-          axisLabel: {
-            interval: 10,
-            rotate: 0, // 旋转标签
-          },
-        },
-        graphic: [
-          {
-            type: 'text',
-            left: '90%', // 右侧位置
-            top: '80%', // 垂直居中
-            style: {
-              text: 'epochs',
-              font: '12px Microsoft YaHei', // 字体样式
-              fill: '#333', // 字体颜色
-              textAlign: 'center',
-            },
-          },
-        ],
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            name: "y轴",
-            type: "line",
-            data: this.modelchartData.acc
-          }
-        ]
-      };
-
-      psgTimeCharts4.setOption(option4)
-      psgTimeCharts5.setOption(option5)
 
     },
     calcTime(startTime,endTime,state) {
@@ -836,6 +1067,31 @@ export default {
         }
 
       }
+
+    },
+    ModelVal(row) {
+      this.isModelInfo=true;
+      console.info("row",row)
+      let data={
+        type:row.Type,
+        task:row.Task,
+        id:row.Example_id,
+        processFile:"result.json"
+      }
+      if(row.Rank==="1级"){
+        this.isBigdata=true;
+      }else{
+        this.isBigdata=false;
+      }
+      console.info("data",data)
+      getResultFile(data).then(res => {
+        this.resultdata=res.data.data.Info
+        console.info("this.resultdata",this.resultdata)
+      })
+
+      setTimeout(()=>{
+        this.getMeticscharts()
+      },100)
 
     },
     // 弹窗关闭按钮
