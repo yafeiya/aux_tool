@@ -1,69 +1,100 @@
 <template>
-  <div ref="barChart" style="width: 100%; height: 400px"></div>
+  <div ref="heatmap" style="width: 600px; height: 400px;"></div>
 </template>
 
 <script>
-import * as echarts from "echarts";
+import * as echarts from 'echarts';
 
 export default {
-  name: "BarChart",
-  data() {
-    return {
-      chartData: {
-        categories: [
-
-        ],
-        series: [
-          {
-            name: "系列 1",
-            data: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
-            color: "#ff4d4f", // 红色
-          },
-          {
-            name: "系列 2",
-            data: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
-            color: "#4d88ff", // 蓝色
-          },
-        ],
-      },
-    };
-  },
+  name: 'Heatmap',
   mounted() {
-    this.initChart();
+    this.drawHeatmap();
   },
   methods: {
-    initChart() {
-      const chart = echarts.init(this.$refs.barChart);
-      this.chartData.categories = Array.from({ length: 50 }, (v, i) => (i + 1) * 32); // 生成 50 个数
+    drawHeatmap() {
+      const myChart = echarts.init(this.$refs.heatmap);
+
+      const data = [
+        [0, 0, 0.25], [0, 1, 0.20], [0, 2, 0.15], [0, 3, 0.10], [0, 4, 0.05],
+        [0, 5, 0.20], [0, 6, 0.15], [0, 7, 0.10], [0, 8, 0.20], [0, 9, 0.18],
+        [0, 10, 0.22], [0, 11, 0.25], [0, 12, 0.20],
+        [1, 0, 0.22], [1, 1, 0.25], [1, 2, 0.18], [1, 3, 0.12], [1, 4, 0.14],
+        [1, 5, 0.20], [1, 6, 0.15], [1, 7, 0.10], [1, 8, 0.22], [1, 9, 0.20],
+        [1, 10, 0.15], [1, 11, 0.20], [1, 12, 0.18],
+        [2, 0, 0.20], [2, 1, 0.15], [2, 2, 0.25], [2, 3, 0.20], [2, 4, 0.10],
+        [2, 5, 0.12], [2, 6, 0.18], [2, 7, 0.14], [2, 8, 0.20], [2, 9, 0.15],
+        [2, 10, 0.20], [2, 11, 0.15], [2, 12, 0.10],
+        [3, 0, 0.10], [3, 1, 0.12], [3, 2, 0.15], [3, 3, 0.20], [3, 4, 0.25],
+        [3, 5, 0.20], [3, 6, 0.18], [3, 7, 0.15], [3, 8, 0.12], [3, 9, 0.10],
+        [3, 10, 0.20], [3, 11, 0.18], [3, 12, 0.15],
+        [4, 0, 0.05], [4, 1, 0.10], [4, 2, 0.15], [4, 3, 0.18], [4, 4, 0.22],
+        [4, 5, 0.20], [4, 6, 0.15], [4, 7, 0.12], [4, 8, 0.10], [4, 9, 0.08],
+        [4, 10, 0.15], [4, 11, 0.20], [4, 12, 0.25],
+        [5, 0, 0.12], [5, 1, 0.14], [5, 2, 0.16], [5, 3, 0.18], [5, 4, 0.20],
+        [5, 5, 0.22], [5, 6, 0.24], [5, 7, 0.20], [5, 8, 0.18], [5, 9, 0.15],
+        [5, 10, 0.12], [5, 11, 0.10], [5, 12, 0.08],
+        [6, 0, 0.3], [6, 1, 0.5], [6, 2, 0.16], [6, 3, 0.2], [6, 4, 0.25],
+        [6, 5, 0.1], [6, 6, 0.24], [6, 7, 0.20], [6, 8, 0.18], [6, 9, 0.15],
+        [6, 10, 0.12], [6, 11, 0.10], [6, 12, 0.6],
+      ];
+
       const option = {
-        tooltip: {},
-        legend: {
-          data: this.chartData.series.map((s) => s.name),
+        tooltip: {
+          position: 'top',
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true,
         },
         xAxis: {
-          type: "category",
-          data: this.chartData.categories,
+          type: 'category',
+          data: ['距离', '速度', 'RCS', '高度', '雷达状态', '方位角','机动类型'],
+          splitLine: { show: false },
           axisLabel: {
-            interval: 0,
-            rotate: 45, // 旋转标签
+            fontSize: 10, // 调整字体大小
+            rotate: 45,   // 旋转标签
           },
         },
         yAxis: {
-          type: "value",
+          type: 'category',
+          data: ['攻击', '突防', '预警', '侦察', '佯攻', '撤退', '电子干扰'],
+          splitLine: { show: false },
         },
-        series: this.chartData.series.map((s) => ({
-          name: s.name,
-          type: "line",
-          data: s.data,
-          itemStyle: {
-            color: s.color,
+        visualMap: {
+          min: 0,
+          max: 0.25,
+          calculable: true,
+          inRange: {
+            color: ['#ffffff', '#ff0000'], // 从白色到红色
           },
-        })),
+          text: ['高', '低'],
+          textStyle: {
+            color: '#fff',
+          },
+        },
+        series: [{
+          name: '热力图',
+          type: 'heatmap',
+          data: data,
+          label: {
+            show: true,
+          },
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowColor: '#333',
+            },
+          },
+        }],
       };
-      chart.setOption(option);
+
+      myChart.setOption(option);
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
