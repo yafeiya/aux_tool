@@ -224,20 +224,9 @@ export default {
       updataPage: this.updataPage,
       addFormItemCfg: this.addFormItemCfg,
       pageKind: this.pageKind,
-      // taskType: this.taskType,
-      // nowItem: this.nowItem,
       jsonBaseUrl: this.jsonBaseUrl,
       getPageContent: this.getPageContent,
       cardNameFlag: this.cardNameFlag,
-      // myCardList: this.myCardList,
-      // myCardNum: this.myCardNum,
-      // myCardRowNum: this.myCardRowNum,
-      // myCardColNum: this.myCardColNum,
-
-      // publicCardList: this.publicCardList,
-      // publicCardNum: this.publicCardNum,
-      // publicCardRowNum: this.publicCardRowNum,
-      // publicCardColNum: this.publicCardColNum,
     }
   },
   methods: {

@@ -8,12 +8,21 @@
             <addCard :view-range="viewRange"  :now-item="nowItem" :task-type="taskType"
                      :add-form-item="addFormItem"/>
           </div>
+          <!-- 新增智能建模模块卡片 -->
+          <div v-else-if="i==1&&j==2&&this.pageKind=='design'">
+            <aicard />
+          </div>
+          
           <div v-else>
             <contentCard :card-info="this.myCardList[ (i-1) * this.myCardColNum + j - 2 ]" :view-range="viewRange" 
                          :now-item="nowItem" :task-type="taskType" :add-form-item="addFormItem" :card-list="myCardList"/>
                          <!-- :card-name="this.myCardList[ (i-1) * this.myCardColNum + j - 2 ][cardNameFlag]" -->
           </div>
         </Col>
+        <!-- 独立addcard始终显示在卡片区最后一格 -->
+       <!-- <Col :span="Math.ceil(24 / this.myCardColNum)"
+          <addCard :view-range="viewRange" :now-item="nowItem" :task-type="taskType" :add-form-item="addFormItem"/>
+        </Col> -->
       </Row>
     </div>
     <div v-else>
@@ -40,6 +49,7 @@
 import axios from 'axios';
 import addCard from './addcard.vue'
 import contentCard from './contentcard.vue'
+import aicard from './aicard.vue'
 export default {
   data() {
     return {
@@ -63,7 +73,8 @@ export default {
     'publicCardNum', 'publicCardRowNum', 'publicCardColNum', 'addFormItem'],
   components:{
     addCard,
-    contentCard
+    contentCard,
+    aicard
   },
   mounted() {
     console.info(this.myCardList)

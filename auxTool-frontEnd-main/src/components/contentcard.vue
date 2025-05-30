@@ -402,6 +402,7 @@ export default {
 
   created() {
     this.cardName = this.cardInfo[this.cardNameFlag]
+    console.info("chuangjian kaipian")
     this.initVaild()
   },
   // updated() {

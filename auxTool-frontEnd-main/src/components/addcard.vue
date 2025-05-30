@@ -117,10 +117,6 @@ export default {
       }
     },
     creatCard (name) {
-
-      //提示成功信息
-      // console.info("createdCard: " + this.addFormItem.task)
-      // var form = this.addFormItem
       this.$refs[name].validate((valid) => {
         console.info("this.addFormItemthis.addFormItemthis.addFormItem",this.addFormItem)
         if (valid) {
@@ -153,7 +149,6 @@ export default {
                 data.params+='|'
             }
           }
-          console.info("dddddddddddddaat",data)
           if(data.pageKind=="database"||data.pageKind=="modelbase"){
             createCard(data).then(response => {
               if(response.data.msg=="fail"){
