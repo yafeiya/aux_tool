@@ -57,16 +57,15 @@
       </Button>
     </Tooltip>
 
-    <Tooltip content="保存" placement="bottom">
+    <Tooltip content="模型保存" placement="bottom">
       <template #title> </template>
       <Button
-        name="save"
-        @mousedown="handleClick"
-        @mouseup="info"
+        name="modelSave"
+        @click="showSaveModal"
         class="item-space"
         size="small"
       >
-        保存
+        模型保存
       </Button>
     </Tooltip>
 
@@ -99,6 +98,33 @@
     >
       <p>您已点击开始训练按钮，是否确认开始训练</p>
     </Modal>
+
+    <!-- 模型保存选择弹窗 -->
+    <Modal
+      v-model="saveModal"
+      title="选择保存方式"
+      :footer-hide="true"
+      width="400"
+    >
+      <div style="text-align: center; padding: 20px">
+        <Button
+          type="primary"
+          size="large"
+          @click="saveCanvas"
+          style="margin-right: 20px; width: 120px"
+        >
+          画布保存
+        </Button>
+        <Button
+          type="success"
+          size="large"
+          @click="exportFlowChart"
+          style="width: 120px"
+        >
+          流程图导出
+        </Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -117,6 +143,7 @@ export default defineComponent({
   data() {
     return {
       modal: false,
+      saveModal: false,
       nowTime: new Date(),
       // 检查必须拖动到画布上的模块
       mustItem: [
@@ -167,9 +194,6 @@ export default defineComponent({
       this.modal = true;
     },
 
-    info() {
-      this.$Message.info("画布已保存");
-    },
     RunExample({ mustItem, example }) {
       var url = decodeURI(window.location.href);
       var cs_arr = url.split("?")[1]; //?后面的
@@ -323,6 +347,214 @@ export default defineComponent({
       );
       this.$Message.info("正在打开智能建模助手...");
     },
+    // 显示保存选择弹窗
+    showSaveModal() {
+      this.saveModal = true;
+    },
+    // 画布保存（原有功能）
+    saveCanvas() {
+      this.saveModal = false;
+      const { graph } = FlowGraph;
+      var graphData = graph.toJSON();
+      var url = decodeURI(window.location.href);
+      var cs_arr = url.split("?")[1]; //?后面的
+      console.info("url", url);
+      var iid = cs_arr.split("=")[1].split("&")[0];
+      var cellsToSend = {
+        id: iid,
+        cells: graphData.cells, // 假设 graphData 里有一个 cells 属性
+      };
+      console.log("保存画布");
+      console.log(cellsToSend);
+      saveCanvas(cellsToSend).then((res) => {
+        console.log(res);
+        this.$Message.success("画布已保存");
+      });
+    },
+    // 导出流程图（合并Mermaid和配置）
+    exportFlowChart() {
+      this.saveModal = false;
+      const { graph } = FlowGraph;
+      var graphData = graph.toJSON();
+      var url = decodeURI(window.location.href);
+      var cs_arr = url.split("?")[1];
+      var id = cs_arr.split("=")[1].split("&")[0];
+
+      // 提取节点和连接线
+      const nodes = graphData.cells.filter((cell) => cell.shape !== "edge");
+      const edges = graphData.cells.filter((cell) => cell.shape === "edge");
+
+      // 生成完整的导出内容
+      let exportContent = "";
+
+      // 1. 添加Mermaid流程图部分
+      exportContent += "1. 画布mermaid流程图\n";
+      exportContent += "graph TD\n";
+
+      // 添加节点定义
+      nodes.forEach((node, index) => {
+        const nodeId = `node${index + 1}`;
+        const nodeLabel =
+          node.data?.selflabel || node.attrs?.text?.text || `节点${index + 1}`;
+
+        // 添加节点，不使用样式
+        exportContent += `    ${nodeId}["${nodeLabel}"]\n`;
+
+        // 存储节点ID映射
+        node.mermaidId = nodeId;
+      });
+
+      exportContent += "\n";
+
+      // 添加连接线
+      edges.forEach((edge) => {
+        const sourceNode = nodes.find((node) => node.id === edge.source.cell);
+        const targetNode = nodes.find((node) => node.id === edge.target.cell);
+
+        if (sourceNode && targetNode) {
+          exportContent += `    ${sourceNode.mermaidId} --> ${targetNode.mermaidId}\n`;
+        }
+      });
+
+      exportContent += "\n";
+
+      // 2. 添加流程图配置部分
+      exportContent += "2. 流程图配置\n";
+      exportContent += "节点属性配置：\n\n";
+
+      // 遍历每个节点，导出其属性配置
+      nodes.forEach((node, index) => {
+        const nodeId = `node${index + 1}`;
+        const nodeLabel =
+          node.data?.selflabel || node.attrs?.text?.text || `节点${index + 1}`;
+
+        exportContent += `【${nodeId} - ${nodeLabel}】\n`;
+
+        // 导出节点的基本信息
+        if (node.data) {
+          if (node.data.grandLabel) {
+            exportContent += `  类型: ${node.data.grandLabel}\n`;
+          }
+          if (node.data.fatherLabel) {
+            exportContent += `  父级标签: ${node.data.fatherLabel}\n`;
+          }
+          if (node.data.selflabel) {
+            exportContent += `  节点标签: ${node.data.selflabel}\n`;
+          }
+
+          // 导出数据相关属性
+          if (node.data.dataurl) {
+            exportContent += `  数据路径: ${node.data.dataurl}\n`;
+          }
+          if (node.data.datatype) {
+            exportContent += `  数据类型: ${node.data.datatype}\n`;
+          }
+          if (node.data.securitylevel) {
+            exportContent += `  密级: ${node.data.securitylevel}\n`;
+          }
+
+          // 导出模型相关属性
+          if (node.data.learning_rate) {
+            exportContent += `  学习率: ${node.data.learning_rate}\n`;
+          }
+          if (node.data.batch) {
+            exportContent += `  批次大小: ${node.data.batch}\n`;
+          }
+          if (node.data.Epoch_num) {
+            exportContent += `  训练轮数: ${node.data.Epoch_num}\n`;
+          }
+          if (node.data.Act_function) {
+            exportContent += `  激活函数: ${node.data.Act_function}\n`;
+          }
+          if (node.data.Optimizer) {
+            exportContent += `  优化器: ${node.data.Optimizer}\n`;
+          }
+          if (node.data.Network_num) {
+            exportContent += `  网络层数: ${node.data.Network_num}\n`;
+          }
+          if (node.data.Radom_seed) {
+            exportContent += `  随机种子: ${node.data.Radom_seed}\n`;
+          }
+          if (node.data.Explore_rate) {
+            exportContent += `  探索率: ${node.data.Explore_rate}\n`;
+          }
+          if (node.data.Decay_factor) {
+            exportContent += `  衰减因子: ${node.data.Decay_factor}\n`;
+          }
+
+          // 导出其他数据属性
+          Object.keys(node.data).forEach((key) => {
+            if (
+              ![
+                "grandLabel",
+                "fatherLabel",
+                "selflabel",
+                "dataurl",
+                "datatype",
+                "securitylevel",
+                "learning_rate",
+                "batch",
+                "Epoch_num",
+                "Act_function",
+                "Optimizer",
+                "Network_num",
+                "Radom_seed",
+                "Explore_rate",
+                "Decay_factor",
+              ].includes(key)
+            ) {
+              if (
+                node.data[key] !== undefined &&
+                node.data[key] !== null &&
+                node.data[key] !== ""
+              ) {
+                exportContent += `  ${key}: ${node.data[key]}\n`;
+              }
+            }
+          });
+        }
+
+        exportContent += "\n";
+      });
+
+      // 导出连接关系配置
+      if (edges.length > 0) {
+        exportContent += "连接关系配置：\n";
+        edges.forEach((edge, index) => {
+          const sourceNode = nodes.find((node) => node.id === edge.source.cell);
+          const targetNode = nodes.find((node) => node.id === edge.target.cell);
+
+          if (sourceNode && targetNode) {
+            const sourceName =
+              sourceNode.data?.selflabel ||
+              sourceNode.attrs?.text?.text ||
+              "未知节点";
+            const targetName =
+              targetNode.data?.selflabel ||
+              targetNode.attrs?.text?.text ||
+              "未知节点";
+            exportContent += `  连接${
+              index + 1
+            }: ${sourceName} → ${targetName}\n`;
+          }
+        });
+      }
+
+      // 下载为txt文件
+      const blob = new Blob([exportContent], {
+        type: "text/plain;charset=utf-8",
+      });
+      const url_download = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url_download;
+      a.download = `flowchart_${id}_${new Date().getTime()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url_download);
+
+      this.$Message.success("流程图已导出");
+    },
   },
 
   setup() {
@@ -431,22 +663,7 @@ export default defineComponent({
         case "paste":
           paste();
           break;
-        case "save":
-          var graphData = graph.toJSON();
-          var url = decodeURI(window.location.href);
-          var cs_arr = url.split("?")[1]; //?后面的
-          console.info("url", url);
-          var iid = cs_arr.split("=")[1].split("&")[0];
-          var cellsToSend = {
-            id: iid,
-            cells: graphData.cells, // 假设 graphData 里有一个 cells 属性
-          };
-          console.log("测试");
-          console.log(cellsToSend);
-          saveCanvas(cellsToSend).then((res) => {
-            console.log(res);
-          });
-          break;
+
         default:
           break;
       }

@@ -27,4 +27,11 @@ export const globalGridAttr = reactive({
   nodeFontSize: 12,
   nodeColor: '#080808',
   nodeUsers: '',
+  
+  // 节点属性相关字段
+  nodedataurl: '',
+  nodedatatype: '',
+  nodesecuritylevel: '',
+  nodename: '',
+  selflabel: '',
 });
