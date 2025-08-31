@@ -19,7 +19,7 @@ func main() {
 
 	engine := gin.Default()
 	engine.Use(common.CORS())
-	
+
 	// 主前端项目 (auxTool-frontEnd-main) - 根路径
 	engine.Static("/assets", "./dist/assets")
 	engine.StaticFile("/", "./dist/index.html")
@@ -27,7 +27,7 @@ func main() {
 	engine.StaticFile("/aicard.png", "./dist/aicard.png")
 	engine.StaticFile("/user.json", "./dist/user.json")
 	engine.StaticFile("/user.txt", "./dist/user.txt")
-	
+
 	// AI工具前端项目 (AI_Tool_Dify_Front) - 子路径
 	engine.Static("/ai-tool/css", "./AI_Tool_Dify_Front/dist/css")
 	engine.Static("/ai-tool/js", "./AI_Tool_Dify_Front/dist/js")
@@ -73,8 +73,9 @@ func main() {
 	engine.POST("/getModelImage", controller.GetModelImage)
 	engine.POST("/login", controller.Login)
 	engine.POST("/register", controller.Register)
+	engine.POST("/trainingConfig", controller.ReceiveTrainingConfig)
 
-			// 处理前端路由 - 根据路径分发
+	// 处理前端路由 - 根据路径分发
 	engine.NoRoute(func(c *gin.Context) {
 		path := c.Request.URL.Path
 		if strings.HasPrefix(path, "/ai-tool") {

@@ -98,11 +98,51 @@
     </Tooltip>
     <Modal
       v-model="modal"
-      title="即将开始训练"
+      title="训练参数配置"
       @on-ok="RunExample({ mustItem, example })"
       @on-cancel="cancel"
+      width="550"
     >
-      <p>您已点击开始训练按钮，是否确认开始训练</p>
+      <div style="padding: 20px 0">
+        <Row class="training-form-row">
+          <Col :span="6">
+            <label class="training-label">启动仿真平台：</label>
+          </Col>
+          <Col :span="18">
+            <Input
+              v-model="trainingConfig.simulationPath"
+              placeholder="请输入仿真平台启动路径"
+              style="width: 100%"
+            />
+          </Col>
+        </Row>
+
+        <Row class="training-form-row">
+          <Col :span="6">
+            <label class="training-label">想定参数：</label>
+          </Col>
+          <Col :span="18">
+            <Input
+              v-model="trainingConfig.scenarioParams"
+              placeholder="请输入仿真想定参数"
+              style="width: 100%"
+            />
+          </Col>
+        </Row>
+
+        <Row class="training-form-row">
+          <Col :span="6">
+            <label class="training-label">启动模型训练：</label>
+          </Col>
+          <Col :span="18">
+            <Input
+              v-model="trainingConfig.modelPath"
+              placeholder="请输入模型启动路径"
+              style="width: 100%"
+            />
+          </Col>
+        </Row>
+      </div>
     </Modal>
 
     <!-- 模型保存选择弹窗 -->
@@ -151,6 +191,12 @@ export default defineComponent({
       modal: false,
       saveModal: false,
       nowTime: new Date(),
+      // 训练配置参数
+      trainingConfig: {
+        simulationPath: "",
+        scenarioParams: "",
+        modelPath: "",
+      },
       // 检查必须拖动到画布上的模块
       mustItem: [
         {
@@ -201,6 +247,9 @@ export default defineComponent({
     },
 
     RunExample({ mustItem, example }) {
+      // 先发送训练配置数据到后端
+      this.sendTrainingConfigToBackend();
+
       var url = decodeURI(window.location.href);
       var cs_arr = url.split("?")[1]; //?后面的
       var iid = cs_arr.split("=")[1].split("&")[0];
@@ -211,6 +260,14 @@ export default defineComponent({
       var id = cs_arr.split("=")[1].split("&")[0];
       var task = cs_arr.split("=")[2].split("&")[0];
       var type = cs_arr.split("=")[3];
+
+      // 设置基本信息字段
+      example.example_name = `训练实例_${id}_${new Date().getTime()}`;
+      example.Rank = "1级"; // 设置默认密级
+      example.Task = decodeURIComponent(task); // URL解码
+      example.Type = decodeURIComponent(type); // URL解码
+      example.State = "运行中";
+
       example.dataset_url =
         EndUrl().fileUrl + "/" + type + "/" + task + "/" + id;
       example.id = id;
@@ -240,15 +297,15 @@ export default defineComponent({
       var Model =
         ModelResult.length > 0 ? ModelResult : "没有找到符合条件的数据";
       example.Model_name = Model[0].name;
-      example.Act_function = Model[0].Act_function;
-      example.Decay_factor = Model[0].Decay_factor;
-      example.Epoch_num = Model[0].Epoch_num;
-      example.Explore_rate = Model[0].Explore_rate;
-      example.Optimizer = Model[0].Optimizer;
-      example.Radom_seed = Model[0].Radom_seed;
-      example.batch = Model[0].batch;
-      example.Network_num = Model[0].Network_num;
-      example.learning_rate = Model[0].learning_rate;
+      example.Act_function = Model[0].Act_function || "RELU";
+      example.Decay_factor = Model[0].Decay_factor || 0.95;
+      example.Epoch_num = Model[0].Epoch_num || 10000;
+      example.Explore_rate = Model[0].Explore_rate || 0.9;
+      example.Optimizer = Model[0].Optimizer || "SGD";
+      example.Radom_seed = Model[0].Radom_seed || 42;
+      example.Batch_size = Model[0].batch || 256; // 修正字段名
+      example.Network_num = Model[0].Network_num || 256;
+      example.Learning_rate = Model[0].learning_rate || 0.001; // 修正字段名
       console.info("Model", Model);
       const TrainStateResult = graphData.cells
         .filter(
@@ -263,6 +320,10 @@ export default defineComponent({
           ? TrainStateResult
           : "没有找到符合条件的数据";
       example.Train_state = TrainState[0].selflabel;
+
+      // 添加画布cell数据到example对象
+      example.cell = graphData.cells.map((cell) => JSON.stringify(cell));
+
       console.info("example", example);
       runCanvas(example).then((res) => {
         this.$Message["success"]({
@@ -340,6 +401,33 @@ export default defineComponent({
     },
     cancel() {
       this.$Message.info("已取消");
+    },
+    // 发送训练配置数据到后端
+    sendTrainingConfigToBackend() {
+      const configData = {
+        simulationPath: this.trainingConfig.simulationPath,
+        scenarioParams: this.trainingConfig.scenarioParams,
+        modelPath: this.trainingConfig.modelPath,
+        timestamp: new Date().getTime(),
+      };
+
+      console.log("发送训练配置数据到后端:", configData);
+
+      // 使用axios发送POST请求到后端
+      axios
+        .post(EndUrl().backEndUrl + "/trainingConfig", configData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log("训练配置发送成功:", response.data);
+          this.$Message.success("训练配置已发送到后端");
+        })
+        .catch((error) => {
+          console.error("训练配置发送失败:", error);
+          this.$Message.error("训练配置发送失败");
+        });
     },
     // 返回到设计页面
     toDesign() {
@@ -488,33 +576,79 @@ export default defineComponent({
             exportContent += `  密级: ${node.data.securitylevel}\n`;
           }
 
-          // 导出模型相关属性
-          if (node.data.learning_rate) {
-            exportContent += `  损失函数: ${node.data.learning_rate}\n`;
-          }
-          if (node.data.batch) {
-            exportContent += `  批次大小: ${node.data.batch}\n`;
-          }
-          if (node.data.Epoch_num) {
-            exportContent += `  训练轮数: ${node.data.Epoch_num}\n`;
-          }
-          if (node.data.Act_function) {
-            exportContent += `  激活函数: ${node.data.Act_function}\n`;
-          }
-          if (node.data.Optimizer) {
-            exportContent += `  优化器: ${node.data.Optimizer}\n`;
-          }
-          if (node.data.Network_num) {
-            exportContent += `  网络层数: ${node.data.Network_num}\n`;
-          }
-          if (node.data.Radom_seed) {
-            exportContent += `  随机种子: ${node.data.Radom_seed}\n`;
-          }
-          if (node.data.Explore_rate) {
-            exportContent += `  探索率: ${node.data.Explore_rate}\n`;
-          }
-          if (node.data.Decay_factor) {
-            exportContent += `  衰减因子: ${node.data.Decay_factor}\n`;
+          // 特殊处理模型选择类型的节点，显示完整的模型参数配置
+          if (node.data.grandLabel === "模型选择") {
+            exportContent += `  === 模型参数配置 ===\n`;
+
+            // 网络层数
+            const networkNum = node.data.Network_num || "256";
+            exportContent += `  网络层数: ${networkNum} (default 256)\n`;
+
+            // 学习率（修正为学习率而不是损失函数）
+            const learningRate = node.data.learning_rate || "0.001";
+            exportContent += `  学习率: ${learningRate} (default 0.001)\n`;
+
+            // 优化器
+            const optimizer = node.data.Optimizer || "SGD";
+            exportContent += `  优化器: ${optimizer} (default SGD)\n`;
+
+            // 迭代次数
+            const epochNum = node.data.Epoch_num || "10000";
+            exportContent += `  迭代次数: ${epochNum} (default 10000)\n`;
+
+            // 批大小
+            const batchSize = node.data.batch || "256";
+            exportContent += `  批大小: ${batchSize} (default 256)\n`;
+
+            // 激活函数
+            const actFunction = node.data.Act_function || "RELU";
+            exportContent += `  激活函数: ${actFunction} (default RELU)\n`;
+
+            // 衰减因子
+            const decayFactor = node.data.Decay_factor || "0.95";
+            exportContent += `  衰减因子: ${decayFactor} (default 0.95)\n`;
+
+            // 探索率
+            const exploreRate = node.data.Explore_rate || "0.9";
+            exportContent += `  探索率: ${exploreRate} (default 0.9)\n`;
+
+            // 随机种子
+            const randomSeed = node.data.Radom_seed || "42";
+            exportContent += `  随机种子: ${randomSeed} (default 42)\n`;
+
+            // 如果有选择的模型名称，也显示出来
+            if (node.data.name) {
+              exportContent += `  选择模型: ${node.data.name}\n`;
+            }
+          } else {
+            // 非模型选择节点的模型相关属性（保持原有逻辑）
+            if (node.data.learning_rate) {
+              exportContent += `  学习率: ${node.data.learning_rate}\n`;
+            }
+            if (node.data.batch) {
+              exportContent += `  批次大小: ${node.data.batch}\n`;
+            }
+            if (node.data.Epoch_num) {
+              exportContent += `  训练轮数: ${node.data.Epoch_num}\n`;
+            }
+            if (node.data.Act_function) {
+              exportContent += `  激活函数: ${node.data.Act_function}\n`;
+            }
+            if (node.data.Optimizer) {
+              exportContent += `  优化器: ${node.data.Optimizer}\n`;
+            }
+            if (node.data.Network_num) {
+              exportContent += `  网络层数: ${node.data.Network_num}\n`;
+            }
+            if (node.data.Radom_seed) {
+              exportContent += `  随机种子: ${node.data.Radom_seed}\n`;
+            }
+            if (node.data.Explore_rate) {
+              exportContent += `  探索率: ${node.data.Explore_rate}\n`;
+            }
+            if (node.data.Decay_factor) {
+              exportContent += `  衰减因子: ${node.data.Decay_factor}\n`;
+            }
           }
 
           // 导出其他数据属性
@@ -787,5 +921,19 @@ export default defineComponent({
   margin-bottom: 25px;
   background-color: #5cadff;
   color: #fff;
+}
+
+.training-form-row {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.training-label {
+  font-weight: 500;
+  color: #515a6e;
+  text-align: right;
+  padding-right: 10px;
+  font-size: 14px;
 }
 </style>
