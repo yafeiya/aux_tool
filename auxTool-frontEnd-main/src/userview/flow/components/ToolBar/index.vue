@@ -1,5 +1,11 @@
 <template>
   <div class="bar">
+    <Tooltip content="返回" placement="bottom">
+      <template #title> </template>
+      <Button name="backHome" @click="toDesign" class="item-space" size="small">
+        返回
+      </Button>
+    </Tooltip>
     <Tooltip content="清除 (Cmd + D)" placement="bottom">
       <template #title> </template>
       <Button
@@ -62,7 +68,7 @@
       <Button
         name="modelSave"
         @click="showSaveModal"
-        class="item-space"
+        class="model-save"
         size="small"
       >
         模型保存
@@ -334,6 +340,10 @@ export default defineComponent({
     },
     cancel() {
       this.$Message.info("已取消");
+    },
+    // 返回到设计页面
+    toDesign() {
+      this.$router.push("/design");
     },
     // 打开智能建模助手
     openAiAssistant() {
@@ -713,6 +723,21 @@ export default defineComponent({
   margin-top: 0px;
   margin-left: 15px;
   margin-bottom: 25px;
+}
+
+.model-save {
+  width: 100px;
+  margin-top: 0px;
+  margin-left: 15px;
+  margin-bottom: 25px;
+  background-color: #f56c6c;
+  color: #fff;
+  border: none;
+}
+
+.model-save:hover {
+  background-color: #f78989;
+  color: #fff;
 }
 
 .ai-assistant {
