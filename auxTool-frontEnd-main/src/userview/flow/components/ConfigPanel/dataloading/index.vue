@@ -279,7 +279,13 @@ export default defineComponent({
     watch(
       [() => id.value],
       () => {
+        console.log("=== 节点选择监听触发 ===");
+        console.log("新选择的节点ID:", id.value);
+
         curCel = nodeOpt(id, globalGridAttr);
+        console.log("节点操作完成，当前节点:", curCel);
+        console.log("globalGridAttr更新后:", globalGridAttr);
+
         data.nodedataurl = globalGridAttr.nodedataurl;
         data.nodedatatype = globalGridAttr.nodedatatype || "";
         data.nodesecuritylevel = globalGridAttr.nodesecuritylevel || "";
@@ -288,6 +294,18 @@ export default defineComponent({
         data.nodeFontSize = globalGridAttr.nodeFontSize;
         data.nodeLabelname = globalGridAttr.nodename;
         data.nodeselflabel = globalGridAttr.selflabel;
+
+        console.log("数据同步完成，当前data状态:", {
+          nodedataurl: data.nodedataurl,
+          nodedatatype: data.nodedatatype,
+          nodesecuritylevel: data.nodesecuritylevel,
+          nodeLabelname: data.nodeLabelname,
+          nodeselflabel: data.nodeselflabel,
+        });
+
+        console.log("节点当前数据:", curCel?.getData());
+        console.log("=== 节点选择监听结束 ===");
+
         // curCel?.attr('body/stroke', 'red');
       },
       {
@@ -389,12 +407,116 @@ export default defineComponent({
       });
     };
 
-    const onLabelChange = (value) => {
+    const onLabelChange = async (value) => {
       const val = value;
+
+      console.log("=== 数据集选择开始 ===");
+      console.log("用户选择的数据集:", val);
+      console.log("当前节点ID:", id.value);
+      console.log("当前节点对象:", curCel);
+
       globalGridAttr.nodename = val;
       curCel?.setData({
         name: val,
       });
+
+      console.log("节点名称已保存到globalGridAttr和curCel");
+
+      // 使用现有getCard接口查询数据库详细信息
+      try {
+        console.log("开始查询数据库详情，数据集名称:", val);
+
+        // 从已加载的menu数据中查找对应的数据库记录
+        let foundDatabaseItem = null;
+        let foundInMenu = false;
+
+        // 遍历menu数据查找匹配的数据集
+        for (let menuCategory of menu) {
+          if (menuCategory.children) {
+            for (let taskCategory of menuCategory.children) {
+              if (taskCategory.children) {
+                for (let item of taskCategory.children) {
+                  if (item.content) {
+                    for (let dbItem of item.content) {
+                      if (dbItem.Dataset_name === val) {
+                        foundDatabaseItem = dbItem;
+                        foundInMenu = true;
+                        console.log("在菜单数据中找到匹配记录:", dbItem);
+                        break;
+                      }
+                    }
+                  }
+                  if (foundInMenu) break;
+                }
+              }
+              if (foundInMenu) break;
+            }
+          }
+          if (foundInMenu) break;
+        }
+
+        if (foundDatabaseItem) {
+          console.log("获取到的数据库记录:", foundDatabaseItem);
+
+          // 类型断言，告诉TypeScript这是数据库记录对象
+          const dbItem = foundDatabaseItem as any;
+
+          // 自动填充数据路径、数据类型、密级
+          if (dbItem.Data_path) {
+            console.log("填充数据路径:", dbItem.Data_path);
+            data.nodedataurl = dbItem.Data_path;
+            globalGridAttr.nodedataurl = dbItem.Data_path;
+            curCel?.setData({ dataurl: dbItem.Data_path });
+          } else {
+            console.log("数据库记录中没有Data_path字段");
+          }
+
+          if (dbItem.Character_type) {
+            console.log("填充数据类型:", dbItem.Character_type);
+            data.nodedatatype = dbItem.Character_type;
+            globalGridAttr.nodedatatype = dbItem.Character_type;
+            curCel?.setData({ datatype: dbItem.Character_type });
+          } else {
+            console.log("数据库记录中没有Character_type字段");
+          }
+
+          if (dbItem.Rank) {
+            console.log("填充密级:", dbItem.Rank);
+            data.nodesecuritylevel = dbItem.Rank;
+            globalGridAttr.nodesecuritylevel = dbItem.Rank;
+            curCel?.setData({ securitylevel: dbItem.Rank });
+          } else {
+            console.log("数据库记录中没有Rank字段");
+          }
+
+          console.log("数据填充完成后的data对象:", {
+            nodedataurl: data.nodedataurl,
+            nodedatatype: data.nodedatatype,
+            nodesecuritylevel: data.nodesecuritylevel,
+          });
+
+          console.log("数据填充完成后的globalGridAttr:", {
+            nodedataurl: globalGridAttr.nodedataurl,
+            nodedatatype: globalGridAttr.nodedatatype,
+            nodesecuritylevel: globalGridAttr.nodesecuritylevel,
+          });
+
+          console.log("数据填充完成后的节点数据:", curCel?.getData());
+          console.log("✅ 数据库详情已自动填充成功");
+        } else {
+          console.log("❌ 在菜单数据中未找到匹配的数据集:", val);
+          console.log("当前menu结构:", menu);
+        }
+      } catch (error) {
+        console.error("❌ 查询数据库详情失败:", error);
+        console.error("错误详情:", {
+          message: error.message,
+          stack: error.stack,
+        });
+      }
+
+      console.log("=== 数据集选择结束 ===");
+
       // curCel?.attr('text/text', val);
       // console.log(curCel.data.name)
     };

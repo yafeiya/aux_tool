@@ -1,0 +1,18 @@
+1. 画布merimaid流程图
+graph TD
+    node1["任务1"]
+    node2["回归"]
+    node3["批量推理"]
+    node4["综合评价指标"]
+    node5["泛化性"]
+    node6["仿真监听数据"]
+    node7["泛化性"]
+
+    node1 --> node2
+    node2 --> node3
+    node3 --> node4
+    node3 --> node5
+    node6 --> node3
+    node3 --> node7
+
+2. 流程图配置
