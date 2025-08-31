@@ -14,6 +14,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"time"
 )
 
 /*
@@ -83,25 +84,37 @@ func SaveCanvas(ctx *gin.Context) {
 // 前端运行按钮
 // */
 func RunCanvas(ctx *gin.Context) {
-	Start_time := ctx.Query("start_time")
 	id, _ := strconv.Atoi(ctx.Query("id"))
 	newCellData := ctx.QueryArray("cell")
+
+	// 添加所有必需的字段
+	Design_name := ctx.Query("example_name")
+	Rank := ctx.Query("Rank")
+	State := ctx.Query("State")
+	Task := ctx.Query("Task")
+	Type := ctx.Query("Type")
 	Dataset_name := ctx.Query("Dataset_name")
 	Model_name := ctx.Query("Model_name")
 	Train_state := ctx.Query("Train_state")
+	Metics := ctx.Query("Metics")
+	End_time := ctx.Query("end_time")
+
+	// 打印接收到的参数进行调试
+	fmt.Printf("接收到的参数: ID=%d, Name=%s, Rank=%s, Task=%s, Type=%s\n", id, Design_name, Rank, Task, Type)
+	fmt.Printf("State=%s, Metics=%s, End_time=%s\n", State, Metics, End_time)
 	network_num, _ := strconv.Atoi(ctx.Query("Network_num"))
 	learning_rate, _ := strconv.ParseFloat(ctx.Query("Learning_rate"), 64)
 	Act_function := ctx.Query("Act_function")
 	radom_seed, _ := strconv.Atoi(ctx.Query("Radom_seed"))
 	Optimizer := ctx.Query("Optimizer")
-	batch_size, _ := strconv.Atoi(ctx.Query("Batch"))
+	batch_size, _ := strconv.Atoi(ctx.Query("Batch_size"))
 	epoch_num, _ := strconv.Atoi(ctx.Query("Epoch_num"))
 	explore_rate, _ := strconv.ParseFloat(ctx.Query("Explore_rate"), 64)
 	decay_factor, _ := strconv.ParseFloat(ctx.Query("Decay_factor"), 64)
 
 	fmt.Println("Dataset_name:", Dataset_name)
 	// 创建命令
-	cmd := exec.Command("python", "main.py", "12333", "131321212") // 或者使用 "python3" 根据你的环境	// 获取命令输出
+	cmd := exec.Command("python", "main.py", "12333", "131321212")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -144,22 +157,28 @@ func RunCanvas(ctx *gin.Context) {
 		if data.Designs[i].Id == id {
 			fmt.Println("要覆盖的design的id为:", id)
 			var newCell []interface{}
-			//获取对应案例名称
-			Design_name := data.Designs[i].Dataset_name
-			Rank := data.Designs[i].Rank
-			Task := data.Designs[i].Task
-			Type := data.Designs[i].Type
+			//使用从URL参数获取的数据，而不是从JSON文件中读取
+			// Design_name, Rank, Task, Type 已经从URL参数中获取
+			fmt.Printf("使用URL参数: Design_name=%s, Rank=%s, Task=%s, Type=%s\n", Design_name, Rank, Task, Type)
 			// 解析 JSON 数组数据
-			for _, jsonStr := range newCellData {
+			fmt.Printf("接收到的cell数据数量: %d\n", len(newCellData))
+			for idx, jsonStr := range newCellData {
+				fmt.Printf("正在解析第%d个cell数据...\n", idx+1)
+				if jsonStr == "" {
+					fmt.Printf("跳过空的cell数据\n")
+					continue
+				}
 				byteSlice := []byte(jsonStr) // Convert to []byte
 				var item interface{}
 				if err := json.Unmarshal(byteSlice, &item); err != nil {
-					fmt.Println("解析 JSON 数组数据fail:", err)
-					response.Response(ctx, http.StatusOK, 404, nil, "fail")
-					return
+					fmt.Printf("解析第%d个JSON数据失败: %v\n", idx+1, err)
+					fmt.Printf("错误的JSON字符串长度: %d\n", len(jsonStr))
+					// 不直接返回错误，继续处理其他数据
+					continue
 				}
 				newCell = append(newCell, item)
 			}
+			fmt.Printf("成功解析的cell数据数量: %d\n", len(newCell))
 
 			data.Designs[i].Cell = newCell
 
@@ -198,43 +217,56 @@ func RunCanvas(ctx *gin.Context) {
 				Epoch_num:     epoch_num,
 				Explore_rate:  explore_rate,
 				Decay_factor:  decay_factor,
-				Start_time:    Start_time,
+				Start_time:    strconv.FormatInt(time.Now().UnixMilli(), 10),
 				End_time:      "0",
 			}
-			// 判重处理
-			//pageKind、task、type、dataset_name
-			db.Where("Example_name = ?", Design_name).Find(&example)
-			if example.Id != 0 {
-				fmt.Println("该实例已存在")
-				// 更新现有实例的字段
-				example.Example_id = id
-				example.Rank = Rank
-				example.State = "运行中"
-				example.Task = Task
-				example.Type = Type
-				example.Dataset_name = Dataset_name
-				example.Model_name = Model_name
-				example.Train_state = Train_state
-				example.Metics = "string"
-				example.Network_num = network_num
-				example.Learning_rate = learning_rate
-				example.Act_function = Act_function
-				example.Radom_seed = radom_seed
-				example.Optimizer = Optimizer
-				example.Batch_size = batch_size
-				example.Epoch_num = epoch_num
-				example.Explore_rate = explore_rate
-				example.Decay_factor = decay_factor
-				example.Start_time = Start_time
-				example.End_time = "0"
+			// 判重处理 - 使用更好的判重逻辑
+			var existingExample model.Example
+			result := db.Where("Example_id = ?", id).First(&existingExample)
 
-				db.Save(&example) // 保存更新
-				db.Save(&example) // 保存更新
-				response.Response(ctx, http.StatusOK, 404, nil, "The example already exists")
+			if result.Error == nil {
+				// 实例已存在，更新现有实例
+				fmt.Printf("实例已存在，更新实例ID: %d\n", id)
+				existingExample.Example_name = Design_name
+				existingExample.Rank = Rank
+				existingExample.State = "运行中"
+				existingExample.Task = Task
+				existingExample.Type = Type
+				existingExample.Dataset_name = Dataset_name
+				existingExample.Model_name = Model_name
+				existingExample.Train_state = Train_state
+				existingExample.Metics = "string"
+				existingExample.Network_num = network_num
+				existingExample.Learning_rate = learning_rate
+				existingExample.Act_function = Act_function
+				existingExample.Radom_seed = radom_seed
+				existingExample.Optimizer = Optimizer
+				existingExample.Batch_size = batch_size
+				existingExample.Epoch_num = epoch_num
+				existingExample.Explore_rate = explore_rate
+				existingExample.Decay_factor = decay_factor
+				existingExample.Start_time = strconv.FormatInt(time.Now().UnixMilli(), 10)
+				existingExample.End_time = "0"
+
+				result := db.Save(&existingExample)
+				if result.Error != nil {
+					fmt.Printf("更新实例失败: %v\n", result.Error)
+					response.Response(ctx, http.StatusInternalServerError, 500, nil, "更新实例失败")
+				} else {
+					fmt.Printf("实例更新成功: %+v\n", existingExample)
+					response.Success(ctx, nil, "实例已更新")
+				}
 			} else {
-				// 新增
-				db.Create(&example)
-				response.Success(ctx, nil, "success")
+				// 新增实例
+				fmt.Printf("创建新实例: %+v\n", example)
+				result := db.Create(&example)
+				if result.Error != nil {
+					fmt.Printf("创建实例失败: %v\n", result.Error)
+					response.Response(ctx, http.StatusInternalServerError, 500, nil, "创建实例失败")
+				} else {
+					fmt.Printf("实例创建成功: %+v\n", example)
+					response.Success(ctx, nil, "实例创建成功")
+				}
 			}
 			return
 		}
@@ -471,4 +503,46 @@ func GetCanvas(ctx *gin.Context) {
 			return
 		}
 	}
+}
+
+/*
+接收训练配置参数
+*/
+type TrainingConfigRequest struct {
+	SimulationPath string `json:"simulationPath"`
+	ScenarioParams string `json:"scenarioParams"`
+	ModelPath      string `json:"modelPath"`
+	Timestamp      int64  `json:"timestamp"`
+}
+
+func ReceiveTrainingConfig(ctx *gin.Context) {
+	var request TrainingConfigRequest
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		fmt.Printf("解析训练配置参数失败: %v\n", err)
+		response.Response(ctx, http.StatusBadRequest, 400, nil, "参数解析失败")
+		return
+	}
+
+	// 打印接收到的训练配置参数
+	fmt.Println("=== 接收到训练配置参数 ===")
+	fmt.Printf("仿真平台启动路径: %s\n", request.SimulationPath)
+	fmt.Printf("仿真想定参数: %s\n", request.ScenarioParams)
+	fmt.Printf("模型启动路径: %s\n", request.ModelPath)
+	fmt.Printf("时间戳: %d\n", request.Timestamp)
+	fmt.Println("========================")
+
+	// 可以在这里添加保存到数据库或文件的逻辑
+	// 例如保存到日志文件
+	logFile, err := os.OpenFile("training_config.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Printf("无法打开训练配置日志文件: %v\n", err)
+	} else {
+		defer logFile.Close()
+		logger := log.New(logFile, "", log.LstdFlags)
+		logger.Printf("训练配置参数 - 仿真平台启动路径: %s, 仿真想定参数: %s, 模型启动路径: %s, 时间戳: %d\n",
+			request.SimulationPath, request.ScenarioParams, request.ModelPath, request.Timestamp)
+	}
+
+	// 返回成功响应
+	response.Success(ctx, nil, "训练配置参数接收成功")
 }
