@@ -248,7 +248,7 @@
                     <template #header>
                       <p style="color: #4d85ea; text-align: center">
                         <Icon type="ios-information-circle"></Icon>
-                        <span>训练过程可视化</span>
+                        <span>训练监控</span>
                       </p>
                     </template>
 
@@ -329,7 +329,7 @@
                       <template #title
                         ><strong>网络损失 (loss)</strong></template
                       >
-                      损失函数是在机器学习和深度学习中用来度量模型预测输出与实际标签之间差异的一种函数，损失函数接受模型的预测输出和真实标签作为输入，并计算一个数值来表示它们之间的差异。该数值越小，表示模型的预测越接近实际标签，也就是模型的性能越好。
+                      损失函数是在机器学习和深度学习中用来度量模型训练输出与实际标签之间差异的一种函数，损失函数接受模型的预测输出和真实标签作为输入，并计算一个数值来表示它们之间的差异。该数值越小，表示模型的预测越接近实际标签，也就是模型的性能越好。
                     </Card>
 
                     <template #footer>

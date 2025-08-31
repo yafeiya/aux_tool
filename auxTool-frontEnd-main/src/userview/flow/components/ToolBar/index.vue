@@ -154,11 +154,11 @@ export default defineComponent({
       // 检查必须拖动到画布上的模块
       mustItem: [
         {
-          name: "数据加载",
+          name: "数据准备",
           flag: false,
         },
         {
-          name: "模型模板",
+          name: "模型选择",
           flag: false,
         },
         {
@@ -222,7 +222,7 @@ export default defineComponent({
           (cell) =>
             cell.data &&
             cell.data.grandLabel &&
-            cell.data.grandLabel === "数据加载" &&
+            cell.data.grandLabel === "数据准备" &&
             cell.data.fatherLabel.endsWith("数据集")
         )
         .map((cell) => cell.data);
@@ -234,7 +234,7 @@ export default defineComponent({
           (cell) =>
             cell.data &&
             cell.data.grandLabel &&
-            cell.data.grandLabel === "模型模板"
+            cell.data.grandLabel === "模型选择"
         )
         .map((cell) => cell.data);
       var Model =
@@ -255,7 +255,7 @@ export default defineComponent({
           (cell) =>
             cell.data &&
             cell.data.grandLabel &&
-            cell.data.grandLabel === "训练过程可视化"
+            cell.data.grandLabel === "训练监控"
         )
         .map((cell) => cell.data);
       var TrainState =

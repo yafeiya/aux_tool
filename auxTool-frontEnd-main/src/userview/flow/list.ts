@@ -11,7 +11,7 @@ export function menulist(){
         // },
         {
             name: 'database',
-            label: '数据加载',
+            label: '数据准备',
             children: [
                 {
                     name: 'csvdir',
@@ -71,7 +71,7 @@ export function menulist(){
         },
         {
             name: 'moudles',
-            label: '模型模板',
+            label: '模型选择',
             children: [
                 {
                 name: 'machinelearning',
@@ -150,11 +150,11 @@ export function menulist(){
         },
         {
             name: 'moudlepredictive',
-            label: '模型预测',
+            label: '模型训练',
             children: [
                 {
                     name: 'batchdeduction',
-                    label: '批量推理',
+                    label: '训练&部署',
                 },
             ]
         },

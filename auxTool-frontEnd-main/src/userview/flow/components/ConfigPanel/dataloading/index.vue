@@ -319,7 +319,7 @@ export default defineComponent({
     let menu: any = [
       {
         name: "database",
-        title: "数据加载",
+        title: "数据准备",
         children: [],
       },
     ];

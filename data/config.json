@@ -100,7 +100,7 @@
         },
         {
             "name": "evalution",
-            "title": "评价指标",
+            "title": "模型评估",
             "icon": "ios-keypad",
             "children": [
                 {
@@ -164,23 +164,12 @@
     "canvas": [
         {
             "name": "database",
-            "title": "数据加载",
-            "children": [
-                {
-                    "name": "monitordata",
-                    "title": "仿真监听数据",
-                    "children": null
-                },
-                {
-                    "name": "modellog",
-                    "title": "模型日志数据",
-                    "children": null
-                }
-            ]
+            "title": "数据准备",
+            "children": []
         },
         {
             "name": "modelbase",
-            "title": "模型模板",
+            "title": "模型选择",
             "children": [
                 {
                     "name": "深度学习",
@@ -196,38 +185,38 @@
         },
         {
             "name": "moudlepredictive",
-            "title": "模型预测",
+            "title": "模型训练",
             "children": [
                 {
                     "name": "batchdeduction",
-                    "title": "批量推理",
+                    "title": "训练&部署",
                     "children": null
                 }
             ]
         },
         {
             "name": "resultvisualization",
-            "title": "训练过程可视化",
+            "title": "训练监控",
             "children": []
         },
         {
             "name": "scorefunction",
-            "title": "评价指标",
+            "title": "模型评估",
             "children": []
         },
         {
-            "name": "模型模板",
-            "title": "模型模板",
+            "name": "environmentinteraction",
+            "title": "环境交互",
             "children": [
                 {
-                    "name": "深度学习",
-                    "title": "深度学习",
-                    "children": [
-                        {
-                            "name": "Transformer模型",
-                            "title": "Transformer模型"
-                        }
-                    ]
+                    "name": "monitordata",
+                    "title": "仿真监听数据",
+                    "children": null
+                },
+                {
+                    "name": "modellog",
+                    "title": "模型日志数据",
+                    "children": null
                 }
             ]
         }
