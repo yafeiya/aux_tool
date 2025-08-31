@@ -397,32 +397,57 @@ export default defineComponent({
       // 生成完整的导出内容
       let exportContent = "";
 
-      // 1. 添加Mermaid流程图部分
+      // 1. 添加Mermaid流程图部分（按父节点分组）
       exportContent += "1. 画布mermaid流程图\n";
       exportContent += "graph TD\n";
 
-      // 添加节点定义
+      // 按父节点（grandLabel）分组节点
+      const nodesByGroup = {};
+      const nodeIdMap = new Map(); // 存储节点ID映射
+
       nodes.forEach((node, index) => {
-        const nodeId = `node${index + 1}`;
+        const nodeId = `${String.fromCharCode(65 + index)}`; // A, B, C, ...
         const nodeLabel =
           node.data?.selflabel || node.attrs?.text?.text || `节点${index + 1}`;
-
-        // 添加节点，不使用样式
-        exportContent += `    ${nodeId}["${nodeLabel}"]\n`;
+        const grandLabel = node.data?.grandLabel || "其他";
 
         // 存储节点ID映射
+        nodeIdMap.set(node.id, nodeId);
         node.mermaidId = nodeId;
+
+        // 按父节点分组
+        if (!nodesByGroup[grandLabel]) {
+          nodesByGroup[grandLabel] = [];
+        }
+        nodesByGroup[grandLabel].push({
+          id: nodeId,
+          label: nodeLabel,
+          originalNode: node,
+        });
+      });
+
+      // 生成subgraph分组
+      Object.keys(nodesByGroup).forEach((groupName) => {
+        if (nodesByGroup[groupName].length > 0) {
+          exportContent += `    subgraph ${groupName}\n`;
+          nodesByGroup[groupName].forEach((nodeInfo) => {
+            exportContent += `        ${nodeInfo.id}[${nodeInfo.label}]\n`;
+          });
+          exportContent += `    end\n`;
+        }
       });
 
       exportContent += "\n";
 
-      // 添加连接线
+      // 添加连接线（跨subgraph的连接）
       edges.forEach((edge) => {
         const sourceNode = nodes.find((node) => node.id === edge.source.cell);
         const targetNode = nodes.find((node) => node.id === edge.target.cell);
 
         if (sourceNode && targetNode) {
-          exportContent += `    ${sourceNode.mermaidId} --> ${targetNode.mermaidId}\n`;
+          const sourceId = nodeIdMap.get(sourceNode.id);
+          const targetId = nodeIdMap.get(targetNode.id);
+          exportContent += `    ${sourceId} --> ${targetId}\n`;
         }
       });
 
@@ -434,7 +459,7 @@ export default defineComponent({
 
       // 遍历每个节点，导出其属性配置
       nodes.forEach((node, index) => {
-        const nodeId = `node${index + 1}`;
+        const nodeId = nodeIdMap.get(node.id);
         const nodeLabel =
           node.data?.selflabel || node.attrs?.text?.text || `节点${index + 1}`;
 
@@ -465,7 +490,7 @@ export default defineComponent({
 
           // 导出模型相关属性
           if (node.data.learning_rate) {
-            exportContent += `  学习率: ${node.data.learning_rate}\n`;
+            exportContent += `  损失函数: ${node.data.learning_rate}\n`;
           }
           if (node.data.batch) {
             exportContent += `  批次大小: ${node.data.batch}\n`;

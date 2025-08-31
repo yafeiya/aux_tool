@@ -1,7 +1,7 @@
 <template>
   <Tabs class="config" value="1">
     <TabPane label="属性" name="1">
-      <Row align="middle" v-if="globalGridAttr.selflabel === '仿真监听数据'">
+      <Row align="middle" v-if="globalGridAttr.selflabel === '实时训练日志'">
         <Upload
           :action="EndUrl().backEndUrl + '/uploadLoss'"
           style="margin-bottom: 10px"
@@ -52,10 +52,10 @@
         </Upload>
       </Row>
 
-      <Row align="middle" v-if="globalGridAttr.selflabel === '模型日志数据'">
+      <Row align="middle" v-if="globalGridAttr.selflabel === '离线评估结果'">
         <Upload action="//localhost:3000/">
           <Button class="view" icon="ios-cloud-upload-outline" @click=""
-            >选择模型日志数据</Button
+            >选择离线评估结果</Button
           >
         </Upload>
       </Row>
@@ -67,8 +67,8 @@
               align="middle"
               v-if="
                 globalGridAttr.selflabel === childrenitem.title &&
-                globalGridAttr.selflabel != '仿真监听数据' &&
-                globalGridAttr.selflabel != '模型日志数据'
+                globalGridAttr.selflabel != '实时训练日志' &&
+                globalGridAttr.selflabel != '离线评估结果'
               "
             >
               <Col :span="10">指定{{ childrenitem.title }}</Col>
@@ -113,8 +113,8 @@
 
       <div
         v-if="
-          globalGridAttr.selflabel != '仿真监听数据' &&
-          globalGridAttr.selflabel != '模型日志数据'
+          globalGridAttr.selflabel != '实时训练日志' &&
+          globalGridAttr.selflabel != '离线评估结果'
         "
       >
         <Row class="params" align="middle">

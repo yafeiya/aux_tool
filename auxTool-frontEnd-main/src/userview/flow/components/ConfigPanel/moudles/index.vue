@@ -66,7 +66,7 @@
         </Col>
       </Row>
       <Row class="params" align="middle">
-        <Col :span="8">学习率</Col>
+        <Col :span="8">损失函数</Col>
         <Col :span="14">
           <Input
             v-model="data.learning_rate"

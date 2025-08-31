@@ -216,7 +216,7 @@
                       <template #title><strong>模型超参数</strong></template>
                       <Row>
                         <Col span="8">网络层数: {{ curRow.Network_num }}</Col>
-                        <Col span="8">学习率: {{ curRow.Learning_rate }}</Col>
+                        <Col span="8">损失函数: {{ curRow.Learning_rate }}</Col>
                         <Col span="8">优化器：{{ curRow.Optimizer }}</Col>
                         <Col span="8">迭代次数: {{ curRow.Epoch_num }}</Col>
                         <Col span="8">批大小: {{ curRow.Batch_size }}</Col>
@@ -315,9 +315,9 @@
                     </template>
                     <Card>
                       <template #title
-                        ><strong>学习率 (learning-rate)</strong></template
+                        ><strong>损失函数 (learning-rate)</strong></template
                       >
-                      学习率决定了在模型训练过程中每一步参数更新的幅度，如果学习率设置得过小，模型训练会变得非常缓慢，甚至可能在达到最优值之前就停止更新了。相反，如果学习率设置得过大，可能会导致在损失函数空间中来回跳动，甚至可能使得损失不断增大，从而无法收敛到最优解
+                      损失函数决定了在模型训练过程中每一步参数更新的幅度，如果损失函数设置得过小，模型训练会变得非常缓慢，甚至可能在达到最优值之前就停止更新了。相反，如果损失函数设置得过大，可能会导致在损失函数空间中来回跳动，甚至可能使得损失不断增大，从而无法收敛到最优解
                     </Card>
                     <Card>
                       <template #title

@@ -43,15 +43,7 @@ export function menulist(){
                         name:'数值数据集3',
                     },
                     ]
-                },
-                {
-                    name: 'monitordata',
-                    label: '仿真监听数据',
-                },
-                {
-                    name: 'modellog',
-                    label: '模型日志数据',
-                },
+                }
             ]
 
         },
@@ -142,7 +134,7 @@ export function menulist(){
                     },
                     {
                         name: 'DQN',
-                        label: '策略学习',
+                        label: 'A3C',
                     },
                 ]
                 },
@@ -168,11 +160,11 @@ export function menulist(){
                 },
                 {
                     name: 'rewarddistribution',
-                    label: '奖励分布',
+                    label: '奖励曲线',
                 },
                 {
                     name: 'learningrate',
-                    label: '学习率',
+                    label: '损失函数',
                 },
             ]
         },
