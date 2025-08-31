@@ -1,11 +1,5 @@
 <template>
   <div class="bar">
-    <Tooltip content="返回" placement="bottom">
-      <template #title> </template>
-      <Button name="backHome" @click="toDesign" class="item-space" size="small">
-        返回
-      </Button>
-    </Tooltip>
     <Tooltip content="清除 (Cmd + D)" placement="bottom">
       <template #title> </template>
       <Button
@@ -27,18 +21,6 @@
         size="small"
       >
         撤销
-      </Button>
-    </Tooltip>
-    <Tooltip content="重做 (Cmd + Shift + Z)" placement="bottom">
-      <template #title> </template>
-      <Button
-        :disabled="canRedo"
-        name="redo"
-        @click="handleClick"
-        class="item-space"
-        size="small"
-      >
-        重做
       </Button>
     </Tooltip>
 
@@ -75,25 +57,6 @@
       </Button>
     </Tooltip>
 
-    <Tooltip content="保存SVG (Cmd + S)" placement="bottom">
-      <template #title> </template>
-      <Button
-        name="saveSVG"
-        @click="handleClick"
-        class="item-space"
-        size="small"
-      >
-        保存SVG
-      </Button>
-    </Tooltip>
-
-    <Tooltip content="打印 (Cmd + P)" placement="bottom">
-      <template #title> </template>
-      <Button name="print" @click="handleClick" class="item-space" size="small">
-        打印
-      </Button>
-    </Tooltip>
-
     <Tooltip content="保存" placement="bottom">
       <template #title> </template>
       <Button
@@ -108,17 +71,33 @@
     </Tooltip>
 
     <!-- //！！！！！！！！！！！！！在这儿修改！！！！！！！！！！ -->
-    <Tooltip content="运行" placement="bottom">
+    <!-- 智能建模助手按钮 -->
+    <Tooltip content="打开智能建模助手" placement="bottom">
       <template #title> </template>
-      <Button name="run" @click="isRun" class="run" size="small"> 运行 </Button>
+      <Button
+        name="aiAssistant"
+        @click="openAiAssistant"
+        class="ai-assistant"
+        size="small"
+      >
+        智能建模助手
+      </Button>
+    </Tooltip>
+
+    <!-- 开始训练按钮 -->
+    <Tooltip content="开始训练模型" placement="bottom">
+      <template #title> </template>
+      <Button name="run" @click="isRun" class="run" size="small">
+        开始训练
+      </Button>
     </Tooltip>
     <Modal
       v-model="modal"
-      title="即将运行该方案"
+      title="即将开始训练"
       @on-ok="RunExample({ mustItem, example })"
       @on-cancel="cancel"
     >
-      <p>您已点击运行按钮，是否确认运行</p>
+      <p>您已点击开始训练按钮，是否确认开始训练</p>
     </Modal>
   </div>
 </template>
@@ -187,9 +166,7 @@ export default defineComponent({
     isRun() {
       this.modal = true;
     },
-    toDesign() {
-      this.$router.push("/design");
-    },
+
     info() {
       this.$Message.info("画布已保存");
     },
@@ -260,7 +237,7 @@ export default defineComponent({
       runCanvas(example).then((res) => {
         this.$Message["success"]({
           background: true,
-          content: "运行成功，请在实例管理页面查看详情",
+          content: "训练已开始，请在实例管理页面查看详情",
         });
 
         //以下代码用于存png
@@ -334,6 +311,18 @@ export default defineComponent({
     cancel() {
       this.$Message.info("已取消");
     },
+    // 打开智能建模助手
+    openAiAssistant() {
+      // 在新窗口中打开AI工具（4001端口）
+      const aiToolUrl =
+        window.location.protocol + "//" + window.location.hostname + ":4001/";
+      window.open(
+        aiToolUrl,
+        "_blank"
+        // "width=1200,height=800,scrollbars=yes,resizable=yes"
+      );
+      this.$Message.info("正在打开智能建模助手...");
+    },
   },
 
   setup() {
@@ -341,7 +330,7 @@ export default defineComponent({
     const history = graph;
 
     const canUndo = ref(history.canUndo());
-    const canRedo = ref(history.canRedo());
+
     const copy = () => {
       const { graph } = FlowGraph;
       const cells = graph.getSelectedCells();
@@ -377,9 +366,7 @@ export default defineComponent({
         case "undo":
           graph.history.undo();
           break;
-        case "redo":
-          graph.history.redo();
-          break;
+
         case "delete":
           graph.clearCells();
           break;
@@ -435,15 +422,6 @@ export default defineComponent({
 
           break;
 
-        case "saveSVG":
-          graph.toSVG((dataUri: string) => {
-            // 下载
-            DataUri.downloadDataUri(DataUri.svgToDataUrl(dataUri), "chart.svg");
-          });
-          break;
-        case "print":
-          graph.printPreview();
-          break;
         case "copy":
           copy();
           break;
@@ -476,7 +454,6 @@ export default defineComponent({
 
     history.on("change", () => {
       canUndo.value = history.canUndo();
-      canRedo.value = history.canRedo();
     });
     graph.bindKey("ctrl+z", () => {
       if (history.canUndo()) {
@@ -484,12 +461,7 @@ export default defineComponent({
       }
       return false;
     });
-    graph.bindKey("ctrl+shift+z", () => {
-      if (history.canRedo()) {
-        history.redo();
-      }
-      return false;
-    });
+
     graph.bindKey("ctrl+d", () => {
       graph.clearCells();
       return false;
@@ -500,17 +472,13 @@ export default defineComponent({
       });
       return false;
     });
-    graph.bindKey("ctrl+p", () => {
-      graph.printPreview();
-      return false;
-    });
+
     graph.bindKey("ctrl+c", copy);
     graph.bindKey("ctrl+v", paste);
     graph.bindKey("ctrl+x", cut);
 
     return {
       canUndo,
-      canRedo,
       copy,
       cut,
       paste,
@@ -530,10 +498,25 @@ export default defineComponent({
   margin-bottom: 25px;
 }
 
-.run {
-  width: 70px;
+.ai-assistant {
+  width: 120px;
   margin-top: 0px;
-  margin-left: 20px;
+  margin-left: 15px;
+  margin-bottom: 25px;
+  background-color: #67c23a;
+  color: #fff;
+  border: none;
+}
+
+.ai-assistant:hover {
+  background-color: #85ce61;
+  color: #fff;
+}
+
+.run {
+  width: 90px;
+  margin-top: 0px;
+  margin-left: 15px;
   margin-bottom: 25px;
   background-color: #5cadff;
   color: #fff;
